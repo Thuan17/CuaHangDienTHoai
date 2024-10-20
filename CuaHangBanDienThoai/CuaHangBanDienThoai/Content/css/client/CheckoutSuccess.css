@@ -1,0 +1,212 @@
+﻿.card {
+    border: none;
+    box-shadow:none;
+}
+.checkout__success__container {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: none;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+}
+.card-icon svg {
+    color:green;
+    width:250px;
+    height:50px;
+}
+
+.card-iconerror svg {
+    color: red;
+    width: 250px;
+    height: 50px;
+}
+.checkout-scard {
+    background: #fff;
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.card-body{
+    padding:6%;
+    padding-bottom:1.5%;
+}
+.scardbody p {
+    color: black;
+    font-size: 12px;
+    text-align: center !important;
+ 
+
+}
+.badge {
+    display: inline-block;
+    padding: .35em .65em;
+    font-size: .75em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+.checkout-scard {
+    overflow: hidden;
+    padding:3%;
+}
+.checkout-scard .text-order {
+    padding: 10px 20px 10px;
+    font-size: 13px;
+    ont-weight: 400;
+}
+.td__imgItem {
+    width: 10%;
+    padding: 0 !important; /* Sử dụng !important để ghi đè */
+    overflow: hidden;
+
+    height: 50%;
+}
+.td__quantity-price__item {
+  
+    padding: 0 !important; /* Sử dụng !important để ghi đè */
+    overflow: hidden;
+}
+.td__imgItem img {
+    width: 150px;
+    display: block;
+    border: 0;
+    vertical-align: middle;
+    height: 150px;
+}
+.td__imgItem a{
+    padding:0;
+}
+.td__productItem {
+    padding: 0 !important; /* Sử dụng !important để ghi đè */
+    overflow: hidden;
+}
+.blur-up.lazyloaded {
+    -webkit-filter: blur(0);
+    filter: blur(0);
+}
+
+.blur-up {
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+    transition: filter 400ms, -webkit-filter 400ms;
+    -webkit-transition: filter 400ms, -webkit-filter 400ms;
+}
+
+img {
+    height: auto;
+    max-width: 100%;
+    border: 0;
+    vertical-align: middle;
+}
+.td__img{
+    width: 20%;
+   
+}
+.td__product {
+    width: 45%; /* Điều chỉnh độ rộng cho cột "Sản phẩm" */
+}
+
+.td__quantity-price {
+    width: 25%; /* Điều chỉnh độ rộng cho cột "Số lượng/ Giá" */
+}
+.pro {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+.ContentImg {
+   max-width:100px;
+   text-align:center;
+}
+
+.my-3 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+.pro-name{
+    text-align:left;
+    float :left;
+}
+.checkout-item-ordered h3 {
+    text-align: left;
+    float: left;
+}
+.shipping-details {
+    border: 1px solid #ddd
+}
+    .shipping-details  h3 {
+        background-color: #fbfbfb;
+        font-size: 15px;
+        font-weight: 600;
+        padding: 10px 15px;
+        margin: -1px 0 15px;
+        border-bottom: 1px solid #ddd;
+        border-top: 1px solid #ddd;
+      
+    }
+.infor__customer{
+    margin:2%;
+    display:flex;
+    flex-direction:column;
+}
+.input-data {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các phần tử xuống hàng nếu cần */
+    align-items: center; /* Căn giữa các phần tử theo chiều dọc */
+}
+
+    .input-data b {
+        margin-right: 8px; /* Khoảng cách giữa b và span */
+        white-space: nowrap; /* Đảm bảo b không xuống hàng */
+    }
+
+    .input-data span {
+        flex: 1; /* Chiếm không gian còn lại */
+        word-break: break-word; /* Cho phép nội dung xuống hàng nếu quá dài */
+    }
+
+    .pro-name{
+        padding:0;
+    }
+
+@media only screen and (max-width: 767px) {
+    h3, .h3 ,.p {
+        font-size: 1.15385em;
+    }
+    .checkout__success__container {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: none;
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+    .td__imgItem img {
+        width: 90px;
+        display: block;
+        border: 0;
+        vertical-align: middle;
+        height: 90px;
+    }
+    .td__img {
+        width: 20%;
+    }
+
+    .td__product {
+        width: 40%; /* Điều chỉnh độ rộng cho cột "Sản phẩm" */
+    }
+
+    .td__quantity-price {
+        width: 30%; /* Điều chỉnh độ rộng cho cột "Số lượng/ Giá" */
+    }
+}

@@ -1,0 +1,225 @@
+﻿.product-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.cart-concern {
+    position: absolute;
+    bottom: -50px; 
+    left: 0;
+    right: 0;
+    text-align: center;
+    transition: bottom 0.3s ease;
+}
+
+.product-card:hover .cart-concern {
+    bottom: 20px; 
+}
+
+.swiper-slide {
+    overflow: hidden;
+    
+}
+.product_image__item  {
+   
+}
+
+
+.product-card h5 {
+    margin: 5px 0 0; /* Giảm khoảng cách trên và dưới của tên sản phẩm */
+    padding: 0;
+}
+
+.product-card .text-center {
+    margin-top: 2px; /* Giảm khoảng cách giữa hình ảnh và tên sản phẩm */
+    padding: 0;
+}
+
+.product_image__item {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.product_image__item img {
+    width: 100%;
+
+
+    object-fit: cover;
+  
+    transition: transform 0.3s ease;
+}
+.product-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.cart-concern {
+    position: absolute;
+    bottom: -50px; 
+    left: 0;
+    right: 0;
+    text-align: center;
+    transition: bottom 0.3s ease;
+}
+
+.product-card:hover .cart-concern {
+    bottom: 20px;
+}
+
+.swiper-slide {
+    overflow: hidden;
+}
+
+/*.btnAddtoCartTop {
+    position: absolute;
+    bottom: 10px;
+    z-index: 15;
+    display: inline-block;
+    background-color: #000000;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    height: 40px;
+    left: 50%;
+    line-height: 40px;
+}*/
+
+.product-card h5 {
+    margin: 2px 0 0; 
+    padding: 0;
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+}
+    .product-card .text-center {
+        margin-top: 2px;
+        padding: 0;
+        
+    }
+
+    .image-holder {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* Để hình ảnh không bị tràn ra ngoài */
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+        .image-holder img {
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+            transition: transform 0.3s ease;
+        }
+
+    .product-card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cart-concern {
+        position: absolute;
+        bottom: -50px; /* Đặt nút btnAddtoCart bên ngoài phần tử ban đầu */
+        left: 0;
+        right: 0;
+        text-align: center;
+        transition: bottom 0.3s ease;
+    }
+
+    .product-card:hover .cart-concern {
+        bottom: 20px; /* Di chuyển nút btnAddtoCart lên và cách `bottom` của `product-card` */
+    }
+
+    .swiper-slide {
+        overflow: hidden;
+    }
+
+    /*.btnAddtoCartTop {
+    position: absolute;
+    bottom: 10px;
+    z-index: 15;
+    display: inline-block;
+    background-color: #fe4c50;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    height: 40px;
+    left: 50%;
+    line-height: 40px;
+}*/
+.btnAddtoCartTop {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000 !important;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 20;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.btnAddtoCartTop {
+    position: absolute;
+    bottom: 10px;
+    z-index: 15;
+    display: inline-block;
+    background-color: #000000 !important;
+    transform: translateX(-50%);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    border-radius: 5px;
+    text-align: center;
+    height: 40px;
+    left: 50%;
+    line-height: 40px;
+}
+    .swiper-slide:hover .btnAddtoCartTop {
+        opacity: 1; /* Hiển thị nút khi hover */
+        visibility: visible; 
+        color:white;
+    }
+
+    .image-holder {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden; /* Để hình ảnh không bị tràn ra ngoài */
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+        .image-holder img {
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+            transition: transform 0.3s ease;
+        }

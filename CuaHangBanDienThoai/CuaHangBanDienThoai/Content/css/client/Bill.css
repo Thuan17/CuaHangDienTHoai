@@ -1,0 +1,43 @@
+﻿
+.SearchBillGr {
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    border-bottom: 1px solid gray; /* Đặt viền cho khung tìm kiếm */
+ 
+  /*  background-color: rgba(247,247,247,255);*/
+    padding-right: 0;
+    text-align:center;
+    align-items:center
+}
+
+.searchbill {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search_bill {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    background-color: transparent;
+    margin-left: 1%;
+    width: 100%; /* Sửa width cho đúng với flex-grow */
+}
+
+.bill_submit {
+    padding: 10px 10px 10px 0;
+    font-size: 14px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .bill_submit img {
+        width: 20px;
+    }

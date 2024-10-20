@@ -1,0 +1,1975 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccountEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsLock" Type="bit" />
+        </EntityType>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="BillId" />
+          </Key>
+          <Property Name="BillId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
+          <Property Name="TypePayment" Type="int" Nullable="false" />
+          <Property Name="Confirm" Type="bit" />
+          <Property Name="TypeReturn" Type="bit" />
+          <Property Name="Success" Type="bit" />
+          <Property Name="SuccessDate" Type="datetime" />
+          <Property Name="Note" Type="nvarchar" MaxLength="250" />
+          <Property Name="CustomerId" Type="int" />
+        </EntityType>
+        <EntityType Name="BillDetail">
+          <Key>
+            <PropertyRef Name="BillDetailId" />
+          </Key>
+          <Property Name="BillDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="BillId" Type="int" />
+          <Property Name="ProductDetailId" Type="int" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="CartId" />
+          </Key>
+          <Property Name="CartId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+        </EntityType>
+        <EntityType Name="CartItem">
+          <Key>
+            <PropertyRef Name="CartItem" />
+          </Key>
+          <Property Name="CartItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CartId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PriceTotal" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TemPrice" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ProductDetailId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
+          <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="Password" Type="varchar" MaxLength="100" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="Loaction" Type="nvarchar(max)" />
+          <Property Name="NumberofPurchases" Type="int" />
+          <Property Name="Code" Type="char" MaxLength="10" />
+          <Property Name="Lock" Type="bit" />
+          <Property Name="Image" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="Districts">
+          <Key>
+            <PropertyRef Name="idDistricts" />
+          </Key>
+          <Property Name="idDistricts" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" />
+          <Property Name="idProvinces" Type="int" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="NameEmployee" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CitizenIdentificationCard" Type="char" MaxLength="12" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Birthday" Type="date" Nullable="false" />
+          <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Wage" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="7" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="nvarchar(max)" />
+          <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+          <Property Name="FunctionId" Type="int" />
+          <Property Name="Image" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="ImportWarehouse">
+          <Key>
+            <PropertyRef Name="ImportWarehouseId" />
+          </Key>
+          <Property Name="ImportWarehouseId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="SupplierId" Type="int" />
+        </EntityType>
+        <EntityType Name="ImportWarehouseDetail">
+          <Key>
+            <PropertyRef Name="ImportWarehouseDetailId" />
+          </Key>
+          <Property Name="ImportWarehouseDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductDetailId" Type="int" />
+          <Property Name="QuanTity" Type="int" />
+          <Property Name="ImportWarehouseId" Type="int" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="InvoiceId" />
+          </Key>
+          <Property Name="InvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="NameCustomer" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
+          <Property Name="TypePayment" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InvoiceDetail">
+          <Key>
+            <PropertyRef Name="InvoiceDetailId" />
+          </Key>
+          <Property Name="InvoiceDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceId" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="ProductDetailId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="ProductCategoryId" />
+          </Key>
+          <Property Name="ProductCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Icon" Type="varbinary(max)" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
+          <Property Name="Alias" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductCompany">
+          <Key>
+            <PropertyRef Name="ProductCompanyId" />
+          </Key>
+          <Property Name="ProductCompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Alias" Type="nvarchar" MaxLength="250" />
+          <Property Name="Icon" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="ProductDetail">
+          <Key>
+            <PropertyRef Name="ProductDetailId" />
+          </Key>
+          <Property Name="ProductDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Color" Type="nvarchar" MaxLength="40" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TypeProduct" Type="bit" />
+          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="Ram" Type="int" />
+          <Property Name="Capacity" Type="int" />
+          <Property Name="ProductsId" Type="int" />
+        </EntityType>
+        <EntityType Name="ProductDetailImage">
+          <Key>
+            <PropertyRef Name="ProductImageId" />
+          </Key>
+          <Property Name="ProductImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductDetailId" Type="int" Nullable="false" />
+          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductsId" />
+          </Key>
+          <Property Name="ProductsId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Alias" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsHome" Type="bit" />
+          <Property Name="IsSale" Type="bit" />
+          <Property Name="IsFeature" Type="bit" />
+          <Property Name="IsHot" Type="bit" />
+          <Property Name="ProductCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Screensize" Type="int" />
+          <Property Name="CPUspeed" Type="nvarchar" MaxLength="900" />
+          <Property Name="OperatingSystem" Type="nvarchar" MaxLength="900" />
+          <Property Name="GPUspeed" Type="nvarchar" MaxLength="900" />
+          <Property Name="MobileNetwork" Type="nvarchar" MaxLength="900" />
+          <Property Name="Sim" Type="char" MaxLength="900" />
+          <Property Name="Wifi" Type="nvarchar(max)" />
+          <Property Name="GPS" Type="nvarchar" MaxLength="900" />
+          <Property Name="Bluetooth" Type="char" MaxLength="900" />
+          <Property Name="Connector" Type="nvarchar" MaxLength="900" />
+          <Property Name="Headphonejack" Type="nvarchar" MaxLength="900" />
+          <Property Name="BatteryType" Type="char" MaxLength="900" />
+          <Property Name="ChargingSupport" Type="nvarchar" MaxLength="900" />
+          <Property Name="BatteryTechnology" Type="nvarchar" MaxLength="900" />
+          <Property Name="Image" Type="varchar(max)" />
+          <Property Name="CPU" Type="nvarchar" MaxLength="100" />
+          <Property Name="GPU" Type="nvarchar" MaxLength="100" />
+          <Property Name="BatteryCapacity" Type="int" />
+          <Property Name="ProductCategoryId" Type="int" />
+          <Property Name="ProductCompanyId" Type="int" />
+        </EntityType>
+        <EntityType Name="Provinces">
+          <Key>
+            <PropertyRef Name="idProvinces" />
+          </Key>
+          <Property Name="idProvinces" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewDetailId" />
+          </Key>
+          <Property Name="ReviewDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Content" Type="nvarchar" MaxLength="350" />
+          <Property Name="ReviewId" Type="int" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="CustomerId" Type="int" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="FunctionId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="FunctionId" Type="int" Nullable="false" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="SupplierId" />
+          </Key>
+          <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Phone" Type="int" />
+          <Property Name="Location" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tb_Function">
+          <Key>
+            <PropertyRef Name="FunctionId" />
+          </Key>
+          <Property Name="FunctionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TitLe" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Voucher">
+          <Key>
+            <PropertyRef Name="VoucherId" />
+          </Key>
+          <Property Name="VoucherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="char" MaxLength="30" />
+          <Property Name="PercentPriceReduction" Type="int" />
+          <Property Name="Title" Type="nvarchar" MaxLength="250" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="datetime" />
+          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
+          <Property Name="UsedDate" Type="datetime" />
+          <Property Name="Quantity" Type="int" />
+        </EntityType>
+        <EntityType Name="VoucherDetail">
+          <Key>
+            <PropertyRef Name="VoucherDetailId" />
+          </Key>
+          <Property Name="VoucherDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UsedDate" Type="datetime" />
+          <Property Name="BillId" Type="int" />
+          <Property Name="VoucherId" Type="int" />
+          <Property Name="Code" Type="char" MaxLength="60" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="Wards">
+          <Key>
+            <PropertyRef Name="idWards" />
+          </Key>
+          <Property Name="idWards" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" />
+          <Property Name="idDistricts" Type="int" />
+        </EntityType>
+        <Association Name="FK__Districts__idPro__3B75D760">
+          <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+          <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provinces">
+              <PropertyRef Name="idProvinces" />
+            </Principal>
+            <Dependent Role="Districts">
+              <PropertyRef Name="idProvinces" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Wards__idDistric__3E52440B">
+          <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+          <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Districts">
+              <PropertyRef Name="idDistricts" />
+            </Principal>
+            <Dependent Role="Wards">
+              <PropertyRef Name="idDistricts" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AccountEmployee_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="AccountEmployee" Type="Self.AccountEmployee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="AccountEmployee">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillDetail_Bill">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+          <End Role="BillDetail" Type="Self.BillDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="BillId" />
+            </Principal>
+            <Dependent Role="BillDetail">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillDetail_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="0..1" />
+          <End Role="BillDetail" Type="Self.BillDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="BillDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CartItem_Cart">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+          <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartId" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="CartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CartItem_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
+          <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWarehouse_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="ImportWarehouse">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWarehouse_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="0..1" />
+          <End Role="ImportWarehouseDetail" Type="Self.ImportWarehouseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="ImportWarehouseDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWarehouse_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="ImportWarehouse">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWareHouseDetail_ImportWareHouse">
+          <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="0..1" />
+          <End Role="ImportWarehouseDetail" Type="Self.ImportWarehouseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImportWarehouse">
+              <PropertyRef Name="ImportWarehouseId" />
+            </Principal>
+            <Dependent Role="ImportWarehouseDetail">
+              <PropertyRef Name="ImportWarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Invoice">
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
+          <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceDetail">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
+          <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="InvoiceDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductCompany">
+          <End Role="ProductCompany" Type="Self.ProductCompany" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCompany">
+              <PropertyRef Name="ProductCompanyId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductDetail_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductsId" />
+            </Principal>
+            <Dependent Role="ProductDetail">
+              <PropertyRef Name="ProductsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImage_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
+          <End Role="ProductDetailImage" Type="Self.ProductDetailImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="ProductDetailImage">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductCategory">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductsId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Staff_Employee">
+          <End Role="tb_Function" Type="Self.tb_Function" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Function">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoucherDetail_Bill">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+          <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="BillId" />
+            </Principal>
+            <Dependent Role="VoucherDetail">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoucherDetail_Voucher">
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="0..1" />
+          <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voucher">
+              <PropertyRef Name="VoucherId" />
+            </Principal>
+            <Dependent Role="VoucherDetail">
+              <PropertyRef Name="VoucherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
+          <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillDetail" EntityType="Self.BillDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CartItem" EntityType="Self.CartItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Districts" EntityType="Self.Districts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImportWarehouse" EntityType="Self.ImportWarehouse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ImportWarehouseDetail" EntityType="Self.ImportWarehouseDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InvoiceDetail" EntityType="Self.InvoiceDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductCompany" EntityType="Self.ProductCompany" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductDetail" EntityType="Self.ProductDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductDetailImage" EntityType="Self.ProductDetailImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Provinces" EntityType="Self.Provinces" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tb_Function" EntityType="Self.tb_Function" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Voucher" EntityType="Self.Voucher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VoucherDetail" EntityType="Self.VoucherDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Wards" EntityType="Self.Wards" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Districts__idPro__3B75D760" Association="Self.FK__Districts__idPro__3B75D760">
+            <End Role="Provinces" EntitySet="Provinces" />
+            <End Role="Districts" EntitySet="Districts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Wards__idDistric__3E52440B" Association="Self.FK__Wards__idDistric__3E52440B">
+            <End Role="Districts" EntitySet="Districts" />
+            <End Role="Wards" EntitySet="Wards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AccountEmployee_Employee" Association="Self.FK_AccountEmployee_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="AccountEmployee" EntitySet="AccountEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillDetail_Bill" Association="Self.FK_BillDetail_Bill">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="BillDetail" EntitySet="BillDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillDetail_ProductDetail" Association="Self.FK_BillDetail_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="BillDetail" EntitySet="BillDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_Customer" Association="Self.FK_Cart_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CartItem_Cart" Association="Self.FK_CartItem_Cart">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CartItem_ProductDetail" Association="Self.FK_CartItem_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWarehouse_Employee" Association="Self.FK_ImportWarehouse_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWarehouse_ProductDetail" Association="Self.FK_ImportWarehouse_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="ImportWarehouseDetail" EntitySet="ImportWarehouseDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWarehouse_Supplier" Association="Self.FK_ImportWarehouse_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWareHouseDetail_ImportWareHouse" Association="Self.FK_ImportWareHouseDetail_ImportWareHouse">
+            <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
+            <End Role="ImportWarehouseDetail" EntitySet="ImportWarehouseDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Employee" Association="Self.FK_Invoice_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Invoice" Association="Self.FK_Invoice_Invoice">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_ProductDetail" Association="Self.FK_Invoice_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductCompany" Association="Self.FK_Product_ProductCompany">
+            <End Role="ProductCompany" EntitySet="ProductCompany" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductDetail_Products" Association="Self.FK_ProductDetail_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImage_ProductDetail" Association="Self.FK_ProductImage_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="ProductDetailImage" EntitySet="ProductDetailImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Products" Association="Self.FK_Review_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_Employee" Association="Self.FK_Role_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Staff_Employee" Association="Self.FK_Staff_Employee">
+            <End Role="tb_Function" EntitySet="tb_Function" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoucherDetail_Bill" Association="Self.FK_VoucherDetail_Bill">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="VoucherDetail" EntitySet="VoucherDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoucherDetail_Voucher" Association="Self.FK_VoucherDetail_Voucher">
+            <End Role="Voucher" EntitySet="Voucher" />
+            <End Role="VoucherDetail" EntitySet="VoucherDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccountEmployee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsLock" Type="Boolean" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_AccountEmployee_Employee" FromRole="AccountEmployee" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="BillId" />
+          </Key>
+          <Property Name="BillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TypePayment" Type="Int32" Nullable="false" />
+          <Property Name="Confirm" Type="Boolean" />
+          <Property Name="TypeReturn" Type="Boolean" />
+          <Property Name="Success" Type="Boolean" />
+          <Property Name="SuccessDate" Type="DateTime" Precision="3" />
+          <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Bill_Customer" FromRole="Bill" ToRole="Customer" />
+          <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_Bill" FromRole="Bill" ToRole="BillDetail" />
+          <NavigationProperty Name="VoucherDetail" Relationship="Self.FK_VoucherDetail_Bill" FromRole="Bill" ToRole="VoucherDetail" />
+        </EntityType>
+        <EntityType Name="BillDetail">
+          <Key>
+            <PropertyRef Name="BillDetailId" />
+          </Key>
+          <Property Name="BillDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="BillId" Type="Int32" />
+          <Property Name="ProductDetailId" Type="Int32" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK_BillDetail_Bill" FromRole="BillDetail" ToRole="Bill" />
+          <NavigationProperty Name="ProductDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="BillDetail" ToRole="ProductDetail" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="CartId" />
+          </Key>
+          <Property Name="CartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Cart_Customer" FromRole="Cart" ToRole="Customer" />
+          <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_Cart" FromRole="Cart" ToRole="CartItem" />
+        </EntityType>
+        <EntityType Name="CartItem">
+          <Key>
+            <PropertyRef Name="CartItem1" />
+          </Key>
+          <Property Name="CartItem1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CartId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="PriceTotal" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="TemPrice" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Cart" Relationship="Self.FK_CartItem_Cart" FromRole="CartItem" ToRole="Cart" />
+          <NavigationProperty Name="ProductDetail" Relationship="Self.FK_CartItem_ProductDetail" FromRole="CartItem" ToRole="ProductDetail" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerId" />
+          </Key>
+          <Property Name="CustomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NumberofPurchases" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="Lock" Type="Boolean" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
+          <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
+        </EntityType>
+        <EntityType Name="Districts">
+          <Key>
+            <PropertyRef Name="idDistricts" />
+          </Key>
+          <Property Name="idDistricts" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="idProvinces" Type="Int32" />
+          <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__3B75D760" FromRole="Districts" ToRole="Provinces" />
+          <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__3E52440B" FromRole="Districts" ToRole="Wards" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NameEmployee" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CitizenIdentificationCard" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Wage" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Sex" Type="String" MaxLength="7" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FunctionId" Type="Int32" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AccountEmployee" Relationship="Self.FK_AccountEmployee_Employee" FromRole="Employee" ToRole="AccountEmployee" />
+          <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="Employee" ToRole="ImportWarehouse" />
+          <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
+          <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
+        </EntityType>
+        <EntityType Name="ImportWarehouse">
+          <Key>
+            <PropertyRef Name="ImportWarehouseId" />
+          </Key>
+          <Property Name="ImportWarehouseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="SupplierId" Type="Int32" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="ImportWarehouse" ToRole="Employee" />
+          <NavigationProperty Name="Supplier" Relationship="Self.FK_ImportWarehouse_Supplier" FromRole="ImportWarehouse" ToRole="Supplier" />
+          <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWareHouseDetail_ImportWareHouse" FromRole="ImportWarehouse" ToRole="ImportWarehouseDetail" />
+        </EntityType>
+        <EntityType Name="ImportWarehouseDetail">
+          <Key>
+            <PropertyRef Name="ImportWarehouseDetailId" />
+          </Key>
+          <Property Name="ImportWarehouseDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductDetailId" Type="Int32" />
+          <Property Name="QuanTity" Type="Int32" />
+          <Property Name="ImportWarehouseId" Type="Int32" />
+          <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWareHouseDetail_ImportWareHouse" FromRole="ImportWarehouseDetail" ToRole="ImportWarehouse" />
+          <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ImportWarehouseDetail" ToRole="ProductDetail" />
+        </EntityType>
+        <EntityType Name="Invoice">
+          <Key>
+            <PropertyRef Name="InvoiceId" />
+          </Key>
+          <Property Name="InvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NameCustomer" Type="Int32" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TypePayment" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Invoice_Employee" FromRole="Invoice" ToRole="Employee" />
+          <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_Invoice" FromRole="Invoice" ToRole="InvoiceDetail" />
+        </EntityType>
+        <EntityType Name="InvoiceDetail">
+          <Key>
+            <PropertyRef Name="InvoiceDetailId" />
+          </Key>
+          <Property Name="InvoiceDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceId" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Invoice" FromRole="InvoiceDetail" ToRole="Invoice" />
+          <NavigationProperty Name="ProductDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="InvoiceDetail" ToRole="ProductDetail" />
+        </EntityType>
+        <EntityType Name="ProductCategory">
+          <Key>
+            <PropertyRef Name="ProductCategoryId" />
+          </Key>
+          <Property Name="ProductCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Products_ProductCategory" FromRole="ProductCategory" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="ProductCompany">
+          <Key>
+            <PropertyRef Name="ProductCompanyId" />
+          </Key>
+          <Property Name="ProductCompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductCompany" FromRole="ProductCompany" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="ProductDetail">
+          <Key>
+            <PropertyRef Name="ProductDetailId" />
+          </Key>
+          <Property Name="ProductDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Color" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TypeProduct" Type="Boolean" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Ram" Type="Int32" />
+          <Property Name="Capacity" Type="Int32" />
+          <Property Name="ProductsId" Type="Int32" />
+          <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="ProductDetail" ToRole="BillDetail" />
+          <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_ProductDetail" FromRole="ProductDetail" ToRole="CartItem" />
+          <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ProductDetail" ToRole="ImportWarehouseDetail" />
+          <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="ProductDetail" ToRole="InvoiceDetail" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_ProductDetail_Products" FromRole="ProductDetail" ToRole="Products" />
+          <NavigationProperty Name="ProductDetailImage" Relationship="Self.FK_ProductImage_ProductDetail" FromRole="ProductDetail" ToRole="ProductDetailImage" />
+        </EntityType>
+        <EntityType Name="ProductDetailImage">
+          <Key>
+            <PropertyRef Name="ProductImageId" />
+          </Key>
+          <Property Name="ProductImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductImage_ProductDetail" FromRole="ProductDetailImage" ToRole="ProductDetail" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductsId" />
+          </Key>
+          <Property Name="ProductsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsHome" Type="Boolean" />
+          <Property Name="IsSale" Type="Boolean" />
+          <Property Name="IsFeature" Type="Boolean" />
+          <Property Name="IsHot" Type="Boolean" />
+          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Screensize" Type="Int32" />
+          <Property Name="CPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="OperatingSystem" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="GPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNetwork" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="Sim" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
+          <Property Name="Wifi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GPS" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="Bluetooth" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
+          <Property Name="Connector" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="Headphonejack" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="BatteryType" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
+          <Property Name="ChargingSupport" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="BatteryTechnology" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="BatteryCapacity" Type="Int32" />
+          <Property Name="ProductCategoryId" Type="Int32" />
+          <Property Name="ProductCompanyId" Type="Int32" />
+          <NavigationProperty Name="ProductCategory" Relationship="Self.FK_Products_ProductCategory" FromRole="Products" ToRole="ProductCategory" />
+          <NavigationProperty Name="ProductCompany" Relationship="Self.FK_Product_ProductCompany" FromRole="Products" ToRole="ProductCompany" />
+          <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductDetail_Products" FromRole="Products" ToRole="ProductDetail" />
+          <NavigationProperty Name="Review" Relationship="Self.FK_Review_Products" FromRole="Products" ToRole="Review" />
+        </EntityType>
+        <EntityType Name="Provinces">
+          <Key>
+            <PropertyRef Name="idProvinces" />
+          </Key>
+          <Property Name="idProvinces" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__3B75D760" FromRole="Provinces" ToRole="Districts" />
+        </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewDetailId" />
+          </Key>
+          <Property Name="ReviewDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewId" Type="Int32" />
+          <Property Name="ProductId" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_Review_Products" FromRole="Review" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="FunctionId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="FunctionId" Type="Int32" Nullable="false" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Role_Employee" FromRole="Role" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Supplier">
+          <Key>
+            <PropertyRef Name="SupplierId" />
+          </Key>
+          <Property Name="SupplierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Supplier" FromRole="Supplier" ToRole="ImportWarehouse" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tb_Function">
+          <Key>
+            <PropertyRef Name="FunctionId" />
+          </Key>
+          <Property Name="FunctionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TitLe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Staff_Employee" FromRole="tb_Function" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Voucher">
+          <Key>
+            <PropertyRef Name="VoucherId" />
+          </Key>
+          <Property Name="VoucherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
+          <Property Name="PercentPriceReduction" Type="Int32" />
+          <Property Name="Title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UsedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="UsedDate" Type="DateTime" Precision="3" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="VoucherDetail" Relationship="Self.FK_VoucherDetail_Voucher" FromRole="Voucher" ToRole="VoucherDetail" />
+        </EntityType>
+        <EntityType Name="VoucherDetail">
+          <Key>
+            <PropertyRef Name="VoucherDetailId" />
+          </Key>
+          <Property Name="VoucherDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UsedDate" Type="DateTime" Precision="3" />
+          <Property Name="BillId" Type="Int32" />
+          <Property Name="VoucherId" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="60" FixedLength="true" Unicode="false" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK_VoucherDetail_Bill" FromRole="VoucherDetail" ToRole="Bill" />
+          <NavigationProperty Name="Voucher" Relationship="Self.FK_VoucherDetail_Voucher" FromRole="VoucherDetail" ToRole="Voucher" />
+        </EntityType>
+        <EntityType Name="Wards">
+          <Key>
+            <PropertyRef Name="idWards" />
+          </Key>
+          <Property Name="idWards" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="idDistricts" Type="Int32" />
+          <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__3E52440B" FromRole="Wards" ToRole="Districts" />
+        </EntityType>
+        <Association Name="FK_AccountEmployee_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="AccountEmployee" Type="Self.AccountEmployee" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="AccountEmployee">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillDetail_Bill">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+          <End Role="BillDetail" Type="Self.BillDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="BillId" />
+            </Principal>
+            <Dependent Role="BillDetail">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoucherDetail_Bill">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+          <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="BillId" />
+            </Principal>
+            <Dependent Role="VoucherDetail">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillDetail_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="0..1" />
+          <End Role="BillDetail" Type="Self.BillDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="BillDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Cart_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CartItem_Cart">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+          <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="CartId" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="CartId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CartItem_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
+          <End Role="CartItem" Type="Self.CartItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="CartItem">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Districts__idPro__3B75D760">
+          <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
+          <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Provinces">
+              <PropertyRef Name="idProvinces" />
+            </Principal>
+            <Dependent Role="Districts">
+              <PropertyRef Name="idProvinces" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Wards__idDistric__3E52440B">
+          <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
+          <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Districts">
+              <PropertyRef Name="idDistricts" />
+            </Principal>
+            <Dependent Role="Wards">
+              <PropertyRef Name="idDistricts" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWarehouse_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="ImportWarehouse">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Invoice">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Role_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Role" Type="Self.Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Staff_Employee">
+          <End Role="tb_Function" Type="Self.tb_Function" Multiplicity="0..1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tb_Function">
+              <PropertyRef Name="FunctionId" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="FunctionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWarehouse_Supplier">
+          <End Role="Supplier" Type="Self.Supplier" Multiplicity="0..1" />
+          <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Supplier">
+              <PropertyRef Name="SupplierId" />
+            </Principal>
+            <Dependent Role="ImportWarehouse">
+              <PropertyRef Name="SupplierId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWareHouseDetail_ImportWareHouse">
+          <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="0..1" />
+          <End Role="ImportWarehouseDetail" Type="Self.ImportWarehouseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ImportWarehouse">
+              <PropertyRef Name="ImportWarehouseId" />
+            </Principal>
+            <Dependent Role="ImportWarehouseDetail">
+              <PropertyRef Name="ImportWarehouseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImportWarehouse_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="0..1" />
+          <End Role="ImportWarehouseDetail" Type="Self.ImportWarehouseDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="ImportWarehouseDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_Invoice">
+          <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
+          <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Invoice">
+              <PropertyRef Name="InvoiceId" />
+            </Principal>
+            <Dependent Role="InvoiceDetail">
+              <PropertyRef Name="InvoiceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Invoice_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
+          <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="InvoiceDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductCategory">
+          <End Role="ProductCategory" Type="Self.ProductCategory" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCategory">
+              <PropertyRef Name="ProductCategoryId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductCategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_ProductCompany">
+          <End Role="ProductCompany" Type="Self.ProductCompany" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductCompany">
+              <PropertyRef Name="ProductCompanyId" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductCompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductDetail_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductsId" />
+            </Principal>
+            <Dependent Role="ProductDetail">
+              <PropertyRef Name="ProductsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductImage_ProductDetail">
+          <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
+          <End Role="ProductDetailImage" Type="Self.ProductDetailImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductDetail">
+              <PropertyRef Name="ProductDetailId" />
+            </Principal>
+            <Dependent Role="ProductDetailImage">
+              <PropertyRef Name="ProductDetailId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductsId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VoucherDetail_Voucher">
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="0..1" />
+          <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voucher">
+              <PropertyRef Name="VoucherId" />
+            </Principal>
+            <Dependent Role="VoucherDetail">
+              <PropertyRef Name="VoucherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CUAHANGDIENTHOAIEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" />
+          <EntitySet Name="Bill" EntityType="Self.Bill" />
+          <EntitySet Name="BillDetail" EntityType="Self.BillDetail" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" />
+          <EntitySet Name="CartItem" EntityType="Self.CartItem" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" />
+          <EntitySet Name="Districts" EntityType="Self.Districts" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" />
+          <EntitySet Name="ImportWarehouse" EntityType="Self.ImportWarehouse" />
+          <EntitySet Name="ImportWarehouseDetail" EntityType="Self.ImportWarehouseDetail" />
+          <EntitySet Name="Invoice" EntityType="Self.Invoice" />
+          <EntitySet Name="InvoiceDetail" EntityType="Self.InvoiceDetail" />
+          <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" />
+          <EntitySet Name="ProductCompany" EntityType="Self.ProductCompany" />
+          <EntitySet Name="ProductDetail" EntityType="Self.ProductDetail" />
+          <EntitySet Name="ProductDetailImage" EntityType="Self.ProductDetailImage" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="Provinces" EntityType="Self.Provinces" />
+          <EntitySet Name="Review" EntityType="Self.Review" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="Supplier" EntityType="Self.Supplier" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="tb_Function" EntityType="Self.tb_Function" />
+          <EntitySet Name="Voucher" EntityType="Self.Voucher" />
+          <EntitySet Name="VoucherDetail" EntityType="Self.VoucherDetail" />
+          <EntitySet Name="Wards" EntityType="Self.Wards" />
+          <AssociationSet Name="FK_AccountEmployee_Employee" Association="Self.FK_AccountEmployee_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="AccountEmployee" EntitySet="AccountEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillDetail_Bill" Association="Self.FK_BillDetail_Bill">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="BillDetail" EntitySet="BillDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoucherDetail_Bill" Association="Self.FK_VoucherDetail_Bill">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="VoucherDetail" EntitySet="VoucherDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillDetail_ProductDetail" Association="Self.FK_BillDetail_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="BillDetail" EntitySet="BillDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Cart_Customer" Association="Self.FK_Cart_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CartItem_Cart" Association="Self.FK_CartItem_Cart">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CartItem_ProductDetail" Association="Self.FK_CartItem_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="CartItem" EntitySet="CartItem" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Districts__idPro__3B75D760" Association="Self.FK__Districts__idPro__3B75D760">
+            <End Role="Provinces" EntitySet="Provinces" />
+            <End Role="Districts" EntitySet="Districts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Wards__idDistric__3E52440B" Association="Self.FK__Wards__idDistric__3E52440B">
+            <End Role="Districts" EntitySet="Districts" />
+            <End Role="Wards" EntitySet="Wards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWarehouse_Employee" Association="Self.FK_ImportWarehouse_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Employee" Association="Self.FK_Invoice_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Invoice" EntitySet="Invoice" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Role_Employee" Association="Self.FK_Role_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Role" EntitySet="Role" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Staff_Employee" Association="Self.FK_Staff_Employee">
+            <End Role="tb_Function" EntitySet="tb_Function" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWarehouse_Supplier" Association="Self.FK_ImportWarehouse_Supplier">
+            <End Role="Supplier" EntitySet="Supplier" />
+            <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWareHouseDetail_ImportWareHouse" Association="Self.FK_ImportWareHouseDetail_ImportWareHouse">
+            <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
+            <End Role="ImportWarehouseDetail" EntitySet="ImportWarehouseDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImportWarehouse_ProductDetail" Association="Self.FK_ImportWarehouse_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="ImportWarehouseDetail" EntitySet="ImportWarehouseDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_Invoice" Association="Self.FK_Invoice_Invoice">
+            <End Role="Invoice" EntitySet="Invoice" />
+            <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Invoice_ProductDetail" Association="Self.FK_Invoice_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
+            <End Role="ProductCategory" EntitySet="ProductCategory" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_ProductCompany" Association="Self.FK_Product_ProductCompany">
+            <End Role="ProductCompany" EntitySet="ProductCompany" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductDetail_Products" Association="Self.FK_ProductDetail_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductImage_ProductDetail" Association="Self.FK_ProductImage_ProductDetail">
+            <End Role="ProductDetail" EntitySet="ProductDetail" />
+            <End Role="ProductDetailImage" EntitySet="ProductDetailImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Products" Association="Self.FK_Review_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoucherDetail_Voucher" Association="Self.FK_VoucherDetail_Voucher">
+            <End Role="Voucher" EntitySet="Voucher" />
+            <End Role="VoucherDetail" EntitySet="VoucherDetail" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CUAHANGDIENTHOAIModelStoreContainer" CdmEntityContainer="CUAHANGDIENTHOAIEntities">
+          <EntitySetMapping Name="AccountEmployee">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.AccountEmployee">
+              <MappingFragment StoreEntitySet="AccountEmployee">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsLock" ColumnName="IsLock" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bill">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
+                <ScalarProperty Name="TypePayment" ColumnName="TypePayment" />
+                <ScalarProperty Name="Confirm" ColumnName="Confirm" />
+                <ScalarProperty Name="TypeReturn" ColumnName="TypeReturn" />
+                <ScalarProperty Name="Success" ColumnName="Success" />
+                <ScalarProperty Name="SuccessDate" ColumnName="SuccessDate" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.BillDetail">
+              <MappingFragment StoreEntitySet="BillDetail">
+                <ScalarProperty Name="BillDetailId" ColumnName="BillDetailId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cart">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="CartId" ColumnName="CartId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CartItem">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.CartItem">
+              <MappingFragment StoreEntitySet="CartItem">
+                <ScalarProperty Name="CartItem1" ColumnName="CartItem" />
+                <ScalarProperty Name="CartId" ColumnName="CartId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PriceTotal" ColumnName="PriceTotal" />
+                <ScalarProperty Name="TemPrice" ColumnName="TemPrice" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Loaction" ColumnName="Loaction" />
+                <ScalarProperty Name="NumberofPurchases" ColumnName="NumberofPurchases" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Lock" ColumnName="Lock" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Districts">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Districts">
+              <MappingFragment StoreEntitySet="Districts">
+                <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employee">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="NameEmployee" ColumnName="NameEmployee" />
+                <ScalarProperty Name="CitizenIdentificationCard" ColumnName="CitizenIdentificationCard" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Wage" ColumnName="Wage" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImportWarehouse">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ImportWarehouse">
+              <MappingFragment StoreEntitySet="ImportWarehouse">
+                <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ImportWarehouseDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ImportWarehouseDetail">
+              <MappingFragment StoreEntitySet="ImportWarehouseDetail">
+                <ScalarProperty Name="ImportWarehouseDetailId" ColumnName="ImportWarehouseDetailId" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+                <ScalarProperty Name="QuanTity" ColumnName="QuanTity" />
+                <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Invoice">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Invoice">
+              <MappingFragment StoreEntitySet="Invoice">
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="NameCustomer" ColumnName="NameCustomer" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
+                <ScalarProperty Name="TypePayment" ColumnName="TypePayment" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InvoiceDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.InvoiceDetail">
+              <MappingFragment StoreEntitySet="InvoiceDetail">
+                <ScalarProperty Name="InvoiceDetailId" ColumnName="InvoiceDetailId" />
+                <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCategory">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductCategory">
+              <MappingFragment StoreEntitySet="ProductCategory">
+                <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductCompany">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductCompany">
+              <MappingFragment StoreEntitySet="ProductCompany">
+                <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="Icon" ColumnName="Icon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductDetail">
+              <MappingFragment StoreEntitySet="ProductDetail">
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Color" ColumnName="Color" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PriceSale" ColumnName="PriceSale" />
+                <ScalarProperty Name="OrigianlPrice" ColumnName="OrigianlPrice" />
+                <ScalarProperty Name="TypeProduct" ColumnName="TypeProduct" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Ram" ColumnName="Ram" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductDetailImage">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductDetailImage">
+              <MappingFragment StoreEntitySet="ProductDetailImage">
+                <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
+                <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsHome" ColumnName="IsHome" />
+                <ScalarProperty Name="IsSale" ColumnName="IsSale" />
+                <ScalarProperty Name="IsFeature" ColumnName="IsFeature" />
+                <ScalarProperty Name="IsHot" ColumnName="IsHot" />
+                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
+                <ScalarProperty Name="Screensize" ColumnName="Screensize" />
+                <ScalarProperty Name="CPUspeed" ColumnName="CPUspeed" />
+                <ScalarProperty Name="OperatingSystem" ColumnName="OperatingSystem" />
+                <ScalarProperty Name="GPUspeed" ColumnName="GPUspeed" />
+                <ScalarProperty Name="MobileNetwork" ColumnName="MobileNetwork" />
+                <ScalarProperty Name="Sim" ColumnName="Sim" />
+                <ScalarProperty Name="Wifi" ColumnName="Wifi" />
+                <ScalarProperty Name="GPS" ColumnName="GPS" />
+                <ScalarProperty Name="Bluetooth" ColumnName="Bluetooth" />
+                <ScalarProperty Name="Connector" ColumnName="Connector" />
+                <ScalarProperty Name="Headphonejack" ColumnName="Headphonejack" />
+                <ScalarProperty Name="BatteryType" ColumnName="BatteryType" />
+                <ScalarProperty Name="ChargingSupport" ColumnName="ChargingSupport" />
+                <ScalarProperty Name="BatteryTechnology" ColumnName="BatteryTechnology" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="CPU" ColumnName="CPU" />
+                <ScalarProperty Name="GPU" ColumnName="GPU" />
+                <ScalarProperty Name="BatteryCapacity" ColumnName="BatteryCapacity" />
+                <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
+                <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Provinces">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Provinces">
+              <MappingFragment StoreEntitySet="Provinces">
+                <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Review">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="ReviewDetailId" ColumnName="ReviewDetailId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Supplier">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Supplier">
+              <MappingFragment StoreEntitySet="Supplier">
+                <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tb_Function">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Function">
+              <MappingFragment StoreEntitySet="tb_Function">
+                <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
+                <ScalarProperty Name="TitLe" ColumnName="TitLe" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Voucher">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Voucher">
+              <MappingFragment StoreEntitySet="Voucher">
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="PercentPriceReduction" ColumnName="PercentPriceReduction" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
+                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VoucherDetail">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.VoucherDetail">
+              <MappingFragment StoreEntitySet="VoucherDetail">
+                <ScalarProperty Name="VoucherDetailId" ColumnName="VoucherDetailId" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Wards">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Wards">
+              <MappingFragment StoreEntitySet="Wards">
+                <ScalarProperty Name="idWards" ColumnName="idWards" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

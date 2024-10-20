@@ -1,0 +1,115 @@
+﻿.notifications {
+    position: fixed;
+    top: 12%;
+    right: 10px;
+    z-index: 3500;
+    float: right;
+    margin: 0;
+    overflow: hidden;
+    height:auto;
+}
+.error-border {
+    border: 1px solid #f44336; /* Màu đỏ */
+}
+
+.content {
+    padding: 0;
+    margin: 0;
+    height: 80px;
+    overflow: hidden;
+    font-size: 20px;
+}
+    .content span {
+        margin-top:2%;
+        font-size: 20px;
+    }
+
+    .toastNotifi {
+        margin-left: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        color: #fff;
+        width: 350px;
+        display: grid;
+        grid-template-columns: 70px 1fr 70px;
+        border-radius: 5px;
+        --color: #0abf30;
+        background-image: linear-gradient(to right, #0abf3055, #22242F 30%);
+        animation: show_toast 0.3s ease forwards;
+    }
+
+    .toastNotifi i {
+        color: var(--color);
+    }
+
+    .toastNotifi .title {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .toastNotifi i {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: x-large;
+    }
+
+    .toastNotifi span,
+    .toastNotifi .close {
+        opacity: 0.6;
+        color: #fff
+    }
+
+
+@keyframes show_toast {
+    0% {
+        transform: translateX(100%);
+    }
+
+    40% {
+        transform: translateX(-5%);
+    }
+
+    80% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-10%);
+    }
+}
+
+.toastNotifi::before {
+    position: absolute;
+    bottom: 0;
+    /*left:0;*/
+    right: 0;
+    background-color: var(--color);
+    box-shadow: 0 0 10px var(--color);
+    content: '';
+    width: 100%;
+    height: 3px;
+    animation: timeOut 5s linear 1 forwards;
+}
+
+@keyframes timeOut {
+    to {
+        width: 0%;
+    }
+}
+/* error */
+.toastNotifi.error {
+    --color: #f24d4c;
+    background-image: linear-gradient(to right, #f24d4c55, #22242F 30%);
+}
+/* warning */
+.toastNotifi.warning {
+    --color: #e9bd0c;
+    background-image: linear-gradient(to right, #e9bd0c55, #22242F 30%);
+}
+/* info */
+.toastNotifi.info {
+    --color: #3498db;
+    background-image: linear-gradient(to right, #3498db55, #22242F 30%);
+}

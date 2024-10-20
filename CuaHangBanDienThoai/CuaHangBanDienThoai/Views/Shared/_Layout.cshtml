@@ -1,39 +1,549 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
+
 <html>
 <head>
-    <meta charset="utf-8" />
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+
+
+
+    <meta property="og:title" content="Padastore.vn">
+    <meta property="og:description" content="Padastore.vn">
+    <meta property="og:url" content="https://pada.com.vn/">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" content="https://pada.com.vn/images/logo/logo1200.png">
+    <link rel="shortcut icon" href="https://pada.com.vn/images/logo/logo1200.png" type="image/png">
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link type="text/css" href="~/Content/css/client/bootstrap.min.css" rel="stylesheet" />
+    <link type="text/css" href="~/Content/css/client/style.css" rel="stylesheet" />
+    <link href="~/Content/css/client/vendor.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-grid.css" rel="stylesheet" />
+    <link href="~/Content/css/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/Content/css/client/bootstrap.min.css">
+    <script src="~/Scripts/client/modernizr.js"></script>
+    <link rel="stylesheet" type="text/css" href="~/Content/css/client/style.css">
+
+
+    <link href="~/Content/css/plugins/OwlCarousel2-2.2.1/owl.carousel.css" rel="stylesheet" />
+    <link href="~/Content/css/plugins/OwlCarousel2-2.2.1/owl.theme.default.css" rel="stylesheet" />
+    <link href="~/Content/css/plugins/OwlCarousel2-2.2.1/animate.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/css/ProductClient/styles/categories_styles.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/ProductClient/styles/categories_responsive.css">
+    <link href="~/Content/css/ProductClient/styles/main_styles.css" rel="stylesheet" />
+    <link href="~/Content/css/ProductClient/styles/responsive.css" rel="stylesheet" />
+    <link href="~/Content/css/Cart/css/style.css" rel="stylesheet" />
+    <link href="~/Content/css/Notification.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Bootstrap Icons CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <title>@ViewBag.Title</title>
+   
 </head>
-<body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
-        <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                </ul>
+<body id="page-top">
+
+
+
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+        <symbol id="search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+            <title>Search</title>
+            <path fill="currentColor" d="M19 3C13.488 3 9 7.488 9 13c0 2.395.84 4.59 2.25 6.313L3.281 27.28l1.439 1.44l7.968-7.969A9.922 9.922 0 0 0 19 23c5.512 0 10-4.488 10-10S24.512 3 19 3zm0 2c4.43 0 8 3.57 8 8s-3.57 8-8 8s-8-3.57-8-8s3.57-8 8-8z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="user" viewBox="0 0 16 16">
+            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="cart" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </symbol>
+        <svg xmlns="http://www.w3.org/2000/svg" id="chevron-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
+        </svg>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="chevron-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="cart-outline" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="quality" viewBox="0 0 16 16">
+            <path d="M9.669.864 8 0 6.331.864l-1.858.282-.842 1.68-1.337 1.32L2.6 6l-.306 1.854 1.337 1.32.842 1.68 1.858.282L8 12l1.669-.864 1.858-.282.842-1.68 1.337-1.32L13.4 6l.306-1.854-1.337-1.32-.842-1.68L9.669.864zm1.196 1.193.684 1.365 1.086 1.072L12.387 6l.248 1.506-1.086 1.072-.684 1.365-1.51.229L8 10.874l-1.355-.702-1.51-.229-.684-1.365-1.086-1.072L3.614 6l-.25-1.506 1.087-1.072.684-1.365 1.51-.229L8 1.126l1.356.702 1.509.229z" />
+            <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="price-tag" viewBox="0 0 16 16">
+            <path d="M6 4.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm-1 0a.5.5 0 1 0-1 0 .5.5 0 0 0 1 0z" />
+            <path d="M2 1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2a1 1 0 0 1 1-1zm0 5.586 7 7L13.586 9l-7-7H2v4.586z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="shield-plus" viewBox="0 0 16 16">
+            <path d="M5.338 1.59a61.44 61.44 0 0 0-2.837.856.481.481 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.725 10.725 0 0 0 2.287 2.233c.346.244.652.42.893.533.12.057.218.095.293.118a.55.55 0 0 0 .101.025.615.615 0 0 0 .1-.025c.076-.023.174-.061.294-.118.24-.113.547-.29.893-.533a10.726 10.726 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.775 11.775 0 0 1-2.517 2.453 7.159 7.159 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7.158 7.158 0 0 1-1.048-.625 11.777 11.777 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 62.456 62.456 0 0 1 5.072.56z" />
+            <path d="M8 4.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V9a.5.5 0 0 1-1 0V7.5H6a.5.5 0 0 1 0-1h1.5V5a.5.5 0 0 1 .5-.5z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="star-fill" viewBox="0 0 16 16">
+            <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="star-empty" viewBox="0 0 16 16">
+            <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="star-half" viewBox="0 0 16 16">
+            <path d="M5.354 5.119 7.538.792A.516.516 0 0 1 8 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0 1 16 6.32a.548.548 0 0 1-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.52.52 0 0 1-.146.05c-.342.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 0 1-.172-.403.58.58 0 0 1 .085-.302.513.513 0 0 1 .37-.245l4.898-.696zM8 12.027a.5.5 0 0 1 .232.056l3.686 1.894-.694-3.957a.565.565 0 0 1 .162-.505l2.907-2.77-4.052-.576a.525.525 0 0 1-.393-.288L8.001 2.223 8 2.226v9.8z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="quote" viewBox="0 0 24 24">
+            <path fill="currentColor" d="m15 17l2-4h-4V6h7v7l-2 4h-3Zm-9 0l2-4H4V6h7v7l-2 4H6Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="facebook" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2l-.396 3.98h2.396v8.01Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="youtube" viewBox="0 0 32 32">
+            <path fill="currentColor" d="M29.41 9.26a3.5 3.5 0 0 0-2.47-2.47C24.76 6.2 16 6.2 16 6.2s-8.76 0-10.94.59a3.5 3.5 0 0 0-2.47 2.47A36.13 36.13 0 0 0 2 16a36.13 36.13 0 0 0 .59 6.74a3.5 3.5 0 0 0 2.47 2.47c2.18.59 10.94.59 10.94.59s8.76 0 10.94-.59a3.5 3.5 0 0 0 2.47-2.47A36.13 36.13 0 0 0 30 16a36.13 36.13 0 0 0-.59-6.74ZM13.2 20.2v-8.4l7.27 4.2Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="twitter" viewBox="0 0 256 256">
+            <path fill="currentColor" d="m245.66 77.66l-29.9 29.9C209.72 177.58 150.67 232 80 232c-14.52 0-26.49-2.3-35.58-6.84c-7.33-3.67-10.33-7.6-11.08-8.72a8 8 0 0 1 3.85-11.93c.26-.1 24.24-9.31 39.47-26.84a110.93 110.93 0 0 1-21.88-24.2c-12.4-18.41-26.28-50.39-22-98.18a8 8 0 0 1 13.65-4.92c.35.35 33.28 33.1 73.54 43.72V88a47.87 47.87 0 0 1 14.36-34.3A46.87 46.87 0 0 1 168.1 40a48.66 48.66 0 0 1 41.47 24H240a8 8 0 0 1 5.66 13.66Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="instagram" viewBox="0 0 256 256">
+            <path fill="currentColor" d="M128 80a48 48 0 1 0 48 48a48.05 48.05 0 0 0-48-48Zm0 80a32 32 0 1 1 32-32a32 32 0 0 1-32 32Zm48-136H80a56.06 56.06 0 0 0-56 56v96a56.06 56.06 0 0 0 56 56h96a56.06 56.06 0 0 0 56-56V80a56.06 56.06 0 0 0-56-56Zm40 152a40 40 0 0 1-40 40H80a40 40 0 0 1-40-40V80a40 40 0 0 1 40-40h96a40 40 0 0 1 40 40ZM192 76a12 12 0 1 1-12-12a12 12 0 0 1 12 12Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="linkedin" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M6.94 5a2 2 0 1 1-4-.002a2 2 0 0 1 4 .002zM7 8.48H3V21h4V8.48zm6.32 0H9.34V21h3.94v-6.57c0-3.66 4.77-4 4.77 0V21H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="nav-icon" viewBox="0 0 16 16">
+            <path d="M14 10.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0 0 1h11a.5.5 0 0 0 .5-.5z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="close" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+        </symbol>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="navbar-icon" viewBox="0 0 16 16">
+            <path d="M14 10.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0 0 1h3a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0 0 1h7a.5.5 0 0 0 .5-.5zm0-3a.5.5 0 0 0-.5-.5h-11a.5.5 0 0 0 0 1h11a.5.5 0 0 0 .5-.5z" />
+        </symbol>
+    </svg>
+
+
+    <header class="header trans_300">
+
+        <!-- Top Navigation -->
+
+        <div class="top_nav">
+            <div class="container p-0">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="top_nav_left d-flex align-items-center">
+                            <img src="~/images/gif/delivery2.gif" width="35" height="35" class="me-2" />
+                            <span class="text-white">Freeship cod toàn quốc</span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 text-right d-flex justify-content-end align-items-center">
+                        <div class="top_nav_right ">
+                            <ul class="top_nav_menu">
+
+                                <!-- Currency / Language / My Account -->
+                                <li class="account ">
+
+                                </li>
+                                <li class="currency">
+                                    <a href="/#" target="_blank">
+                                        <svg class="instagram" width="37" height="20">
+                                            <use xlink:href="#instagram" />
+                                        </svg>
+                                        /#
+                                    </a>
+                                </li>
+                                <li class="currency">
+                                    <a href="tel:" target="_blank">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="37" height="20" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+                                        </svg>
+
+                                        Hotline 24/7
+
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+
+        <!-- Main Navigation -->
+
+        <div class="main_nav_container">
+            <div class="container p-0">
+                <div class="row">
+                    <div class="col-lg-12 header-main  p-0 text-right">
+                        <div class="header-main header_mainsmall pt-1">
+                            <div class="navbar__toggler__humber">
+                                <button class="navbar-toggler  ps-0  hamburger_container_Menu" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarExample01"
+                                        aria-controls="navbarExample01" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="d-flex justify-content-start align-items-center">
+                                        <i class="fa fa-bars" aria-hidden="true"></i>
+                                    </span>
+                                </button>
+
+                            </div>
+
+
+
+                            <div class="logo_search   p-0">
+                                <div class="p-0 logo_nav  ">
+                                    <a href="/trang-chu" class="nav_logo_trangchu">
+                                        @*<img src="@(string.IsNullOrEmpty(SettingHelper.GetValue("SettingLogo")) ? Url.Content("~/images/logo/logo2.png") : SettingHelper.GetValue("SettingLogo"))" class="logo thuan" />*@
+
+                                        <img src=" ~/images/logo/logoweb.png" class="logo" />
+
+                                    </a>
+                                </div>
+                                <div class=" p-0  search_nav">
+                                    <div class="row search_row ">
+                                        <div class="searchGr  ">
+                                            <form role="search" action="@Url.Action("Search", "Product")" method="get" class=" col-lg-12 p-0 searchform  ">
+                                                <input type="search" id="search_input"
+                                                       class="search_input p-0 mb-0"
+                                                       placeholder="Nhập từ khóa tìm kiếm sản phẩm, danh mục..."
+                                                       value="" name="search" autocomplete="off">
+
+                                                <button type="submit"
+                                                        class="search_submit submit-button secondary button icon mb-0"
+                                                        aria-label="Submit">
+                                                    <img src="~/images/icon/search2.png" class="search" />
+                                                    <img src="~/images/gif/search.gif" class="searchgif" />
+                                                </button>
+                                            </form>
+
+
+                                            <div class="search-suggestions">
+                                                <img src="~/images/gif/rounded3.gif" width="80" height="100" class="rounded pt-3" />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="linkGr">
+                                            <a class="linkGritem pt-2" href="/tracuudonhang">
+                                                <div class="icon-box-left  ">
+                                                    <div class="icon-box-img">
+
+                                                        <img src="~/images/gif/bill.gif" width="40" height="40" class="m-0" />
+
+                                                    </div>
+                                                    <div class="icon-box-text-item ">
+                                                        <p class="m-0 text-uppercase">Đơn hàng</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a class="linkGritem pt-2" href="/#" target="_blank">
+                                                <div class="icon-box-left ">
+                                                    <div class="icon-box-img">
+
+                                                        <img src="~/images/gif/News2.gif" width="40" height="40" class="m-0" />
+
+                                                    </div>
+                                                    <div class="icon-box-text-item ">
+                                                        <p class="m-0 text-uppercase">bài viết</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a class="linkGritem pt-2" href="/#" target="_blank">
+                                                <div class="icon-box-left ">
+                                                    <div class="icon-box-img">
+
+                                                        @*<img src="~/images/gif/user.gif"width="40" height="40" class="m-0"  />*@
+                                                        <img src="~/images/gif/user.gif" />
+                                                    </div>
+                                                    <div class="icon-box-text-item ">
+                                                        <p class="m-0 text-uppercase">tài khoản</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a class="linkGritem pt-2 toggler__cart__btn  ps-0  hamburger_container_cart" href="#">
+                                                <div class="icon-box-left ">
+                                                    <div class="icon-box-img">
+                                                        <img src="~/images/gif/cart.gif" />
+
+
+                                                    </div>
+                                                    <div class="icon-box-text-item ">
+                                                        <p class="m-0 text-uppercase">giỏ hàng</p>
+                                                        <span id="checkout_items" class="checkout_count "></span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                            <div class="navbar_menuS d-flex">
+                                <button class="scroll-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                                        <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                                    </svg>
+                                </button>
+                                <ul class="navbar_menu   ">
+
+                                    @*@Html.Action("NavLayout", "ProductCategory")*@
+                                </ul>
+                                <button class="scroll-right">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708" />
+                                        <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </button>
+                            </div>
+
+
+
+
+
+                            <div class="navuser">
+                                <div class="checkout ml-2">
+                                    <a href="#" class=" toggler__cart__btn  ps-0  hamburger_container_cart">
+                                        <img src="~/images/gif/cart.gif" />
+
+                                        <span id="checkout_count" class="checkout_count">0</span>
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+
+
+
+    <div class="fs_menu_overlay_cart"></div>
+    <div class="hamburger_menu_cart" id="smallCartContainer" style="background-color: rgba(238,238,238,255)">
+
+        @*@Html.Action("Partial_Item_Cart_Small", "ShoppingCart")*@
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+
+    <div class="mainBody ">
+
+        <div id="preloder">
+            <div class="loader"></div>
+            <br />
+
+            <p class="loaderContent"></p>
+        </div>
+
+        <div class="bg-sg"></div>
+        @RenderBody()
+    </div>
+    <div class="notifications">
+        <div>
+
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded1" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <div class="fs_menu_overlay"></div>
+    <div class="hamburger_menu" style="background-color: rgba(238,238,238,255)">
+        <div class="hamburger_close"><i class="fa fa-times text-danger" aria-hidden="true"></i></div>
+        <div class="hamburger_menu_content ">
+            <ul class="menu_top_nav">
+
+
+                @@*Html.Action("NavLayoutHamburger_menu", "ProductCategory")*
+
+
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer id="footer" class="  overflow-hidden justify-content-center align-items-center mt-5" style="top:100%;">
+        <div class="container container_Index border-1 border-bottom-2">
+            <div class="row m-0 mt-4 p-0 overflow-hidden justify-content-center align-items-stretch">
+                <div class="col-lg-4 col-sm-6 pb-3">
+                    <div class="footer-menu">
+                        <div class="footer-menu SettingTitleSeo text-uppercase  footer-infomation footer-col">
+                            <p class="w-100 p-0 m-0 text-white">
+                                @*@SettingHelper.GetValue("SettingTitleSeo")*@
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-2 col-sm-6">
+                    <div class="footer-menu text-uppercase text-white footer-infomation footer-col">
+                        @*@Html.Action("NavLayoutFooter_menu", "ProductCategory")*@
+
+
+
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 ">
+                    <div class="footer-menu text-uppercase text-white footer-infomation footer-col">
+
+                        <div class="footer-col__title">
+                            <h5 class="widget-title pb-2 mt-0 text-white ">THÔNG TIN & TRỢ GIÚP</h5><i class="fas fa-angle-up text-right"></i>
+                        </div>
+                        <ul class="menu-list list-unstyled text-white footer-col__content">
+                            <li class="menu-item text-white pb-2">
+                                <a href="/home/contact" class="text-white">
+                                    Tích điểm Quà tặng VIP
+                                </a>
+                            </li>
+                            <li class="menu-item pb-2">
+                                <a href="/home/contact" class="text-white">Điều kiện</a>
+                            </li>
+                            <li class="menu-item pb-2">
+                                <a href="/home/contact" class="text-white">tư vấn</a>
+                            </li>
+                            <li class="menu-item pb-2">
+                                <a href="/home/contact" class="text-white">Chất lượng phục vụ</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-6 ">
+                    <div class="footer-menu text-uppercase   footer-infomation footer-col">
+                        <div class="footer-col__title">
+                            <h5 class="widget-title pb-2 mt-0 text-white ">Dịch vụ chúng tôi </h5><i class="fas fa-angle-up text-right"></i>
+                        </div>
+
+                        <ul class="menu-list list-unstyled footer-col__content">
+                            <li class="menu-item pb-2">
+                                <a href="/home/contact" class="text-white">Đổi - Trả hàng</a>
+                            </li>
+
+                            <li class="menu-item pb-2">
+                                <a href="/home/contact" class="text-white">Vận chuyển - Giao hàng</a>
+                            </li>
+
+                            <li class="menu-item pb-2">
+                                <a href="/home/contact" class="text-white">Bảo hành</a>
+                            </li>
+                            <li class="menu-item pb-2">
+                                <a href="#feedback" class="text-white">Feedback</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer-bottom" class="mt-4">
+            <div class="container container_Index footer-bottom-item mt-4">
+                <div class="row d-flex flex-wrap justify-content-center text-center mb-0">
+                    <div class="col-md-6 col-sm-6 mb-3 mb-md-0 mb-0">
+                        <div class="payment-method">
+                            <p class="text-white mb-0">
+                                &copy; 2024 Pada. All rights reserved
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 mb-0">
+                        <div class="copyright">
+                            <p class="text-white">
+                                Được cung cấp bởi <a href="https://www.giathuan1711.site/" target="_blank" style="border:none !important;">giathuan.com</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <!--  jQuery UI -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <!-- MDB -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.3.0/mdb.umd.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @*====================Start JS Temp====================*@
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    @*====================Start JS Temp====================*@
+
+
+
+
+
+
+    @*Start Product index*@
+    <script src="~/Scripts/ProductClient/js/jquery-3.2.1.min.js"></script>
+
+    <script src="~/Scripts/ProductClient/plugins/Isotope/isotope.pkgd.min.js"></script>
+    <script src="~/Scripts/ProductClient/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+
+
+
+
+    <script src="~/Scripts/ProductClient/plugins/easing/easing.js"></script>
+    <script src="~/Scripts/ProductClient/js/categories_custom.js"></script>
+    <script src="~/Scripts/ProductClient/js/custom.js"></script>
+    @*End Product index*@
+
+    @*Start layout*@
+    <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+    <script src="~/Scripts/client/script.js"></script>
+    <script type="text/javascript" src="~/Scripts/client/bootstrap.bundle.min.js"></script>
+    <script src="~/Scripts/client/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/client/modernizr.js"></script>
+    <script type="text/javascript" src="~/Scripts/client/plugins.js"></script>
+
+
+
+
+
+    <script src="~/Scripts/jsShopping.js"></script>
+    <!---SweetAlter-->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+
+
+    @*Start Cart index*@
+    <script src="~/Scripts/CartLyout/js/main.js"></script>
+    @*End Cart index*@
 </body>
 </html>

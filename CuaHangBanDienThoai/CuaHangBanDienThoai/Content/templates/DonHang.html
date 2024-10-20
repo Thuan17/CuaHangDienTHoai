@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Invoice</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.2/css/bootstrap.min.css"
+    />
+    <style>
+      .invoice-container {
+        margin-top: 2rem;
+      }
+
+      .invoice-header {
+        text-align: center;
+      }
+
+      .invoice-header h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .invoice-header p {
+        font-size: 1.2rem;
+        color: #6c757d;
+      }
+
+      .invoice-body {
+        margin-top: 2rem;
+      }
+
+      .invoice-table {
+        width: 100%;
+      }
+
+      .invoice-table th,
+      .invoice-table td {
+        border: 1px solid #dee2e6;
+        padding: 0.75rem;
+      }
+
+      .invoice-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+      }
+
+      .invoice-footer {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .signature {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+      }
+
+      .qr-code {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .qr-code img {
+        width: 150px;
+        height: 150px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container invoice-container">
+      <div class="row">
+        <div class="col-1">
+          <!--<img src="../../images/Logo/LogoWeb.png" style="max-width: 150px" />-->
+          #{{Image}}
+        </div>
+        <div class="col-10">
+          <div class="invoice-header">
+            <h2><span style="color: red">LTD</span>MiniStore</h2>
+            <p>Cửa hàng bán thiết bị điện thoại di dộng</p>
+
+            <small>Dường dây hỗ trợ: 0329867771-077264673</small>
+          </div>
+        </div>
+      </div>
+
+      <hr />
+      <div>
+        <div class="row">
+          <div class="col-4">#{{QRCode}}</div>
+          <div class="col-4">
+            <h2 style="color: red; text-align: center">Đơn Hàng</h2>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-12">
+          <span><b>Họ tên người mua hàng : </b> #{{CustomerName}} </span><br />
+          <span><b>Địa chỉ giao hàng : </b> #{{Address}}</span><br />
+          <span><b>Ngày mua mua hàng : </b> #{{CreatedDate}}</span><br />
+
+          <span><b>Mã đơn hàng : </b>#{{Code}}</span><br />
+        </div>
+      </div>
+      <hr />
+      <div class="invoice-body">
+        <div class="invoice-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>STT</th>
+                <th>Tên sản phẩm</th>
+                <th>Dung lượng/Màu</th>
+                <th>Số lượng</th>
+                <th>Gia tiền</th>
+                <th>Đơn giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              #{{ProductRows}}
+            </tbody>
+          </table>
+        </div>
+        <br />
+        <div class="invoice-footer">
+          <p style="text-align: left">
+            <b>Tổng cộng tiền thanh toán :</b>
+            <span style="color: red"> #{{totalOrder}} </span>
+          </p>
+        </div>
+
+        <div class="signature">
+          <div class="signature-box col-12">
+            <div class="invoice-header">
+              <h5><span style="color: red">LTD</span>MiniStore</h5>
+              <small>Cửa hàng mua bán thiết bị điện thoại di dộng</small>
+              <br />
+
+              <small>Dường dây hỗ trợ: 0329867771-077264673</small>
+              <br />
+              <small>WebSite:http://giathuan1711-001-site1.btempurl.com/</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,652 @@
+﻿
+
+.ItemCheckOut {
+    padding: 2% !important;
+}
+.container form {
+    padding: 30px 0 0 0;
+}
+
+       .form-row {
+            display: flex;
+            flex-direction:column;
+         
+          /*  margin: 32px 0;*/
+        }
+
+.form-row .input-data {
+    width: 100%;
+    height: 40px;
+    margin-top:5%;
+    position: relative;
+}
+
+form .form-row .textarea {
+    height: 70px;
+}
+
+.input-data input,
+.textarea textarea {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 17px;
+    border-bottom: 2px solid rgba(0,0,0, 0.12);
+    background-color:white;
+}
+
+    .input-data input:focus ~ label, .textarea textarea:focus ~ label,
+    .input-data input:valid ~ label, .textarea textarea:valid ~ label {
+        transform: translateY(-20px);
+        font-size: 14px;
+        color: #3498db;
+    }
+
+.textarea textarea {
+    resize: none;
+    padding-top: 10px;
+}
+
+.input-data label {
+    position: absolute;
+    pointer-events: none;
+    bottom: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.textarea label {
+    width: 100%;
+    bottom: 40px;
+    background: #fff;
+}
+
+.input-data .underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+}
+
+    .input-data .underline:before {
+        position: absolute;
+        content: "";
+        height: 2px;
+        width: 100%;
+        background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.3s ease;
+    }
+.input-data.error .underline:before {
+    background: #f44336; /* Màu đỏ */
+    transform: scaleX(1);
+}
+
+/* Đổi màu viền input khi có lỗi */
+.error-border {
+    border: 1px solid #f44336; /* Màu đỏ */
+}
+.input-data input:focus ~ .underline:before,
+.input-data input:valid ~ .underline:before,
+.textarea textarea:focus ~ .underline:before,
+.textarea textarea:valid ~ .underline:before {
+    transform: scale(1);
+}
+.submit-btn {
+    text-align: center;
+    align-items: center;
+   
+}
+
+    .submit-btn .input-data {
+        overflow: hidden;
+        height: 45px !important;
+        width: 100% !important;
+        border-radius: 4px;
+        position: relative;
+        text-align: center;
+        align-items: center;
+    }
+
+.submit-btn .input-data .inner {
+    height: 100%;
+    width: 300%;  
+    position: absolute;
+    left: -100%;
+/*    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);*/
+    background-color:black;
+    transition: left 0.4s, background 0.4s;
+    overflow:hidden;
+}
+
+.submit-btn .input-data:hover .inner {
+    left: 0;
+}
+
+ .btnCheckOutS {
+    height: 100%;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    position: relative;
+    z-index: 8;
+    overflow: hidden; 
+    transition: background 0.4s;
+}
+
+.submit-btn .input-data:hover .btnCheckOutS {
+    background: none; 
+    color:white;
+}
+
+
+
+.AddressGroup{
+ padding:0 !important;  
+}
+.Location {
+    padding: 0 !important;
+}
+.CityDistrictity {
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+    padding: 0 !important;
+}
+/*hgroup chọn ship*/
+.expressDeliveryGr {
+    padding:2%;
+    width: 100%;
+}
+
+.expressDeliveryGrUl {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+}
+
+.expressitem.highlight input[type="checkbox"],
+.expressitem.highlight span {
+    color: orange;
+    border-color: orange;
+}
+
+.expressitem {
+    display: flex;
+    flex-direction:row;
+    white-space: nowrap;  
+}
+
+    .expressitem input[type="checkbox"] {
+        margin:0;
+    }
+    .expressitem span{
+        padding-left:2%;
+    }
+    /*end hgroup chọn ship*/
+    /*
+.city, .district, .hamlet {
+    width: 100%;
+}*/
+.custom__select {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+
+
+
+.select__selected {
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.select__items {
+    position: absolute; /* Đặt thành absolute để có thể đè lên các yếu tố khác */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: none;
+    z-index: 25; /* Đảm bảo giá trị z-index đủ cao */
+    max-height: 250px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .select__items .select__optione {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+        .select__items .select__optione:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+           color: #3498db;
+        }
+
+    .select__items .select__option__title__city {
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    .select__items .select__optione:hover .select__option__title__city {
+        color: red;
+        transform: translateY(-3px);
+    }
+
+/*.imageCase-item {
+    max-width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.select-selected.select-active + .select-items {
+    display: block;
+}
+*/
+.city {
+    position: relative; 
+    padding-top: 20px; 
+    margin-right:0;
+}
+
+.cityLabel {
+    position: absolute;
+    top: 11%;
+
+    left: 8%;
+    z-index: 2;
+    background-color: white;
+    text-transform: uppercase; 
+    font-weight: bold;
+    
+
+}
+.custom__select {
+    position: relative;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: white;
+    min-height:45px;
+    color:#000000!important;
+  height:100%;
+  margin:0;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/*.custom__select {
+    position: relative;
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 15px;
+    background-color: white;
+    height: 100%;
+    margin: 0;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+*/
+.custom__select.error {
+    border: 1px solid #f44336; /* Red border for error state */
+   
+}
+
+.cityLabel.error {
+    color: #f44336;
+}
+
+
+.select__optione {
+    width: 100%;
+    display: flex;
+    padding: 0px;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+.select__find {
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    border-bottom: solid gray 0.5px;
+    display: flex;
+    background-color: white;
+    margin-bottom: 2%;
+}
+
+.select__option__find {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: white;
+    height: 100%;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+.select__option__text {
+    border: none;
+    width: 90%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+}
+
+.btn__clear__text, .btn__find__text__city {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn__find__text__city {
+    background-color: #c5c7cd;
+}
+
+.select__option__checkbox {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+    .select__option__checkbox input {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+.select__option__title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.select__items .select__find:hover {
+    background-color: white;
+    transform: none;
+}
+
+
+
+
+/* end tahnhf phố tỉnh*/
+/*.select-option-image {
+    width: 50px;
+    height: 50px;
+}*/
+/*start ItemCart*/
+.CheckOutGr {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width:100%;
+    margin:0 0 5px 0 !important; 
+   
+}
+
+.CheckOutImg {
+    width: 15%;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    
+}
+.CheckOutGrContent {
+    width: 85%;
+  
+    display: flex;
+    flex-direction: row;
+}
+
+
+
+.GrImg {
+    width: 100%;
+    overflow: hidden;
+    height: auto;
+}
+
+.ContentImg {
+    width: 100%;
+}
+
+.btnDeleteItemCheckOut {
+    background-color: transparent;
+}
+
+.PriceQuantity{
+    display:flex;
+    flex-direction:column;
+ text-align:center;
+ align-items:center;
+}
+
+
+
+
+.Quantity {
+    width: auto;
+    border: solid lightgray 0.5px;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    align-items: center;
+    height: 30px;
+}
+
+.btnMinus, .btnFlus {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    width: 30px;
+    height: 100%; 
+    text-decoration: none; 
+    font-size: 20px;
+    color: black;
+}
+
+
+
+.inputQuantity {
+    border: none;
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.3);
+    max-width: 30%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+    height: 100%;
+    color: #EB5B00;
+    font-weight: bold;
+    line-height: 30px; /* Đảm bảo rằng văn bản được căn giữa theo chiều dọc */
+    -moz-appearance: textfield;
+    cursor: not-allowed;
+}
+
+.Price {
+    width: 100%;
+}
+   
+
+    .GiftGr {
+        display: flex;
+        flex-direction: row;
+    }
+
+.GiftImg {
+    max-width: 80px;
+}
+/*laod css start*/
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1500;
+}
+
+.loading-spinner {
+    width: 50px; /* Kích thước hình ảnh, bạn có thể thay đổi */
+    height: 50px;
+}
+
+.sent {
+    margin-top: 2%;
+    margin: 0;
+    color: black;
+    font-size: 20px;
+    text-align: center;
+    position: relative;
+    animation: textScroll 3s linear infinite;
+}
+
+.innerLoad {
+    margin-top: 2%;
+    width: 50%; /* Chiều rộng của thanh hiệu ứng */
+    height: 5px; /* Chiều cao của thanh hiệu ứng */
+    background: linear-gradient(90deg, #56d8e4, #9f01ea);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+/*@keyframes textScroll {
+    0% {
+        left: 100%;
+    }
+
+    100% {
+        left: -100%;
+    }
+}*/
+
+@keyframes loading {
+    0% {
+        background-position: 0% 0;
+    }
+
+    100% {
+        background-position: 100% 0;
+    }
+}
+
+/*laod css start*/
+/*end ItemCart*/
+@media (max-width: 1024px) {
+    /*start ItemCart*/
+    .CheckOutGr {
+        display: flex;
+        flex-direction: row;
+        height: auto;
+    }
+    .CheckOutImg {
+        width: 35%;
+        display: flex;
+        flex-direction: row;
+        overflow: hidden;
+        border-right: solid 0.5px gray;
+    }
+
+    .CheckOutGrContent {
+        width: 65%;
+        display: flex;
+        flex-direction: row;
+    }
+    .ContentInfor {
+        padding:0;
+        padding-left:10px;
+    }
+        .ContentInfor span{
+            width:100%;
+        }
+        .ContentInfor b a {
+            text-align: left;
+            padding: 0;
+        }
+    .GiftImg{
+        max-width:60px;
+
+    }
+    .PriceQuantity {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        align-items: center;
+        padding: 0;
+    }
+    .Price{
+        width:60%;
+        text-align:left;
+        padding-left:5px;
+    }
+    .Quantity {
+        width: 40%
+    }
+    /*end ItemCart*/
+    .container .text {
+        font-size: 30px;
+    }
+    .expressDeliveryGrUl {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+    }
+
+    .expressitem {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        white-space: nowrap;
+        text-align: left;
+    }
+
+        .expressitem input[type="checkbox"] {
+            margin: 0;
+            transform: scale(1.2); /* Adjust size of checkbox */
+        width:10%;
+       
+        }
+
+        .expressitem span {
+            padding: 0;
+            margin: 0;
+        }
+
+        .container form {
+            padding: 10px 0 0 0;
+        }
+
+        .container form .form-row {
+            display: block;
+        }
+
+    form .form-row .input-data {
+        margin: 35px 0 !important;
+    }
+
+   
+}

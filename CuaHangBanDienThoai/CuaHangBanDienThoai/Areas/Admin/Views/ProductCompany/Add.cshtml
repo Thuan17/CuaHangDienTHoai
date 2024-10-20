@@ -1,0 +1,129 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_AddProductCompany
+  @{  ViewBag.Title = "Thêm hãng sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .error-message {
+        display: none;
+        color: red;
+    }
+
+    .error-border {
+        border: 2px solid red;
+    }
+</style>
+
+
+<link href="~/Content/ckeditor5/ckeditor5.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                <li class="breadcrumb-item"><a href="/quan-ly-san-pham">Sản phẩm </a></li>
+                <li class="breadcrumb-item active">Thêm mới</li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Thêm sản phẩm
+                    </h6>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <form id="myFormProduct" enctype="multipart/form-data">
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <input type="hidden" id="ImagesJson" name="Items" />
+                        <input type="hidden" id="IsGiftCategory" name="IsGiftCategory" />
+
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                         
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="row">
+                                            <div class="col-lg-12 p-0 m-0">
+                                                <div class="form-group">
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Tên hãng sản phẩm</label>
+                                                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên hãng sản phẩm", id = "Title" })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 text-right">
+                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <table class="table table-hover" id="tbAnhSanPham">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">Ảnh</th>
+                                                            <th class="text-center">Ảnh đại diện</th>
+                                                            <th class="text-center">Thao tác</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbHtml">
+                                                    </tbody>
+                                                </table>
+                                                <input type="hidden" id="tCurrentId" value="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+
+                                    <!-- /.tab-pane -->
+                                </div>
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
+
+                        </div> <!-- /.card -->
+                        <div class="col-12 text-center">
+                            <button type="button" onclick="if(validateForm()) $('#myFormProduct').submit();" class="btn btn-success col-8">Thêm mới</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/admin/js/AddProductCompany.js"></script>
+    }

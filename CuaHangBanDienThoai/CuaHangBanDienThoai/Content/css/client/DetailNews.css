@@ -1,0 +1,188 @@
+﻿
+.GrDescription {
+    min-height:450px;
+   
+    overflow: hidden;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 15px; 
+    box-sizing: border-box;
+}
+.breadcrumbs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap; 
+}
+
+    .breadcrumbs ul {
+        display: flex; 
+        padding: 0;
+        margin: 0;
+        list-style: none; 
+    }
+
+    .breadcrumbs li {
+      
+    }
+
+        .breadcrumbs li:last-child {
+            margin-right: 0; 
+        }
+
+    /*.breadcrumbs a {
+        text-decoration: none;
+        color: #007bff;*/ /* Màu liên kết */
+    /*}*/
+.breadcrumb-item.active {
+    max-width: 80%; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.GrContent {
+  
+    padding: 10px;
+    overflow: hidden;
+    text-align: justify;
+}
+
+/* CSS riêng cho máy tính */
+@media (min-width: 992px) {
+    .GrDescription {
+        all: unset;
+        display: block;
+        min-height: 450px;
+        max-width: 80%;
+        overflow: hidden; /* Giới hạn chiều rộng tối đa cho máy tính */
+    }
+
+    .breadcrumb-item.active {
+        max-width: 80%; /* Giới hạn chiều rộng của phần tử */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+/* CSS riêng cho điện thoại */
+@media (max-width: 576px) {
+    .GrDescription {
+        max-width: 80%;
+        
+        overflow: hidden; /* Giới hạn chiều rộng tối đa cho máy tính */
+    }
+   
+    .GrDescription {
+        padding: 0 10px; /* Giảm padding cho điện thoại để phù hợp với màn hình nhỏ */
+    }
+
+    .GrContent {
+        font-size: 14px; /* Điều chỉnh kích thước chữ nhỏ hơn cho điện thoại */
+    }
+}
+
+@media (max-width: 450px) {
+    .GrDescription {
+        max-width: 80%;
+        overflow: hidden; /* Giới hạn chiều rộng tối đa cho máy tính */
+    }
+
+    .GrDescription {
+        padding: 0 10px; /* Giảm padding cho điện thoại để phù hợp với màn hình nhỏ */
+    }
+
+    .GrContent {
+        font-size: 14px; /* Điều chỉnh kích thước chữ nhỏ hơn cho điện thoại */
+    }
+}
+@media (max-width: 350px) {
+    .GrDescription {
+        max-width: 80%;
+        overflow: hidden; /* Giới hạn chiều rộng tối đa cho máy tính */
+    }
+
+    .GrDescription {
+        padding: 0 10px; /* Giảm padding cho điện thoại để phù hợp với màn hình nhỏ */
+    }
+
+    .GrContent {
+        font-size: 14px; /* Điều chỉnh kích thước chữ nhỏ hơn cho điện thoại */
+    }
+}
+
+.titleDescription {
+  
+    color: #446084;
+    font-weight: 700;
+    cursor: pointer; /* Thêm con trỏ để hiển thị khi di chuột qua */
+    position: relative; /* Đặt vị trí tương đối để chèn biểu tượng */
+}
+
+    .titleDescription h5 {
+        border-top: 1px solid #ddd;
+        display: block;
+        font-size: 110%;
+        padding: .6em 2.3em;
+        position: relative;
+        transition: border .2s ease-out, background-color .3s, color .3s; /* Thêm hiệu ứng chuyển đổi cho màu sắc */
+        color: #334862;
+        text-decoration: none;
+    }
+
+    .titleDescription i {
+        margin-left: 10px; /* Khoảng cách giữa tiêu đề và biểu tượng */
+        transition: transform 0.3s ease; /* Hiệu ứng chuyển động cho biểu tượng */
+    }
+
+.containerDescription {
+    height: 250px; /* Giới hạn chiều cao ban đầu của container */
+    overflow: hidden; /* Ẩn nội dung vượt quá chiều cao */
+    transition: height 0.3s ease; /* Hiệu ứng chuyển đổi khi mở rộng */
+    position: relative; /* Đặt vị trí tương đối để chèn XemThem */
+}
+
+    /* Điều chỉnh hình ảnh để không bị tràn */
+    .containerDescription img {
+        max-width: 100%; /* Giới hạn chiều rộng của hình ảnh không vượt quá container */
+        height: auto; /* Đảm bảo tỷ lệ khung hình của hình ảnh được giữ nguyên */
+    }
+
+/* Đảm bảo containerDescription phản ứng tốt với màn hình nhỏ */
+@media (max-width: 767px) {
+    .containerDescription {
+        height: auto; /* Cho phép chiều cao tự động để hiển thị toàn bộ nội dung */
+        overflow: visible; /* Hiện tất cả nội dung */
+    }
+
+        .containerDescription img {
+            max-width: 100%; /* Giới hạn chiều rộng của hình ảnh không vượt quá container */
+            height: 80%; /* Đảm bảo tỷ lệ khung hình của hình ảnh được giữ nguyên */
+        }
+}
+
+.XemThem {
+    position: absolute; /* Đặt XemThem ở vị trí tuyệt đối so với containerDescription */
+    bottom: 0; /* Nằm ở phía dưới của container */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    transform: translateX(-50%); /* Điều chỉnh vị trí để căn giữa chính xác */
+    background: rgba(255, 255, 255, 0.7); /* Nền bán trong suốt */
+    text-align: center;
+    cursor: pointer;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background 0.3s ease;
+}
+
+    .XemThem:hover {
+        background: rgba(255, 255, 255, 1); /* Đổi màu nền khi hover */
+    }
+
+.containerDescription.expanded {
+    height: auto; /* Chiều cao tự động khi mở rộng */
+    overflow: visible; /* Hiện tất cả nội dung khi mở rộng */
+}
+
+.containerDescription.collapsed {
+    height: 250px; /* Chiều cao giới hạn khi ẩn */
+}
