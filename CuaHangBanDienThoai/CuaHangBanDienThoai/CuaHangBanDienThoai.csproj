@@ -159,7 +159,9 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -169,6 +171,7 @@
     <Compile Include="Models\AccountEmployee.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Admin_AddProduct.cs" />
     <Compile Include="Models\Admin_AddProductCompany.cs" />
     <Compile Include="Models\AuthorizeFunction.cs" />
     <Compile Include="Models\Bill.cs">
@@ -5482,6 +5485,7 @@
     </Content>
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
+    <Content Include="Scripts\admin\js\AddProductCategory.js" />
     <Content Include="Scripts\admin\js\AddProductCompany.js" />
     <Content Include="Scripts\admin\js\Admin_ChangePass.js" />
     <Content Include="Scripts\admin\js\Admin_Login.js" />
@@ -5518,6 +5522,12 @@
     <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_PartiaSideBar.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Login.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Index.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -5525,9 +5535,10 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\Account\Login.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductCompany\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductCompany\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Add.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

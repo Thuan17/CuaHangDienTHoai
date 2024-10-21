@@ -110,7 +110,7 @@
     <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
     <Property Name="CreatedDate" Type="datetime" />
     <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifeby" Type="nvarchar(max)" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="EmployeeId" Type="int" />
     <Property Name="SupplierId" Type="int" />
   </EntityType>
@@ -157,7 +157,7 @@
     <Property Name="ProductCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" />
-    <Property Name="Icon" Type="varbinary(max)" />
+    <Property Name="Icon" Type="varchar(max)" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
@@ -174,7 +174,7 @@
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifeby" Type="nvarchar(max)" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="Alias" Type="nvarchar" MaxLength="250" />
     <Property Name="Icon" Type="varchar(max)" />
   </EntityType>
@@ -188,11 +188,13 @@
     <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
     <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="TypeProduct" Type="bit" />
-    <Property Name="Image" Type="varchar(max)" />
     <Property Name="Ram" Type="int" />
     <Property Name="Capacity" Type="int" />
     <Property Name="ProductsId" Type="int" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="IsHome" Type="bit" />
+    <Property Name="IsSale" Type="bit" />
+    <Property Name="IsHot" Type="bit" />
   </EntityType>
   <EntityType Name="ProductDetailImage">
     <Key>
@@ -212,14 +214,8 @@
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifeby" Type="nvarchar(max)" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="Alias" Type="nvarchar(max)" />
-    <Property Name="IsActive" Type="bit" />
-    <Property Name="IsHome" Type="bit" />
-    <Property Name="IsSale" Type="bit" />
-    <Property Name="IsFeature" Type="bit" />
-    <Property Name="IsHot" Type="bit" />
-    <Property Name="ProductCode" Type="nvarchar" MaxLength="50" />
     <Property Name="Screensize" Type="int" />
     <Property Name="CPUspeed" Type="nvarchar" MaxLength="900" />
     <Property Name="OperatingSystem" Type="nvarchar" MaxLength="900" />
@@ -240,6 +236,7 @@
     <Property Name="BatteryCapacity" Type="int" />
     <Property Name="ProductCategoryId" Type="int" />
     <Property Name="ProductCompanyId" Type="int" />
+    <Property Name="Description" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>
@@ -256,7 +253,7 @@
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifeby" Type="nvarchar(max)" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="Content" Type="nvarchar" MaxLength="350" />
     <Property Name="ReviewId" Type="int" />
     <Property Name="ProductId" Type="int" />
@@ -308,7 +305,7 @@
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifeby" Type="nvarchar(max)" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
     <Property Name="UsedDate" Type="datetime" />
     <Property Name="Quantity" Type="int" />

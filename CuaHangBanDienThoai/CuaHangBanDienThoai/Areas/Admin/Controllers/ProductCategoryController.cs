@@ -1,26 +1,23 @@
 ﻿using CuaHangBanDienThoai.Models;
-using PagedList;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using PagedList;
+using System.Data.Entity;
+using System.Threading.Tasks;
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
-    public class ProductCompanyController : Controller
+    public class ProductCategoryController : Controller
     {
-        // GET: Admin/ProductCompany
+        // GET: Admin/ProductCategory
+        private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
 
-    private     CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         [AuthorizeFunction("Quản lý", "Quản trị viên")]
-
-        public ActionResult Index(int? page )
+        public ActionResult Index(int? page)
         {
-            var items = db.ProductCompany.OrderByDescending(x => x.ProductCompanyId).ToList();
+            var items = db.ProductCategory.OrderByDescending(x => x.ProductCategoryId).ToList();
 
             if (items != null)
             {
@@ -29,7 +26,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
                 var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
 
-                var products = db.ProductCompany.ToList();
+                var products = db.ProductCategory.ToList();
 
                 ViewBag.Count = products.Count;
                 ViewBag.PageSize = pageSize;
@@ -44,48 +41,46 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             }
         }
 
-        [AuthorizeFunction( "Quản trị viên")]
+        [AuthorizeFunction("Quản trị viên")]
         public ActionResult Add()
         {
             return View();
         }
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(ProductCompany model, Admin_AddProductCompany req, List<string> Images, List<int> rDefault)
+        public async Task<ActionResult> Add(ProductCategory model, string Title, List<string> Images, List<int> rDefault)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    if (req.Title == null)
+                    if (Title == null)
                     {
-                        return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập tên hãng" });
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập tên danh mục" });
                     }
-                    string alias= CuaHangBanDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
+                    string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(Title.Trim());
 
-                    var item = await db.ProductCompany.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
+                    var item = await db.ProductCategory.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
                     if (item != null)
                     {
-                        return Json(new { Success = false, Code = -2, msg = "Hãng đã tồn tại" });
+                        return Json(new { Success = false, Code = -2, msg = "Danh mục đã tồn tại" });
                     }
 
                     if (Images == null || Images.Count == 0)
                     {
-                        return Json(new { Success = false,Code =-2,msg="Vui lòng chọn logo hãng"});
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng chọn Icon danh mục" });
                     }
-                   
+
 
 
                     AccountEmployee nvSession = (AccountEmployee)Session["user"];
                     var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
                     model.Icon = Images[0];
-                    model.Title = req.Title;
-                    model.CreatedDate=DateTime.Now;
+                    model.Title = Title;
+                    model.CreatedDate = DateTime.Now;
                     model.CreatedBy = checkStaff.NameEmployee.Trim();
-                    model.Alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(req.Title.Trim());
-                    db.ProductCompany.Add(model);
+                    model.Alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(Title.Trim());
+                    db.ProductCategory.Add(model);
                     db.SaveChanges();
                     dbContextTransaction.Commit();
                     return Json(new { Success = true, Code = 1 });
@@ -93,40 +88,26 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
                 }
                 catch (Exception ex)
-                {
+                { 
                     dbContextTransaction.Rollback();
 
                     Console.WriteLine(ex.Message);
                     return Json(new { Success = false, Code = -100 });
-
-
                 }
             }
         }
 
-        [AuthorizeFunction("Quản lý", "Quản trị viên")]
-        public async Task<ActionResult>Detail(string alias )
-        {
-            var item = await db.ProductCompany.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
-            if (item != null)
-            {
-                ViewBag.Name = item.Title.Trim();
-                return View(item);
-            }
-            return View();
-
-        }
 
 
 
-        [AuthorizeFunction( "Quản trị viên")]
+        [AuthorizeFunction("Quản trị viên")]
         public async Task<ActionResult> Edit(string alias)
         {
             if (alias == null)
             {
                 return View();
             }
-            var item = await db.ProductCompany.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
+            var item = await db.ProductCategory.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
             if (item != null)
             {
                 ViewBag.Name = item.Title.Trim();
@@ -135,45 +116,47 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(ProductCompany model,List<string> Images, List<int> rDefault)
+        public ActionResult Edit(ProductCategory model, List<string> Images, List<int> rDefault)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
-            try {
+                try
+                {
                     if (ModelState.IsValid)
                     {
-                        var existingcompany = db.ProductCompany.Find(model.ProductCompanyId);
-                        if (existingcompany == null)
+                        var existingcategory = db.ProductCategory.Find(model.ProductCategoryId);
+                        if (existingcategory == null)
                         {
-                          
 
 
-                            return Json(new { Success = false, Code = -2, msg = "Hãng đã tồn tại" });
+
+                            return Json(new { Success = false, Code = -2, msg = "Danh mục đã tồn tại" });
                         }
 
-                        existingcompany.Alias = Models.Common.Filter.FilterChar(model.Title.Trim());
+                        existingcategory.Alias = Models.Common.Filter.FilterChar(model.Title.Trim());
                         AccountEmployee nvSession = (AccountEmployee)Session["user"];
                         var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
 
-                        existingcompany.Modifiedby = checkStaff.NameEmployee.Trim();
+                        existingcategory.Modifiedby = checkStaff.NameEmployee.Trim();
 
-                        existingcompany.ModifiedDate = DateTime.Now;
-            
-                        existingcompany.Title = model.Title;
+                        existingcategory.ModifiedDate = DateTime.Now;
 
-                        existingcompany.CreatedDate = model.CreatedDate;
-                        existingcompany.CreatedBy = model.CreatedBy;
-                        existingcompany.Alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(model.Title.Trim());
+                        existingcategory.Title = model.Title;
 
-             
+                        existingcategory.CreatedDate = model.CreatedDate;
+                        existingcategory.CreatedBy = model.CreatedBy;
+                        existingcategory.Alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(model.Title.Trim());
+
+
                         if (!string.IsNullOrEmpty(model.Icon))
                         {
-                            existingcompany.Icon = model.Icon;
+                            existingcategory.Icon = model.Icon;
                         }
 
-                        db.Entry(existingcompany).State = System.Data.Entity.EntityState.Modified;
+                        db.Entry(existingcategory).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                         dbContextTransaction.Commit();
 
@@ -186,7 +169,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     }
 
                 }
-                catch(Exception ex) {
+                catch (Exception ex)
+                {
 
                     dbContextTransaction.Rollback();
 
@@ -196,8 +180,6 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 }
             }
         }
-
-
 
 
     }

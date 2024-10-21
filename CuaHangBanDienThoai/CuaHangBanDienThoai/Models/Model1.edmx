@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -115,7 +115,7 @@
           <Property Name="CreatedBy" Type="nvarchar" MaxLength="250" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
           <Property Name="EmployeeId" Type="int" />
           <Property Name="SupplierId" Type="int" />
         </EntityType>
@@ -162,7 +162,7 @@
           <Property Name="ProductCategoryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="150" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="Icon" Type="varbinary(max)" />
+          <Property Name="Icon" Type="varchar(max)" />
           <Property Name="CreatedBy" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -179,7 +179,7 @@
           <Property Name="CreatedBy" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
           <Property Name="Alias" Type="nvarchar" MaxLength="250" />
           <Property Name="Icon" Type="varchar(max)" />
         </EntityType>
@@ -193,11 +193,13 @@
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
           <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="TypeProduct" Type="bit" />
-          <Property Name="Image" Type="varchar(max)" />
           <Property Name="Ram" Type="int" />
           <Property Name="Capacity" Type="int" />
           <Property Name="ProductsId" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="IsHome" Type="bit" />
+          <Property Name="IsSale" Type="bit" />
+          <Property Name="IsHot" Type="bit" />
         </EntityType>
         <EntityType Name="ProductDetailImage">
           <Key>
@@ -217,14 +219,8 @@
           <Property Name="CreatedBy" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
           <Property Name="Alias" Type="nvarchar(max)" />
-          <Property Name="IsActive" Type="bit" />
-          <Property Name="IsHome" Type="bit" />
-          <Property Name="IsSale" Type="bit" />
-          <Property Name="IsFeature" Type="bit" />
-          <Property Name="IsHot" Type="bit" />
-          <Property Name="ProductCode" Type="nvarchar" MaxLength="50" />
           <Property Name="Screensize" Type="int" />
           <Property Name="CPUspeed" Type="nvarchar" MaxLength="900" />
           <Property Name="OperatingSystem" Type="nvarchar" MaxLength="900" />
@@ -245,6 +241,7 @@
           <Property Name="BatteryCapacity" Type="int" />
           <Property Name="ProductCategoryId" Type="int" />
           <Property Name="ProductCompanyId" Type="int" />
+          <Property Name="Description" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Provinces">
           <Key>
@@ -261,7 +258,7 @@
           <Property Name="CreatedBy" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
           <Property Name="Content" Type="nvarchar" MaxLength="350" />
           <Property Name="ReviewId" Type="int" />
           <Property Name="ProductId" Type="int" />
@@ -313,7 +310,7 @@
           <Property Name="CreatedBy" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="Modifeby" Type="nvarchar(max)" />
+          <Property Name="Modifiedby" Type="nvarchar(max)" />
           <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
           <Property Name="UsedDate" Type="datetime" />
           <Property Name="Quantity" Type="int" />
@@ -767,8 +764,7 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -901,7 +897,7 @@
           <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="EmployeeId" Type="Int32" />
           <Property Name="SupplierId" Type="Int32" />
           <NavigationProperty Name="Employee" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="ImportWarehouse" ToRole="Employee" />
@@ -957,7 +953,7 @@
           <Property Name="ProductCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Icon" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -975,7 +971,7 @@
           <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductCompany" FromRole="ProductCompany" ToRole="Products" />
@@ -990,11 +986,13 @@
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="TypeProduct" Type="Boolean" />
-          <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Ram" Type="Int32" />
           <Property Name="Capacity" Type="Int32" />
           <Property Name="ProductsId" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="IsHome" Type="Boolean" />
+          <Property Name="IsSale" Type="Boolean" />
+          <Property Name="IsHot" Type="Boolean" />
           <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="ProductDetail" ToRole="BillDetail" />
           <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_ProductDetail" FromRole="ProductDetail" ToRole="CartItem" />
           <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ProductDetail" ToRole="ImportWarehouseDetail" />
@@ -1021,14 +1019,8 @@
           <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" />
-          <Property Name="IsHome" Type="Boolean" />
-          <Property Name="IsSale" Type="Boolean" />
-          <Property Name="IsFeature" Type="Boolean" />
-          <Property Name="IsHot" Type="Boolean" />
-          <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Screensize" Type="Int32" />
           <Property Name="CPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="OperatingSystem" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
@@ -1039,7 +1031,6 @@
           <Property Name="GPS" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="Bluetooth" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
           <Property Name="Connector" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="Headphonejack" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="BatteryType" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
           <Property Name="ChargingSupport" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
           <Property Name="BatteryTechnology" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
@@ -1053,6 +1044,7 @@
           <NavigationProperty Name="ProductCompany" Relationship="Self.FK_Product_ProductCompany" FromRole="Products" ToRole="ProductCompany" />
           <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductDetail_Products" FromRole="Products" ToRole="ProductDetail" />
           <NavigationProperty Name="Review" Relationship="Self.FK_Review_Products" FromRole="Products" ToRole="Review" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Provinces">
           <Key>
@@ -1070,7 +1062,7 @@
           <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Content" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
           <Property Name="ReviewId" Type="Int32" />
           <Property Name="ProductId" Type="Int32" />
@@ -1126,7 +1118,7 @@
           <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UsedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="Quantity" Type="Int32" />
@@ -1707,7 +1699,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
               </MappingFragment>
@@ -1776,7 +1768,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="Icon" ColumnName="Icon" />
               </MappingFragment>
@@ -1791,11 +1783,13 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="PriceSale" ColumnName="PriceSale" />
                 <ScalarProperty Name="OrigianlPrice" ColumnName="OrigianlPrice" />
-                <ScalarProperty Name="TypeProduct" ColumnName="TypeProduct" />
-                <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Ram" ColumnName="Ram" />
                 <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsHome" ColumnName="IsHome" />
+                <ScalarProperty Name="IsSale" ColumnName="IsSale" />
+                <ScalarProperty Name="IsHot" ColumnName="IsHot" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1812,19 +1806,14 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
                 <ScalarProperty Name="Alias" ColumnName="Alias" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsHome" ColumnName="IsHome" />
-                <ScalarProperty Name="IsSale" ColumnName="IsSale" />
-                <ScalarProperty Name="IsFeature" ColumnName="IsFeature" />
-                <ScalarProperty Name="IsHot" ColumnName="IsHot" />
-                <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
                 <ScalarProperty Name="Screensize" ColumnName="Screensize" />
                 <ScalarProperty Name="CPUspeed" ColumnName="CPUspeed" />
                 <ScalarProperty Name="OperatingSystem" ColumnName="OperatingSystem" />
@@ -1835,7 +1824,6 @@
                 <ScalarProperty Name="GPS" ColumnName="GPS" />
                 <ScalarProperty Name="Bluetooth" ColumnName="Bluetooth" />
                 <ScalarProperty Name="Connector" ColumnName="Connector" />
-                <ScalarProperty Name="Headphonejack" ColumnName="Headphonejack" />
                 <ScalarProperty Name="BatteryType" ColumnName="BatteryType" />
                 <ScalarProperty Name="ChargingSupport" ColumnName="ChargingSupport" />
                 <ScalarProperty Name="BatteryTechnology" ColumnName="BatteryTechnology" />
@@ -1863,7 +1851,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
@@ -1919,7 +1907,7 @@
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+                <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
                 <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
                 <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />

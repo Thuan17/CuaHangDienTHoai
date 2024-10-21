@@ -118,7 +118,7 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
         </MappingFragment>
@@ -187,7 +187,7 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="Alias" ColumnName="Alias" />
           <ScalarProperty Name="Icon" ColumnName="Icon" />
         </MappingFragment>
@@ -202,11 +202,13 @@
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="PriceSale" ColumnName="PriceSale" />
           <ScalarProperty Name="OrigianlPrice" ColumnName="OrigianlPrice" />
-          <ScalarProperty Name="TypeProduct" ColumnName="TypeProduct" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Ram" ColumnName="Ram" />
           <ScalarProperty Name="Capacity" ColumnName="Capacity" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsHome" ColumnName="IsHome" />
+          <ScalarProperty Name="IsSale" ColumnName="IsSale" />
+          <ScalarProperty Name="IsHot" ColumnName="IsHot" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -223,19 +225,14 @@
     <EntitySetMapping Name="Products">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
         <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="Alias" ColumnName="Alias" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="IsHome" ColumnName="IsHome" />
-          <ScalarProperty Name="IsSale" ColumnName="IsSale" />
-          <ScalarProperty Name="IsFeature" ColumnName="IsFeature" />
-          <ScalarProperty Name="IsHot" ColumnName="IsHot" />
-          <ScalarProperty Name="ProductCode" ColumnName="ProductCode" />
           <ScalarProperty Name="Screensize" ColumnName="Screensize" />
           <ScalarProperty Name="CPUspeed" ColumnName="CPUspeed" />
           <ScalarProperty Name="OperatingSystem" ColumnName="OperatingSystem" />
@@ -246,7 +243,6 @@
           <ScalarProperty Name="GPS" ColumnName="GPS" />
           <ScalarProperty Name="Bluetooth" ColumnName="Bluetooth" />
           <ScalarProperty Name="Connector" ColumnName="Connector" />
-          <ScalarProperty Name="Headphonejack" ColumnName="Headphonejack" />
           <ScalarProperty Name="BatteryType" ColumnName="BatteryType" />
           <ScalarProperty Name="ChargingSupport" ColumnName="ChargingSupport" />
           <ScalarProperty Name="BatteryTechnology" ColumnName="BatteryTechnology" />
@@ -274,7 +270,7 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="Content" ColumnName="Content" />
           <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
@@ -330,7 +326,7 @@
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="Modifeby" ColumnName="Modifeby" />
+          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
           <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />

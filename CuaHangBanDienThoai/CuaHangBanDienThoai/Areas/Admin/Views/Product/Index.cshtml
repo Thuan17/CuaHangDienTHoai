@@ -1,10 +1,10 @@
-﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.ProductCompany>
+﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.Products>
 @using PagedList.Mvc
-
 @{
-    ViewBag.Title = "Quản lý hãng sản phẩm";
+    ViewBag.Title = "Quản lý sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="/them-hang-san-pham" class="btn btn-success">
+                    <a href="/them-san-pham" class="btn btn-success">
                         Tạo mới
                     </a>
 
@@ -70,10 +70,10 @@
                             </th>
                             <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
 
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Tên hãng</th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Tên sản phẩm </th>
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Chi tiết</th>
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"></th>
-                           
+
 
                             @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
                             <th class="text-secondary opacity-7" style="max-width:75px;"></th>
@@ -100,13 +100,13 @@
                                     int maxLength = 7;
                                     alias = item.Alias;
                                 }
-                                var count = item.Products.Where(x => x.ProductCompanyId == item.ProductCompanyId).Count();
+                                var count = item.ProductDetail.Where(x => x.ProductsId == item.ProductsId).Count();
                                 var strImg = "";
 
 
-                                if (item.Icon != null)
+                                if (item.Image != null)
                                 {
-                                    strImg = item.Icon;
+                                    strImg = item.Image;
                                 }
                                 <tr>
                                     <td style="max-width:30px;">
@@ -134,6 +134,10 @@
 
 
                                     <td class="align-middle">
+
+                                        <p > Danh mục : @item.ProductCategory.Title.Trim()</p>
+                                        <p > Hãng : @item.ProductCompany.Title.Trim()</p>
+
                                         <p>Tạo ngày :  @item.CreatedDate.ToString("dd/MM/yyyy")</p>
                                         <p>Tạo bởi :  @item.CreatedBy</p>
                                         <p>

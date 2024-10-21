@@ -1,0 +1,241 @@
+﻿@model CuaHangBanDienThoai.Models.ProductCompany
+@{
+    ViewBag.Title = "Chỉnh sửa hãng" + (ViewBag.Name ?? "");
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý</h1>
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Hãng sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Chỉnh sửa danh mục @(ViewBag.Name ??" " )</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                @using (Html.BeginForm("Edit", "ProductCompany", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ProductCompanyId)
+                    @Html.HiddenFor(x => x.CreatedDate)
+                    @Html.HiddenFor(x => x.CreatedBy)
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" id="txtImage" name="Icon" />
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="single_product_pics">
+                                <div class="row">
+                                    <div class="col-lg-12 image_col order-lg-2 order-1">
+                                        <div class="single_product_image text-center">
+                                            <div class="container-anh-cu" style="position: relative; display: inline-block;">
+                                                <img id="img-cu" src="@Model.Icon" alt="@Model.Title" style="max-width:80%;" />
+                                                <input type="button" class="btn btn-primary" value="Đổi ảnh" onclick="BrowseServer('txtImage');" style="position: absolute; top: 0; left: 0;" />
+                                            </div>
+                                            <div class="container-anh-moi" style="display:none; position: relative;">
+                                                <img id="img-moi" src="#" alt="Ảnh mới" style="max-width:80%;" />
+                                                <input type="button" class="btn btn-primary" value="Đổi ảnh" onclick="BrowseServer('txtImage');" style="position: absolute; top: 0; left: 0;" />
+                                            </div>
+                                            <input type="file" id="fileInput" style="display:none;" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="product_details">
+                                <div class="product_details_title">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <h2>@Model.Title</h2>
+                                        </div>
+                                        <div class="col-md-4 text-right">
+                                            <a href="/chi-tiet-danh-muc/@Model.Alias-p@(Model.ProductCompanyId)" class="btn btn-success text-white">
+                                                Xem
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr class="col-12" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Tên hãng sản phẩm</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", id = "Title" } })
+                                        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <p><label>Tạo bởi :</label>@Model.CreatedBy</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <p><label>Ngày tạo :</label>@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <p><label>Chỉnh sửa bởi :</label> @(Model.Modifiedby ??  "Chưa qua chỉnh sửa")</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <p><label>Ngày chỉnh sửa :</label>@(Model.ModifiedDate.HasValue ? Model.ModifiedDate.Value.ToString("dd/MM/yyyy") : "Không có ngày chỉnh sửa")</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group text-center">
+                                <div class="col-md-12">
+                                    <input type="submit" value="Lưu" class="btn btn-success col-md-10" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý</h1>
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Hãng sản phẩm</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <div class="col-12">
+                    <p class="text-danger text-danger">
+                        Không tồn tại bảng ghi nào !!!
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section scripts{
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+        function BrowseServer(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                document.querySelector('.container-anh-moi').style.display = 'block';
+                document.querySelector('.container-anh-cu').style.display = 'none';
+                addImageProduct(fileUrl); 
+                document.getElementById('txtImage').value = fileUrl; 
+                console.log('Selected file URL:', fileUrl); 
+            };
+            finder.popup();
+        }
+
+        function addImageProduct(url) {
+            $('#img-moi').attr('src', url);
+        }
+               $(document).ready(function () {
+    $('#editForm').on('submit', function (e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        var title = $('#Title').val().trim(); 
+
+       
+        if (title === '' || title === null) {
+            Swal.fire({
+                icon: "error",
+                title: "Không thể bỏ trống...",
+                text: "Vui lòng điền tên tiêu đề"
+            });
+            return;
+        }
+        // Kiểm tra nội dung FormData
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]);
+        }
+
+        $.ajax({
+            url: '@Url.Action("Edit", "ProductCompany")',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.Success) {
+                    if (response.Code == 1) {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+
+                        Toast.fire({
+                            icon: "success",
+                            title: "Sửa hãng thành công"
+                        });
+
+                        setTimeout(() => window.location.href = "/hang-san-pham", 1500);
+                    }
+                } else {
+                    switch (response.Code) {
+                        case -2:
+                            Swal.fire({
+                                icon: "waring",
+                                title: "Thất bại ",
+                                text: response.msg
+                            });
+                            break;
+
+                        case -100:
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: response.msg
+                            });
+                            break;
+                    }
+                   
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('Có lỗi xảy ra: ' + error);
+            }
+        });
+    });
+});
+    </script>
+        
+}

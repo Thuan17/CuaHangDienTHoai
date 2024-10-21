@@ -129,7 +129,7 @@
     <Property Name="CreatedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="EmployeeId" Type="Int32" />
     <Property Name="SupplierId" Type="Int32" />
     <NavigationProperty Name="Employee" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="ImportWarehouse" ToRole="Employee" />
@@ -185,7 +185,7 @@
     <Property Name="ProductCategoryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Icon" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
@@ -203,7 +203,7 @@
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Alias" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <Property Name="Icon" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Products" Relationship="Self.FK_Product_ProductCompany" FromRole="ProductCompany" ToRole="Products" />
@@ -218,11 +218,13 @@
     <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="TypeProduct" Type="Boolean" />
-    <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <Property Name="Ram" Type="Int32" />
     <Property Name="Capacity" Type="Int32" />
     <Property Name="ProductsId" Type="Int32" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsHome" Type="Boolean" />
+    <Property Name="IsSale" Type="Boolean" />
+    <Property Name="IsHot" Type="Boolean" />
     <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="ProductDetail" ToRole="BillDetail" />
     <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_ProductDetail" FromRole="ProductDetail" ToRole="CartItem" />
     <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ProductDetail" ToRole="ImportWarehouseDetail" />
@@ -249,14 +251,8 @@
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="IsActive" Type="Boolean" />
-    <Property Name="IsHome" Type="Boolean" />
-    <Property Name="IsSale" Type="Boolean" />
-    <Property Name="IsFeature" Type="Boolean" />
-    <Property Name="IsHot" Type="Boolean" />
-    <Property Name="ProductCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Screensize" Type="Int32" />
     <Property Name="CPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
     <Property Name="OperatingSystem" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
@@ -267,7 +263,6 @@
     <Property Name="GPS" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
     <Property Name="Bluetooth" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
     <Property Name="Connector" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="Headphonejack" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
     <Property Name="BatteryType" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
     <Property Name="ChargingSupport" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
     <Property Name="BatteryTechnology" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
@@ -281,6 +276,7 @@
     <NavigationProperty Name="ProductCompany" Relationship="Self.FK_Product_ProductCompany" FromRole="Products" ToRole="ProductCompany" />
     <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductDetail_Products" FromRole="Products" ToRole="ProductDetail" />
     <NavigationProperty Name="Review" Relationship="Self.FK_Review_Products" FromRole="Products" ToRole="Review" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>
@@ -298,7 +294,7 @@
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Content" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
     <Property Name="ReviewId" Type="Int32" />
     <Property Name="ProductId" Type="Int32" />
@@ -354,7 +350,7 @@
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Modifeby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="UsedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <Property Name="UsedDate" Type="DateTime" Precision="3" />
     <Property Name="Quantity" Type="Int32" />

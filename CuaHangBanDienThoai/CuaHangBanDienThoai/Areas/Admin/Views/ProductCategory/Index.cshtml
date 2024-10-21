@@ -1,8 +1,7 @@
-﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.ProductCompany>
+﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.ProductCategory>
 @using PagedList.Mvc
-
 @{
-    ViewBag.Title = "Quản lý hãng sản phẩm";
+    ViewBag.Title = "Quản lý danh mục sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +11,7 @@
         <div class="col-6">
             <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
             <p>
-                Trang loại hãng sản phẩm
+                Trang loại danh mục sản phẩm
             </p>
 
         </div>
@@ -20,7 +19,7 @@
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
 
-                <li class="breadcrumb-item active">Hãng sản phẩm </li>
+                <li class="breadcrumb-item active">Danh mục sản phẩm </li>
 
             </ol>
 
@@ -33,8 +32,8 @@
             <div class="row">
                 <div class="col-2">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Quản lý hãng sản phẩm
-                        <span class="text-danger ">            <label class="text-dark">Tổng số hãng sản phẩm:</label> @ViewBag.Count</span>
+                        Quản lý danh mục sản phẩm
+                        <span class="text-danger ">            <label class="text-dark">Tổng số danh mục sản phẩm:</label> @ViewBag.Count</span>
                     </h6>
                 </div>
 
@@ -51,7 +50,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="/them-hang-san-pham" class="btn btn-success">
+                    <a href="/them-danh-muc-san-pham" class="btn btn-success">
                         Tạo mới
                     </a>
 
@@ -70,10 +69,10 @@
                             </th>
                             <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
 
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Tên hãng</th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Loại danh mục</th>
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Chi tiết</th>
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"></th>
-                           
+
 
                             @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
                             <th class="text-secondary opacity-7" style="max-width:75px;"></th>
@@ -100,7 +99,8 @@
                                     int maxLength = 7;
                                     alias = item.Alias;
                                 }
-                                var count = item.Products.Where(x => x.ProductCompanyId == item.ProductCompanyId).Count();
+                                var count = item.Products.Where(x => x.ProductCategoryId == item.ProductCategoryId).Count();
+
                                 var strImg = "";
 
 
@@ -110,7 +110,7 @@
                                 }
                                 <tr>
                                     <td style="max-width:30px;">
-                                        <input type="checkbox" class="cbkItem" value="@item.ProductCompanyId" />@i
+                                        <input type="checkbox" class="cbkItem" value="@item.ProductCategoryId" />@i
                                     </td>
                                     <td>
                                         <div class="d-flex px-2 py-1">
@@ -137,22 +137,23 @@
                                         <p>Tạo ngày :  @item.CreatedDate.ToString("dd/MM/yyyy")</p>
                                         <p>Tạo bởi :  @item.CreatedBy</p>
                                         <p>
-                                            @((item.ModifiedDate != null) ? $"      Chỉnh sửa ngày : {item.ModifiedDate:dd/MM/yyyy}" : "")
+                                           @((item.ModifiedDate != null) ? $"      Chỉnh sửa ngày : {item.ModifiedDate:dd/MM/yyyy}" : "")
 
                                         </p>
                                         <p>@(!string.IsNullOrEmpty(item.Modifiedby) ? $"Chỉnh sửa bởi: {item.Modifiedby}" : "")</p>
 
                                         <p>Số lượng sản phẩm: @(count > 0 ? count.ToString() : "0")</p>
 
+
                                     </td>
 
 
                                     <td class="align-middle" style="max-width:100px;">
-                                        <a href="/chi-tiet-san-pham/@item.Alias-p@(item.ProductCompanyId)" class=" btn btn-primary btn-s text-white" data-toggle="tooltip" data-original-title="Edit user" style="min-width:60px;">
+                                        <a href="/chi-tiet-san-pham/@item.Alias-p@(item.ProductCategoryId)" class=" btn btn-primary btn-s text-white" data-toggle="tooltip" data-original-title="Edit user" style="min-width:60px;">
                                             Xem
                                         </a>
 
-                                        <a href="/chinh-sua-hang/@item.Alias.Trim()" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
+                                        <a href="/sua-danhmuc-sanpham/@item.Alias.Trim()" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
                                             Sửa
                                         </a>
 
@@ -234,3 +235,5 @@
         </div>
     </div>
 </div>
+
+

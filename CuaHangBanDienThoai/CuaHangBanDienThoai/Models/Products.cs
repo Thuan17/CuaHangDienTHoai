@@ -26,14 +26,8 @@ namespace CuaHangBanDienThoai.Models
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
-        public string Modifeby { get; set; }
+        public string Modifiedby { get; set; }
         public string Alias { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public Nullable<bool> IsHome { get; set; }
-        public Nullable<bool> IsSale { get; set; }
-        public Nullable<bool> IsFeature { get; set; }
-        public Nullable<bool> IsHot { get; set; }
-        public string ProductCode { get; set; }
         public Nullable<int> Screensize { get; set; }
         public string CPUspeed { get; set; }
         public string OperatingSystem { get; set; }
@@ -44,7 +38,6 @@ namespace CuaHangBanDienThoai.Models
         public string GPS { get; set; }
         public string Bluetooth { get; set; }
         public string Connector { get; set; }
-        public string Headphonejack { get; set; }
         public string BatteryType { get; set; }
         public string ChargingSupport { get; set; }
         public string BatteryTechnology { get; set; }
@@ -54,6 +47,7 @@ namespace CuaHangBanDienThoai.Models
         public Nullable<int> BatteryCapacity { get; set; }
         public Nullable<int> ProductCategoryId { get; set; }
         public Nullable<int> ProductCompanyId { get; set; }
+        public string Description { get; set; }
     
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ProductCompany ProductCompany { get; set; }
