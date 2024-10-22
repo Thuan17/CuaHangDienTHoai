@@ -5,6 +5,39 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
+<div class="bg-sg" style="display: none ">
+
+</div>
+
+
+<div id="popupBill" style="display: none">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title">
+                <h5>
+                    Thông tin đơn hàng
+                </h5>
+            </div>
+            <div class="card-tools">
+                <div class="btn btnCloseEditBill">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataBillEdit">
+                <div class="text-center">
+                    <img src="~/Content/ckfinder/ckfinder/plugins/gallery/colorbox/images/loading.gif" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -135,16 +168,10 @@
 
                                     <td class="align-middle">
 
-                                        <p > Danh mục : @item.ProductCategory.Title.Trim()</p>
-                                        <p > Hãng : @item.ProductCompany.Title.Trim()</p>
+                                        <p> Danh mục : @item.ProductCategory.Title.Trim()</p>
+                                        <p> Hãng : @item.ProductCompany.Title.Trim()</p>
 
-                                        <p>Tạo ngày :  @item.CreatedDate.ToString("dd/MM/yyyy")</p>
-                                        <p>Tạo bởi :  @item.CreatedBy</p>
-                                        <p>
-                                            @((item.ModifiedDate != null) ? $"      Chỉnh sửa ngày : {item.ModifiedDate:dd/MM/yyyy}" : "")
-
-                                        </p>
-                                        <p>@(!string.IsNullOrEmpty(item.Modifiedby) ? $"Chỉnh sửa bởi: {item.Modifiedby}" : "")</p>
+                                   
 
                                         <p>Số lượng sản phẩm: @(count > 0 ? count.ToString() : "0")</p>
 
@@ -152,11 +179,11 @@
 
 
                                     <td class="align-middle" style="max-width:100px;">
-                                        <a href="/chi-tiet-san-pham/@item.Alias-p@(item.ProductCompanyId)" class=" btn btn-primary btn-s text-white" data-toggle="tooltip" data-original-title="Edit user" style="min-width:60px;">
+                                        <a href="/chi-tiet/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
                                             Xem
                                         </a>
 
-                                        <a href="/chinh-sua-hang/@item.Alias.Trim()" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
+                                        <a href="/sua-sanpham/@item.Alias" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
                                             Sửa
                                         </a>
 

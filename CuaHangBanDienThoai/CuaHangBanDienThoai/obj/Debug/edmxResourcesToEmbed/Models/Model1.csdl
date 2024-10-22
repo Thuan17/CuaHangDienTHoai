@@ -253,30 +253,29 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="Screensize" Type="Int32" />
-    <Property Name="CPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="OperatingSystem" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="GPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="MobileNetwork" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="Sim" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
-    <Property Name="Wifi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="GPS" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="Bluetooth" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
-    <Property Name="Connector" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="BatteryType" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
-    <Property Name="ChargingSupport" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-    <Property Name="BatteryTechnology" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+    <Property Name="Screensize" Type="String" MaxLength="50" FixedLength="true" Unicode="false" />
+    <Property Name="CPUspeed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="OperatingSystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="GPUspeed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="MobileNetwork" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Sim" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Wifi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Bluetooth" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="Connector" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BatteryType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="ChargingSupport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BatteryTechnology" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="GPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-    <Property Name="BatteryCapacity" Type="Int32" />
+    <Property Name="CPU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="GPU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="BatteryCapacity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="ProductCategoryId" Type="Int32" />
     <Property Name="ProductCompanyId" Type="Int32" />
+    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ProductCategory" Relationship="Self.FK_Products_ProductCategory" FromRole="Products" ToRole="ProductCategory" />
     <NavigationProperty Name="ProductCompany" Relationship="Self.FK_Product_ProductCompany" FromRole="Products" ToRole="ProductCompany" />
     <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductDetail_Products" FromRole="Products" ToRole="ProductDetail" />
     <NavigationProperty Name="Review" Relationship="Self.FK_Review_Products" FromRole="Products" ToRole="Review" />
-    <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>

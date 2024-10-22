@@ -11,14 +11,14 @@ namespace CuaHangBanDienThoai.Models
         public int ProductCategoryId { get; set; }
         public int ProductCompanyId { get; set; }
         public string Title { get;set; }
-        public int Screensize { get;set; }
+        public string Screensize { get;set; }
         public string CPUspeed { get;set; }
         public string OperatingSystem { get;set; }
         public string GPUspeed { get;set; }
         public string MobileNetwork { get;set; }
         public string Sim { get;set; }
         public string Wifi { get;set; }
-        public string GPS { get;set; }
+       
         public string Bluetooth { get;set; }
         public string Connector { get;set; }
       
@@ -27,7 +27,7 @@ namespace CuaHangBanDienThoai.Models
         public string BatteryTechnology { get;set; }
         public string CPU { get;set; }
         public string GPU { get;set; }
-        public int BatteryCapacity { get;set; }
+        public string BatteryCapacity { get;set; }
         [AllowHtml]
         public string Description { get;set; }
      

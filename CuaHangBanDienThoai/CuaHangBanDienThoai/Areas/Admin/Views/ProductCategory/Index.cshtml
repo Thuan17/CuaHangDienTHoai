@@ -135,7 +135,7 @@
 
                                     <td class="align-middle">
                                         <p>Tạo ngày :  @item.CreatedDate.ToString("dd/MM/yyyy")</p>
-                                        <p>Tạo bởi :  @item.CreatedBy</p>
+                                        <p>Tạo bởi :  <span class="text-gray-800">@item.CreatedBy</span></p>
                                         <p>
                                            @((item.ModifiedDate != null) ? $"      Chỉnh sửa ngày : {item.ModifiedDate:dd/MM/yyyy}" : "")
 

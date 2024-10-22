@@ -1,4 +1,4 @@
-(function($) {
+﻿(function($) {
   "use strict"; // Start of use strict
 
   // Toggle the side navigation
@@ -52,5 +52,10 @@
     }, 1000, 'easeInOutExpo');
     e.preventDefault();
   });
+   
 
 })(jQuery); // End of use strict
+
+
+
+

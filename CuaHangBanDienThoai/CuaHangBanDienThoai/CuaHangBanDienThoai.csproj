@@ -173,6 +173,7 @@
     </Compile>
     <Compile Include="Models\Admin_AddProduct.cs" />
     <Compile Include="Models\Admin_AddProductCompany.cs" />
+    <Compile Include="Models\Admin_EditProduct.cs" />
     <Compile Include="Models\AuthorizeFunction.cs" />
     <Compile Include="Models\Bill.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -5483,6 +5484,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\admin\admin-notifications.js" />
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
     <Content Include="Scripts\admin\js\AddProductCategory.js" />
@@ -5497,6 +5499,7 @@
     <Content Include="Scripts\admin\js\sb-admin-2.js" />
     <Content Include="Scripts\admin\js\sb-admin-2.min.js" />
     <Content Include="Scripts\admin\New.js" />
+    <Content Include="Scripts\admin\Product.js" />
     <Content Include="Scripts\autoNumeric-1.9.45.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -5528,6 +5531,11 @@
     <Content Include="Areas\Admin\Views\ProductCompany\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCompany\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Detail.cshtml" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Model1.Designer.cs</LastGenOutput>
@@ -5535,10 +5543,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Admin\Views\ProductCategory\Add.cshtml" />
-    <Content Include="Areas\Admin\Views\ProductCategory\Edit.cshtml" />
-    <Content Include="Areas\Admin\Views\Product\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Product\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

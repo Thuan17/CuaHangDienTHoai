@@ -1,0 +1,371 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditProduct
+@{
+    ViewBag.Title = "Sửa sản phẩm " + (ViewBag.Name ?? "");
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .error-message {
+        display: none;
+        color: red;
+    }
+
+    .error-border {
+        border: 2px solid red;
+    }
+
+    .txtContent {
+        min-height: 500px;
+    }
+</style>
+
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý</h1>
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/quan-ly-san-pham">Sản phẩm</a></li>
+                    <li class="breadcrumb-item active">Chỉnh sửa  @ViewBag.Name</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <form id="editProduct" enctype="multipart/form-data" method="post">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ProductId)
+                    @Html.HiddenFor(x => x.CreatedDate)
+                    @Html.HiddenFor(x => x.CreatedBy)
+                    @Html.HiddenFor(x => x.Alias)
+
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <input type="hidden" id="txtImage" name="Icon" />
+                    <input type="hidden" id="ImagesJson" name="Images" />
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+                                <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Mô tả</a></li>
+
+                            </ul>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="single_product_pics">
+                                                <div class="row">
+                                                    <div class="col-lg-12 image_col order-lg-2 order-1">
+                                                        <div class="single_product_image text-center">
+                                                            <div class="container-anh-cu" style="position: relative; display: inline-block;">
+                                                                <img id="img-cu" src="@Model.Image" alt="@Model.Title" style="max-width:80%;" onclick="BrowseServerImageProduct('txtImage');" />
+                                                            </div>
+                                                            <div class="container-anh-moi" style="display:none; position: relative;">
+                                                                <img id="img-moi" src="#" alt="Ảnh mới" style="max-width:80%;" onclick="BrowseServerImageProduct('txtImage');" />
+                                                            </div>
+                                                            <input type="file" id="fileInput" style="display:none;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="col-12" />
+                                        </div>
+                                        <div class="col-lg-9  ">
+                                            <div class="col-12 p-0 m-0">
+                                                <div class="form-group">
+                                                    <h4>Thông tin hiện tại của sản phẩm</h4>
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Mã  sản phẩm:<span class="text-gray-800">@Model.Alias.Trim()</span> </label>
+
+                                                    </div>
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Tạo bởi: <span class="text-gray-800">@Model.CreatedBy</span></label> <label for="exampleInputEmail1">Tạo ngày: <span class="text-gray-800">@Model.CreatedDate.ToString("dd/MM/yyyy")</span></label>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-12 p-0 m-0">
+                                                <div class="form-group">
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Tên  sản phẩm</label>
+                                                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tên sản phẩm", id = "Title" })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-12 row  p-0 m-0">
+                                                <div class="col-lg-6 pr-2 p-0 m-0">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Danh mục sản phẩm</label>
+                                                        @Html.DropDownListFor(x => x.ProductCategoryId, ViewBag.ProductCategory as SelectList, "-Chọn danh mục sản phẩm-", new { @class = "form-control", @placeholder = "Dạnh mục sản phẩm" })
+                                                        @Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6  p-0 m-0">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Hãng sản phẩm</label>
+                                                        @Html.DropDownListFor(x => x.ProductCompanyId, ViewBag.ProductCompany as SelectList, "-Chọn hãng sản phẩm-", new { @class = "form-control", @placeholder = "Hãng sản phẩm" })
+                                                        @Html.ValidationMessageFor(x => x.ProductCompanyId, null, new { @class = "text-danger" })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Chip   </label>
+                                                    @Html.TextBoxFor(x => x.CPU, new { @class = "form-control", @placeholder = "Chip máy ", id = "CPU" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Tốc độ Chip</label>
+                                                    @Html.TextBoxFor(x => x.CPUspeed, new { @class = "form-control", @placeholder = "Tốc độ Chip", id = "CPUspeed" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">GPU   </label>
+                                                    @Html.TextBoxFor(x => x.GPU, new { @class = "form-control", @placeholder = "GPU", id = "GPU" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Tốc độ GPU</label>
+                                                    @Html.TextBoxFor(x => x.GPUspeed, new { @class = "form-control", @placeholder = "Tốc độ GPU", id = "GPUspeed" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Sim   </label>
+                                                    @Html.TextBoxFor(x => x.Sim, new { @class = "form-control", @placeholder = "Sim", id = "Sim" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-4 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Hỗ trợ mạng</label>
+                                                    @Html.TextBoxFor(x => x.MobileNetwork, new { @class = "form-control", @placeholder = "Tốc độ GPU", id = "MobileNetwork" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-4 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Wifi</label>
+                                                    @Html.TextBoxFor(x => x.Wifi, new { @class = "form-control", @placeholder = "Wifi", id = "Wifi" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Bluetooth   </label>
+                                                    @Html.TextBoxFor(x => x.Bluetooth, new { @class = "form-control", @placeholder = "Bluetooth", id = "Bluetooth" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Cổng kết nối</label>
+                                                    @Html.TextBoxFor(x => x.Connector, new { @class = "form-control", @placeholder = "Cổng kết nối", id = "Connector" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-3 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Loại Pin</label>
+                                                    @Html.TextBoxFor(x => x.BatteryType, new { @class = "form-control", @placeholder = "Loại Pin", id = "BatteryType" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-3 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Hỗ trợ sạc</label>
+                                                    @Html.TextBoxFor(x => x.ChargingSupport, new { @class = "form-control", @placeholder = "Hỗ trợ sạc", id = "ChargingSupport" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-3 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Công Nghệ Pin</label>
+                                                    @Html.TextBoxFor(x => x.BatteryTechnology, new { @class = "form-control", @placeholder = "Cổng kết nối", id = "BatteryTechnology" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-3 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Dung lượng Pin   </label>
+                                                    @Html.TextBoxFor(x => x.BatteryCapacity, new { @class = "form-control", @placeholder = "Dung lượng Pin  ", id = "BatteryCapacity" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Kích cỡ màn hình  </label>
+                                                    @Html.TextBoxFor(x => x.Screensize, new { @class = "form-control", @placeholder = "Kích cỡ màn hình ", id = "Screensize" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <div class="form-group">
+                                                <div id="TitleContainer" class="form-group">
+                                                    <label for="exampleInputEmail1">Hệ điều hành</label>
+                                                    @Html.TextBoxFor(x => x.OperatingSystem, new { @class = "form-control", @placeholder = "Hệ điều hành", id = "OperatingSystem" })
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="tab-pane" id="settings">
+                                    <div class="form-group">
+                                        <label for="txtDetail">Mô tả</label>
+
+                                        @Html.TextAreaFor(x => x.Description, new { @class = "form-control", id = "txtContent" })
+
+
+                                    </div>
+                                </div>
+
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div><!-- /.card-body -->
+
+                    </div>
+
+
+
+
+
+                    <div class="col-12 text-center">
+                        <button type="button" onclick="$('#editProduct').submit();" class="btn btn-success col-8">Lưu lại</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý</h1>
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Loại sản phẩm</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <div class="col-12">
+                    <p class="text-danger text-danger">
+                        Không tồn tại bảng ghi nào !!!
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="~/Scripts/admin/js/Admin_ProductEdit.js"></script>
+@section scripts {
+    <script>
+        function BrowseServerImageProduct(field) {
+            var finder = new CKFinder();
+            finder.selectActionFunction = function (fileUrl) {
+                // Hiển thị ảnh mới và ẩn ảnh cũ
+                document.querySelector('.container-anh-moi').style.display = 'block';
+                document.querySelector('.container-anh-cu').style.display = 'none';
+
+                // Gán URL của ảnh vào input ẩn
+                document.getElementById('txtImage').value = fileUrl;
+
+                // Thêm ảnh vào danh sách
+                addImageProduct(fileUrl);
+            };
+            finder.popup();
+        }
+
+        function addImageProduct(url) {
+            // Cập nhật ảnh mới hiển thị
+            $('#img-moi').attr('src', url);
+
+            // Cập nhật giá trị input ẩn với đường dẫn ảnh
+            $('#ImagesJson').val(url); // Gửi trực tiếp đường dẫn mà không cần bọc trong JSON
+        }
+    </script>
+}

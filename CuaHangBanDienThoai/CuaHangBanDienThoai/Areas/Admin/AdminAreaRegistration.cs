@@ -12,8 +12,20 @@ namespace CuaHangBanDienThoai.Areas.Admin
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
+            context.MapRoute(
+     name: "Edit_Products",
+     url: "sua-sanpham/{alias}",
+     defaults: new { controller = "Product", action = "Edit" }
+
+ );
+            context.MapRoute(
+     name: "Details_Products",
+     url: "chi-tiet/{alias}",
+     defaults: new { controller = "Product", action = "Detail" }
+
+ );
             context.MapRoute(
      name: "Add_Products",
      url: "them-san-pham",

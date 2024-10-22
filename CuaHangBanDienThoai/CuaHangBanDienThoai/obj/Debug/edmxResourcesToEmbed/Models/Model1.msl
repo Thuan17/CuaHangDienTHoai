@@ -225,7 +225,6 @@
     <EntitySetMapping Name="Products">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
         <MappingFragment StoreEntitySet="Products">
-          <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -240,7 +239,6 @@
           <ScalarProperty Name="MobileNetwork" ColumnName="MobileNetwork" />
           <ScalarProperty Name="Sim" ColumnName="Sim" />
           <ScalarProperty Name="Wifi" ColumnName="Wifi" />
-          <ScalarProperty Name="GPS" ColumnName="GPS" />
           <ScalarProperty Name="Bluetooth" ColumnName="Bluetooth" />
           <ScalarProperty Name="Connector" ColumnName="Connector" />
           <ScalarProperty Name="BatteryType" ColumnName="BatteryType" />
@@ -252,6 +250,7 @@
           <ScalarProperty Name="BatteryCapacity" ColumnName="BatteryCapacity" />
           <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
           <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

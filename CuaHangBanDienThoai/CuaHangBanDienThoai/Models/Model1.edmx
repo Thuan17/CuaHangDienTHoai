@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -221,24 +221,22 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="Modifiedby" Type="nvarchar(max)" />
           <Property Name="Alias" Type="nvarchar(max)" />
-          <Property Name="Screensize" Type="int" />
-          <Property Name="CPUspeed" Type="nvarchar" MaxLength="900" />
-          <Property Name="OperatingSystem" Type="nvarchar" MaxLength="900" />
-          <Property Name="GPUspeed" Type="nvarchar" MaxLength="900" />
-          <Property Name="MobileNetwork" Type="nvarchar" MaxLength="900" />
-          <Property Name="Sim" Type="char" MaxLength="900" />
-          <Property Name="Wifi" Type="nvarchar(max)" />
-          <Property Name="GPS" Type="nvarchar" MaxLength="900" />
-          <Property Name="Bluetooth" Type="char" MaxLength="900" />
-          <Property Name="Connector" Type="nvarchar" MaxLength="900" />
-          <Property Name="Headphonejack" Type="nvarchar" MaxLength="900" />
-          <Property Name="BatteryType" Type="char" MaxLength="900" />
-          <Property Name="ChargingSupport" Type="nvarchar" MaxLength="900" />
-          <Property Name="BatteryTechnology" Type="nvarchar" MaxLength="900" />
+          <Property Name="Screensize" Type="char" MaxLength="50" />
+          <Property Name="CPUspeed" Type="nvarchar" MaxLength="255" />
+          <Property Name="OperatingSystem" Type="nvarchar" MaxLength="255" />
+          <Property Name="GPUspeed" Type="nvarchar" MaxLength="255" />
+          <Property Name="MobileNetwork" Type="nvarchar" MaxLength="255" />
+          <Property Name="Sim" Type="nvarchar" MaxLength="255" />
+          <Property Name="Wifi" Type="nvarchar" MaxLength="255" />
+          <Property Name="Bluetooth" Type="nvarchar" MaxLength="255" />
+          <Property Name="Connector" Type="nvarchar" MaxLength="255" />
+          <Property Name="BatteryType" Type="nvarchar" MaxLength="255" />
+          <Property Name="ChargingSupport" Type="nvarchar" MaxLength="255" />
+          <Property Name="BatteryTechnology" Type="nvarchar" MaxLength="255" />
           <Property Name="Image" Type="varchar(max)" />
-          <Property Name="CPU" Type="nvarchar" MaxLength="100" />
-          <Property Name="GPU" Type="nvarchar" MaxLength="100" />
-          <Property Name="BatteryCapacity" Type="int" />
+          <Property Name="CPU" Type="nvarchar" MaxLength="255" />
+          <Property Name="GPU" Type="nvarchar" MaxLength="255" />
+          <Property Name="BatteryCapacity" Type="nvarchar" MaxLength="255" />
           <Property Name="ProductCategoryId" Type="int" />
           <Property Name="ProductCompanyId" Type="int" />
           <Property Name="Description" Type="nvarchar(max)" />
@@ -764,7 +762,8 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1021,30 +1020,29 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Screensize" Type="Int32" />
-          <Property Name="CPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="OperatingSystem" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="GPUspeed" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="MobileNetwork" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="Sim" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
-          <Property Name="Wifi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="GPS" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="Bluetooth" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
-          <Property Name="Connector" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="BatteryType" Type="String" MaxLength="900" FixedLength="true" Unicode="false" />
-          <Property Name="ChargingSupport" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
-          <Property Name="BatteryTechnology" Type="String" MaxLength="900" FixedLength="false" Unicode="true" />
+          <Property Name="Screensize" Type="String" MaxLength="50" FixedLength="true" Unicode="false" />
+          <Property Name="CPUspeed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="OperatingSystem" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GPUspeed" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MobileNetwork" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Sim" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Wifi" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Bluetooth" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Connector" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BatteryType" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ChargingSupport" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BatteryTechnology" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="GPU" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="BatteryCapacity" Type="Int32" />
+          <Property Name="CPU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="GPU" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="BatteryCapacity" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="ProductCategoryId" Type="Int32" />
           <Property Name="ProductCompanyId" Type="Int32" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ProductCategory" Relationship="Self.FK_Products_ProductCategory" FromRole="Products" ToRole="ProductCategory" />
           <NavigationProperty Name="ProductCompany" Relationship="Self.FK_Product_ProductCompany" FromRole="Products" ToRole="ProductCompany" />
           <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductDetail_Products" FromRole="Products" ToRole="ProductDetail" />
           <NavigationProperty Name="Review" Relationship="Self.FK_Review_Products" FromRole="Products" ToRole="Review" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Provinces">
           <Key>
@@ -1806,7 +1804,6 @@
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
               <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -1821,7 +1818,6 @@
                 <ScalarProperty Name="MobileNetwork" ColumnName="MobileNetwork" />
                 <ScalarProperty Name="Sim" ColumnName="Sim" />
                 <ScalarProperty Name="Wifi" ColumnName="Wifi" />
-                <ScalarProperty Name="GPS" ColumnName="GPS" />
                 <ScalarProperty Name="Bluetooth" ColumnName="Bluetooth" />
                 <ScalarProperty Name="Connector" ColumnName="Connector" />
                 <ScalarProperty Name="BatteryType" ColumnName="BatteryType" />
@@ -1833,6 +1829,7 @@
                 <ScalarProperty Name="BatteryCapacity" ColumnName="BatteryCapacity" />
                 <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
                 <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

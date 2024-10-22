@@ -1,0 +1,412 @@
+﻿@model CuaHangBanDienThoai.Models.Products
+@{
+    ViewBag.Title = "Chi tiết " + (ViewBag.Name ?? "");
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tab-pane{
+        min-height:440px;
+    }
+</style>
+
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+
+        var Name = Model.ProductCategory.Title.Trim() +"  "+ Model.Title.Trim();
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                    <li class="breadcrumb-item"><a href="/san-pham">Sản phẩm </a></li>
+                    <li class="breadcrumb-item active">Chi tiết  @ViewBag.Name</li>
+
+                </ol>
+
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="single_product_pics">
+                            <div class="row">
+                                <div class="col-lg-12 image_col order-lg-2 order-1">
+                                    <div class="single_product_image text-center">
+
+                                        <img src="@Model.Image" alt="@Model.Title" style="max-width:80%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                      
+                        
+                        <div class="product_details">
+                            <div class="product_details_title">
+
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h2>@Name</h2>
+                                    </div>
+                                    <div class="col-md-4 text-right">
+                                        <a href="/chinh-sua-danh-muc/p@(Model.ProductCategoryId)" class="btn btn-warning text-white">
+                                            Chỉnh sửa
+                                        </a>
+
+                                    </div>
+                                </div>
+                                <hr class="col-12" />
+
+                            </div>
+                            <ul class="nav nav-pills mb-4">
+                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Thông số</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#description" data-toggle="tab">Mô tả</a></li>
+
+
+                            </ul>
+                            <hr class="col-12" />
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="col-12">
+                                        <h5 class="text-black">Thông tin sản phẩm  @Name</h5>
+                                        <p class="d-flex flex-row">
+                                            Mã loại :
+                                            <span class="text-gray-600"> @Model.Alias</span>
+                                        </p>
+
+                                        <p class="d-flex flex-row">Tạo ngày :      <span class="text-gray-600">  @Model.CreatedDate.ToString("dd/MM/yyyy")</span></p>
+                                        <p class="d-flex flex-row">Tạo bởi :   <span class="text-gray-600"> @Model.CreatedBy</span></p>
+                                        <p class="d-flex flex-row">
+                                            @Html.Raw((Model.ModifiedDate != null)
+                                                ? $" Chỉnh sửa ngày: <span class=\"text-gray-600\">  {Model.ModifiedDate:dd/MM/yyyy} </span>"
+                                                : "")
+                                        </p>
+
+                                        <p class="d-flex flex-row"></p>
+
+                                        @Html.Raw((Model.Modifiedby != null)
+            ? $"Chỉnh sửa bởi: <span class=\"text-gray-600\">  {Model.Modifiedby} </span>"
+            : "")
+
+                                    </div>
+                                </div>
+                                <div class="tab-pane " id="timeline">
+
+                                    <div class="row m-0 p-0">
+                                        <div class="col-lg-12 p-0 m-0 border-1 border-bottom-2">
+
+                                            <div class="box-specifi">
+                                                <a href="javascript:;" class="active"><h3>Cấu hình &amp; Bộ nhớ</h3></a>
+
+                                                <ul class="text-specifi active">
+                                                    <li>
+                                                        <aside>
+                                                            <a target="_blank" class="tzLink" href="https://www.thegioididong.com/hoi-dap/he-dieu-hanh-la-gi-804907#hmenuid1">Hệ điều hành:</a>
+                                                        </aside>
+                                                        <aside>
+                                                            <span class="">@Model.OperatingSystem.Trim()</span>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Chip xử lý (CPU):</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <span class="">@Model.CPU.Trim()</span>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <a target="_blank" class="tzLink" href="https://www.thegioididong.com/hoi-dap/toc-do-cpu-la-gi-co-y-nghia-gi-trong-cac-thiet-bi-dien-tu-1299483">Tốc độ CPU:</a>
+                                                        </aside>
+                                                        <aside>
+                                                            <span class="">@Model.CPUspeed.Trim()</span>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Chip đồ họa (GPU):</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="https://www.thegioididong.com/hoi-dap/tim-hieu-chip-xu-ly-apple-a14-bionic-hieu-nang-manh-den-1302095" class="tzLink" target="_blank">@Model.GPU.Trim()</a>
+                                                        </aside>
+                                                    </li>
+
+
+
+                                                    @*<li>
+                                <aside>
+                                    <strong>Danh bạ:</strong>
+                                </aside>
+                                <aside>
+                                    <span class="">Không giới hạn</span>
+                                </aside>
+                            </li>*@
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+                                            <div class="box-specifi">
+                                                <a href="javascript:;"><h3> Màn hình</h3></a>
+
+                                                <ul class="text-specifi ">
+
+
+
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Màn hình rộng:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <span class="">@Model.Screensize.Trim() <a href="https://www.thegioididong.com/hoi-dap/tan-so-quet-man-hinh-may-tinh-la-gi-1292309#subhmenuid2" target="_blank">120 Hz</a></span>
+                                                        </aside>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+
+                    <div class="box-specifi">
+                        <a href="javascript:;" class=""><h3>Thiết kế &amp; Chất liệu</h3></a>
+
+                        <ul class="text-specifi ">
+                            <li>
+                                <aside>
+                                    <strong>Thiết kế:</strong>
+                                </aside>
+                                <aside>
+                                    <a href="/#" class="tzLink" target="_blank">Nguyên khối</a>
+                                </aside>
+                            </li>
+                            <li>
+                                <aside>
+                                    <strong>Chất liệu:</strong>
+                                </aside>
+                                <aside>
+                                    <span class="">Khung Titan &amp; Mặt lưng kính cường lực</span>
+                                </aside>
+                            </li>
+                            <li>
+                                <aside>
+                                    <strong>Kích thước, khối lượng:</strong>
+                                </aside>
+                                <aside>
+                                    <span class="">Dài 163 mm - Ngang 77.6 mm - Dày 8.25 mm - Nặng 227 g</span>
+                                </aside>
+                            </li>
+                            <li>
+                                <aside>
+                                    <strong>Thời điểm ra mắt:</strong>
+                                </aside>
+                                <aside>
+                                    <span class="">09/2024</span>
+                                </aside>
+                            </li>
+                            <li>
+                                <aside>
+                                    <strong>Hãng:</strong>
+                                </aside>
+                                <aside>
+                                    <span class="">iPhone (Apple). <span class="parameter__manu">Xem thông tin hãng</span></span>
+                                </aside>
+                            </li>
+                        </ul>
+                    </div>
+                </div>*@
+                                        <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+                                            <div class="box-specifi">
+                                                <a href="javascript:;" class="" data-group-id="2122" data-index="3"><h3>Pin &amp; Sạc</h3></a>
+
+                                                <ul class="text-specifi ">
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Dung lượng pin:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <span class="">@Model.BatteryCapacity.Trim() giờ</span>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Loại pin:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="/#" class="tzLink" target="_blank">@Model.BatteryType.Trim()</a>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Hỗ trợ sạc tối đa:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <span class="">20 W</span>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Công nghệ pin:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="/#" class="tzLink circle" target="_blank">@Model.BatteryTechnology.Trim()</a>
+                                                        </aside>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+                                            <div class="box-specifi">
+                                                <a href="javascript:;" class="" data-group-id="24" data-index="6"><h3>Kết nối</h3></a>
+
+                                                <ul class="text-specifi ">
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Mạng di động:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="/#" class="tzLink" target="_blank">@Model.MobileNetwork.Trim()</a>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>SIM:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="/#" class="tzLink" target="_blank">@Model.Sim.Trim()</a>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <a target="_blank" class="tzLink" href="/#">Wifi:</a>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="https://www.thegioididong.com/tin-tuc/cong-nghe-wifi-mimo-la-gi-1398385" class="tzLink" target="_blank">@Model.Wifi.Trim()</a>
+                                                            <span class="">Wi-Fi 7</span>
+                                                        </aside>
+                                                    </li>
+
+                                                    <li>
+                                                        <aside>
+                                                            <a target="_blank" class="tzLink" href="https://www.thegioididong.com/hoi-dap/cong-nghe-bluetooth-743602#hmenuid1">Bluetooth:</a>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="https://www.thegioididong.com/hoi-dap/cong-nghe-bluetooth-5-3-la-gi-co-nhung-tinh-nang-1470734" class="tzLink" target="_blank">@Model.Bluetooth.Trim()</a>
+                                                        </aside>
+                                                    </li>
+                                                    <li>
+                                                        <aside>
+                                                            <strong>Cổng kết nối/sạc:</strong>
+                                                        </aside>
+                                                        <aside>
+                                                            <a href="https://www.thegioididong.com/hoi-dap/usb-typec-chuan-muc-cong-ket-noi-moi-723760" class="tzLink" target="_blank">@Model.Connector.Trim()</a>
+                                                        </aside>
+                                                    </li>
+
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane " id="description">
+                                    @if (Model.Description != null)
+                                    {
+                                        <div class="containerDescription ">
+                                            @Html.Raw(Model.Description)
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <p class="text-danger text-center align-items-center">Không có nội dung mô tả sản phẩm !!!</p>
+                                    }
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+        </div>
+
+
+        @*<div class="col-12">
+            @Html.Action("Pratail_ProductForCategory", "ProductCategory", new { categoryId = Model.ProductCategoryId })
+        </div>*@
+
+
+
+
+
+
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Loại sản phẩm </a></li>
+
+                </ol>
+
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+
+                <div class="col-12">
+                    <p class="text-danger text-danger">
+                        Không tồn tại bảng ghi nào !!!
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@section scripts{
+    <script>
+        document.querySelectorAll('.box-specifi > a').forEach(function (item) {
+            item.addEventListener('click', function () {
+                this.classList.toggle('active'); // Thay đổi lớp để hiện thị mũi tên
+                const textSpecifi = this.nextElementSibling;
+                if (textSpecifi) {
+                    textSpecifi.classList.toggle('active'); // Hiện hoặc ẩn danh sách thông tin
+                }
+            });
+        });
+
+
+    </script>
+    }

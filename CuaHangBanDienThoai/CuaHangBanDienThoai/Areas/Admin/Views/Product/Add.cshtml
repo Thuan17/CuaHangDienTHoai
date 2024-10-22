@@ -18,10 +18,10 @@
     label {
         color: black !important;
     }
+
     .textarea-custom {
         min-height: 450px !important;
     }
-
 </style>
 
 
@@ -288,7 +288,7 @@
                                         <div class="form-group">
                                             <label for="txtDetail">Mô tả</label>
 
-                                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control", id = "txtContent", style = "min-height: 450px;" })
+                                            @Html.TextAreaFor(x => x.Description, new { @class = "form-control", id = "txtContent" })
 
 
                                         </div>
@@ -314,16 +314,18 @@
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        CKEDITOR.replace('txtContent', {
-            customConfig: '/content/ckeditor/config.js',
-            extraAllowedContent: 'span',
-            allowedContent: true,
-        });
 
-    });
-</script>
 @section scripts{
-    <script src="~/Scripts/admin/js/AddProductCompany.js"></script>
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtContent', {
+                customConfig: '/content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+                allowedContent: true,
+            });
+
+        });
+    </script>
+    <script src="~/Scripts/admin/Product.js"></script>
+  
 }
