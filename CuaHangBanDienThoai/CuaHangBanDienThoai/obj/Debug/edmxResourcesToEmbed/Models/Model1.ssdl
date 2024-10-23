@@ -183,18 +183,18 @@
       <PropertyRef Name="ProductDetailId" />
     </Key>
     <Property Name="ProductDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Title" Type="nvarchar(max)" />
     <Property Name="Color" Type="nvarchar" MaxLength="40" />
     <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
     <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="Ram" Type="int" />
-    <Property Name="Capacity" Type="int" />
+    <Property Name="Ram" Type="char" MaxLength="20" />
+    <Property Name="Capacity" Type="char" MaxLength="35" />
     <Property Name="ProductsId" Type="int" />
     <Property Name="IsActive" Type="bit" />
     <Property Name="IsHome" Type="bit" />
     <Property Name="IsSale" Type="bit" />
     <Property Name="IsHot" Type="bit" />
+    <Property Name="Alias" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="ProductDetailImage">
     <Key>

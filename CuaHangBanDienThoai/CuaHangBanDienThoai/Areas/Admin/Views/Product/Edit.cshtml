@@ -47,12 +47,13 @@
                     @Html.HiddenFor(x => x.CreatedDate)
                     @Html.HiddenFor(x => x.CreatedBy)
                     @Html.HiddenFor(x => x.Alias)
+                    @Html.HiddenFor(x => x.Image)
 
 
 
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <input type="hidden" id="txtImage" name="Icon" />
-                    <input type="hidden" id="ImagesJson" name="Images" />
+
+                    <input type="hidden" id="Image" name="Image" value="@Model.Image"/>
                     <div class="card">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
@@ -72,13 +73,14 @@
                                                     <div class="col-lg-12 image_col order-lg-2 order-1">
                                                         <div class="single_product_image text-center">
                                                             <div class="container-anh-cu" style="position: relative; display: inline-block;">
-                                                                <img id="img-cu" src="@Model.Image" alt="@Model.Title" style="max-width:80%;" onclick="BrowseServerImageProduct('txtImage');" />
+                                                                <img id="img-cu" src="@Model.Image" alt="@Model.Title" style="max-width:80%;" onclick="BrowseServer('txtImage');" />
                                                             </div>
                                                             <div class="container-anh-moi" style="display:none; position: relative;">
-                                                                <img id="img-moi" src="#" alt="Ảnh mới" style="max-width:80%;" onclick="BrowseServerImageProduct('txtImage');" />
+                                                                <img id="img-moi" src="#" alt="Ảnh mới" style="max-width:80%;" onclick="BrowseServer('txtImage');" />
                                                             </div>
-                                                            <input type="file" id="fileInput" style="display:none;" />
+                                                            <input type="hidden" id="txtImage" name="Images" />
                                                         </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -344,28 +346,35 @@
 <script src="~/Scripts/admin/js/Admin_ProductEdit.js"></script>
 @section scripts {
     <script>
-        function BrowseServerImageProduct(field) {
+        function BrowseServer(field) {
             var finder = new CKFinder();
             finder.selectActionFunction = function (fileUrl) {
-                // Hiển thị ảnh mới và ẩn ảnh cũ
-                document.querySelector('.container-anh-moi').style.display = 'block';
-                document.querySelector('.container-anh-cu').style.display = 'none';
+                // Kiểm tra xem fileUrl có hợp lệ không
+                if (fileUrl && fileUrl.trim() !== '') {
+                    // Hiển thị ảnh mới và ẩn ảnh cũ
+                    document.querySelector('.container-anh-moi').style.display = 'block';
+                    document.querySelector('.container-anh-cu').style.display = 'none';
 
-                // Gán URL của ảnh vào input ẩn
-                document.getElementById('txtImage').value = fileUrl;
+                    // Thay đổi nguồn hình ảnh
+                    addImageProduct(fileUrl);
 
-                // Thêm ảnh vào danh sách
-                addImageProduct(fileUrl);
+                    // Cập nhật giá trị cho input ẩn
+                    document.getElementById('txtImage').value = fileUrl;
+                    console.log('Selected file URL:', fileUrl);
+                } else {
+                    console.error('Invalid file URL:', fileUrl);
+                    // Xử lý khi không có file được chọn, ví dụ: ẩn container ảnh mới
+                    document.querySelector('.container-anh-moi').style.display = 'none';
+                    document.querySelector('.container-anh-cu').style.display = 'block'; // Hoặc hiện ảnh cũ
+                }
             };
+           
             finder.popup();
         }
 
         function addImageProduct(url) {
-            // Cập nhật ảnh mới hiển thị
             $('#img-moi').attr('src', url);
-
-            // Cập nhật giá trị input ẩn với đường dẫn ảnh
-            $('#ImagesJson').val(url); // Gửi trực tiếp đường dẫn mà không cần bọc trong JSON
         }
+
     </script>
 }

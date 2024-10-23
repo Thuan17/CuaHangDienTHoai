@@ -1,7 +1,7 @@
-﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.Products>
+﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.ProductDetail>
 @using PagedList.Mvc
 @{
-    ViewBag.Title = "Quản lý sản phẩm";
+    ViewBag.Title = "Quản lý chi tiết sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
@@ -45,15 +45,15 @@
         <div class="col-6">
             <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
             <p>
-                Trang loại sản phẩm
+                Trang sản phẩm con
             </p>
 
         </div>
         <div class="col-6 ">
             <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                <li class="breadcrumb-item"><a href="/hethongquanly">Trang chủ </a></li>
 
-                <li class="breadcrumb-item active"> Sản phẩm </li>
+                <li class="breadcrumb-item active"> Sản phẩm con </li>
 
             </ol>
 
@@ -66,8 +66,8 @@
             <div class="row">
                 <div class="col-2">
                     <h6 class="m-0 font-weight-bold text-primary">
-                        Quản lý sản phẩm
-                        <span class="text-danger "> <label class="text-dark">Tổng số sản phẩm:</label> @ViewBag.Count</span>
+                        Quản lý sản phẩm con
+                        <span class="text-danger "> <label class="text-dark">Tổng số sản phẩm con:</label> @ViewBag.Count</span>
                     </h6>
                 </div>
 
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="/them-san-pham" class="btn btn-success">
+                    <a href="/them-san-pham-con" class="btn btn-success">
                         Tạo mới
                     </a>
 
@@ -103,8 +103,8 @@
                             </th>
                             <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
 
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Tên sản phẩm </th>
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Chi tiết</th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Thông tin sản phẩm </th>
+                          
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"></th>
 
 
@@ -133,51 +133,40 @@
                                     int maxLength = 7;
                                     alias = item.Alias;
                                 }
-                                var count = item.ProductDetail.Where(x => x.ProductsId == item.ProductsId).Count();
-                                var strImg = "";
 
 
-                                if (item.Image != null)
-                                {
-                                    strImg = item.Image;
-                                }
+
+                                var image = item.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.IsDefault == true);
+                                var strImg = image.Image ??"";
+
+                                var Name = item.Products.ProductCategory.Title.Trim() + item.Products.Title.Trim() + item.Capacity.Trim();
+
+
                                 <tr>
                                     <td style="max-width:30px;">
-                                        <input type="checkbox" class="cbkItem" value="@item.ProductCompanyId" />@i
+                                        <input type="checkbox" class="cbkItem" value="@item.ProductDetailId" />@i
                                     </td>
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 100px; max-height: 100px;" alt="@item.Title" />
+                                                <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 100px; max-height: 100px;" alt="@Name" />
 
                                             </div>
 
                                         </div>
                                     </td>
                                     <td class="align-middle">
-                                        <p class=" @*font-weight-bold*@ mb-0">@item.Title</p>
+                                        <p class=" @*font-weight-bold*@ mb-0">@Name</p>
+                                        <p class=" @*font-weight-bold*@ mb-0">@item.Color</p>
                                         <br />
                                         <div class="copy-container ">
                                             <p>@displayAlias</p>
                                             <button class="copy-button btn btn-success col-12" onclick="copyToClipboard('@alias')">Sao chép</button>
                                         </div>
-
-
-                                    </td>
-
-
-                                    <td class="align-middle">
-
-                                        <p> Danh mục : @item.ProductCategory.Title.Trim()</p>
-                                        <p> Hãng : @item.ProductCompany.Title.Trim()</p>
-
-
-
-                                        <p>Số lượng sản phẩm: @(count > 0 ? count.ToString() : "0")</p>
+                                        <p> Danh mục : @item.Products.ProductCategory.Title.Trim()</p>
+                                        <p> Hãng : @item.Products.ProductCompany.Title.Trim()</p>
 
                                     </td>
-
-
                                     <td class="align-middle" style="max-width:100px;">
                                         <a href="/chi-tiet/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
                                             Xem

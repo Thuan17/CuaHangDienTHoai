@@ -33,7 +33,38 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
    
+    var searchInput = document.getElementById("searchinput");
+    var searchbtn = document.getElementById("searchbtn");
+    var searchSuggestions = document.getElementById("searchSuggestions");
 
+    searchInput.addEventListener("input", function () {
+        var inputValue = searchInput.value.trim();
+        if (inputValue.length >= 3) {
+            searchSuggestions.style.display = "block";
+        } else {
+            searchSuggestions.style.display = "none";
+        }
+    });
+
+
+    searchInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            var inputValue = searchInput.value.trim();
+            if (inputValue.length >= 3) {
+
+                window.location.href = "/Admin/Product/SearchProduct?key=" + encodeURIComponent(inputValue) + "&page=1";
+            }
+        }
+    });
+
+    $("#searchbtn").on("click", function () {
+        var inputValue = searchInput.value.trim();
+        if (inputValue.length >= 3) {
+
+            window.location.href = "/Admin/Product/SearchProduct?key=" + encodeURIComponent(inputValue) + "&page=1";
+        }
+    });
 
 
     // Hàm xử lý submit form

@@ -1,0 +1,459 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_AddProductDetail
+@{
+    ViewBag.Title = "Thêm sản phẩm con";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .error-message {
+        display: none;
+        color: red;
+    }
+
+    .error-border {
+        border: 2px solid red;
+    }
+
+    label {
+        color: black !important;
+    }
+
+    .textarea-custom {
+        min-height: 450px !important;
+    }
+
+
+    .gift-group {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .custom-select {
+        position: relative;
+        display: inline-block;
+        min-width: 300px;
+        height: 40px !important;
+    }
+
+    .select-items {
+        position: absolute;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: none;
+        z-index: 100;
+        max-height: 250px;
+        overflow-y: auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+        .select-items .select-option {
+            z-index: 80;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+            .select-items .select-option:hover {
+                background-color: #f0f0f0;
+                transform: translateY(-3px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 90;
+            }
+
+
+            .select-items .select-option:hover {
+                background-color: #f0f0f0;
+                transform: translateY(-3px);
+            }
+
+        .select-items .select-option-title {
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .select-items .select-option:hover .select-option-title {
+            color: red;
+            transform: translateY(-3px);
+        }
+
+    .imageCase-item {
+        max-width: 50px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .select-selected.select-active + .select-items {
+        display: block;
+    }
+
+    .flex-container {
+        display: flex;
+        align-items: center;
+    }
+
+        .flex-container label {
+            margin-right: 10px;
+            line-height: 30px;
+        }
+
+    .custom-select {
+        flex: 1;
+    }
+
+    .custom-select {
+        min-width: 300px;
+    }
+
+
+    .select-option {
+        width: 100%;
+        display: flex;
+        padding: 0px;
+        box-sizing: border-box;
+        justify-content: space-between;
+    }
+
+    .select-option-checkbox {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+        .select-option-checkbox input {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+    .select-option-title {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .select-option-image {
+        width: 50px;
+        height: 50px;
+    }
+
+
+
+
+
+    .select-hide {
+        display: none;
+    }
+
+    .all-image {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .all-image .all-image-item {
+            text-align: center;
+        }
+
+            .all-image .all-image-item img {
+                max-width: 100px;
+                height: auto;
+            }
+</style>
+
+
+<link href="~/Content/ckeditor5/ckeditor5.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/hethongquanly">Trang chủ </a></li>
+                <li class="breadcrumb-item"><a href="/quan-ly-san-pham">Sản phẩm </a></li>
+                <li class="breadcrumb-item active">Thêm mới</li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Thêm sản phẩm
+                    </h6>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <form id="myFormProductDetail" enctype="multipart/form-data">
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <input type="hidden" id="ImagesJson" name="Items" />
+                        <input type="hidden" id="IsGiftCategory" name="IsGiftCategory" />
+
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+
+
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="row">
+                                            <div class="col-lg-12 ">
+                                                <div class="form-group">
+                                                    <div class="gift-group">
+                                                        <div class="flex-container">
+                                                            <label for="gift-select">Thuộc sản phẩm:</label>
+                                                            <div class="custom-select">
+                                                                <div id="select-selected" class="select-selected">Thuộc sản phẩm</div>
+                                                                <div class="select-items select-hide">
+                                                                    @if (ViewBag.ProductList != null)
+                                                                    {
+                                                                        foreach (var item in ViewBag.ProductList as List<CuaHangBanDienThoai.Models.ListProductId>)
+                                                                        {
+                                                                            string strImg = item.Image ?? "";
+                                                                            <div class="select-option" data-productCaseid="@item.ProductsId">
+                                                                                <div>
+                                                                                    <img src="@strImg" alt="Product Image" class="imageCase-item" />
+                                                                                </div>
+                                                                                <span class="select-option-title">@item.Title</span>
+                                                                                <div class="select-option-checkbox">
+                                                                                    <input type="checkbox" class="select-option-checkbox"name="ProductId" data-productid="@item.ProductsId" />
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-4" id="PinContainer">
+                                                <div class="form-group">
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Màu sản phẩm   </label>
+                                                        @Html.TextBoxFor(x => x.Color, new { @class = "form-control", @placeholder = "Màu sản phẩm ", id = "Color" })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-4" id="PinContainer">
+                                                <div class="form-group">
+                                                    <label>Ram </label>
+                                                    <select class="form-control" id="Ram" name="Ram">
+                                                        <option value="" id="Ram">-Chọn Ram sản phẩm-</option>
+                                                        <option value="4GB" id="Ram">4GB</option>
+                                                        <option value="8GB" id="Ram">8GB</option>
+                                                        <option value="16GB" id="Ram">16GB</option>
+                                                        <option value="32GB" id="Ram">32GB</option>
+                                                        <option value="64GB" id="Ram">64GB</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-4" id="PinContainer">
+                                                <div class="form-group">
+                                                    <label>Dung lượng sản phẩm</label>
+                                                    <select class="form-control" id="Capacity" name="Capacity">
+                                                        <option value="" id="Capacity">-Chọn dung lượng sản phẩm-</option>
+                                                        <option value="64GB" id="Capacity">64GB</option>
+                                                        <option value="128GB" id="Capacity">128GB</option>
+                                                        <option value="256GB" id="Capacity">256GB</option>
+                                                        <option value="512GB" id="Capacity">512GB</option>
+                                                        <option value="1TB" id="Capacity">1TB</option>
+                                                        <option value="2TB" id="Capacity">2TB</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Giá</label>
+                                                    <input type="text" name="demoPrice" value="0" id="demoPrice" class="form-control auto" data-a-dec="," data-a-sep=".">
+                                                    @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
+                                                    @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Giá khuyến mãi</label>
+                                                    <input type="text" name="demoPriceSale" id="demoPriceSale" value="0" class="form-control auto">
+                                                    @Html.HiddenFor(x => x.PriceSale, new { @class = "", @placeholder = "Giá" })
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Giá nhập</label>
+                                                    <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="" class="form-control auto">
+                                                    @Html.HiddenFor(x => x.OriginalPrice, new { @class = "", @placeholder = "Giá" })
+                                                </div>
+                                            </div>
+                                            <div class="col-3">
+                                                <div class="form-group">
+                                                    <label for="">Số lượng</label>
+                                                    <input type="number" name="Quantity" value="0" id="Quantity" class="form-control ">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="tab-pane" id="timeline">
+                                        <div class="row">
+                                            <div class="col-md-12 text-right">
+                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <table class="table table-hover" id="tbAnhSanPham">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="text-center">#</th>
+                                                            <th class="text-center">Ảnh</th>
+                                                            <th class="text-center">Ảnh đại diện</th>
+                                                            <th class="text-center">Thao tác</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbHtml">
+                                                    </tbody>
+                                                </table>
+                                                <input type="hidden" id="tCurrentId" value="0" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                               
+                                <!-- /.tab-content -->
+                            </div><!-- /.card-body -->
+
+                        </div> <!-- /.card -->
+                        <div class="col-12 text-center">
+                            <button type="button" onclick="if(validateForm()) $('#myFormProductDetail').submit();" class="btn btn-success col-8">Thêm mới</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtContent', {
+                customConfig: '/content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+                allowedContent: true,
+            });
+
+        });
+
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function initializeSelectBox() {
+                var selectedDiv = document.getElementById('select-selected');
+                var items = document.querySelector('.select-items');
+                var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
+                selectedDiv.addEventListener('click', function () {
+                    items.style.display = items.style.display === 'block' ? 'none' : 'block';
+                });
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                        if (this.checked) {
+                            var caseTitle = this.closest('.select-option').querySelector('.select-option-title').textContent;
+                            selectedDiv.textContent = caseTitle;
+                            checkboxes.forEach(function (box) {
+                                if (box !== checkbox) {
+                                    box.checked = false;
+                                }
+                            });
+
+                            items.style.display = 'none';
+                        }
+                    });
+                });
+
+                items.addEventListener('click', function (event) {
+                    var target = event.target;
+
+                    if (target.classList.contains('select-option-title') || target.tagName === 'img') {
+                        var selectOption = target.closest('.select-option');
+                        var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
+
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            checkboxes.forEach(function (box) {
+                                if (box !== checkbox) {
+                                    box.checked = false;
+                                }
+                            });
+                            var caseTitle = selectOption.querySelector('.select-option-title').textContent;
+                            selectedDiv.textContent = caseTitle;
+                            items.style.display = 'none';
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('.custom-select')) {
+                        items.style.display = 'none';
+                    }
+                });
+            }
+            initializeSelectBox();
+        });
+
+
+
+
+    </script>
+    <script src="~/Scripts/admin/Product.js"></script>
+
+}
+

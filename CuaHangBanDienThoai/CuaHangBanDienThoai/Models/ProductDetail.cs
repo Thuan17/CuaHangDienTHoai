@@ -25,18 +25,18 @@ namespace CuaHangBanDienThoai.Models
         }
     
         public int ProductDetailId { get; set; }
-        public string Title { get; set; }
         public string Color { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> PriceSale { get; set; }
         public Nullable<decimal> OrigianlPrice { get; set; }
-        public Nullable<int> Ram { get; set; }
-        public Nullable<int> Capacity { get; set; }
+        public string Ram { get; set; }
+        public string Capacity { get; set; }
         public Nullable<int> ProductsId { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsHome { get; set; }
         public Nullable<bool> IsSale { get; set; }
         public Nullable<bool> IsHot { get; set; }
+        public string Alias { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillDetail> BillDetail { get; set; }

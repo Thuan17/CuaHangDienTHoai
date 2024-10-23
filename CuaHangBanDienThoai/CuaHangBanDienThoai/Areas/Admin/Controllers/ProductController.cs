@@ -274,9 +274,20 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     }
 
 
-                    string alias;
+             
                     string rawAlias = $"{productCategory.Title} {productCompany.Title} {req.Title.Trim()}".Trim();
-                    alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(rawAlias).Trim();
+                    string  alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(rawAlias).Trim();
+                   
+                    if(alias != product.Alias)
+                    {
+                        var checkproduct = await db.Products.FirstOrDefaultAsync(x => x.Alias == alias.Trim()&&x.ProductsId!=req.ProductId);
+                        if(checkproduct!=null)
+                        {
+                            return Json(new { Success = false, Code = -2, msg = "Sản phẩm đã tồn tại bảng ghi trên !!!" });
+
+                        }
+                    }
+
                     // Kiểm tra xem dữ liệu có thay đổi không
                     bool isModified =
                         product.ProductCategoryId != req.ProductCategoryId ||
@@ -300,14 +311,17 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         product.Alias.Trim() != req.Alias.Trim() ||
                         product.Description != req.Description ||
                           
-                        (Images != null && Images.Count > 0 && product.Image != Images[0]);
+                        (Images != null && Images.Count > 0 && !string.IsNullOrEmpty(Images[0]) && product.Image != Images[0]);
 
                     if (!isModified)
                     {
-                        return Json(new { Success = false, Code = -2, msg = "Không có thay đổi nào đáng kể" });
+                        return Json(new { Success = false, Code = -1, msg = "Không có thay đổi nào !!!" });
+                    }
+                    if (alias != product.Alias)
+                    {
+                        product.Alias = alias.Trim();
                     }
 
-                  
                     product.ProductCategoryId = req.ProductCategoryId;
                     product.ProductCompanyId = req.ProductCompanyId;
                     product.Title = req.Title.Trim();
@@ -326,12 +340,12 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     product.CPU = req.CPU.Trim();
                     product.GPU = req.GPU.Trim();
                     product.BatteryCapacity = req.BatteryCapacity.Trim();
-                    product.Alias = req.Alias.Trim();
+                    product.Alias = alias.Trim();
                     product.Description = req.Description;
                     product.Modifiedby = checkStaff.NameEmployee.Trim();
                     product.ModifiedDate = DateTime.Now;
 
-                    if (Images != null && Images.Count > 0)
+                    if (Images!=null&& Images.Count > 0&&! string.IsNullOrEmpty(Images[0]))
                     {
                         product.Image = Images[0];
                     }
@@ -354,6 +368,61 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 }
             }
         }
+
+
+
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
+        [HttpGet]
+        public async Task<ActionResult> SearchProduct(string key, int? page)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
+                var keyLower = key.Trim().ToLower();
+
+                var productCategoryid = await db.ProductCategory
+                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
+                    .Select(x => x.ProductCategoryId)
+                    .ToListAsync();
+
+                var productCompanyid = await db.ProductCompany
+                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
+                    .Select(x => x.ProductCompanyId)
+                    .ToListAsync();
+
+               
+                var query = db.Products.AsQueryable()
+                    .Where(x =>
+                        (!productCategoryid.Any() || productCategoryid.Contains((int)x.ProductCategoryId)) ||
+                        (!productCompanyid.Any() || productCompanyid.Contains((int)x.ProductCompanyId))||
+                        x.Title.Contains(keyLower));
+
+               
+                var totalCount = await query.CountAsync();
+
+                
+                int pageSize = 10;
+                int pageNumber = page ?? 1;
+
+                var products = await query
+                    .OrderByDescending(pd => pd.ProductsId)
+                    .Skip((pageNumber - 1) * pageSize) 
+                    .Take(pageSize)
+                    .ToListAsync();
+
+                ViewBag.Key = key.Trim();
+                ViewBag.Count = totalCount; 
+
+                return View(products.ToPagedList(pageNumber, pageSize)); 
+            }
+
+            return View();
+        }
+
+
+
+
+
 
 
 

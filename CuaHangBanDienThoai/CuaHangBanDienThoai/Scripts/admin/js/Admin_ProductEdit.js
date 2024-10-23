@@ -45,24 +45,42 @@ $(document).ready(function () {
         const token = $('input[name="__RequestVerificationToken"]').val();
 
         if (isValid) {
-            $.ajax({
-                url: '/Admin/Product/Edit',
-                type: 'POST',
-                data: formData,
-                contentType: false,
-                processData: false,
-                headers: {
-                    'X-CSRF-TOKEN': token
-                },
-                success: function (res) {
-                    handleFormSubmissionSuccess(res);
-                },
-                error: function (xhr) {
-                    handleFormSubmissionError(xhr);
+            // Gọi Swal.fire để hỏi xác nhận trước khi thực hiện AJAX
+            Swal.fire({
+                title: "Lưu thay đổi",
+                text: "Bạn có chắc chắn muốn lưu thay đổi không?", // Thay đổi thông báo ở đây
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Thay đổi"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Admin/Product/Edit',
+                        type: 'POST',
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        headers: {
+                            'X-CSRF-TOKEN': token
+                        },
+                        success: function (res) {
+                            handleFormSubmissionSuccess(res);
+                        },
+                        error: function (xhr) {
+                            handleFormSubmissionError(xhr);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Chú ý",
+                        text: "Đã huỷ yêu cầu cập nhập mới !",
+                    });
                 }
             });
         }
-
        
     });
 
@@ -253,6 +271,8 @@ $(document).ready(function () {
     }
 
     function handleFormSubmissionSuccess(res) {
+
+        let errorMessage = null; 
         if (res.Success) {
             Swal.fire({
                 icon: "success",
@@ -263,10 +283,39 @@ $(document).ready(function () {
                 timer: 1500,
                 timerProgressBar: true,
             });
-
             setTimeout(() => window.location.href = "/san-pham", 1500);
+           
         } else {
             switch (res.Code) {
+                case -1:
+                   
+                    Swal.fire({
+                        title: res.msg,
+                      
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Về trang"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                         
+
+                            Swal.fire({
+                                icon: "success",
+                                title: "Đang chuyển trang",
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 1500,
+                                timerProgressBar: true,
+                            });
+                            setTimeout(() => window.location.href = "/san-pham", 1500);
+                        }
+                    });
+
+
+                    break;
                 case -2:
                     errorMessage = res.msg;
                     break;
@@ -283,12 +332,14 @@ $(document).ready(function () {
                     });
                     break;
             }
-
-            Swal.fire({
-                icon: "warning",
-                title: "Chú ý",
-                text: errorMessage,
-            });
+            if (errorMessage != null) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Chú ý",
+                    text: errorMessage,
+                });
+            }
+            
         }
     }
 

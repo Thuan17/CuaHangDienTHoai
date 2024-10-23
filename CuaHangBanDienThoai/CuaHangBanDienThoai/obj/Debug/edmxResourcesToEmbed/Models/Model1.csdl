@@ -213,13 +213,12 @@
       <PropertyRef Name="ProductDetailId" />
     </Key>
     <Property Name="ProductDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="Color" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="Ram" Type="Int32" />
-    <Property Name="Capacity" Type="Int32" />
+    <Property Name="Ram" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
+    <Property Name="Capacity" Type="String" MaxLength="35" FixedLength="true" Unicode="false" />
     <Property Name="ProductsId" Type="Int32" />
     <Property Name="IsActive" Type="Boolean" />
     <Property Name="IsHome" Type="Boolean" />
@@ -231,6 +230,7 @@
     <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="ProductDetail" ToRole="InvoiceDetail" />
     <NavigationProperty Name="Products" Relationship="Self.FK_ProductDetail_Products" FromRole="ProductDetail" ToRole="Products" />
     <NavigationProperty Name="ProductDetailImage" Relationship="Self.FK_ProductImage_ProductDetail" FromRole="ProductDetail" ToRole="ProductDetailImage" />
+    <Property Name="Alias" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="ProductDetailImage">
     <Key>
