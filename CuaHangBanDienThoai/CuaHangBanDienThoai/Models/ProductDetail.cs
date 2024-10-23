@@ -28,7 +28,7 @@ namespace CuaHangBanDienThoai.Models
         public string Color { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<decimal> PriceSale { get; set; }
-        public Nullable<decimal> OrigianlPrice { get; set; }
+        public Nullable<decimal> OriginalPrice { get; set; }
         public string Ram { get; set; }
         public string Capacity { get; set; }
         public Nullable<int> ProductsId { get; set; }

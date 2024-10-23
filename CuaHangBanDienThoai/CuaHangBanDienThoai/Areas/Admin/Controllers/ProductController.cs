@@ -90,7 +90,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     {
                         ViewBag.ProductCategory = new SelectList(db.ProductCategory.ToList(), "ProductCategoryId", "Title");
                         ViewBag.ProductCompany = new SelectList(db.ProductCompany.ToList(), "ProductCompanyId", "Title");
-                        return Json(new { Success = false, Code = -2, msg = "Danh mục hoặc hãng" });
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng danh mục hoặc hãng " });
 
                     }
 
@@ -422,7 +422,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
-
+      
+      
 
 
 

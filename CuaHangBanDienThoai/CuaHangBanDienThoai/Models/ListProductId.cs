@@ -10,6 +10,11 @@ namespace CuaHangBanDienThoai.Models
         public int ProductsId { get; set; }
         public string Title { get; set; }
         public string Image { get; set; }
+
+        public bool IsCheck { get; set; }   
+
+
+
         
     }
 }

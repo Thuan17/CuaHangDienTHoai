@@ -186,7 +186,7 @@
     <Property Name="Color" Type="nvarchar" MaxLength="40" />
     <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
     <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
-    <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
     <Property Name="Ram" Type="char" MaxLength="20" />
     <Property Name="Capacity" Type="char" MaxLength="35" />
     <Property Name="ProductsId" Type="int" />

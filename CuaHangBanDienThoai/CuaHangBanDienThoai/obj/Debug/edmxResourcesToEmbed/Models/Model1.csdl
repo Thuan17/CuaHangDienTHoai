@@ -216,7 +216,7 @@
     <Property Name="Color" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
     <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
-    <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="Ram" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
     <Property Name="Capacity" Type="String" MaxLength="35" FixedLength="true" Unicode="false" />
     <Property Name="ProductsId" Type="Int32" />
@@ -224,13 +224,13 @@
     <Property Name="IsHome" Type="Boolean" />
     <Property Name="IsSale" Type="Boolean" />
     <Property Name="IsHot" Type="Boolean" />
+    <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="ProductDetail" ToRole="BillDetail" />
     <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_ProductDetail" FromRole="ProductDetail" ToRole="CartItem" />
     <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ProductDetail" ToRole="ImportWarehouseDetail" />
     <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="ProductDetail" ToRole="InvoiceDetail" />
     <NavigationProperty Name="Products" Relationship="Self.FK_ProductDetail_Products" FromRole="ProductDetail" ToRole="Products" />
     <NavigationProperty Name="ProductDetailImage" Relationship="Self.FK_ProductImage_ProductDetail" FromRole="ProductDetail" ToRole="ProductDetailImage" />
-    <Property Name="Alias" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="ProductDetailImage">
     <Key>

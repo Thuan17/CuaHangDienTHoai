@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -191,7 +191,7 @@
           <Property Name="Color" Type="nvarchar" MaxLength="40" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="PriceSale" Type="decimal" Precision="18" Scale="2" />
-          <Property Name="OrigianlPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="OriginalPrice" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Ram" Type="char" MaxLength="20" />
           <Property Name="Capacity" Type="char" MaxLength="35" />
           <Property Name="ProductsId" Type="int" />
@@ -762,7 +762,8 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -982,7 +983,7 @@
           <Property Name="Color" Type="String" MaxLength="40" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="PriceSale" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="OrigianlPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OriginalPrice" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Ram" Type="String" MaxLength="20" FixedLength="true" Unicode="false" />
           <Property Name="Capacity" Type="String" MaxLength="35" FixedLength="true" Unicode="false" />
           <Property Name="ProductsId" Type="Int32" />
@@ -990,13 +991,13 @@
           <Property Name="IsHome" Type="Boolean" />
           <Property Name="IsSale" Type="Boolean" />
           <Property Name="IsHot" Type="Boolean" />
+          <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="ProductDetail" ToRole="BillDetail" />
           <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_ProductDetail" FromRole="ProductDetail" ToRole="CartItem" />
           <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ProductDetail" ToRole="ImportWarehouseDetail" />
           <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="ProductDetail" ToRole="InvoiceDetail" />
           <NavigationProperty Name="Products" Relationship="Self.FK_ProductDetail_Products" FromRole="ProductDetail" ToRole="Products" />
           <NavigationProperty Name="ProductDetailImage" Relationship="Self.FK_ProductImage_ProductDetail" FromRole="ProductDetail" ToRole="ProductDetailImage" />
-          <Property Name="Alias" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="ProductDetailImage">
           <Key>
@@ -1774,12 +1775,11 @@
           <EntitySetMapping Name="ProductDetail">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductDetail">
               <MappingFragment StoreEntitySet="ProductDetail">
-                <ScalarProperty Name="Alias" ColumnName="Alias" />
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="PriceSale" ColumnName="PriceSale" />
-                <ScalarProperty Name="OrigianlPrice" ColumnName="OrigianlPrice" />
+                <ScalarProperty Name="OriginalPrice" ColumnName="OriginalPrice" />
                 <ScalarProperty Name="Ram" ColumnName="Ram" />
                 <ScalarProperty Name="Capacity" ColumnName="Capacity" />
                 <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
@@ -1787,6 +1787,7 @@
                 <ScalarProperty Name="IsHome" ColumnName="IsHome" />
                 <ScalarProperty Name="IsSale" ColumnName="IsSale" />
                 <ScalarProperty Name="IsHot" ColumnName="IsHot" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

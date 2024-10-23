@@ -196,12 +196,11 @@
     <EntitySetMapping Name="ProductDetail">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductDetail">
         <MappingFragment StoreEntitySet="ProductDetail">
-          <ScalarProperty Name="Alias" ColumnName="Alias" />
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
           <ScalarProperty Name="Color" ColumnName="Color" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="PriceSale" ColumnName="PriceSale" />
-          <ScalarProperty Name="OrigianlPrice" ColumnName="OrigianlPrice" />
+          <ScalarProperty Name="OriginalPrice" ColumnName="OriginalPrice" />
           <ScalarProperty Name="Ram" ColumnName="Ram" />
           <ScalarProperty Name="Capacity" ColumnName="Capacity" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
@@ -209,6 +208,7 @@
           <ScalarProperty Name="IsHome" ColumnName="IsHome" />
           <ScalarProperty Name="IsSale" ColumnName="IsSale" />
           <ScalarProperty Name="IsHot" ColumnName="IsHot" />
+          <ScalarProperty Name="Alias" ColumnName="Alias" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

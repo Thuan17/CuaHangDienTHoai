@@ -12,9 +12,9 @@
     }
 
     .error-border {
-        border: 2px solid red;
+        border: 2px solid red !important;
     }
-
+    
     label {
         color: black !important;
     }
@@ -208,9 +208,9 @@
 
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
-                        <input type="hidden" id="ImagesJson" name="Items" />
+                        @*<input type="hidden" id="ImagesJson" name="Items" />
                         <input type="hidden" id="IsGiftCategory" name="IsGiftCategory" />
-
+                        <input type="hidden" id="ProductsId" name="ProductsId" value="1" />*@
 
                         <div class="card">
                             <div class="card-header p-2">
@@ -230,7 +230,7 @@
                                                     <div class="gift-group">
                                                         <div class="flex-container">
                                                             <label for="gift-select">Thuộc sản phẩm:</label>
-                                                            <div class="custom-select">
+                                                            <div class="custom-select" id="customSelect">
                                                                 <div id="select-selected" class="select-selected">Thuộc sản phẩm</div>
                                                                 <div class="select-items select-hide">
                                                                     @if (ViewBag.ProductList != null)
@@ -244,7 +244,10 @@
                                                                                 </div>
                                                                                 <span class="select-option-title">@item.Title</span>
                                                                                 <div class="select-option-checkbox">
-                                                                                    <input type="checkbox" class="select-option-checkbox"name="ProductId" data-productid="@item.ProductsId" />
+                                                                                    <input type="checkbox" class="select-option-checkbox" data-productid="@item.ProductsId"
+                                                                                           @(item.IsCheck ? "checked" : "") />
+
+                                                                                    <input type="hidden" id="ProductsId" name="ProductsId" value="" />
                                                                                 </div>
                                                                             </div>
                                                                         }
@@ -303,7 +306,7 @@
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá</label>
-                                                    <input type="text" name="demoPrice" value="0" id="demoPrice" class="form-control auto" data-a-dec="," data-a-sep=".">
+                                                    <input type="text" name="demoPrice" value="0" id="demoPrice" class="form-control auto demoPrice" data-a-dec="," data-a-sep=".">
                                                     @Html.HiddenFor(x => x.Price, new { @class = "", @placeholder = "Giá" })
                                                     @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
                                                 </div>
@@ -311,14 +314,14 @@
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá khuyến mãi</label>
-                                                    <input type="text" name="demoPriceSale" id="demoPriceSale" value="0" class="form-control auto">
+                                                    <input type="text" name="demoPriceSale" id="demoPriceSale" value="0" class="form-control auto demoPriceSale">
                                                     @Html.HiddenFor(x => x.PriceSale, new { @class = "", @placeholder = "Giá" })
                                                 </div>
                                             </div>
                                             <div class="col-3">
                                                 <div class="form-group">
                                                     <label for="exampleInputEmail1">Giá nhập</label>
-                                                    <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="" class="form-control auto">
+                                                    <input type="text" name="demoOriginalPrice" id="demoOriginalPrice" value="" class="form-control auto demoOriginalPrice">
                                                     @Html.HiddenFor(x => x.OriginalPrice, new { @class = "", @placeholder = "Giá" })
                                                 </div>
                                             </div>
@@ -336,7 +339,7 @@
                                     <div class="tab-pane" id="timeline">
                                         <div class="row">
                                             <div class="col-md-12 text-right">
-                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServerProductDetail();" value="Tải ảnh" />
                                             </div>
                                             <div class="col-md-12">
                                                 <table class="table table-hover" id="tbAnhSanPham">
@@ -358,7 +361,7 @@
                                 </div>
 
 
-                               
+
                                 <!-- /.tab-content -->
                             </div><!-- /.card-body -->
 
@@ -379,6 +382,7 @@
 
 
 @section scripts{
+    <script src="~/Scripts/admin/ProductDetails.js"></script>
     <script>
         $(document).ready(function () {
             CKEDITOR.replace('txtContent', {
@@ -400,14 +404,40 @@
                 var selectedDiv = document.getElementById('select-selected');
                 var items = document.querySelector('.select-items');
                 var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
+                var productsIdInput = document.getElementById('ProductsId'); // Lấy input hidden
+
+                // Hàm để kiểm tra và thiết lập giá trị mặc định cho ProductsId
+                function setInitialProductSelection() {
+                    checkboxes.forEach(function (checkbox) {
+                        if (checkbox.checked) {
+                            var selectOption = checkbox.closest('.select-option');
+                            var caseTitle = selectOption.querySelector('.select-option-title').textContent;
+                            var productId = checkbox.getAttribute('data-productid');
+
+                            // Thiết lập giá trị cho selectedDiv và input hidden
+                            selectedDiv.textContent = caseTitle;
+                            productsIdInput.value = productId;
+                        }
+                    });
+                }
+
+                // Gọi hàm thiết lập giá trị ban đầu
+                setInitialProductSelection();
+
                 selectedDiv.addEventListener('click', function () {
                     items.style.display = items.style.display === 'block' ? 'none' : 'block';
                 });
+
                 checkboxes.forEach(function (checkbox) {
                     checkbox.addEventListener('change', function () {
                         if (this.checked) {
-                            var caseTitle = this.closest('.select-option').querySelector('.select-option-title').textContent;
+                            var selectOption = this.closest('.select-option');
+                            var caseTitle = selectOption.querySelector('.select-option-title').textContent;
+                            var productId = this.getAttribute('data-productid'); // Lấy ID sản phẩm từ thuộc tính data-productid
+
                             selectedDiv.textContent = caseTitle;
+                            productsIdInput.value = productId;
+
                             checkboxes.forEach(function (box) {
                                 if (box !== checkbox) {
                                     box.checked = false;
@@ -422,19 +452,22 @@
                 items.addEventListener('click', function (event) {
                     var target = event.target;
 
-                    if (target.classList.contains('select-option-title') || target.tagName === 'img') {
+                    if (target.classList.contains('select-option-title') || target.tagName === 'IMG') {
                         var selectOption = target.closest('.select-option');
                         var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
+                        var productId = checkbox.getAttribute('data-productid');
 
                         if (checkbox) {
                             checkbox.checked = true;
+                            selectedDiv.textContent = selectOption.querySelector('.select-option-title').textContent;
+                            productsIdInput.value = productId;
+
                             checkboxes.forEach(function (box) {
                                 if (box !== checkbox) {
                                     box.checked = false;
                                 }
                             });
-                            var caseTitle = selectOption.querySelector('.select-option-title').textContent;
-                            selectedDiv.textContent = caseTitle;
+
                             items.style.display = 'none';
                         }
                     }
@@ -446,6 +479,7 @@
                     }
                 });
             }
+
             initializeSelectBox();
         });
 
@@ -453,7 +487,7 @@
 
 
     </script>
-    <script src="~/Scripts/admin/Product.js"></script>
+
 
 }
 

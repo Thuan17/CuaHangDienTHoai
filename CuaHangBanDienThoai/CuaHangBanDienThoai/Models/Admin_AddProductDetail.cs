@@ -14,17 +14,17 @@ namespace CuaHangBanDienThoai.Models
 
         public string Ram { get; set; }
         public string Capacity { get; set; }
-        public string ProductsId { get; set; }
-        public string IsActive { get; set; }
-        public string IsHome { get; set; }
-        public string IsSale { get; set; }
-        public string IsHot { get; set; }
-        public int ProductId { get; set; }
-        public List<ImageItem> Items { get; set; }
+        public int ProductsId { get; set; }
+        //public string IsActive  { get; set; }
+        //public string IsHome { get; set; }
+        //public string IsSale { get; set; }
+        //public string IsHot { get; set; }
+   
+        //public List<ImageItem> Items { get; set; }
     }
-    public class ImageItem
-    {
-        public string Image { get; set; }
-        public bool IsDefault { get; set; }
-    }
+    //public class ImageItem
+    //{
+    //    public string Image { get; set; }
+    //    public bool IsDefault { get; set; }
+    //}
 }

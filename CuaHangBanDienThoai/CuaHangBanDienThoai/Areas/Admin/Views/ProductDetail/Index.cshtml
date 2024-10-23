@@ -4,7 +4,12 @@
     ViewBag.Title = "Quản lý chi tiết sản phẩm";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
+<style>
+    p {
+        color:black !important;
+        white-space: nowrap !important; /* Không cho chữ xuống dòng */
+    }
+</style>
 <div class="bg-sg" style="display: none ">
 
 </div>
@@ -104,6 +109,9 @@
                             <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
 
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Thông tin sản phẩm </th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Hiển thị </th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"> Trang chủ </th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Giảm giá</th>
                           
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"></th>
 
@@ -139,7 +147,7 @@
                                 var image = item.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.IsDefault == true);
                                 var strImg = image.Image ??"";
 
-                                var Name = item.Products.ProductCategory.Title.Trim() + item.Products.Title.Trim() + item.Capacity.Trim();
+                                var Name = item.Products.ProductCategory.Title.Trim()+" " + item.Products.Title.Trim() + " " + item.Capacity.Trim();
 
 
                                 <tr>
@@ -149,24 +157,65 @@
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 100px; max-height: 100px;" alt="@Name" />
+                                                <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 150px; max-height: 150px;" alt="@Name" />
 
                                             </div>
 
                                         </div>
                                     </td>
                                     <td class="align-middle">
-                                        <p class=" @*font-weight-bold*@ mb-0">@Name</p>
-                                        <p class=" @*font-weight-bold*@ mb-0">@item.Color</p>
-                                        <br />
-                                        <div class="copy-container ">
-                                            <p>@displayAlias</p>
-                                            <button class="copy-button btn btn-success col-12" onclick="copyToClipboard('@alias')">Sao chép</button>
-                                        </div>
-                                        <p> Danh mục : @item.Products.ProductCategory.Title.Trim()</p>
-                                        <p> Hãng : @item.Products.ProductCompany.Title.Trim()</p>
+                                        <p class="w-100">@Name</p>
+                                        <p class=" ">Màu sản phẩm :<span class="text-gray-700">@item.Color</span></p>
+                                        <p class=" ">Ram :<span class="text-gray-700">@item.Ram</span></p>
+
+                                        <p> Danh mục :<span class="text-gray-700">@item.Products.ProductCategory.Title.Trim()</span> </p>
+                                        <p> Hãng :<span class="text-gray-700"> @item.Products.ProductCompany.Title.Trim()</span></p>
 
                                     </td>
+                                    <td class="align-middle text-center  justify-content-center align-items-center" style="height: 100px;">
+                                        <div class="toggle d-flex justify-content-center align-items-center" style="width:100%;height: 100%;">
+                                            <label class="toggle" for="toggleIsActive_@item.ProductDetailId" style="display: flex; align-items: center;">
+                                                <span class="text-center" style="white-space: nowrap;">
+                                                    <input class="toggle__input check_IsActive" type="checkbox" id="toggleIsActive_@item.ProductDetailId" @(item.IsActive.GetValueOrDefault() ? "checked" : "")>
+                                                    <div class="toggle__fill"></div>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </td>
+
+                                    <td class="align-middle text-center">
+                                        <div class="toggle" style="">
+                                            <label class="toggle" for="toggleIsHome_@item.ProductDetailId">
+                                                @*<p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>*@
+                                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                                    <div style="display: flex; align-items: center;">
+
+                                                        <input class="toggle__input check_IsHome" name="" type="checkbox" id="toggleIsHome_@item.ProductDetailId" @(item.IsHome.GetValueOrDefault() ? "checked" : "")>
+                                                        <div class="toggle__fill"></div>
+                                                    </div>
+                                                </span>
+                                            </label>
+                                        </div>
+
+
+
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <div class="toggle" style="">
+                                            <label class="toggle" for="toggleIsSale_@item.ProductDetailId">
+                                                @*<p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>*@
+                                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                                    <div style="display: flex; align-items: center;">
+
+                                                        <input class="toggle__input check_IsSale" name="" type="checkbox" id="toggleIsSale_@item.ProductDetailId" @(item.IsSale.GetValueOrDefault() ? "checked" : "")>
+                                                        <div class="toggle__fill"></div>
+                                                    </div>
+                                                </span>
+                                            </label>
+                                        </div>
+
+                                    </td>
+
                                     <td class="align-middle" style="max-width:100px;">
                                         <a href="/chi-tiet/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
                                             Xem
@@ -259,7 +308,59 @@
 @section scripts{
     <script src="~/Scripts/admin/Product.js"></script>
 
+    <script>
+        $(document).ready(function () {
+            $('body').on('change', '.toggle__input', function () {
+                var checkbox = $(this);
+                var id = checkbox.attr('id').split('_')[1];
+                var isActive = checkbox.is(':checked');
+                var toggleType = checkbox.attr('class').split(' ')[1]; 
 
+                console.log('Checkbox changed:', id, isActive, toggleType);
+
+                var url = '';
+                if (toggleType === 'check_IsActive') {
+                    url = '/admin/ProductDetail/IsActive';
+                } else if (toggleType === 'check_IsHome') {
+                    url = '/admin/ProductDetail/IsHome';
+                } else if (toggleType === 'check_IsSale') {
+                    url = '/admin/ProductDetail/IsSale';
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        isActive: isActive
+                    },
+                    success: function (rs) {
+                        if (rs.success) {
+                            console.log('Trạng thái đã được cập nhật thành công');
+                        } else {
+                            console.error('Cập nhật trạng thái không thành công');
+                            checkbox.prop('checked', !isActive);
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Chú ý",
+                                text: rs.msg,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Có lỗi xảy ra khi cập nhật trạng thái.');
+                        checkbox.prop('checked', !isActive);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: "Hệ thống lỗi",
+                        });
+                    }
+                });
+            });
+        });
+     
+    </script>
 }
 
 

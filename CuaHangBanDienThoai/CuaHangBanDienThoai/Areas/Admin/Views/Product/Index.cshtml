@@ -5,6 +5,12 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    p{
+        color:black !important;
+    }
+</style>
+
 <div class="bg-sg" style="display: none ">
 
 </div>
@@ -105,11 +111,11 @@
 
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Tên sản phẩm </th>
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Chi tiết</th>
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"></th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 "style="max-width: 260px "></th>
 
 
-                            @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
-                            <th class="text-secondary opacity-7" style="max-width:75px;"></th>
+                          
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -141,14 +147,14 @@
                                 {
                                     strImg = item.Image;
                                 }
-                                <tr>
+                                <tr class="w-100"style="width:100%">
                                     <td style="max-width:30px;">
                                         <input type="checkbox" class="cbkItem" value="@item.ProductCompanyId" />@i
                                     </td>
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 100px; max-height: 100px;" alt="@item.Title" />
+                                                <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 150px; max-height: 150px;"alt="@item.Title" />
 
                                             </div>
 
@@ -167,28 +173,24 @@
 
 
                                     <td class="align-middle">
+                                        <p class=" ">Danh mục  :<span class="text-gray-700">@item.ProductCategory.Title.Trim()</span></p>
+                                        <p class=" ">Hãng :<span class="text-gray-700">@item.ProductCompany.Title.Trim()</span></p>
+                                        <p class=" ">Số lượng sản phẩm :<span class="text-gray-700">@(count > 0 ? count.ToString() : "0")</span></p>
+                               
 
-                                        <p> Danh mục : @item.ProductCategory.Title.Trim()</p>
-                                        <p> Hãng : @item.ProductCompany.Title.Trim()</p>
+
+                                       
+
+                                    </td>
 
 
-
-                                        <p>Số lượng sản phẩm: @(count > 0 ? count.ToString() : "0")</p>
-
+                                    <td class="align-middle p-0 m-0 d-flex flex-column align-items-end" style="max-width:260px">
+                                        <a href="them-san-pham-con/ma-sp@(item.ProductsId)" class="btn btn-success btn-s text-white mt-4  mb-2" style="min-width: 120px;">Thêm chi tiết</a>
+                                        <a href="/chi-tiet/@item.Alias" class="btn btn-primary btn-s text-white mb-2" style="min-width: 120px;">Xem</a>
+                                        <a href="/sua-sanpham/@item.Alias" class="btn btn-warning btn-s text-white" style="min-width: 120px;">Sửa</a>
                                     </td>
 
 
-                                    <td class="align-middle" style="max-width:100px;">
-                                        <a href="/chi-tiet/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
-                                            Xem
-                                        </a>
-
-                                        <a href="/sua-sanpham/@item.Alias" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
-                                            Sửa
-                                        </a>
-
-
-                                    </td>
                                 </tr>
                                 i++;
                             }

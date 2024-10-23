@@ -136,7 +136,7 @@ function validateForm() {
     const isAllEmpty = allFields.every(id=>$(`#${id}`).val().trim()==="");
 
     if (isAllEmpty) {
-        showError(allFields, "Vui lòng điền thông tin vào ít nhất một trường.");
+        showError(allFields, "Vui lòng điền đầy đủ thông tin.");
         return false;
     }
     let isValid = true;
