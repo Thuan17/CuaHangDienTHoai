@@ -1,0 +1,737 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditProductDetail
+@{
+    ViewBag.Title = "Chỉnh sửa " + (ViewBag.Name ?? "");
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .error-message {
+        display: none;
+        color: red;
+    }
+
+    .error-border {
+        border: 2px solid red !important;
+    }
+
+    label {
+        color: black !important;
+    }
+
+    .textarea-custom {
+        min-height: 450px !important;
+    }
+
+
+    .gift-group {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .custom-select {
+        position: relative;
+        display: inline-block;
+        min-width: 300px;
+        height: 40px !important;
+    }
+
+    .select-items {
+        position: absolute;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: none;
+        z-index: 100;
+        max-height: 250px;
+        overflow-y: auto;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+        .select-items .select-option {
+            z-index: 80;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+            .select-items .select-option:hover {
+                background-color: #f0f0f0;
+                transform: translateY(-3px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 90;
+            }
+
+
+            .select-items .select-option:hover {
+                background-color: #f0f0f0;
+                transform: translateY(-3px);
+            }
+
+        .select-items .select-option-title {
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .select-items .select-option:hover .select-option-title {
+            color: red;
+            transform: translateY(-3px);
+        }
+
+    .imageCase-item {
+        max-width: 50px;
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .select-selected.select-active + .select-items {
+        display: block;
+    }
+
+    .flex-container {
+        display: flex;
+        align-items: center;
+    }
+
+        .flex-container label {
+            margin-right: 10px;
+            line-height: 30px;
+        }
+
+    .custom-select {
+        flex: 1;
+    }
+
+    .custom-select {
+        min-width: 300px;
+    }
+
+
+    .select-option {
+        width: 100%;
+        display: flex;
+        padding: 0px;
+        box-sizing: border-box;
+        justify-content: space-between;
+    }
+
+    .select-option-checkbox {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+        .select-option-checkbox input {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+    .select-option-title {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .select-option-image {
+        width: 50px;
+        height: 50px;
+    }
+
+
+
+
+
+    .select-hide {
+        display: none;
+    }
+
+    .all-image {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+        .all-image .all-image-item {
+            text-align: center;
+        }
+
+            .all-image .all-image-item img {
+                max-width: 100px;
+                height: auto;
+            }
+
+
+
+
+
+    .swiper-container {
+        width: 100%;
+        height: auto;
+    }
+
+    .swiper-wrapper {
+        display: flex;
+    }
+
+    .swiper-slide {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+        .swiper-slide img {
+            width: 100%;
+            height: auto;
+        }
+</style>
+
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý</h1>
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/quan-ly-san-pham">Sản phẩm con </a></li>
+                    <li class="breadcrumb-item active">Chỉnh sửa  @(ViewBag.Name ?? "")</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <form id="editProductDetail" enctype="multipart/form-data" method="post">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(x => x.ProductDetailId)
+                    @Html.HiddenFor(x => x.Alias)
+
+
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    <div class="card">
+                        <div class="card-header p-2">
+                            <ul class="nav nav-pills">
+                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+                                <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Hình ảnh</a></li>
+
+                            </ul>
+                        </div><!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="single_product_pics">
+                                                <div class="row">
+                                                    <div class="col-lg-12 image_col order-lg-2 order-1">
+                                                        <div class="single_product_image text-center">
+                                                            <div class="container-anh-cu" style="position: relative; display: inline-block;">
+                                                                <img id="img-cu" src="@Model.ImageProduct" alt="@( ViewBag.Name??"")" style="max-width:80%;" />
+                                                            </div>
+
+                                                            <input type="hidden" id="txtImage" name="Images" />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="col-12" />
+                                            <p class="text-center">Ảnh chính sản phẩm</p>
+                                        </div>
+                                        <div class="col-lg-9  ">
+                                            <div class="col-12 p-0 m-0">
+                                                <div class="form-group">
+                                                    <h4>Thông tin hiện tại của sản phẩm</h4>
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Mã  sản phẩm:<span class="text-gray-800">@Model.Alias.Trim()</span> </label><br />
+                                                        <label for="exampleInputEmail1">Hãng  sản phẩm:<span class="text-gray-800">@Model.Products.ProductCompany.Title.Trim()</span> </label>
+                                                        <br />
+                                                        <label for="exampleInputEmail1">Danh mục  sản phẩm:<span class="text-gray-800">@Model.Products.ProductCategory.Title.Trim()</span> </label>
+
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 row  p-0 m-0">
+                                                <div class="col-lg-12 p-0 m-0 w-100">
+                                                    <div class="form-group">
+                                                        <div class="gift-group">
+                                                            <div class="flex-container">
+                                                                <label for="gift-select">Thuộc sản phẩm:</label>
+                                                                <div class="custom-select" id="customSelect">
+                                                                    <div id="select-selected" class="select-selected">Thuộc sản phẩm</div>
+                                                                    <div class="select-items select-hide">
+                                                                        @if (ViewBag.ProductList != null)
+                                                                        {
+                                                                            foreach (var item in ViewBag.ProductList as List<CuaHangBanDienThoai.Models.ListProductId>)
+                                                                            {
+                                                                                string strImg = item.Image ?? "";
+                                                                                <div class="select-option" data-productCaseid="@item.ProductsId">
+                                                                                    <div>
+                                                                                        <img src="@strImg" alt="Product Image" class="imageCase-item" />
+                                                                                    </div>
+                                                                                    <span class="select-option-title">@item.Title</span>
+                                                                                    <div class="select-option-checkbox">
+                                                                                        <input type="checkbox" class="select-option-checkbox" data-productid="@item.ProductsId"
+                                                                                               @(item.IsCheck ? "checked" : "") />
+
+                                                                                        <input type="hidden" id="ProductsId" name="ProductsId" value="" />
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-lg-6 pr-2 p-0 m-0">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Ram sản phẩm</label>
+                                                        @if (ViewBag.RamOptions != null)
+                                                        {
+                                                            @Html.DropDownListFor(
+                                                            x => x.Ram,
+                                                            ViewBag.RamOptions as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                            "-Chọn Ram  sản phẩm-",
+                                                            new { @class = "form-control", id = "Ram" })
+                                                            @Html.ValidationMessageFor(x => x.Ram, "", new { @class = "text-danger" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DropDownListFor(x => x.Ram, ViewBag.RamOptions as SelectList, "-Chọn Ram sản phẩm-", new { @class = "form-control", @placeholder = "Ram sản phẩm", id = "Ram" })
+
+                                                        }
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6  p-0 m-0">
+                                                    <div class="form-group">
+                                                        <label for="exampleInputEmail1">Dung lượng sản phẩm</label>
+                                                        @if (ViewBag.CapacityOptions != null)
+                                                        {
+                                                            @Html.DropDownListFor(
+                                                            x => x.Capacity,
+                                                            ViewBag.CapacityOptions as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                            "-Chọn dung lượng sản phẩm-",
+                                                            new { @class = "form-control", id = "Capacity" })
+                                                            @Html.ValidationMessageFor(x => x.Capacity, "", new { @class = "text-danger" })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.DropDownListFor(x => x.Capacity, ViewBag.CapacityOptions as SelectList, "-Chọn dung lượng sản phẩm-", new { @class = "form-control", @placeholder = "Dung lượng sản phẩm", id = "Capacity" })
+
+                                                        }
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-lg-12 w-100 p-0 m-0 row">
+                                                    <div class="col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="">Số lượng</label>
+                                                            <input type="number" name="Quantity" value="@Model.Quantity" id="Quantity" class="form-control ">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label for="exampleInputEmail1">Màu sản phẩm</label>
+                                                            @Html.TextBoxFor(x => x.Color, new { @class = "form-control", @placeholder = "Màu sản phẩm", id = "Color" })
+                                                            <span id="titleError" class="error-message">Vui lòng nhập màu sản phẩm.</span>
+                                                            @Html.ValidationMessageFor(x => x.Color, null, new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row w-100 m-0 p-0">
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-group">
+                                                            <label for="demoPrice">Giá</label>
+                                                            <input type="text" name="demoPrice" id="demoPrice"
+                                                                   value="@Model.Price"
+                                                                   class="form-control auto"
+                                                                   data-a-dec="," data-a-sep=".">
+                                                            @Html.HiddenFor(x => x.Price, new { @placeholder = "Giá" })
+                                                            @Html.ValidationMessageFor(x => x.Price, null, new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-group">
+                                                            <label for="demoPriceSale">Giá khuyến mãi</label>
+                                                            <input type="text" name="demoPriceSale" id="demoPriceSale"
+                                                                   value="@Model.PriceSale"
+                                                                   class="form-control auto">
+                                                            @Html.HiddenFor(x => x.PriceSale, new { @placeholder = "Giá khuyến mãi" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-4 mb-3">
+                                                        <div class="form-group">
+                                                            <label for="demoOriginalPrice">Giá nhập</label>
+                                                            <input type="text" name="demoOriginalPrice" id="demoOriginalPrice"
+                                                                   value="@Model.OriginalPrice"
+                                                                   class="form-control auto"
+                                                                   data-a-dec="," data-a-sep=".">
+                                                            @Html.HiddenFor(x => x.OriginalPrice, new { @placeholder = "Giá nhập" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+
+                                                <br />
+
+                                                <div class="row">
+
+                                                    <div class="custom-control custom-checkbox">
+
+                                                        <label for="IsActiveCheckbox2">Hiển thị : </label>
+                                                        @Html.CheckBoxFor(x => x.IsActive, new { @class = "", })
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <label for="IsHomeCheckbox2" class="">Trang chủ : </label>
+                                                        @Html.CheckBoxFor(x => x.IsHome, new { @class = "", })
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                            </div>
+
+                                    </div>
+
+
+                                </div>
+
+                                <div class="tab-pane" id="timeline">
+                                    <div class="row">
+                                        <div class="col-md-12 text-right">
+                                            <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServerProDetailEdit();" value="Tải ảnh" />
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <table class="table table-hover" id="tbAnhSanPham">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="max-width:50px">Ảnh</th>
+                                                        <th class="text-center">Ảnh đại diện</th>
+                                                        <th class="text-center">Thao tác</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody id="tbHtml">
+                                                    @{
+                                                        if (Model.Items != null && Model.Items.Count > 0)
+                                                        {
+
+
+
+                                                            for (int i = 0; i < Model.Items.Count; i++)
+                                                            {
+                                                                var image = Model.Items[i];
+                                                                <tr id="tr_@image.ProductImageId">
+                                                                    <td class="text-center">
+                                                                        <div class="Image_container">
+                                                                            <img id="img_@i" src="@image.Image" data-producdetailid="@Model.ProductDetailId"data-alias="@Model.Alias.Trim()"  data-productImage="@image.ProductImageId" data-index="@i" class="text-center" style="max-width:150px;  height:auto;overflow:hidden" alt="@(ViewBag.Name ??"")" onclick="BrowseServerUpdate(this);" />
+                                                                            <input type="hidden" id="tCurrentNewId_@i" value="0" />
+                                                                        
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <input type="checkbox" class="is-default-checkbox"
+                                                                           data-producdetailid="@Model.ProductDetailId"data-alias="@Model.Alias.Trim()"
+                                                                               data-productimageid="@image.ProductImageId"
+                                                                               data-url="@image.Image"
+                                                                               @(image.IsDefault ? "checked='checked'" : "") />
+                                                                        <input type="hidden" name="Items[@image.ProductImageId].ProductImageId" value="@image.ProductImageId" />
+                                                                    </td>
+
+                                                                    <td class="text-center">
+                                                                        <a href="#" data-alias="@Model.Alias.Trim()" data-id="@image.ProductImageId" data-producdetailid="@Model.ProductDetailId" class="btn btn-sm text-danger btnXoaAnhProDetail">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5" />
+                                                                            </svg>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+
+                                                            }
+                                                            <tr id="trHtml">
+                                                            </tr>
+                                                        }
+                                                        else
+                                                        {
+                                                            <tr>
+                                                                <td style="max-width:150px">
+                                                                    <div class="swiper-slide">
+                                                                        <img src="~/images/logo/logoWeb.png" alt="No image available" style="width:100%; height:auto;" />
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <!-- Optional: Add a placeholder checkbox if needed -->
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+
+
+                                            </table>
+                                            <input type="hidden" id="tCurrentId" value="0" />
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- /.tab-pane -->
+                            </div>
+                            <!-- /.tab-content -->
+                        </div><!-- /.card-body -->
+
+                    </div>
+
+
+
+
+
+                    <div class="col-12 text-center">
+                        <button type="button" onclick="$('#editProductDetail').submit();" class="btn btn-success col-8">Lưu lại</button>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý</h1>
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Loại sản phẩm</a></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+                <div class="col-12">
+                    <p class="text-danger text-danger">
+                        Không tồn tại bảng ghi nào !!!
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+@section scripts{
+    <script src="~/Scripts/admin/ProductDetailEdit.js"></script>
+   
+    <script>
+        $(document).ready(function () {
+            CKEDITOR.replace('txtContent', {
+                customConfig: '/content/ckeditor/config.js',
+                extraAllowedContent: 'span',
+                allowedContent: true,
+            });
+
+        });
+
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            function initializeSelectBox() {
+                var selectedDiv = document.getElementById('select-selected');
+                var items = document.querySelector('.select-items');
+                var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
+                var productsIdInput = document.getElementById('ProductsId'); // Lấy input hidden
+
+                // Hàm để kiểm tra và thiết lập giá trị mặc định cho ProductsId
+                function setInitialProductSelection() {
+                    checkboxes.forEach(function (checkbox) {
+                        if (checkbox.checked) {
+                            var selectOption = checkbox.closest('.select-option');
+                            var caseTitle = selectOption.querySelector('.select-option-title').textContent;
+                            var productId = checkbox.getAttribute('data-productid');
+
+                            // Thiết lập giá trị cho selectedDiv và input hidden
+                            selectedDiv.textContent = caseTitle;
+                            productsIdInput.value = productId;
+                        }
+                    });
+                }
+
+                // Gọi hàm thiết lập giá trị ban đầu
+                setInitialProductSelection();
+
+                selectedDiv.addEventListener('click', function () {
+                    items.style.display = items.style.display === 'block' ? 'none' : 'block';
+                });
+
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                        if (this.checked) {
+                            var selectOption = this.closest('.select-option');
+                            var caseTitle = selectOption.querySelector('.select-option-title').textContent;
+                            var productId = this.getAttribute('data-productid'); // Lấy ID sản phẩm từ thuộc tính data-productid
+
+                            selectedDiv.textContent = caseTitle;
+                            productsIdInput.value = productId;
+
+                            checkboxes.forEach(function (box) {
+                                if (box !== checkbox) {
+                                    box.checked = false;
+                                }
+                            });
+
+                            items.style.display = 'none';
+                        }
+                    });
+                });
+
+                items.addEventListener('click', function (event) {
+                    var target = event.target;
+
+                    if (target.classList.contains('select-option-title') || target.tagName === 'IMG') {
+                        var selectOption = target.closest('.select-option');
+                        var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
+                        var productId = checkbox.getAttribute('data-productid');
+
+                        if (checkbox) {
+                            checkbox.checked = true;
+                            selectedDiv.textContent = selectOption.querySelector('.select-option-title').textContent;
+                            productsIdInput.value = productId;
+
+                            checkboxes.forEach(function (box) {
+                                if (box !== checkbox) {
+                                    box.checked = false;
+                                }
+                            });
+
+                            items.style.display = 'none';
+                        }
+                    }
+                });
+
+                document.addEventListener('click', function (event) {
+                    if (!event.target.closest('.custom-select')) {
+                        items.style.display = 'none';
+                    }
+                });
+            }
+
+            initializeSelectBox();
+        });
+
+
+
+
+    </script>
+    <script>
+        /*   start xoa anh tu xclas */
+        $(document).on('click', '.btnXoaAnhProDetail', function (e) {
+            e.preventDefault();
+            $(this).prop('disabled', true);
+
+            var productImageId = $(this).data('id');
+            var producdetailid = $(this).data('producdetailid');
+            var alias = $(this).data('alias');
+            var $row = $('#tr_' + productImageId);
+
+            Swal.fire({
+                title: "Bạn có muốn xoá ảnh ?",
+
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Xoá ảnh !"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Admin/ProductDetail/DeleteImage',
+                        type: 'POST',
+                        data: { alias: alias, producdetailid: producdetailid, productImageId: productImageId },
+                        success: function (result) {
+                            if (result.success) {
+                                $row.remove();
+
+                                if (result.code == 1) {
+                                    // Đặt ảnh đầu tiên làm ảnh đại diện
+                                    var firstImage = $('#tbHtml').find('img').first();
+                                    if (firstImage.length) {
+                                        firstImage.closest('tr').find('input[type="checkbox"]').prop('checked', true);
+                                    }
+                                }
+
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Xoá ảnh thành công',
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Có lỗi xảy ra khi xóa ảnh.',
+                                    text: result.message || 'Vui lòng thử lại sau.'
+                                });
+
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Có lỗi xảy ra khi xóa ảnh.',
+                                text: 'Vui lòng thử lại sau.'
+                            });
+                        }
+                    });
+                }
+            });
+
+
+
+        });
+
+
+
+    </script>
+
+
+}
+

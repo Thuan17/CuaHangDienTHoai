@@ -37,6 +37,7 @@ namespace CuaHangBanDienThoai.Models
         public Nullable<bool> IsSale { get; set; }
         public Nullable<bool> IsHot { get; set; }
         public string Alias { get; set; }
+        public Nullable<int> Quantity { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillDetail> BillDetail { get; set; }

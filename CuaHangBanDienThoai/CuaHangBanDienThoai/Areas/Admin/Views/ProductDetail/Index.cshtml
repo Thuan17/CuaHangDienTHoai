@@ -141,11 +141,15 @@
                                     int maxLength = 7;
                                     alias = item.Alias;
                                 }
-
+                                var strImg="";
 
 
                                 var image = item.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.IsDefault == true);
-                                var strImg = image.Image ??"";
+                                if (image.Image != null)
+                                {
+                                     strImg = image.Image ?? "";
+                                }
+
 
                                 var Name = item.Products.ProductCategory.Title.Trim()+" " + item.Products.Title.Trim() + " " + item.Capacity.Trim();
 
@@ -221,7 +225,7 @@
                                             Xem
                                         </a>
 
-                                        <a href="/sua-sanpham/@item.Alias" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
+                                        <a href="/chinhsua-san-pham-con/@item.Alias" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
                                             Sửa
                                         </a>
 

@@ -15,6 +15,7 @@ namespace CuaHangBanDienThoai.Models
         public string Ram { get; set; }
         public string Capacity { get; set; }
         public int ProductsId { get; set; }
+        public int Quantity { get; set; }
         //public string IsActive  { get; set; }
         //public string IsHome { get; set; }
         //public string IsSale { get; set; }

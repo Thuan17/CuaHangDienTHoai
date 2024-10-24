@@ -195,6 +195,7 @@
     <Property Name="IsSale" Type="bit" />
     <Property Name="IsHot" Type="bit" />
     <Property Name="Alias" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
   </EntityType>
   <EntityType Name="ProductDetailImage">
     <Key>

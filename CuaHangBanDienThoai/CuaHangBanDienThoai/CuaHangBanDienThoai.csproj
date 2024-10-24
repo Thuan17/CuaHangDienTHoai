@@ -176,6 +176,7 @@
     <Compile Include="Models\Admin_AddProductCompany.cs" />
     <Compile Include="Models\Admin_AddProductDetail.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
+    <Compile Include="Models\Admin_EditProductDetail.cs" />
     <Compile Include="Models\AuthorizeFunction.cs" />
     <Compile Include="Models\Bill.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -5503,6 +5504,7 @@
     <Content Include="Scripts\admin\js\sb-admin-2.min.js" />
     <Content Include="Scripts\admin\New.js" />
     <Content Include="Scripts\admin\Product.js" />
+    <Content Include="Scripts\admin\ProductDetailEdit.js" />
     <Content Include="Scripts\admin\ProductDetails.js" />
     <Content Include="Scripts\autoNumeric-1.9.45.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -5551,6 +5553,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\ProductDetail\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
