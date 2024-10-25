@@ -68,9 +68,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                             return Json(new { success = false, code = -2, msg = "Không tìm thấy thông tin nhân viên." });
                         }
 
-                        // Lấy chức danh chức năng của nhân viên
+                        var Funtion = db.Employee.FirstOrDefault(s => s.EmployeeId == account.EmployeeId);
 
                         Session["EmployeeId"] = employee.EmployeeId;
+                        Session["AdminRole"] = employee.EmployeeId;
 
 
                         Session["user"] = account;

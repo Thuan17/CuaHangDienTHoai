@@ -30,7 +30,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
 
                 var products = db.Products.ToList();
-
+              
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
                 ViewBag.Count = products.Count;
                 ViewBag.PageSize = pageSize;
                 ViewBag.Page = page;

@@ -1,0 +1,252 @@
+﻿@model CuaHangBanDienThoai.Models.ProductDetail
+@using CuaHangBanDienThoai.Common
+@{
+    ViewBag.Title = "Chi tiết" + (ViewBag.Name ?? "");
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
+<style>
+    .swiper-container {
+        width: 100%;
+        height: auto; /* Hoặc một giá trị cố định nếu cần */
+    }
+
+    .swiper-wrapper {
+        display: flex; /* Đảm bảo các slide nằm ngang */
+    }
+
+    .swiper-slide {
+        width: 100%; /* Đảm bảo mỗi slide chiếm toàn bộ chiều rộng của swiper-container */
+        box-sizing: border-box; /* Bao gồm padding và border trong kích thước */
+    }
+
+        .swiper-slide img {
+            width: 100%;
+            height: auto;
+        }
+</style>
+
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+
+        var Name = Model.Products.ProductCategory.Title.Trim() + "  " + Model.Products.Title.Trim();
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                    <li class="breadcrumb-item"><a href="/san-pham-con">Sản phẩm </a></li>
+                    <li class="breadcrumb-item active">Chi tiết  @Name</li>
+
+                </ol>
+
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="single_product_pics">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="swiper-container" style="overflow: hidden;">
+                                        <div class="swiper-wrapper">
+                                            @{
+                                                var images = Model.ProductDetailImage.Where(x => x.ProductDetailId == Model.ProductDetailId).ToList();
+                                                if (images.Any())
+                                                {
+                                                    foreach (var image in images)
+                                                    {
+                                                        <div class="swiper-slide">
+                                                            <img src="@image.Image" alt="@Name.Trim()" style="width:100%; height:auto;" />
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="swiper-slide">
+                                                        <img src="~/images/logo/logoWeb.png" alt="No image available" style="width:100%; height:auto;" />
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                        <div class="swiper-pagination-custom text-center">
+                                            <span class="swiper-pagination-current">1</span> / <span class="swiper-pagination-total">6</span>
+                                            <p>Hình ảnh sản phẩm</p>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+
+
+                        <div class="product_details">
+                            <div class="product_details_title">
+
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h2>@Name</h2>
+                                    </div>
+                                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                    {
+                                    
+                                    <div class="col-md-4 text-right">
+                                        <a href="/chinhsua-san-pham-con/@Model.Alias" class="btn btn-warning text-white">
+                                            Chỉnh sửa
+                                        </a>
+
+                                    </div>
+                                    }
+                                        
+                                    </div>
+                                <hr class="col-12" />
+
+                            </div>
+                            <ul class="nav nav-pills mb-4">
+                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+
+                            </ul>
+                            <hr class="col-12" />
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="col-12">
+                                        <h5 class="text-black">Thông tin sản phẩm  @Name</h5>
+                                        <p class="d-flex flex-row">
+                                            Mã loại :
+                                            <span class="text-gray-600"> @Model.Alias</span>
+                                        </p>
+
+                                        <p class="d-flex flex-row">Danh mục :      <span class="text-gray-600">  @Model.Products.ProductCategory.Title.Trim()</span></p>
+                                        <p class="d-flex flex-row">Hãng :      <span class="text-gray-600">  @Model.Products.ProductCompany.Title.Trim()</span></p>
+                                        <p class="d-flex flex-row">Tạo ngày :      <span class="text-gray-600">  @Model.Products.Title.Trim()</span></p>
+                                        <p class="d-flex flex-row">Màu :      <span class="text-gray-600">  @Model.Color</span></p>
+                                        <p class="d-flex flex-row">Dung lượng:      <span class="text-gray-600">  @Model.Capacity</span></p>
+                                        <p class="d-flex flex-row">Giá bán  :      <span class="text-gray-600">   @($"{Common.FormatNumber(Model.Price)}đ")</span></p>
+                                        @if (Model.PriceSale > 0)
+                                        {
+                                            <p class="d-flex flex-row">Giá giảm :      <span class="text-gray-600">  @($"{Common.FormatNumber(Model.PriceSale)}đ")</span></p>
+                                        }
+
+
+                                        @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                        {
+                                            <p class="d-flex flex-row">Giá nhập  :      <span class="text-gray-600">   @($"{Common.FormatNumber(Model.OriginalPrice)}đ")</span></p>
+                                        }
+
+
+
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        @*<div class="col-12">
+                @Html.Action("Pratail_ProductForCategory", "ProductCategory", new { categoryId = Model.ProductCategoryId })
+            </div>*@
+
+
+
+
+
+
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Loại sản phẩm </a></li>
+
+                </ol>
+
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+
+                <div class="col-12">
+                    <p class="text-danger text-danger">
+                        Không tồn tại bảng ghi nào !!!
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        slidesPerView: 1, // Hiển thị một ảnh tại một thời điểm
+        spaceBetween: 10, // Khoảng cách giữa các ảnh
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+            // Render bullets, có thể bỏ qua nếu không cần
+            renderBullet: function (index, className) {
+                return '<span class="' + className + '">' + (index + 1) + '</span>';
+            },
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        grabCursor: true, // Kích hoạt kéo chuột
+        loop: true, // Kích hoạt vòng lặp nếu cần
+        on: {
+            init: function () {
+                updatePagination();
+            },
+            slideChange: function () {
+                updatePagination();
+            },
+        },
+    });
+
+    function updatePagination() {
+        if (swiper && swiper.activeIndex !== undefined) {
+            var current = swiper.activeIndex + 1; // Slide hiện tại (bắt đầu từ 1)
+            var total = swiper.slides.length; // Tổng số slide
+            document.querySelector('.swiper-pagination-current').textContent = current;
+            document.querySelector('.swiper-pagination-total').textContent = total;
+        }
+    }
+</script>
+

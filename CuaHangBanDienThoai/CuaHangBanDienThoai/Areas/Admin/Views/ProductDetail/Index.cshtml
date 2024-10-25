@@ -89,9 +89,16 @@
                             </div>
                         </div>
                     </div>
-                    <a href="/them-san-pham-con" class="btn btn-success">
-                        Tạo mới
-                    </a>
+
+                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                    {
+                        <a href="/them-san-pham-con" class="btn btn-success">
+                            Tạo mới
+                        </a>
+
+                    }
+
+
 
                 </div>
             </div>
@@ -123,10 +130,15 @@
                     <tbody>
                         @if (Model != null && Model.Any())
                         {
+
+
+
                             int i = 1;
                             foreach (var item in Model)
                             {
 
+
+                             
                                 string displayAlias = null;
                                 string alias = null;
                                 if (item.Alias != null)
@@ -141,17 +153,17 @@
                                     int maxLength = 7;
                                     alias = item.Alias;
                                 }
-                                var strImg="";
+                                var strImg = "";
 
 
                                 var image = item.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.IsDefault == true);
                                 if (image.Image != null)
                                 {
-                                     strImg = image.Image ?? "";
+                                    strImg = image.Image ?? "";
                                 }
 
 
-                                var Name = item.Products.ProductCategory.Title.Trim()+" " + item.Products.Title.Trim() + " " + item.Capacity.Trim();
+                                var Name = item.Products.ProductCategory.Title.Trim() + " " + item.Products.Title.Trim() + " " + item.Capacity.Trim();
 
 
                                 <tr>
@@ -221,13 +233,17 @@
                                     </td>
 
                                     <td class="align-middle" style="max-width:100px;">
-                                        <a href="/chi-tiet/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
+                                        <a href="/chitiet-san-pham-con/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
                                             Xem
                                         </a>
 
-                                        <a href="/chinhsua-san-pham-con/@item.Alias" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
-                                            Sửa
-                                        </a>
+                                       @{
+                                        var editButtonHtml = (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                        ? $"<a href='/chinhsua-san-pham-con/{item.Alias}' class='btn btn-warning btn-s text-white' data-toggle='tooltip' data-original-title='Edit user' style='min-width:60px;'>Sửa</a>"
+                                        : string.Empty;
+                                        }
+
+                                        @Html.Raw(editButtonHtml)
 
 
                                     </td>

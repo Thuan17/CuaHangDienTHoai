@@ -20,15 +20,39 @@ namespace CuaHangBanDienThoai.Models
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
+
+
             int? staffId = (int?)httpContext.Session["EmployeeId"];
-
             if (staffId == null) return false;
+            var role = GetTitleFunctionsByStaffId(staffId.Value);
+            if (role != null && role.Equals("Quản trị viên"))
+            {
+                httpContext.Session["AdminRole"] = role;
 
-            
+            }
+           
+
+
             var userFunctions = GetFunctionsByStaffId(staffId.Value);
 
-        
+
             return requiredFunctions.Any(func => userFunctions.Contains(func));
+
+
+
+
+
+          
+          
+        }
+        public string GetTitleFunctionsByStaffId(int staffId)
+        {
+            var functions = (from f in db.tb_Function
+                             join r in db.Role on f.FunctionId equals r.FunctionId
+                             where r.EmployeeId == staffId
+                             select f.TitLe.Trim()).FirstOrDefault();
+
+            return functions;
         }
 
         public List<string> GetFunctionsByStaffId(int staffId)
@@ -36,7 +60,7 @@ namespace CuaHangBanDienThoai.Models
             var functions = (from f in db.tb_Function
                              join r in db.Role on f.FunctionId equals r.FunctionId
                              where r.EmployeeId == staffId
-                             select f.TitLe).ToList();
+                             select f.TitLe.Trim()).ToList();
 
             return functions;
         }

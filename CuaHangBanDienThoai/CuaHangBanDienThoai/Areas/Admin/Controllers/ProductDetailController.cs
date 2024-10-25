@@ -12,6 +12,9 @@ using Antlr.Runtime.Misc;
 using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.Diagnostics;
+using System.Reflection;
+using System.Xml.Linq;
+
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
     public class ProductDetailController : Controller
@@ -32,7 +35,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
 
                 var products = db.ProductDetail.ToList();
-
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
                 ViewBag.Count = products.Count;
                 ViewBag.PageSize = pageSize;
                 ViewBag.Page = page;
@@ -516,7 +520,31 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
+        public async Task<ActionResult> Detail(string alias)
+        {
+            if (alias == null)
+            {
+                ViewBag.Name = "Không tìm thấy sản phẩm";
+                return View();
+            }
 
+            var item = await db.ProductDetail.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
+            if (item != null)
+            {
+                AccountEmployee nvSession = (AccountEmployee)Session["user"];
+                var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
+
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
+
+         
+                ViewBag.Name = item.Products.Title.Trim() + "  " + item.Color.Trim() + " " + item.Ram.Trim() + " " + item.Capacity.Trim();
+                return View(item);
+            }
+            return View();
+
+        }
 
 
 

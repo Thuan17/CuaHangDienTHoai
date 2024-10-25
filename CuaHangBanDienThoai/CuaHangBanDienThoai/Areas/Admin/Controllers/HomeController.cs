@@ -10,7 +10,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         // GET: Admin/Home
-        [AuthorizeFunction("Quản trị viên", "Quản lý")]
+        [AuthorizeFunction("Quản lý", "Quản trị viên" )]
         public ActionResult Index()
         {
             return View();
