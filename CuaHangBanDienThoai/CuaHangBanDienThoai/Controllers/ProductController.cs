@@ -26,7 +26,7 @@ namespace CuaHangBanDienThoai.Controllers
                 items = items.Where(x => x.Price <= maxPrice.Value);
             }
 
-            items = items.OrderByDescending(x => x.ProductCategoryId).ToList();
+            items = items.OrderByDescending(x => x.Products.ProductCategory).ToList();
 
             if (items != null)
             {

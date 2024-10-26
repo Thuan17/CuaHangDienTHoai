@@ -28,17 +28,21 @@ namespace CuaHangBanDienThoai.Controllers
                 {
                     return View();
                 }
-                var product = await db.Products.FirstOrDefaultAsync(x => x.ProductCategoryId == productCategory.ProductCategoryId);
+                var productIds = db.Products.Where(x => x.ProductCategoryId == productCategory.ProductCategoryId).Select(x=>x.ProductsId).ToList() ;
 
-                if (product != null)
+                if (productIds != null)
                 {
-                    var productdetails = await db.ProductDetail.Where(x => x.ProductsId == product.ProductsId).OrderByDescending(x => x.ProductDetailId).ToListAsync();
-                    if (productdetails != null && productdetails.Count > 0)
+                    var productDetails = await db.ProductDetail
+                                          .Where(x => productIds.Contains((int)x.ProductsId))
+                                          .OrderByDescending(x => x.ProductDetailId)
+                                          .ToListAsync();
+
+                    if (productDetails.Count > 0)
                     {
                         ViewBag.CategoryName = productCategory.Title.Trim();
-                        ViewBag.Count = productdetails.Count;
+                        ViewBag.Count = productDetails.Count;
                         ViewBag.Alias = alias;
-                        return View(productdetails);
+                        return View(productDetails);
                     }
 
                 }

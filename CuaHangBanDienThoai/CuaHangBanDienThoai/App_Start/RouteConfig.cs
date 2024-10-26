@@ -33,14 +33,14 @@ namespace CuaHangBanDienThoai
       );
             routes.MapRoute(
             name: "CategoryProduct",
-            url: "danh-muc-san-pham/{alias}",
+            url: "loai-san-pham/{alias}",
             defaults: new { controller = "ProductCategory", action = "Detail", id = UrlParameter.Optional },
             namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
         );
             routes.MapRoute(
                name: "Chitietsanpham",
-              url: "chi-tiet/{alias}-p{id}",
-               defaults: new { controller = "Product", action = "Details", id = UrlParameter.Optional },
+              url: "chi-tiet-san-pham/{alias}",
+               defaults: new { controller = "ProductDetail", action = "Details", id = UrlParameter.Optional },
                 namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );
             routes.MapRoute(
@@ -69,15 +69,15 @@ namespace CuaHangBanDienThoai
          );
             routes.MapRoute(
                name: "SanPham",
-               url: "san-pham",
-               defaults: new { controller = "Product", action = "Index", id = UrlParameter.Optional },
+               url: "cua-hang",
+               defaults: new { controller = "ProductDetail", action = "Index", id = UrlParameter.Optional },
                   namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );
-            routes.MapRoute(
-         name: "RedirectHome",
-         url: "",
-         defaults: new { controller = "Home", action = "Index", alias = UrlParameter.Optional }
-     );
+                    routes.MapRoute(
+                 name: "RedirectHome",
+                 url: "",
+                 defaults: new { controller = "Home", action = "Index", alias = UrlParameter.Optional }
+             );
 
 
             //// Route Trang chu
