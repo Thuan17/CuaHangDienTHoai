@@ -170,6 +170,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             var item = await db.Products.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
             if (item != null)
             {
+
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
                 string rawAlias = $"{item.ProductCategory.Title}  {item.Title.Trim()}".Trim().ToLower();
                 ViewBag.Name = rawAlias;
                 return View(item);
@@ -177,6 +180,51 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return View();
 
         }
+
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
+        public ActionResult Partail_ProDetailById(int? id)
+        {
+            if (!id.HasValue || id <= 0)
+            {
+                return PartialView();
+            }
+
+            var item = db.ProductDetail
+                .Where(x => x.ProductsId == id)
+                .OrderByDescending(x => x.ProductDetailId)
+                .ToList();
+
+            if (item.Any())
+            {
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
+                return PartialView(item);
+            }
+
+            return PartialView();
+        }
+
+        //[AuthorizeFunction("Quản lý", "Quản trị viên")]
+        //public async Task<ActionResult> Partail_ProDetailById(int? id)
+        //{
+        //    if (!id.HasValue || id <= 0)
+        //    {
+        //        return PartialView();
+        //    }
+
+        //    var item = await db.ProductDetail
+        //        .Where(x => x.ProductsId == id)
+        //        .OrderByDescending(x => x.ProductDetailId)
+        //        .ToListAsync();
+
+        //    if (item.Any())
+        //    {
+        //        return PartialView(item);
+        //    }
+
+        //    return PartialView();
+        //}
+
 
 
         [AuthorizeFunction( "Quản trị viên")]

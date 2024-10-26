@@ -1,0 +1,157 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.ProductDetail>
+@using CuaHangBanDienThoai.Common
+
+@{
+    ViewBag.Title = "Dang mục" + " " + (ViewBag.CategoryName ?? "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/css/client/ProductIndex.css" rel="stylesheet" />
+
+
+<div class="container container_Index ">
+    <div class="row">
+        <div class="col product_section clearfix">
+            <!-- Breadcrumbs -->
+            <ul class="breadcrumbs mb-1 pl-0 pt-2 d-flex align-items-center " style="margin:0!important;">
+                <li class="breadcrumb-item m-0 p-0"><a href="/san-pham">Sản phẩm</a></li>
+                <li class="breadcrumb-item active">@ViewBag.CategoryName</li>
+            </ul>
+
+            <!-- Sidebar -->
+
+            <div class="sidebar">
+                <div class="sidebar_section ">
+                    <div class="sidebar_title">
+                        <h5>Mục sản phẩm</h5>
+                    </div>
+                    @Html.Action("MenuLeft", "Menu", new { alias =ViewBag.Alias })
+                </div>
+            </div>
+
+            <!-- Main Content -->
+
+            <div class="main_content">
+
+                <!-- Products -->
+
+                <div class="products_iso">
+                    <div class="row">
+                        <div class="col products_col p-0" style="min-height: 450px;">
+
+                            <!-- Product Grid -->
+
+                            <div class=" product__grid">
+                                @if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+
+
+
+
+                                        @functions {
+
+                                            public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                                            {
+                                                if (originalPrice == 0 || salePrice >= originalPrice)
+                                                {
+                                                    return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                                                }
+
+                                                decimal discount = 1 - (salePrice / originalPrice);
+                                                return discount * 100;
+                                            }
+                                        }
+                                        var strImg = "";
+                                        var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+                                        var Name = item.Products.ProductCategory.Title.Trim() + "   " + item.Products.Title.Trim();
+                                        if (CheckImage != null)
+                                        {
+                                            strImg = CheckImage.Image;
+                                        }
+                                        else
+                                        {
+                                            strImg = "~/images/logo/logoWeb.png";
+                                        }
+
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-1  product__grid__item">
+                                            <div class="  product__item">
+
+                                                <a href="/chi-tiet/@item.Alias-p@(item.ProductsId)" class="product_image__item">
+                                                    <img src="@strImg" alt="@Name TenoStore">
+                                                </a>
+
+                                                @if (item.IsSale == true && item.PriceSale > 0)
+                                                {
+                                                    <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                                        @{
+                                                            decimal originalPrice = Convert.ToDecimal(item.Price);
+                                                            decimal salePrice = Convert.ToDecimal(item.PriceSale);
+                                                            decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                                        }
+                                                        @if (discountPercentage > 0)
+                                                        {
+                                                            <span>@discountPercentage.ToString("0")%</span>
+                                                        }
+                                                    </div>
+                                                }
+
+                                                <div class="product_info">
+                                                    <h5 class="product_name" style="height: 50px; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                                        <a href="#" class="">@Name</a>
+                                                    </h5>
+                                                    @if (item.PriceSale > 0)
+                                                    {
+                                                        <div class="product_price">
+                                                            @($"{Common.FormatNumber(item.PriceSale)}đ") <span> @($"{Common.FormatNumber(item.Price)}đ")</span>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="product_price">
+                                                            @($"{Common.FormatNumber(item.Price)}đ")
+                                                        </div>
+                                                    }
+                                                </div>
+
+                                                <div class="@*red_button add_to_cart_button*@">
+                                                    <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <!-- Handle the case when Model is null -->
+                                }
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $('.sidebar_title h5').click(function (e) {
+            e.stopPropagation();
+            $('.sidebar_categories').toggleClass('show');
+        });
+
+
+        $(document).click(function (e) {
+            if (!$(e.target).closest('.sidebar_categories, .sidebar_title').length) {
+                $('.sidebar_categories').removeClass('show');
+            }
+        });
+    });
+</script>

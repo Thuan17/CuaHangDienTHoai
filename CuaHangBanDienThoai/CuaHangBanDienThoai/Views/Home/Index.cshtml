@@ -1,33 +1,125 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Cửa hàng điện thoại";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+<style>
+    h3.card-title, p, b {
+        font-weight: normal;
+    }
+</style>
+@*<div class="big-banner">
+        @Html.Action("BigBanner", "Menu")
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+
+    </div>*@
+
+
+
+
+<section id="mobile-products" class="product-store position-relative padding-large no-padding-bottom pt-1 ">
+    <div class="container container_Index">
+        @Html.Action("MenuTop", "Menu")
+
     </div>
-</main>
+
+
+
+</section>
+
+
+<section id="company-services" class="mt-2">
+    <div class="container container_Index">
+
+        <div class="col text-center pb-3">
+
+            <div class="section_title">
+                <h4 class="mt-1">   CHÍNH SÁCH BẢO HÀNH</h4>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-6  p-0 m-0">
+                <div class="row">
+
+                    <div class="col-lg-6  p-0 m-0 ">
+                        <div class="icon-box d-flex  p-0 m-0">
+                            <div class="icon-box-content">
+
+                                <img src="~/images/icon/shield.png" class="text-center" />
+                                <h3 class="card-title text-uppercase text-dark text-center"><b>Bảo hành</b></h3>
+                                <p class="text-center ">Bảo hành 6 tháng</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6  p-0 m-0">
+                        <div class="icon-box d-flex  p-0 m-0">
+                            <div class="icon-box-content">
+
+                                <img src="~/images/icon/advise.png" class="text-center" />
+
+                                <h3 class="card-title text-uppercase text-dark text-center"><b>tư vấn</b></h3>
+                                <p class="text-center ">Hỗ trợ kỹ thuật fix lỗi</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+            <div class="col-6 p-0 m-0">
+                <div class="row">
+                    <div class="col-lg-6  p-0 m-0">
+                        <div class="icon-box d-flex  p-0 m-0">
+                            <div class="icon-box-content">
+                                <img src="~/images/icon/loupe.png" class=" text-center" />
+                                <h3 class="card-title text-uppercase text-dark text-center"><b>đồng kiểm</b></h3>
+                                <p class="text-center">Kiểm tra khi nhận hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6   p-0 m-0">
+
+
+                        <div class="icon-box d-flex  p-0 m-0">
+                            <div class="icon-box-content">
+                                <img src="~/images/icon/delivery.png" class="text-center" />
+                                <h3 class="card-title text-uppercase text-dark text-center"><b>ĐỔI TRẢ</b></h3>
+                                <p class="text-center ">1 đổi 1 trong 30 ngày.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <div>
+
+        <p class="text-center text-dark pr-1 pl-1">
+            <span class="text-uppercase"> @ViewBag.Title</span> chỉ nhận bảo hành Airpods với lỗi từ nhà sản xuất , không bảo hành với các lỗi từ người dùng , lỗi sủ dụng sạc nhanh .
+        </p>
+
+    </div>
+</section>
+
+
+
+<div class="new_arrivals pt-0">
+    <div class="container container_Index">
+
+        @Html.Action("MenuArrivals", "Menu")
+    </div>
+</div>
+

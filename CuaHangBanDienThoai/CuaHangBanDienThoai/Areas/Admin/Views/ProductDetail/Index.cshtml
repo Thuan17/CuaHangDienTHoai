@@ -120,7 +120,7 @@
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"> Trang chủ </th>
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Giảm giá</th>
                           
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"></th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"style="width: 100px;"></th>
 
 
                             @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
@@ -231,22 +231,29 @@
                                         </div>
 
                                     </td>
+                                    <td class="align-middle p-0 m-0 d-flex justify-content-center align-items-center"
+                                        style="max-width: 100px; width: 100px;">
 
-                                    <td class="align-middle" style="max-width:100px;">
-                                        <a href="/chitiet-san-pham-con/@item.Alias" class=" btn btn-primary btn-s text-white " @*data-toggle="tooltip" data-original-title="Edit user*@ style="min-width:60px;">
-                                            Xem
-                                        </a>
+                                        <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
+                                            <a href="/chitiet-san-pham-con/@item.Alias"
+                                               class="btn btn-primary btn-s mt-3 mb-2 text-white"
+                                               style="min-width: 60px;">
+                                                Xem
+                                            </a>
 
-                                       @{
-                                        var editButtonHtml = (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
-                                        ? $"<a href='/chinhsua-san-pham-con/{item.Alias}' class='btn btn-warning btn-s text-white' data-toggle='tooltip' data-original-title='Edit user' style='min-width:60px;'>Sửa</a>"
-                                        : string.Empty;
-                                        }
-
-                                        @Html.Raw(editButtonHtml)
-
+                                            @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                            {
+                                                <a href='/chinhsua-san-pham-con/@item.Alias'
+                                                   class='btn btn-warning btn-s text-white'
+                                                   style="min-width: 60px;">
+                                                    Sửa
+                                                </a>
+                                            }
+                                        </div>
 
                                     </td>
+
+
                                 </tr>
                                 i++;
                             }

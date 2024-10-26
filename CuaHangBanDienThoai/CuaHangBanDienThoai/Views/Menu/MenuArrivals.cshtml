@@ -1,0 +1,61 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.ProductCompany>
+<style>
+   
+    .box-quicklink__item {
+        display: flex; /* Ensures the item and image align correctly */
+        justify-content: center; /* Centers the image horizontally */
+        align-items: center; /* Centers the image vertically */
+        width: 100%; /* Ensures the item takes full width */
+        height: 100%; /* Ensures the item takes full height */
+    }
+
+        .box-quicklink__item img {
+            width: 100%; /* Ensures the image takes the full width of the container */
+            height: auto; /* Maintains the aspect ratio of the image */
+            max-height: 100%; /* Ensures the image does not exceed the height of the container */
+            object-fit: contain; /* Ensures the image fits within the dimensions of the container */
+        }
+
+</style>
+
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col text-center text-uppercase">
+            <div class="section_title new_arrivals_title mt-0">
+                <h4>Sản phẩm gợi ý</h4>
+            </div>
+        </div>
+    </div>
+    <div class="row align-items-center m-0 p-0">
+        <div class="col text-center m-0 p-0">
+            <div class="new_arrivals_sorting mt-4">
+                <ul class="arrivals_grid_sorting clearfix button-group filters-button-group  p-0">
+                    <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center active is-checked p-1 btnArrivals" data-filter="*">Tất cả</li>
+                    @foreach (var item in Model)
+                    {
+
+
+
+
+                        <li class="grid_sorting_button button d-flex flex-column justify-content-center align-items-center p-1 btnArrivals" data-filter=".@item.Alias.Trim()">
+                            <img src="@item.Icon.Trim()"
+                                 width="30" alt="icon" class="no-text box-quicklink__item bd-radius quicklink-logo m-0 p-0" lazyloaded="">
+                            
+                        </li>
+
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col products_col p-0">
+            <div class="product-grid product__grid mt-0" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+
+                @Html.Action("Partial_ItemsByCateId", "Product")
+            </div>
+        </div>
+    </div>
+}

@@ -164,7 +164,11 @@
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\ProductCategoryController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -4947,6 +4951,7 @@
     <Content Include="Content\css\client\style.css" />
     <Content Include="Content\css\client\vendor.css" />
     <Content Include="Content\css\CongTac.css" />
+    <Content Include="Content\css\Error.css" />
     <Content Include="Content\css\login\fonts\material-icon\css\material-design-iconic-font.css" />
     <Content Include="Content\css\login\fonts\material-icon\css\material-design-iconic-font.min.css" />
     <Content Include="Content\css\login\fonts\material-icon\fonts\Material-Design-Iconic-Font.svg" />
@@ -5555,6 +5560,7 @@
     </Content>
     <Content Include="Areas\Admin\Views\ProductDetail\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ProductDetail\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Product\Partail_ProDetailById.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -5676,6 +5682,16 @@
     <Content Include="TempClient\plugins\themify-icons\fonts\themify.eot" />
     <Content Include="TempClient\plugins\themify-icons\fonts\themify.ttf" />
     <Content Include="TempClient\plugins\themify-icons\fonts\themify.woff" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\Menu\MenuTop.cshtml" />
+    <Content Include="Views\Menu\MenuArrivals.cshtml" />
+    <Content Include="Views\Product\Partial_ItemsByCateId.cshtml" />
+    <Content Include="Views\Menu\MenuCategory.cshtml" />
+    <Content Include="Views\ProductCategory\ProductCategory.cshtml" />
+    <Content Include="Views\ProductCategory\Detail.cshtml" />
+    <Content Include="Views\Menu\MenuLeft.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

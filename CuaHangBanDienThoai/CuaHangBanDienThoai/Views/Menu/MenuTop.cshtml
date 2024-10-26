@@ -1,0 +1,107 @@
+﻿
+@model IEnumerable<CuaHangBanDienThoai.Models.ProductDetail>
+@using CuaHangBanDienThoai.Common
+<link href="~/Content/css/client/MenuTop.css" rel="stylesheet" />
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        <div class="col text-center pb-1">
+            <div class="section_title text-uppercase">
+                <h4>sản phẩm bán chạy </h4>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+
+        <div class="swiper product-swiper p-1" style="z-index:50">
+
+            <div class="swiper-wrapper">
+                @foreach (var item in Model)
+                {
+
+                    @functions {
+
+                        public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                        {
+                            if (originalPrice == 0 || salePrice >= originalPrice)
+                            {
+                                return 0;
+                            }
+
+                            decimal discount = 1 - (salePrice / originalPrice);
+                            return discount * 100;
+                        }
+                    }
+                    var strImg = "";
+                    var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+                    var Name = item.Products.ProductCategory.Title.Trim() + "   " + item.Products.Title.Trim();
+                    if (CheckImage != null)
+                    {
+                        strImg = CheckImage.Image;
+                    }
+                    <div class="swiper-slide product__item ">
+                        <a href="/chi-tiet/@item.Alias-p@(item.ProductsId)" class="p-0">
+                            <div class="product-card position-relative" style="">
+                                <div class="product_image__item">
+                                    <img src="@strImg" width="20" height="20" alt="@Name TenoStore">
+                                </div>
+                                @*<div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center "><span>new</span></div>*@
+
+                                @if (item.IsSale == true && item.PriceSale > 0)
+                                {<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                                        <div>
+                                            @{
+                                                decimal originalPrice = Convert.ToDecimal(item.Price);
+                                                decimal salePrice = Convert.ToDecimal(item.PriceSale);
+                                                decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                                            }
+                                            @if (discountPercentage > 0)
+                                            {
+                                                <span> -@discountPercentage.ToString("0")% </span>
+                                            }
+
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="product_info">
+                                    <h5 class="product_name" style="height: 50px; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                        @Name
+                                    </h5>
+
+
+                                    @if (item.PriceSale > 0)
+                                    {
+                                        <div class="product_price text-danger w-100">
+                                            @($"{Common.FormatNumber(item.PriceSale)}đ") <span> @($"{Common.FormatNumber(item.Price)}đ")</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="product_price text-danger">
+                                            @($"{Common.FormatNumber(item.Price)}đ")
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                        <a href="javascript:void(0);" class=" btnbuynow  btnAddtoCartTop  p-0 m-0" style="z-index:15;" data-productid="@item.ProductsId">Mua ngay</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+
+}
+else
+{
+    <div class="container">
+        <div class="" style="display:none">
+
+        </div>
+    </div>
+
+}
+
