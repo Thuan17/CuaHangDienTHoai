@@ -2846,7 +2846,6 @@ listproduct .price {
 }
 
 .product__item {
-	
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -2854,21 +2853,58 @@ listproduct .price {
 	width: 100%;
 	margin: 0;
 	padding: 5px;
-}
-
-
-.product_image__item {
-	width: 100%; 
-	height:80%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
-	height: auto; 
-	padding: 0; 
-	box-sizing: border-box;
+	position: relative;
+	z-index: 1;
+	border: 1px solid rgba(234, 236, 240, 1);
+	border-radius: 8px;
 	
 }
+	.product__item::after {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: -1px;
+		width: calc(100% + 1px);
+		height: 100%;
+		pointer-events: none;
+		content: '';
+		border: 1px solid rgba(234, 236, 240, 1);
+		border-radius: 8px;
+		border-radius: 3px;
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+	}
+
+	.product__item:hover::after {
+		content: ''; /* Bắt buộc để pseudo-element xuất hiện */
+		position: absolute;
+		inset: 0; /* Phủ toàn bộ phần tử cha */
+		pointer-events: none; /* Không ảnh hưởng đến sự tương tác */
+		box-shadow: 0 0 2px 1px rgba(63, 78, 100, 0.1); /* Bóng mỏng và nhẹ hơn */
+		border: solid 1px rgba(235, 235, 235, 1); /* Viền mỏng hơn */
+		border-radius: 4px;
+	}
+
+	.product__item:hover .product_image__item {
+		
+		transform: translateY(-5px);
+		transition: all 300ms ease-in-out;
+	}
+
+	.product_image__item {
+		
+		width: 100%;
+		height: 80%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: auto;
+		padding: 0;
+		box-sizing: border-box;
+	}
 .container_Index {
 	padding-left: 0;
 	padding-right: 0;
@@ -2927,40 +2963,19 @@ listproduct .price {
 #mobile-products {
 	padding-bottom: 0;
 }
-/*
-.product__item::after {
-	display: block;
-	position: absolute;
-	top: 0;
-	left: -1px;
-	width: calc(100% + 1px);
-	height: 100%;
-	pointer-events: none;
-	content: '';
-	border: solid 2px rgba(235,235,235,0);
-	border-radius: 3px;
-	-webkit-transition: all 0.3s ease;
-	-moz-transition: all 0.3s ease;
-	-ms-transition: all 0.3s ease;
-	-o-transition: all 0.3s ease;
-	transition: all 0.3s ease;
-}
 
-.product__item:hover::after {
-	box-shadow: 0 2px 5px rgba(63, 78, 100, 0.15);
-	border: solid 2px rgba(235,235,235,1);
-}*/
+
 @media (max-width: 576px) {
 	.product__grid__item {
 		width: 50%;
 	}
 }
 
-/* Bỏ phần CSS hover */
+/*
 .product,.product__item, .product-item:hover::after {
 	box-shadow: none !important;
 	border: none !important;
-}
+}*/
 
 /*********************************
 8. Benefit

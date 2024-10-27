@@ -29,20 +29,30 @@ namespace CuaHangBanDienThoai.Controllers
                     return View();
                 }
                 var productIds = db.Products.Where(x => x.ProductCategoryId == productCategory.ProductCategoryId).Select(x=>x.ProductsId).ToList() ;
+            
+
 
                 if (productIds != null)
                 {
-                    var productDetails = await db.ProductDetail
-                                          .Where(x => productIds.Contains((int)x.ProductsId))
-                                          .OrderByDescending(x => x.ProductDetailId)
-                                          .ToListAsync();
+                    var productDetails =  db.ProductDetail
+                                          .Where(x => productIds.Contains((int)x.ProductsId) && x.Products.IsActive == true)
+                                          .GroupBy(x => x.ProductsId)
+                                         .Select(g => g.FirstOrDefault())
+                                            .AsQueryable();
 
-                    if (productDetails.Count > 0)
+                    var sortedItems = productDetails
+                                     .OrderByDescending(x => x.Products.IsHot)
+                                     .ThenBy(x => x.Products.ProductCategoryId)
+                                     .ToList();
+
+
+                    if (sortedItems.Count > 0&& sortedItems.Any())
                     {
+
                         ViewBag.CategoryName = productCategory.Title.Trim();
-                        ViewBag.Count = productDetails.Count;
+                        ViewBag.Count = sortedItems.Count;
                         ViewBag.Alias = alias;
-                        return View(productDetails);
+                        return View(sortedItems);
                     }
 
                 }
@@ -54,7 +64,7 @@ namespace CuaHangBanDienThoai.Controllers
                 return View();
             }
         }
-
+        
         public async Task<ActionResult> ProductCategory(string alias)
         {
             if (alias != null )

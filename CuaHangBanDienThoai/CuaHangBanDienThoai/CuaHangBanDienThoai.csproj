@@ -5005,6 +5005,7 @@
     <Content Include="Content\css\ProductClient\styles\responsive.css" />
     <Content Include="Content\css\ProductClient\styles\single_responsive.css" />
     <Content Include="Content\css\ProductClient\styles\single_styles.css" />
+    <Content Include="Content\css\ProductDetail.css" />
     <Content Include="Content\css\test.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\templates\DonHang.html" />
@@ -5700,6 +5701,8 @@
     <Content Include="Views\ProductDetail\Capacity.cshtml" />
     <Content Include="Views\Product\Capacity.cshtml" />
     <Content Include="Views\ProductDetail\Partial_DetailByCapactity.cshtml" />
+    <Content Include="Views\ProductDetail\DetailByOption.cshtml" />
+    <Content Include="Views\ProductDetail\DetailByColor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

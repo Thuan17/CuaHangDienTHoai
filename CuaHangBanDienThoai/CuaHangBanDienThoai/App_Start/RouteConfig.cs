@@ -37,12 +37,27 @@ namespace CuaHangBanDienThoai
             defaults: new { controller = "ProductCategory", action = "Detail", id = UrlParameter.Optional },
             namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
         );
+
+            routes.MapRoute(
+          name: "ChitietsanphamTheodungluongVaMau",
+         url: "san-pham/{alias}-{capacity}-color{color}",
+          defaults: new { controller = "ProductDetail", action = "DetailByColor", id = UrlParameter.Optional },
+           namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+      );
+            routes.MapRoute(
+             name: "ChitietsanphamTheodungluong",
+            url: "san-pham/{alias}-dl{capacity}",
+             defaults: new { controller = "ProductDetail", action = "DetailByOption", id = UrlParameter.Optional },
+              namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+         );
             routes.MapRoute(
                name: "Chitietsanpham",
-              url: "chi-tiet-san-pham/{alias}",
+              url: "san-pham/{alias}",
                defaults: new { controller = "ProductDetail", action = "Details", id = UrlParameter.Optional },
                 namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );
+
+          
             routes.MapRoute(
                 name: "DangKy",
                 url: "dang-ky",

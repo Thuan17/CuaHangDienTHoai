@@ -1,0 +1,667 @@
+﻿@model CuaHangBanDienThoai.Models.ProductDetail
+@using CuaHangBanDienThoai.Common;
+@{
+    ViewBag.Title = (ViewBag.Name ?? "Chi tiết  ");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/css/ProductDetail.css" rel="stylesheet" />
+
+<link href="~/Content/css/client/boxChip.css" rel="stylesheet" />
+@if (Model != null)
+{
+
+
+    @functions {
+
+        public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+        {
+            if (originalPrice == 0 || salePrice >= originalPrice)
+            {
+                return 0;
+            }
+
+            decimal discount = 1 - (salePrice / originalPrice);
+            return (int)(discount * 100);
+        }
+    }
+
+
+    var Name = Model.Products.ProductCategory.Title.Trim() + "   " + Model.Products.Title.Trim();
+    var PriceSale = Model.PriceSale;
+    var Price = Model.Price;
+
+
+    <div class="container container_Index">
+        <ul class="breadcrumbs mb-1 pl-0 pt-2 d-flex align-items-center ">
+            <li class="breadcrumb-item m-0 p-0"><a href="/san-pham">Sản phẩm</a></li>
+            <li class="breadcrumb-item category m-0 p-0"><a href="/loai-san-pham//@Model.Products.ProductCategory.Alias" class="p-0"> @Model.Products.ProductCategory.Title.Trim() </a></li>
+            <li class="breadcrumb-item active"> @Name.Trim()</li>
+
+        </ul>
+
+
+        <div class="row">
+
+
+            <div class="custom-col-left p-0 pr-0 pl-0 ">
+
+                <div class="w-100 row mt-2 pb-2 p-0 m-0 GrImage  border-1 rounded-3 bg-white">
+                    <div class="col-lg-12  m-0 p-0">
+                        <div class="swiper-container swiper-container-item" style="overflow: hidden;padding:10px;">
+                            <div class="swiper-wrapper wrapper-item ">
+                                @{
+                                    var images = Model.ProductDetailImage.Where(x => x.ProductDetailId == Model.ProductDetailId && x.IsDefault == false).ToList();
+                                    if (images.Any())
+                                    {
+                                        foreach (var image in images)
+                                        {
+                                            <div class="swiper-slide slide-item" style="overflow: hidden;padding:10px;">
+                                                <img src="@image.Image" alt="@Name" style="width:100%; height:auto;" />
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="swiper-slide">
+                                            <img src="~/images/logo/logoWeb.png" alt="No image available" style="width:100%; height:auto;" />
+                                        </div>
+                                    }
+                                }
+                            </div>
+
+                        </div>
+                        <div class="pagination-wrapper text-center">
+                            <span class="pagination-wrapper-title">Hình ảnh sản phẩm</span><span></span> <span class="swiper-pagination-current"></span> / <span class="swiper-pagination-total"></span>
+
+                        </div>
+                        <!-- Thumbnail Swiper -->
+                        <div class="swiper-container swiper-container-small" style="overflow: hidden;height:auto">
+                            <div class="swiper-wrapper">
+                                @{
+                                    var allImage = Model.ProductDetailImage.Where(x => x.ProductDetailId == Model.ProductDetailId && x.IsDefault == false).ToList();
+                                    if (allImage.Any())
+                                    {
+                                        foreach (var image in allImage)
+                                        {
+                                            <div class="swiper-slide swiper-slide-small ">
+                                                <img src="@image.Image" alt="@Name" />
+                                            </div>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 row mt-2  p-3 m-0 GrImage  border-1 rounded-3 bg-white">
+                    <div id="policy" class="policy_intuitive cate42 scenarioNomal mt-3">
+                        <div class="policy">
+                            <b>PadaStore cam kết</b>
+                            <ul class="policy__list">
+                                <li>
+                                    <div class="iconl">
+                                        <i class="icondetail-doimoi"></i>
+                                    </div>
+                                    <p>
+                                        Hư gì đổi nấy <b>12 tháng</b>  tại 2966 siêu thị toàn quốc (miễn phí tháng đầu) <a href="/#"></a>
+                                        <a href="javascript:;" onclick="showPopupPolicy()" title="Chính sách đổi trả">
+                                            Xem chi tiết
+                                        </a>
+                                    </p>
+                                </li>
+
+                                <li><div class="iconl"><i class="icondetail-sachhd"></i></div><p>Bộ sản phẩm gồm: Cáp, Cây lấy sim, Hộp, Sách hướng dẫn</p></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-100 row mt-2 pb-2 p-0 m-0 GrImage  border-1 rounded-3 bg-white">
+                    <div class="row m-0 p-3">
+                        <div class="col-lg-12 p-0 m-0 border-1 border-bottom-2">
+
+                            <div class="box-specifi">
+                                <a href="javascript:;" class="active"><h3>Cấu hình &amp; Bộ nhớ</h3></a>
+
+                                <ul class="text-specifi active">
+                                    <li>
+                                        <aside>
+                                            <strong>Hệ điều hành:</strong>
+
+                                        </aside>
+                                        <aside>
+                                            <span class="">@Model.Products.OperatingSystem.Trim()</span>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Chip xử lý (CPU):</strong>
+                                        </aside>
+                                        <aside>
+                                            <span class="">@Model.Products.CPU.Trim()</span>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Tốc độ CPU</strong>
+                                        </aside>
+                                        <aside>
+                                            <span class="">@Model.Products.CPUspeed.Trim()</span>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Chip đồ họa (GPU):</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="https://www.thegioididong.com/hoi-dap/tim-hieu-chip-xu-ly-apple-a14-bionic-hieu-nang-manh-den-1302095" class="tzLink" target="_blank">@Model.Products.GPU.Trim()</a>
+                                        </aside>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+                            <div class="box-specifi">
+                                <a href="javascript:;"><h3> Màn hình</h3></a>
+
+                                <ul class="text-specifi ">
+
+
+
+                                    <li>
+                                        <aside>
+                                            <strong>Màn hình rộng:</strong>
+                                        </aside>
+                                        <aside>
+                                            <span class="">@Model.Products.Screensize.Trim() <a href="https://www.thegioididong.com/hoi-dap/tan-so-quet-man-hinh-may-tinh-la-gi-1292309#subhmenuid2" target="_blank">120 Hz</a></span>
+                                        </aside>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+                            <div class="box-specifi">
+                                <a href="javascript:;" class="" data-group-id="2122" data-index="3"><h3>Pin &amp; Sạc</h3></a>
+
+                                <ul class="text-specifi ">
+                                    <li>
+                                        <aside>
+                                            <strong>Dung lượng pin:</strong>
+                                        </aside>
+                                        <aside>
+                                            <span class="">@Model.Products.BatteryCapacity.Trim() giờ</span>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Loại pin:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="/#" class="tzLink" target="_blank">@Model.Products.BatteryType.Trim()</a>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Hỗ trợ sạc tối đa:</strong>
+                                        </aside>
+                                        <aside>
+                                            <span class="">20 W</span>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Công nghệ pin:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="/#" class="tzLink circle" target="_blank">@Model.Products.BatteryTechnology.Trim()</a>
+                                        </aside>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
+                            <div class="box-specifi">
+                                <a href="javascript:;" class="" data-group-id="24" data-index="6"><h3>Kết nối</h3></a>
+
+                                <ul class="text-specifi ">
+                                    <li>
+                                        <aside>
+                                            <strong>Mạng di động:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="/#" class="tzLink" target="_blank">@Model.Products.MobileNetwork.Trim()</a>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>SIM:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="/#" class="tzLink" target="_blank">@Model.Products.Sim.Trim()</a>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Wifi:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="https://www.thegioididong.com/tin-tuc/cong-nghe-wifi-mimo-la-gi-1398385" class="tzLink" target="_blank">@Model.Products.Wifi.Trim()</a>
+                                            <span class="">Wi-Fi 7</span>
+                                        </aside>
+                                    </li>
+
+                                    <li>
+                                        <aside>
+                                            <strong>Bluetooth:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="https://www.thegioididong.com/hoi-dap/cong-nghe-bluetooth-5-3-la-gi-co-nhung-tinh-nang-1470734" class="tzLink" target="_blank">@Model.Products.Bluetooth.Trim()</a>
+                                        </aside>
+                                    </li>
+                                    <li>
+                                        <aside>
+                                            <strong>Cổng kết nối/sạc:</strong>
+                                        </aside>
+                                        <aside>
+                                            <a href="https://www.thegioididong.com/hoi-dap/usb-typec-chuan-muc-cong-ket-noi-moi-723760" class="tzLink" target="_blank">@Model.Products.Connector.Trim()</a>
+                                        </aside>
+                                    </li>
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="custom-col-right">
+                <div class="w-100 row mt-2 pb-2 p-0 m-0 GrImage  border-1 rounded-3 bg-white">
+                    <h4 class="text-uppercase mt-2">@Name  </h4>
+                    <div class="scrolling_inner">
+                        <div class="box03 group desk">
+
+
+                            @Html.Action("Capacity", "ProductDetail", new { productid = Model.ProductsId, DungLuong = Model.Capacity.Trim() })
+
+
+
+                        </div>
+                    </div>
+                    <div class="scrolling_inner">
+
+                        <div class="box03 color group desk">
+                            @Html.Action("Partail_ColorByProductsId", "ProductDetail", new { productid = Model.ProductsId, capacity = Model.Capacity.Trim(), color = Model.Color.Trim() })
+                        </div>
+                    </div>
+                    <div class="scrolling_inner">
+                        <div class="pt-1  d-flex align-items-center ProducPrice">
+
+
+
+                            @if (Model.PriceSale > 0)
+                            {
+                                <h5 class="mb-0 text-danger PriceSale mt-0">
+                                    @($"{Common.FormatNumber(Model.PriceSale)}đ")
+                                </h5>
+
+                                <h5 class="ml-3 OriginalPice">
+                                    @($"{Common.FormatNumber(Model.Price)}đ")
+                                </h5>
+
+                                {
+                                    decimal discountPercentage = CalculateDiscountPercentage((decimal)Model.Price, (decimal)Model.PriceSale);
+                                    <span class="DiscountPercentage">
+                                        @($" {discountPercentage}%")
+                                    </span>
+                                }
+
+                            }
+
+                            else
+                            {
+
+                                <h5 class="mb-0 text-danger PriceSale mt-0">
+                                    @($"{Common.FormatNumber(Model.Price)}đ")
+                                </h5>
+
+                               
+                            }
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="scrolling_inner mt-3">
+                        <div class="block__promo">
+                            <div class="pr-top">
+                                <p class="pr-txtb">Khuyến mãi </p>
+                                <i class="pr-txt">Giá và khuyến mãi </i>
+                            </div>
+                            <div class="pr-content">
+                                <div class="pr-item">
+                                    <div class="divb t1 " data-promotion="2990366" data-group="Tặng" data-discount="0" data-productcode="7242151003413       " data-tovalue="9600">
+                                        <span class="nb">1</span>
+                                        <div class="divb-right">
+                                            <p>Phiếu mua hàng trị giá 200,000đ mua sim Mobifone 6MWG125</p>
+                                        </div>
+                                    </div>
+                                    <div class="divb t2 " data-promotion="2972468" data-group="WebNote" data-discount="0" data-productcode="" data-tovalue="9000">
+                                        <span class="nb">2</span>
+                                        <div class="divb-right">
+                                            <p>Thu cũ Đổi mới: Giảm thêm đến 2,000,000Đ (Áp dụng tuỳ model máy cũ, Không kèm ưu đãi thanh toán qua cổng, mua kèm) <a href="https://www.thegioididong.com/thu-cu-doi-moi"> Xem chi tiết</a></p>
+                                        </div>
+                                    </div>
+                                    <div class="divb t2 " data-promotion="2972784" data-group="WebNote" data-discount="0" data-productcode="" data-tovalue="0">
+                                        <span class="nb">3</span>
+                                        <div class="divb-right">
+                                            <p>Nhập mã VNPAYTGDD4 giảm từ 50,000đ đến 100,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua VNPAY-QR. <a href="https://www.thegioididong.com/tin-tuc/tang-them-den-100k-khi-thanh-toan-qua-vnpay-1570077" target="_blank"> (Xem chi tiết tại đây)</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scrolling_inner">
+                        <div class="Group__buy row">
+                            <div class="left__bynow ">
+
+                                <div class="block-button twoprice left__bynow__Group">
+
+                                    <div class="container-quantity-group">
+                                        <button id="decrement" class="btnquantity" onclick="stepper(this)"> - </button>
+                                        <input type="number" class="inputQuantity" i min="1" max="10" step="1" value="1" id="quantity_value" readonly>
+                                        <button id="increment" class="btnquantity" onclick="stepper(this)"> + </button>
+                                    </div>
+
+
+                                    <a href="javascript:void(0);" class="btn-buynow red jsBuy twoprice btnbuynow" data-productid="@Model.ProductsId">
+                                        <span class="text-uppercase">MUA NGAY</span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="right__addcart">
+                                <div class="block-button twoprice">
+                                    <a href="javascript:void(0);" class="twoprice  btnAddtoCart " data-productid="@Model.ProductsId">
+                                        <img src="~/images/icon/shoppingcart2.png" class="btnAddtoCart-img" />
+                                        <span class="text-uppercase">Thêm giỏ hàng</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="scrolling_inner">
+
+
+                            <div class="container__chinhSach__wrapper">
+                                <div class="container__chinhSach__Group">
+                                    <div class="container__chinhSach__header">
+                                        <h4>Chính sách ưu đãi</h4>
+                                    </div>
+                                    <div class=" mieuta__group ">
+                                        <div class="mieuta__group__left ">
+                                            <div class="mieuta__item">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="mieuta__img" width="35px" height="30px" viewBox="0 0 64 64" stroke-width="3" stroke="#000000" fill="none"><path d="M21.68,42.22H37.17a1.68,1.68,0,0,0,1.68-1.68L44.7,19.12A1.68,1.68,0,0,0,43,17.44H17.61a1.69,1.69,0,0,0-1.69,1.68l-5,21.42a1.68,1.68,0,0,0,1.68,1.68h2.18" /><path d="M41.66,42.22H38.19l5-17.29h8.22a.85.85,0,0,1,.65.3l3.58,6.3a.81.81,0,0,1,.2.53L52.51,42.22h-3.6" /><ellipse cx="18.31" cy="43.31" rx="3.71" ry="3.76" /><ellipse cx="45.35" cy="43.31" rx="3.71" ry="3.76" /><line x1="23.25" y1="22.36" x2="6.87" y2="22.36" stroke-linecap="round" /><line x1="20.02" y1="27.6" x2="8.45" y2="27.6" stroke-linecap="round" /><line x1="21.19" y1="33.5" x2="3.21" y2="33.5" stroke-linecap="round" /></svg>
+
+                                                <p class="mieuta__title">Giao hàng toàn quốc</p>
+                                            </div>
+
+                                            <div class="mieuta__item">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="mieuta__img" width="35px" height="30px" viewBox="0 0 1024 1024" fill="#000000" version="1.1"><path d="M488.006 999.898C218.982 999.898 0.106 781.022 0.106 512c0-269.022 218.876-487.898 487.9-487.898 156.624 0 304.81 76.03 396.386 203.364a8.016 8.016 0 0 1-1.828 11.17c-3.61 2.562-8.592 1.766-11.17-1.828C782.818 113.63 639.49 40.1 488.006 40.1 227.792 40.098 16.104 251.788 16.104 512c0 260.21 211.69 471.902 471.902 471.902 260.21 0 471.902-211.692 471.902-471.902a7.992 7.992 0 0 1 7.998-7.998 7.994 7.994 0 0 1 7.998 7.998c0 269.022-218.876 487.898-487.898 487.898z" fill="" /><path d="M1015.896 567.988a7.976 7.976 0 0 1-5.656-2.344l-47.99-47.99a7.996 7.996 0 1 1 11.31-11.31l47.99 47.992a7.994 7.994 0 0 1 0 11.308 7.96 7.96 0 0 1-5.654 2.344z" fill="" /><path d="M919.916 567.988a7.994 7.994 0 0 1-5.656-13.652l47.99-47.992a7.996 7.996 0 1 1 11.31 11.31l-47.99 47.99a7.96 7.96 0 0 1-5.654 2.344zM727.956 735.954H280.048c-4.422 0-8-3.578-8-7.998V376.028a7.994 7.994 0 0 1 8-7.998h447.906c4.422 0 8 3.578 8 7.998v351.928a7.994 7.994 0 0 1-7.998 7.998z m-439.91-15.996h431.91V384.026H288.046v335.932z" fill="" /><path d="M727.956 384.026H280.048a8.002 8.002 0 0 1-7.39-4.936 8.018 8.018 0 0 1 1.734-8.716l63.988-63.986a7.992 7.992 0 0 1 5.656-2.344h319.934c2.124 0 4.154 0.844 5.654 2.344l63.988 63.986a8.02 8.02 0 0 1 1.734 8.716 8.002 8.002 0 0 1-7.39 4.936z m-428.598-15.996h409.29l-47.99-47.99H347.346l-47.988 47.99z" fill="" /><path d="M456.012 384.026a8.008 8.008 0 0 1-7.156-11.576l31.994-63.988c2-3.936 6.78-5.546 10.732-3.578a8.006 8.006 0 0 1 3.578 10.732l-31.994 63.986a8.014 8.014 0 0 1-7.154 4.424zM551.992 384.026a8.016 8.016 0 0 1-7.154-4.42l-31.994-63.986a8.006 8.006 0 0 1 3.578-10.732 7.992 7.992 0 0 1 10.732 3.578l31.992 63.988a8.006 8.006 0 0 1-3.578 10.732 7.992 7.992 0 0 1-3.576 0.84z" fill="" /><path d="M456.012 448.014a7.994 7.994 0 0 1-7.998-8v-63.988c0-4.42 3.578-7.998 7.998-7.998s7.998 3.578 7.998 7.998v63.988c0 4.422-3.578 8-7.998 8z" fill="" /><path d="M551.992 448.014h-95.98c-4.42 0-7.998-3.578-7.998-8s3.578-7.998 7.998-7.998h95.98c4.42 0 7.998 3.578 7.998 7.998s-3.578 8-7.998 8z" fill="" /><path d="M551.992 448.014a7.994 7.994 0 0 1-7.998-8v-63.988a7.994 7.994 0 0 1 7.998-7.998 7.994 7.994 0 0 1 7.998 7.998v63.988c0 4.422-3.578 8-7.998 8zM456.012 456.012a7.994 7.994 0 0 1-7.998-7.998v-8c0-4.42 3.578-7.998 7.998-7.998s7.998 3.578 7.998 7.998v8a7.994 7.994 0 0 1-7.998 7.998zM488.006 456.012c-4.422 0-8-3.578-8-7.998v-8a7.994 7.994 0 0 1 8-7.998 7.994 7.994 0 0 1 7.998 7.998v8a7.994 7.994 0 0 1-7.998 7.998zM519.998 456.012a7.994 7.994 0 0 1-7.998-7.998v-8a7.994 7.994 0 0 1 7.998-7.998c4.422 0 8 3.578 8 7.998v8a7.994 7.994 0 0 1-8 7.998z" fill="" /><path d="M551.992 456.012a7.994 7.994 0 0 1-7.998-7.998v-8a7.994 7.994 0 0 1 7.998-7.998 7.994 7.994 0 0 1 7.998 7.998v8a7.994 7.994 0 0 1-7.998 7.998zM695.962 703.96h-31.994a7.994 7.994 0 0 1-7.998-8v-31.992c0-4.422 3.578-8 7.998-8h31.994a7.994 7.994 0 0 1 7.998 8v31.992c0 4.422-3.578 8-7.998 8z m-23.996-15.998h15.996v-15.996h-15.996v15.996zM631.974 703.96h-31.992a7.994 7.994 0 0 1-7.998-8v-31.992c0-4.422 3.576-8 7.998-8h31.992c4.422 0 8 3.578 8 8v31.992c0 4.422-3.578 8-8 8z m-23.994-15.998h15.996v-15.996h-15.996v15.996zM472.008 671.966H312.04a7.994 7.994 0 0 1-7.998-7.998c0-4.422 3.578-8 7.998-8h159.968a7.994 7.994 0 0 1 7.998 8 7.994 7.994 0 0 1-7.998 7.998zM392.026 703.96h-79.984a7.994 7.994 0 0 1-7.998-8 7.994 7.994 0 0 1 7.998-7.998h79.984a7.994 7.994 0 0 1 7.998 7.998c0 4.422-3.578 8-7.998 8z" fill="" /></svg>
+                                                <p class="mieuta__title">Đổi trả hàng <strong>trong vòng 7 ngày</strong> Đối với hàng nguyên Seal</p>
+                                            </div>
+                                            <div class="mieuta__item">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="35px" height="30px" viewBox="0 0 32 32" fill="none">
+                                                    <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint0_radial_87_7153)" />
+                                                    <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint1_radial_87_7153)" />
+                                                    <rect x="2" y="2" width="28" height="28" rx="6" fill="url(#paint2_radial_87_7153)" />
+                                                    <path d="M23 10.5C23 11.3284 22.3284 12 21.5 12C20.6716 12 20 11.3284 20 10.5C20 9.67157 20.6716 9 21.5 9C22.3284 9 23 9.67157 23 10.5Z" fill="white" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 21C18.7614 21 21 18.7614 21 16C21 13.2386 18.7614 11 16 11C13.2386 11 11 13.2386 11 16C11 18.7614 13.2386 21 16 21ZM16 19C17.6569 19 19 17.6569 19 16C19 14.3431 17.6569 13 16 13C14.3431 13 13 14.3431 13 16C13 17.6569 14.3431 19 16 19Z" fill="white" />
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6 15.6C6 12.2397 6 10.5595 6.65396 9.27606C7.2292 8.14708 8.14708 7.2292 9.27606 6.65396C10.5595 6 12.2397 6 15.6 6H16.4C19.7603 6 21.4405 6 22.7239 6.65396C23.8529 7.2292 24.7708 8.14708 25.346 9.27606C26 10.5595 26 12.2397 26 15.6V16.4C26 19.7603 26 21.4405 25.346 22.7239C24.7708 23.8529 23.8529 24.7708 22.7239 25.346C21.4405 26 19.7603 26 16.4 26H15.6C12.2397 26 10.5595 26 9.27606 25.346C8.14708 24.7708 7.2292 23.8529 6.65396 22.7239C6 21.4405 6 19.7603 6 16.4V15.6ZM15.6 8H16.4C18.1132 8 19.2777 8.00156 20.1779 8.0751C21.0548 8.14674 21.5032 8.27659 21.816 8.43597C22.5686 8.81947 23.1805 9.43139 23.564 10.184C23.7234 10.4968 23.8533 10.9452 23.9249 11.8221C23.9984 12.7223 24 13.8868 24 15.6V16.4C24 18.1132 23.9984 19.2777 23.9249 20.1779C23.8533 21.0548 23.7234 21.5032 23.564 21.816C23.1805 22.5686 22.5686 23.1805 21.816 23.564C21.5032 23.7234 21.0548 23.8533 20.1779 23.9249C19.2777 23.9984 18.1132 24 16.4 24H15.6C13.8868 24 12.7223 23.9984 11.8221 23.9249C10.9452 23.8533 10.4968 23.7234 10.184 23.564C9.43139 23.1805 8.81947 22.5686 8.43597 21.816C8.27659 21.5032 8.14674 21.0548 8.0751 20.1779C8.00156 19.2777 8 18.1132 8 16.4V15.6C8 13.8868 8.00156 12.7223 8.0751 11.8221C8.14674 10.9452 8.27659 10.4968 8.43597 10.184C8.81947 9.43139 9.43139 8.81947 10.184 8.43597C10.4968 8.27659 10.9452 8.14674 11.8221 8.0751C12.7223 8.00156 13.8868 8 15.6 8Z" fill="white" />
+                                                    <defs>
+                                                        <radialGradient id="paint0_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(12 23) rotate(-55.3758) scale(25.5196)">
+                                                            <stop stop-color="#B13589" />
+                                                            <stop offset="0.79309" stop-color="#C62F94" />
+                                                            <stop offset="1" stop-color="#8A3AC8" />
+                                                        </radialGradient>
+                                                        <radialGradient id="paint1_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(11 31) rotate(-65.1363) scale(22.5942)">
+                                                            <stop stop-color="#E0E8B7" />
+                                                            <stop offset="0.444662" stop-color="#FB8A2E" />
+                                                            <stop offset="0.71474" stop-color="#E2425C" />
+                                                            <stop offset="1" stop-color="#E2425C" stop-opacity="0" />
+                                                        </radialGradient>
+                                                        <radialGradient id="paint2_radial_87_7153" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(0.500002 3) rotate(-8.1301) scale(38.8909 8.31836)">
+                                                            <stop offset="0.156701" stop-color="#406ADC" />
+                                                            <stop offset="0.467799" stop-color="#6A45BE" />
+                                                            <stop offset="1" stop-color="#6A45BE" stop-opacity="0" />
+                                                        </radialGradient>
+                                                    </defs>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                        <div class=" mieuta__group__right">
+                                            <div class="mieuta__item">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="mieuta__img" width="35px" height="30px" viewBox="0 0 400 400" fill="none">
+                                                    <path d="M252.644 56.915C295.342 38.4482 320.69 113.363 271.651 123.522C231.551 131.832 216.845 78.0154 247.144 58.0544" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M330.482 265.712C341.911 277.397 345.967 295.564 330.334 311.241C305.977 335.671 271.834 312.649 271.756 285.037" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M192.293 285.199C193.35 293.668 190.602 302.807 182.127 311.229C159.576 333.641 128.721 316.163 123.655 291.812" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M231 133C206.612 161.128 194.495 179.606 187 209" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M231.268 139C230.078 174.935 230.842 200.382 278 181.706" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M270.454 181.27C277.648 203.747 292.95 234.179 296.436 257.918" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M198.698 209.851C179.8 211.119 147.038 219.427 133.916 234.11C126.125 242.825 100.697 270.714 108.106 285.446C112.07 293.339 163.502 289.662 170.276 288.7C200.718 284.374 240.691 289.662 270.337 285.446C276.764 284.532 267.42 277.198 275.865 277.198C288.469 277.198 350.064 262.896 339.366 250.123C314.559 220.523 257.393 244.451 266.097 274.746" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M200.303 212.449C207.9 229.886 214.057 274.576 214.593 278.703" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M200.303 208.553C255.045 208.309 257.332 233.927 223.294 274.806" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M169.124 213.748C142.024 230.768 99.6067 221.459 67.7939 231.936" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M60 128.007C68.4342 143.576 60 224.334 63.5625 228.038" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                    <path d="M63.8965 128.233C105.69 123.275 132.857 122.22 136.014 128.233C139.17 134.247 139.17 171.658 130.567 218.945" stroke="#000000" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                                <p class="mieuta__title">Giao hoả tốc nội thành</p>
+                                            </div>
+                                            <div class="mieuta__item__chinhsach">
+
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mieuta__img" width="35px" height="30px" fill="#000000" version="1.1" id="Layer_1" viewBox="0 0 512 512" xml:space="preserve">
+<g>
+                                                <g>
+                                                <path d="M256,274.899c-65.369,0-118.55,53.182-118.55,118.55S190.631,512,256,512s118.55-53.182,118.55-118.55    S321.369,274.899,256,274.899z M256,494.819c-55.895,0-101.369-45.474-101.369-101.369c0-55.895,45.474-101.369,101.369-101.369    c55.895,0,101.369,45.474,101.369,101.369C357.369,449.345,311.895,494.819,256,494.819z" />
+	</g>
+</g>
+<g>
+                                                <g>
+                                                <path d="M326.217,350.722c-3.354-3.355-8.794-3.355-12.148,0l-76.396,76.396l-39.742-39.742c-3.355-3.355-8.794-3.355-12.148,0    c-3.355,3.355-3.355,8.794,0,12.148l45.817,45.817c1.677,1.677,3.876,2.516,6.074,2.516c2.198,0,4.397-0.838,6.074-2.516    l82.47-82.47C329.572,359.516,329.572,354.076,326.217,350.722z" />
+	</g>
+</g>
+<g>
+                                                <g>
+                                                <path d="M466.756,0H45.244C30.402,0,18.327,12.075,18.327,26.917v384.859c0,14.842,12.075,26.917,26.917,26.917h64.143    c4.744,0,8.591-3.846,8.591-8.591s-3.846-8.591-8.591-8.591H45.244c-5.369,0-9.736-4.367-9.736-9.736V26.917    c0-5.369,4.367-9.736,9.736-9.736h147.186V146.04c0,2.977,1.542,5.742,4.074,7.308c2.531,1.566,5.694,1.708,8.358,0.376    l14.485-7.242l14.482,7.242c2.418,1.208,5.265,1.211,7.683,0l14.492-7.244l14.484,7.242c2.419,1.21,5.265,1.21,7.685,0    l14.483-7.242l14.484,7.242c1.213,0.606,2.529,0.907,3.842,0.907c1.571,0,3.137-0.431,4.516-1.283    c2.532-1.566,4.074-4.33,4.074-7.308V17.181h147.186c5.369,0,9.736,4.367,9.736,9.736v384.859c0,5.369-4.367,9.736-9.736,9.736    h-64.148c-4.744,0-8.591,3.846-8.591,8.591s3.846,8.591,8.591,8.591h64.148c14.842,0,26.917-12.075,26.917-26.917V26.917    C493.673,12.075,481.598,0,466.756,0z M302.389,132.14l-5.893-2.946c-2.419-1.21-5.265-1.21-7.685,0l-14.483,7.242l-14.484-7.242    c-2.419-1.208-5.265-1.211-7.683,0l-14.492,7.242l-14.483-7.242c-1.21-0.605-2.526-0.907-3.842-0.907    c-1.316,0-2.632,0.302-3.842,0.907l-5.893,2.947V17.181h92.779V132.14z" />
+	</g>
+</g>
+<g>
+                                                <g>
+                                                <path d="M152.114,121.64c-3.355-3.355-8.794-3.355-12.148,0l-12.825,12.825V81.897c0-4.744-3.846-8.591-8.591-8.591    c-4.744,0-8.591,3.846-8.591,8.591v52.568L97.134,121.64c-3.355-3.355-8.794-3.355-12.148,0c-3.355,3.355-3.355,8.794,0,12.148    l27.49,27.49c1.677,1.677,3.876,2.516,6.074,2.516s4.397-0.838,6.074-2.516l27.49-27.49    C155.469,130.434,155.469,124.993,152.114,121.64z" />
+	</g>
+</g>
+<g>
+                                                <g>
+                                                <path d="M146.04,36.653H91.06c-4.744,0-8.591,3.846-8.591,8.591c0,4.744,3.846,8.591,8.591,8.591h54.98    c4.744,0,8.591-3.846,8.591-8.591C154.631,40.5,150.785,36.653,146.04,36.653z" />
+	</g>
+</g>
+</svg>
+                                                <p class="mieuta__item__chinhsach__title">Chính sách cam kết hàng <strong>chuẩn mô tả</strong> theo hình ảnh sản phẩm</p>
+                                            </div>
+
+                                        </div>
+
+
+
+                                    </div>
+
+                                    <div class="container__chinhSach__foot">
+                                        <p>&minus;&minus;PadaStore&minus;&minus;</p>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+                @*end btn gia tien*@
+
+
+
+
+            </div>
+
+            @*<div>
+                    @if (Model.Description != null)
+                    {
+                        <p>  Mô tả : @Model.Description.Trim()</p>
+                    }
+                </div>*@
+            <div class="row GrDescription p-0">
+                <div class="col-12 p-0">
+                    <div class="titleDescription">
+                        <h5> <i class="bi bi-chevron-double-right"></i><span class="pl-1"> Mô tả sản phẩm </span></h5>
+                    </div>
+                    @*@if (Model.Description != null)
+                        {
+                            <div class="containerDescription ">
+                                @Html.Raw(Model.Description)
+                            </div>
+
+                            <div class="XemThem col-3 text-center">
+                                Xem thêm
+                            </div>
+                        }*@
+
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <div class="row p-0">
+                <div class="col-12">
+
+                </div>
+                <div class="col-12">
+
+                </div>
+                @*<div class="col-12 m-0 p-0 ">
+                        @Html.Action("MenuTop", "Menu")
+                    </div>
+                    <div class="col-12 m-0 p-0 ">
+                        @Html.Action("MenuFeedBack", "Menu")
+
+                    </div>*@
+
+            </div>
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="container container_Index">
+        <ul class="breadcrumbs mb-1 pl-0 pt-2 d-flex align-items-center ">
+            <li class="breadcrumb-item m-0 p-0"><a href="/san-pham">Sản phẩm</a></li>
+            <li class="breadcrumb-item active"> Không tìm thấy sản phẩm</li>
+
+        </ul>
+        <div class="d-flex text-center m-0 p-0">
+            <img src="~/images/logo/CartNull.png" width="250" height="250" />
+        </div>
+    </div>
+}
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script src="~/Scripts/client/DetailProuct.js"></script>
+
+
+
+<script>
+    const myInput = document.getElementById("quantity_value");
+    function stepper(btn) {
+        let id = btn.getAttribute("id");
+        let min = myInput.getAttribute("min");
+        let max = myInput.getAttribute("max");
+        let step = myInput.getAttribute("step");
+        let val = myInput.getAttribute("value");
+        let calcStep = (id == "increment") ? (step * 1) : (step * -1);
+        let newValue = parseInt(val) + calcStep;
+
+        if (newValue >= min && newValue <= max) {
+            myInput.setAttribute("value", newValue);
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnAddtoCart = document.querySelector('.btnAddtoCart');
+
+        btnAddtoCart.addEventListener('mouseenter', function () {
+            const img = this.querySelector('.btnAddtoCart-img');
+            img.classList.add('move-img');
+        });
+
+        btnAddtoCart.addEventListener('mouseleave', function () {
+            const img = this.querySelector('.btnAddtoCart-img');
+            img.classList.remove('move-img');
+        });
+    });
+
+
+
+
+</script>
+
+<script>
+    document.querySelectorAll('.box-specifi > a').forEach(function (item) {
+        item.addEventListener('click', function () {
+            this.classList.toggle('active'); // Thay đổi lớp để hiện thị mũi tên
+            const textSpecifi = this.nextElementSibling;
+            if (textSpecifi) {
+                textSpecifi.classList.toggle('active'); // Hiện hoặc ẩn danh sách thông tin
+            }
+        });
+    });
+
+
+</script>

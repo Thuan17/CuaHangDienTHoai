@@ -17,29 +17,29 @@ namespace CuaHangBanDienThoai.Controllers
         private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page, decimal? minPrice, decimal? maxPrice)
         {
-            // Lấy danh sách sản phẩm từ ProductDetail và loại bỏ trùng bằng GroupBy
+           
             var items = db.ProductDetail
                 .Where(x => x.Products.IsActive == true)
-                .GroupBy(x => x.ProductsId) // Nhóm theo ProductsId để tránh trùng lặp
-                .Select(g => g.FirstOrDefault()) // Lấy sản phẩm đầu tiên trong mỗi nhóm
+                .GroupBy(x => x.ProductsId) 
+                .Select(g => g.FirstOrDefault()) 
                 .AsQueryable();
 
-            // Lọc theo minPrice nếu có
+
             if (minPrice.HasValue)
             {
                 items = items.Where(x => x.Price >= minPrice.Value);
             }
 
-            // Lọc theo maxPrice nếu có
+         
             if (maxPrice.HasValue)
             {
                 items = items.Where(x => x.Price <= maxPrice.Value);
             }
 
-            // Sắp xếp: Sản phẩm Hot trước, sau đó theo danh mục
+         
             var sortedItems = items
-                .OrderByDescending(x => x.Products.IsHot) // Sản phẩm Hot lên đầu
-                .ThenBy(x => x.Products.ProductCategoryId) // Sau đó theo danh mục
+                .OrderByDescending(x => x.Products.IsHot) 
+                .ThenBy(x => x.Products.ProductCategoryId) 
                 .ToList();
 
             if (sortedItems.Any())
@@ -54,7 +54,7 @@ namespace CuaHangBanDienThoai.Controllers
                     pagedList = sortedItems.ToPagedList(pageIndex, pageSize);
                 }
 
-                // Gán thông tin phân trang vào ViewBag
+              
                 ViewBag.PageSize = pageSize;
                 ViewBag.PageNumber = pageIndex;
                 ViewBag.PageCount = pagedList.PageCount;
@@ -97,6 +97,9 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         }
+
+
+     
         public ActionResult Partial_DetailByCapactity(int? proId, int? productDetailId  , string capcity)
         {
             if(proId >0&&productDetailId > 0 && capcity != null)
@@ -118,7 +121,11 @@ namespace CuaHangBanDienThoai.Controllers
             {
                 using (var dbContext = new CUAHANGDIENTHOAIEntities())
                 {
-                    var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
+
+                    var product = db.Products.FirstOrDefault(x => x.ProductsId == productid);
+                    if (product != null)
+                    {
+                        var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
                     .Where(p => p.ProductsId == productid)
                     .GroupBy(p => p.Capacity.Trim())
                     .Select(g => new
@@ -129,18 +136,23 @@ namespace CuaHangBanDienThoai.Controllers
                     })
                     .ToList();
 
-                    var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
-                    {
+                        var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+                        {
 
-                        ProductDetailId = item.ProductDetailId,
-                        ProductslId = productid,
-                        Capacity = item.Capacity,
+                            ProductDetailId = item.ProductDetailId,
+                            ProductslId = productid,
+                            Capacity = item.Capacity,
 
-                    }).ToList();
-
-                    ViewBag.ProductId = productid;
-                    ViewBag.Capacity = DungLuong;
-                    return PartialView(viewModels);
+                        }).ToList();
+                        //string rawAlias = $"{product.Alias + "-"}{DungLuong} ".Trim();
+                        //string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(rawAlias).Trim();
+                        ViewBag.Alias = product.Alias.Trim();
+                        ViewBag.ProductId = productid;
+                        ViewBag.ProductId = productid;
+                        ViewBag.Capacity = DungLuong;
+                        return PartialView(viewModels);
+                    }
+                    return PartialView(null);
                 }
             }
             else
@@ -150,79 +162,47 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         }
-
-
-
-        //public ActionResult Capacity(int productid, string capacity)
-        //{
-        //    if (productid != 0 && !string.IsNullOrEmpty(capacity))
-        //    {
-        //        using (var dbContext = new CUAHANGDIENTHOAIEntities())
-        //        {
-        //            // Lấy tất cả dung lượng thuộc về productid cụ thể
-        //            var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
-        //                .Where(p => p.ProductsId == productid)
-        //                .Select(p => new
-        //                {
-        //                    Capacity = p.Key,
-        //                    ProductDetailId = p.ProductDetailId,
-        //                })
-        //                .Distinct() // Đảm bảo loại bỏ các bản sao nếu cần
-        //                .ToList();
-
-        //            // Lấy tất cả các bản ghi cho mỗi dung lượng
-        //            var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
-        //            {
-        //                ProductDetailId = item.ProductDetailId,
-        //                ProductslId = productid,
-        //                Capacity = item.Capacity,
-        //            }).ToList();
-
-        //            ViewBag.ProductId = productid;
-        //            ViewBag.Capacity = capacity;
-
-        //            return PartialView(viewModels);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        return PartialView(null);
-        //    }
-        //}
-
-        public ActionResult Partail_ColorByProductsId(int productid, string capacity,string color )
+        public ActionResult Partail_ColorByProductsId(int productid, string capacity, string color)
         {
-            if (productid != null&& capacity!=null&& color != null)
+            if (productid != null && capacity != null && color != null)
             {
 
                 using (var dbContext = new CUAHANGDIENTHOAIEntities())
                 {
-                    var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
-                    .Where(p => p.ProductsId == productid && p.Capacity == capacity)
-                    .GroupBy(p => p.Color.Trim())
-                    .Select(g => new
+                    var product = db.Products.FirstOrDefault(x => x.ProductsId == productid);
+                    if (product != null)
                     {
-                        Color = g.Key,
-                       
-                        ProductDetailId = g.Min(p => p.ProductDetailId),
-                    
+                        var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
+                          .Where(p => p.ProductsId == productid && p.Capacity == capacity)
+                          .GroupBy(p => p.Color.Trim())
+                          .Select(g => new
+                          {
+                              Color = g.Key,
 
-                    })
-                    .ToList();
+                              ProductDetailId = g.Min(p => p.ProductDetailId),
 
-                    var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
-                    {
 
-                        ProductDetailId = item.ProductDetailId,
-                        ProductslId = productid,
-                        Color = item.Color,
-                      
+                          })
+                          .ToList();
 
-                    }).ToList();
-                    ViewBag.Color = color.Trim();
-                    ViewBag.ProductId = productid;
-                  
-                    return PartialView(viewModels);
+                        var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+                        {
+
+                            ProductDetailId = item.ProductDetailId,
+                            ProductslId = productid,
+                            Color = item.Color,
+                            Capacity = capacity.Trim(),
+
+
+                        }).ToList();
+                        ViewBag.Alias = product.Alias.Trim();
+                        ViewBag.Color = color.Trim();
+                        ViewBag.ProductId = productid;
+
+                        return PartialView(viewModels);
+                    }
+
+                    return PartialView(null);
                 }
             }
             else
@@ -232,6 +212,66 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         }
+
+        public async Task<ActionResult> DetailByOption(string alias ,string capacity)
+        {
+            if (alias == null && capacity == null)
+            {
+                return View();
+            }
+            var proId = await db.Products.FirstOrDefaultAsync(x => x.Alias.Trim() == alias.Trim() );
+            if (proId == null)
+            {
+                return View();
+            }
+            var item = await db.ProductDetail.FirstOrDefaultAsync(x => x.ProductsId == proId.ProductsId && x.Capacity.Trim() == capacity.Trim());
+            if (item != null)
+            {
+
+                var pro = await db.Products.FirstOrDefaultAsync(x => x.ProductsId == item.ProductsId);
+                if (pro != null)
+                {
+                    ViewBag.Name = pro.ProductCategory.Title.Trim() + " " + pro.Title.Trim()+" "+ capacity.Trim();
+                }
+                return View(item);
+            }
+            else
+            {
+                return View();
+            }
+        }
+        public async Task<ActionResult> DetailByColor(string alias, string capacity,string color)
+        {
+            if (alias == null && capacity == null && color == null)
+            {
+                return View();
+            }
+            var proId = await db.Products.FirstOrDefaultAsync(x => x.Alias.Trim() == alias.Trim());
+            if (proId == null)
+            {
+                return View();
+            }
+
+            var formattedColor = color.Replace("-", " ").Trim();
+            var item = await db.ProductDetail.FirstOrDefaultAsync(x =>x.ProductsId == proId.ProductsId && x.Capacity.Trim() == capacity.Trim() && x.Color.Contains(formattedColor.Trim()));
+            if (item != null)
+            {
+
+                var pro = await db.Products.FirstOrDefaultAsync(x => x.ProductsId == item.ProductsId);
+                if (pro != null)
+                {
+                    ViewBag.Name = pro.ProductCategory.Title.Trim() + " " + pro.Title.Trim() + " " + capacity.Trim() + " " + color.Trim();
+                }
+                return View(item);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+
+      
 
 
     }

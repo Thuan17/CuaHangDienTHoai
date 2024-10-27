@@ -1,17 +1,17 @@
 ﻿@model List<CuaHangBanDienThoai.Models.ProductColorViewModel>
-@if (Model != null)
+@if (Model != null && ViewBag.Alias!=null && ViewBag.Color!=null)
 {
     foreach (var item in Model)
     {
-
+        string color = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(item.Color.Trim()).Trim();
         if (ViewBag.Color.Trim() == item.Color.Trim())
         {
 
-            <a href="/#" data-color="1195" data-code="0131491004251" class="box03__item color item act"><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
+            <a href="/san-pham/@(ViewBag.Alias.Trim())-@(item.Capacity.Trim())-color@(@item.Color.Trim().Replace(" ", "-"))" data-color="1195" data-code="0131491004251" data-color="@item.Color.Trim()" class="box03__item color item act"><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
         }
         else
         {
-            <a href="/#" data-color="1195" data-code="0131491004251" class="box03__item color item "><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
+            <a href="/san-pham/@(ViewBag.Alias.Trim())-@(item.Capacity.Trim())-color@(@item.Color.Trim().Replace(" ", "-"))" data-color="1195" data-code="0131491004251" class="box03__item color item "><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
         }
 
 

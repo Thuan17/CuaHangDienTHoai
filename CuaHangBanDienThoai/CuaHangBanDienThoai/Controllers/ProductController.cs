@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PagedList;
+using System.Data.Entity;
+using System.Threading.Tasks;
 namespace CuaHangBanDienThoai.Controllers
 {
     public class ProductController : Controller
@@ -93,7 +95,31 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         }
+        public async Task<ActionResult> Details(string alias)
+        {
+            if (alias == null)
+            {
+                return View();
+            }
+            var item = await db.ProductDetail.FirstOrDefaultAsync(x => x.Alias.Trim() == alias.Trim());
+            if (item != null)
+            {
 
+                var pro = await db.Products.FirstOrDefaultAsync(x => x.ProductsId == item.ProductsId);
+                if (pro != null)
+                {
+                    ViewBag.Name = pro.ProductCategory.Title.Trim() + " " + pro.Title.Trim();
+                }
+                return View(item);
+            }
+            else
+            {
+                return View();
+            }
+
+
+
+        }
 
         public ActionResult Partial_ItemsByCateId()
         {

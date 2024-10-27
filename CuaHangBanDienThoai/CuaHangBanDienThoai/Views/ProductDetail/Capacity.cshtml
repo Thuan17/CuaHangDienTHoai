@@ -1,15 +1,15 @@
 ﻿@model List<CuaHangBanDienThoai.Models.ProductColorViewModel>
-@if (Model != null)
+@if (Model != null && ViewBag.Alias != null && ViewBag.Capacity != null)
 {
     foreach (var item in Model)
     {
         if (ViewBag.Capacity == item.Capacity)
         {
-            <a href="/dtdd/iphone-16-pro" data-index="0" class="box03__item item act">@item.Capacity.Trim()</a>
+            <a href="/san-pham/@ViewBag.Alias.Trim()-dl@(item.Capacity.Trim())" data-index="0" class="box03__item item act">@item.Capacity.Trim()</a>
         }
         else
         {
-            <a href="/dtdd/iphone-16-pro" data-index="0" class="box03__item item ">@item.Capacity.Trim()</a>
+            <a href="/san-pham/@ViewBag.Alias.Trim()-dl@(item.Capacity.Trim())" data-index="0" class="box03__item item ">@item.Capacity.Trim()</a>
         }
 
 
