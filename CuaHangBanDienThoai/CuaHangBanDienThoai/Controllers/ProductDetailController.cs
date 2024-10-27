@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -16,45 +17,59 @@ namespace CuaHangBanDienThoai.Controllers
         private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page, decimal? minPrice, decimal? maxPrice)
         {
-            IEnumerable<ProductDetail> items = db.ProductDetail.Where(x => x.IsActive == true);
+            // Lấy danh sách sản phẩm từ ProductDetail và loại bỏ trùng bằng GroupBy
+            var items = db.ProductDetail
+                .Where(x => x.Products.IsActive == true)
+                .GroupBy(x => x.ProductsId) // Nhóm theo ProductsId để tránh trùng lặp
+                .Select(g => g.FirstOrDefault()) // Lấy sản phẩm đầu tiên trong mỗi nhóm
+                .AsQueryable();
 
+            // Lọc theo minPrice nếu có
             if (minPrice.HasValue)
             {
                 items = items.Where(x => x.Price >= minPrice.Value);
             }
 
+            // Lọc theo maxPrice nếu có
             if (maxPrice.HasValue)
             {
                 items = items.Where(x => x.Price <= maxPrice.Value);
             }
 
-            items = items.OrderByDescending(x => x.Products.ProductCategory).ToList();
+            // Sắp xếp: Sản phẩm Hot trước, sau đó theo danh mục
+            var sortedItems = items
+                .OrderByDescending(x => x.Products.IsHot) // Sản phẩm Hot lên đầu
+                .ThenBy(x => x.Products.ProductCategoryId) // Sau đó theo danh mục
+                .ToList();
 
-            if (items != null)
+            if (sortedItems.Any())
             {
                 var pageSize = 16;
                 var pageIndex = page ?? 1;
-                var pagedList = items.ToPagedList(pageIndex, pageSize);
+                var pagedList = sortedItems.ToPagedList(pageIndex, pageSize);
 
                 if (pageIndex > pagedList.PageCount)
                 {
                     pageIndex = pagedList.PageCount;
-                    pagedList = items.ToPagedList(pageIndex, pageSize);
+                    pagedList = sortedItems.ToPagedList(pageIndex, pageSize);
                 }
 
+                // Gán thông tin phân trang vào ViewBag
                 ViewBag.PageSize = pageSize;
-                ViewBag.PageNumber = pageIndex; // Số trang hiện tại
-                ViewBag.PageCount = pagedList.PageCount; // Tổng số trang
-                ViewBag.FirstItemOnPage = pagedList.FirstItemOnPage; // Số sản phẩm đầu tiên trên trang
-                ViewBag.LastItemOnPage = pagedList.LastItemOnPage; // Số sản phẩm cuối cùng trên trang
-                ViewBag.TotalItemCount = pagedList.TotalItemCount; // Tổng số sản phẩm
+                ViewBag.PageNumber = pageIndex;
+                ViewBag.PageCount = pagedList.PageCount;
+                ViewBag.FirstItemOnPage = pagedList.FirstItemOnPage;
+                ViewBag.LastItemOnPage = pagedList.LastItemOnPage;
+                ViewBag.TotalItemCount = pagedList.TotalItemCount;
                 ViewBag.MinPrice = items.Min(x => x.Price);
                 ViewBag.MaxPrice = items.Max(x => x.Price);
+
                 return View(pagedList);
             }
 
             return View();
         }
+
 
 
         public async Task<ActionResult> Details(string alias)
@@ -82,7 +97,20 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         }
-
+        public ActionResult Partial_DetailByCapactity(int? proId, int? productDetailId  , string capcity)
+        {
+            if(proId >0&&productDetailId > 0 && capcity != null)
+            {
+                var item = db.ProductDetail.FirstOrDefault(x => x.ProductDetailId == productDetailId&& x.ProductsId== proId && x.Capacity.Trim() == capcity.Trim());
+                if (item!=null)
+                {
+                    ViewBag.ProductId = proId;
+                    ViewBag.Capacity = capcity.Trim();
+                    return PartialView(item);   
+                }
+            }
+            return PartialView();
+        }
 
         public ActionResult Capacity(int productid, string DungLuong)
         {
@@ -162,16 +190,16 @@ namespace CuaHangBanDienThoai.Controllers
         //    }
         //}
 
-        public ActionResult Partail_ColorByProductsId(int productid, string capacity)
+        public ActionResult Partail_ColorByProductsId(int productid, string capacity,string color )
         {
-            if (productid != null)
+            if (productid != null&& capacity!=null&& color != null)
             {
 
                 using (var dbContext = new CUAHANGDIENTHOAIEntities())
                 {
                     var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
                     .Where(p => p.ProductsId == productid && p.Capacity == capacity)
-                    .GroupBy(p => p.Color)
+                    .GroupBy(p => p.Color.Trim())
                     .Select(g => new
                     {
                         Color = g.Key,
@@ -191,7 +219,7 @@ namespace CuaHangBanDienThoai.Controllers
                       
 
                     }).ToList();
-
+                    ViewBag.Color = color.Trim();
                     ViewBag.ProductId = productid;
                   
                     return PartialView(viewModels);

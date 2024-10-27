@@ -47,6 +47,8 @@ namespace CuaHangBanDienThoai.Models
         public Nullable<int> ProductCategoryId { get; set; }
         public Nullable<int> ProductCompanyId { get; set; }
         public string Description { get; set; }
+        public Nullable<bool> IsHot { get; set; }
+        public Nullable<bool> IsActive { get; set; }
     
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ProductCompany ProductCompany { get; set; }

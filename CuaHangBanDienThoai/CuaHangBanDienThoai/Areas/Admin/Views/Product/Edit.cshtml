@@ -128,6 +128,22 @@
                                                     </div>
 
                                                 </div>
+                                                <br />
+
+                                                <div class="row">
+
+                                                    <div class="custom-control custom-checkbox">
+
+                                                        <label for="IsActiveCheckbox2">Hiển thị : </label>
+                                                        @Html.CheckBoxFor(x => x.IsActive, new { @class = "", })
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <label for="IsHotCheckbox2" class="">Nổi bật : </label>
+                                                        @Html.CheckBoxFor(x => x.IsHot, new { @class = "", })
+                                                    </div>
+
+                                                </div>
+
                                             </div>
                                         </div>
 

@@ -3,7 +3,19 @@
 {
     foreach (var item in Model)
     {
-        <a href="/dtdd/iphone-16-pro?code=0131491004251" data-color="1195" data-code="0131491004251" class="box03__item color item act"><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
+
+        if (ViewBag.Color.Trim() == item.Color.Trim())
+        {
+
+            <a href="/#" data-color="1195" data-code="0131491004251" class="box03__item color item act"><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
+        }
+        else
+        {
+            <a href="/#" data-color="1195" data-code="0131491004251" class="box03__item color item "><i style="background-color:#BAB4A9"></i>@item.Color.Trim()</a>
+        }
+
+
+
 
     }
 }

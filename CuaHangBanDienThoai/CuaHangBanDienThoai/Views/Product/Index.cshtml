@@ -1,4 +1,4 @@
-﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.ProductDetail>
+﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.Products>
 @using CuaHangBanDienThoai.Common
 @using PagedList.Mvc;
 @{
@@ -7,7 +7,6 @@
 }
 <link href="~/Content/css/client/ProductIndex.css" rel="stylesheet" />
 <style>
-
 </style>
 
 <div class="container container_Index ">
@@ -59,26 +58,26 @@
                                             }
                                         }
                                         var strImg = "";
-                                        var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+                                        //var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
 
-                                        var Name = item.Products.ProductCategory.Title.Trim() + "   " + item.Products.Title.Trim();
-                                        var detail = item.Ram.Trim() + "-" + item.Capacity.Trim();
-                                        if (CheckImage != null)
+                                        var Name = item.ProductCategory.Title.Trim() + "   " + item.Title.Trim();
+                                        //var detail = item.Ram.Trim() + "-" + item.Capacity.Trim();
+                                        if (item.Image.Trim() != null)
                                         {
-                                            strImg = CheckImage.Image;
+                                            strImg = item.Image.Trim();
                                         }
                                         else
                                         {
                                             strImg = "~/Content/css/admin/login/images/logoWeb.png";
                                         }
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mt-2 mb-2  product__grid__item" style="border-left:gray solid 1px">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mt-2 mb-2 listproduct   product__grid__item">
                                             <div class="  product__item">
 
                                                 <a href="/chi-tiet/@item.Alias" class="product_image__item">
                                                     <img src="@strImg" alt="@Name TenoStore">
                                                 </a>
 
-                                                @if (item.IsSale == true && item.PriceSale > 0)
+                                                @*@if (item.IsSale == true && item.PriceSale > 0)
                                                 {
                                                     <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
                                                         @{
@@ -91,32 +90,38 @@
                                                             <span>@discountPercentage.ToString("0")%</span>
                                                         }
                                                     </div>
-                                                }
+                                                }*@
 
                                             <div class="product_info">
-                                                <h5 class="product_name" style="height: 50px; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                                <h6 class="product_name mt-1" style="height: 25px; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
                                                     <a href="#" class="">@Name</a>
 
-                                                </h5>
-                                                <a href="#" class="">@detail.Trim()</a>
+                                                </h6>
 
-                                                @if (item.PriceSale > 0)
-                                                {
-                                                    <div class="product_price">
-                                                        @($"{Common.FormatNumber(item.PriceSale)}đ") <span> @($"{Common.FormatNumber(item.Price)}đ")</span>
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="product_price">
-                                                        @($"{Common.FormatNumber(item.Price)}đ")
-                                                    </div>
-                                                }
+                                                <div class="item-compare gray-bg">
+                                                    <span>Super Retina XDR</span>
+                                                    <span> @($"{item.Screensize.Trim()}")" </span>
+                                                </div>
+                                                @Html.Action("Capacity", "Product", new { productid = item.ProductsId })
+                                             
+
+                                                @*@if (item.PriceSale > 0)
+        {
+            <div class="product_price">
+                @($"{Common.FormatNumber(item.PriceSale)}đ") <span> @($"{Common.FormatNumber(item.Price)}đ")</span>
+            </div>
+        }
+        else
+        {
+            <div class="product_price">
+                @($"{Common.FormatNumber(item.Price)}đ")
+            </div>
+        }*@
                                             </div>
 
-                                                <div class="@*red_button add_to_cart_button*@">
+                                                @*<div class="@*red_button add_to_cart_button">
                                                     <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
 

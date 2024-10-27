@@ -2606,6 +2606,7 @@ input[type="range"] {
 
 .product_name {
 	margin-top: 0;
+	padding-left:0 !important;
 }
 
 	.product_name a {
@@ -2628,8 +2629,56 @@ input[type="range"] {
 	line-height: 1.5;
 }
 
+listproduct .price {
+	color: #dd2f2c;
+}
 
+.listproduct .price {
+	color: #d0021c;
+	font-size: 18px;
+	margin-bottom: 8px;
+}
+.price-container {
+	display: flex; 
+	align-items: center; 
+	gap: 10px;
+}
+.listproduct .price {
 
+	display: block;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 18px;
+	margin-bottom: 5px;
+}
+.listproduct .box-p {
+	margin-bottom: 5px;
+}
+.listproduct .price-old.black {
+	color: #98a2b3;
+}
+
+.listproduct .price-old.black {
+	color: #333;
+}
+.listproduct .percent {
+	color: #dd2f2c;
+}
+
+.listproduct .percent {
+	color: #333;
+	display: inline-block;
+	font-size: 13px;
+	line-height: 17px;
+}
+.listproduct .price-old {
+	color: #666;
+	display: inline-block;
+	font-size: 14px;
+	line-height: 17px;
+	text-decoration-line: line-through;
+	margin:0 !important;
+}
 .product_bubble {
 	position: absolute;
 	top: 15px;
@@ -2785,6 +2834,8 @@ input[type="range"] {
 
 .product__grid__item {
 	padding: 0px 5px 15px;
+	background-color: #fff;
+	
 	
 }
 
@@ -2795,15 +2846,16 @@ input[type="range"] {
 }
 
 .product__item {
+	
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	height: 100%;
-	box-sizing: border-box;
 	width: 100%;
-	padding: 0; /* Đảm bảo không có padding ảnh hưởng đến chiều rộng */
-	margin: 0; /* Thêm margin: 0 nếu có margin mặc định */
+	margin: 0;
+	padding: 5px;
 }
+
 
 .product_image__item {
 	width: 100%; 

@@ -236,6 +236,8 @@
     <Property Name="ProductCategoryId" Type="int" />
     <Property Name="ProductCompanyId" Type="int" />
     <Property Name="Description" Type="nvarchar(max)" />
+    <Property Name="IsHot" Type="bit" />
+    <Property Name="IsActive" Type="bit" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>

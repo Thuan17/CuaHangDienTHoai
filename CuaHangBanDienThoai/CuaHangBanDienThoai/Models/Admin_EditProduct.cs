@@ -35,5 +35,10 @@ namespace CuaHangBanDienThoai.Models
         public string Image { get; set; }
         [AllowHtml]
         public string Description { get; set; }
+
+
+
+        public bool IsHot { get; set; }
+        public bool IsActive { get; set; }
     }
 }

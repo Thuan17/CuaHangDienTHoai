@@ -46,15 +46,16 @@
                                     foreach (var item in Model)
                                     {
                                         @functions {
+
                                             public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
                                             {
                                                 if (originalPrice == 0 || salePrice >= originalPrice)
                                                 {
-                                                    return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                                                    return 0;
                                                 }
 
                                                 decimal discount = 1 - (salePrice / originalPrice);
-                                                return discount * 100;
+                                                return (int)(discount * 100);
                                             }
                                         }
                                         var strImg = "";
@@ -70,14 +71,15 @@
                                         {
                                             strImg = "~/Content/css/admin/login/images/logoWeb.png";
                                         }
-                                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mt-2 mb-2  product__grid__item" style="border-left:gray solid 1px">
-                                            <div class="  product__item">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mt-2 mb-2  listproduct product__grid__item" id="product-container-@item.ProductsId">
+                                            <div class="  product__item" style="border: 1px solid #eaecf0 !important; border-radius: 8px !important;">
+
 
                                                 <a href="/chi-tiet-san-pham/@item.Alias" class="product_image__item">
-                                                    <img src="@strImg" alt="@Name TenoStore">
+                                                    <img src="@strImg" alt="@Name ">
                                                 </a>
 
-                                                @if (item.IsSale == true && item.PriceSale > 0)
+                                                @if (item.PriceSale > 0)
                                                 {
                                                     <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
                                                         @{
@@ -92,31 +94,53 @@
                                                     </div>
                                                 }
 
-                                                <div class="product_info">
-                                                    <h5 class="product_name" style="height: 50px; text-align: center; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                                                        <a href="/chi-tiet-san-pham/@item.Alias" class="">@Name</a>
+                                            <div class="product_info" style="display: flex !important; flex-direction: column !important;  align-items: flex-start !important; ">
+                                                <a href="/chi-tiet-san-pham/@item.Alias.Trim()" class="pl-0 product_name mb-1" style="">
+                                                    <h6 class="product_name mt-0" style=" text-align: center;margin-bottom:0 !important; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                                        @Name.Trim()
 
-                                                    </h5>
-                                                    <a href="#" class="">@detail.Trim()</a>
+                                                    </h6>
 
-                                                    @if (item.PriceSale > 0)
-                                                    {
-                                                        <div class="product_price">
-                                                            @($"{Common.FormatNumber(item.PriceSale)}đ") <span> @($"{Common.FormatNumber(item.Price)}đ")</span>
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="product_price">
-                                                            @($"{Common.FormatNumber(item.Price)}đ")
-                                                        </div>
-                                                    }
+                                                </a>
+
+                                                <div class="item-compare gray-bg mb-0">
+                                                    <span>Super Retina XDR</span>
+                                                    <span> @($"{item.Products.Screensize.Trim()}")" </span>
                                                 </div>
+                                                @Html.Action("Capacity", "Product", new { productid = item.ProductsId, Capacity = item.Capacity.Trim() })
 
-                                                <div class="@*red_button add_to_cart_button*@">
-                                                    <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
-                                                </div>
+
+                                                @if (item.PriceSale > 0)
+                                                {
+                                                    <div class="price-container">
+                                                        <strong class="price">@($"{Common.FormatNumber(item.PriceSale)}đ")</strong>
+                                                        <div class="box-p">
+                                                            <p class="price-old black">@($"{Common.FormatNumber(item.Price)}đ")</p>
+                                                            <span class="percent">
+                                                                @{
+                                                                    decimal discountPercentage = CalculateDiscountPercentage((decimal)item.Price, (decimal)item.PriceSale);
+                                                                    <span class="w-100 p-0 m-0">@($" {discountPercentage}%")</span>
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                else
+                                                {
+                                            <div class="price-container">
+                                                <strong class="price">@($"{Common.FormatNumber(item.Price)}đ")</strong>
+                                                
                                             </div>
+                                                  
+                                                        }
+
+                                                    </div>
+
+                                                    @*<div class="red_button add_to_cart_button">
+                <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
+            </div>*@
+                                                </div>
                                         </div>
 
 
@@ -191,6 +215,35 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    $(document).on('click', '.capacity-link', function () {
+        const proId = $(this).data('pro-id');
+        const productDetailId = $(this).data('product-detail-id');
+        const capacity = $(this).data('capacity');
+
+        const detailContainer = $('#product-container-' + productDetailId);
+        console.log("proId", proId);
+        console.log("productDetailId", productDetailId);
+        console.log("capacity", capacity);
+        $.ajax({
+            url: '@Url.Action("Partial_DetailByCapactity", "ProductDetail")',
+            type: 'GET',
+            data: {
+                proId: proId,
+                productDetailId: productDetailId,
+                capcity: capacity
+            },
+            success: function (result) {
+                $('#product-container-' + proId).html(result);
+             
+            },
+            error: function () {
+                alert('Failed to load product details.');
+            }
+        });
+    });
+
+
+
     $(document).ready(function () {
 
         $('.sidebar_title h5').click(function (e) {
@@ -204,14 +257,5 @@
                 $('.sidebar_categories').removeClass('show');
             }
         });
-
-
-
-
-
-
-
-
-
     });
 </script>

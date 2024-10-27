@@ -226,6 +226,8 @@
     <EntitySetMapping Name="Products">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
         <MappingFragment StoreEntitySet="Products">
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsHot" ColumnName="IsHot" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />

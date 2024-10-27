@@ -1,0 +1,98 @@
+﻿@model CuaHangBanDienThoai.Models.ProductDetail
+@using CuaHangBanDienThoai.Common;
+
+<link href="~/Content/css/client/ProductIndex.css" rel="stylesheet" />
+@if (Model != null)
+{
+    @functions {
+
+        public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+        {
+            if (originalPrice == 0 || salePrice >= originalPrice)
+            {
+                return 0;
+            }
+
+            decimal discount = 1 - (salePrice / originalPrice);
+            return (int)(discount * 100);
+        }
+    }
+
+    var strImgCapcity = Model.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true)?.Image ?? "~/Content/css/admin/login/images/logoWeb.png";
+
+    var Name = Model.Products.ProductCategory.Title.Trim() + " " + Model.Products.Title.Trim();
+    var detail = Model.Ram.Trim() + "-" + Model.Capacity.Trim();
+
+
+
+    <div class=" listproduct product__grid__item pb-0 listproduct   mt-2  " id="product-container-@Model.ProductDetailId">
+        <div class="  product__item" style="border: 1px solid #eaecf0 !important; border-radius: 8px !important;">
+
+
+            <a href="/chi-tiet-san-pham/@Model.Alias" class="product_image__item">
+                <img src="@strImgCapcity" alt="@Name ">
+            </a>
+
+            @if (Model.PriceSale > 0)
+            {
+                <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
+                    @{
+                        decimal originalPrice = Convert.ToDecimal(Model.Price);
+                        decimal salePrice = Convert.ToDecimal(Model.PriceSale);
+                        decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
+                    }
+                    @if (discountPercentage > 0)
+                    {
+                        <span>@discountPercentage.ToString("0")%</span>
+                    }
+                </div>
+            }
+
+        <div class="product_info" style="display: flex !important; flex-direction: column !important;  align-items: flex-start !important; ">
+            <a href="/chi-tiet-san-pham/@Model.Alias.Trim()" class="pl-0 product_name mb-1" style="">
+                <h6 class="product_name mt-0" style=" text-align: center;margin-bottom:0 !important; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                    @Name.Trim()
+
+                </h6>
+
+            </a>
+
+            <div class="item-compare gray-bg mb-0">
+                <span>Super Retina XDR</span>
+                <span> @($"{Model.Products.Screensize.Trim()}")" </span>
+            </div>
+            @Html.Action("Capacity", "Product", new { productid = Model.ProductsId, Capacity = Model.Capacity.Trim() })
+
+
+            @if (Model.PriceSale > 0)
+            {
+                <div class="price-container">
+                    <strong class="price">@($"{Common.FormatNumber(Model.PriceSale)}đ")</strong>
+                    <div class="box-p">
+                        <p class="price-old black">@($"{Common.FormatNumber(Model.Price)}đ")</p>
+                        <span class="percent">
+                            @{
+                                decimal discountPercentage = CalculateDiscountPercentage((decimal)Model.Price, (decimal)Model.PriceSale);
+                                <span class="w-100 p-0 m-0">@($" {discountPercentage}%")</span>
+                            }
+                        </span>
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="price-container">
+                    <strong class="price">@($"{Common.FormatNumber(Model.Price)}đ")</strong>
+
+                </div>
+
+            }
+
+        </div>
+            @*<div class="red_button add_to_cart_button">
+                    <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
+                </div>*@
+        </div>
+    </div>
+}

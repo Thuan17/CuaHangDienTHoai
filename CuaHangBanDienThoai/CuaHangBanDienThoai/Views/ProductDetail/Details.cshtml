@@ -810,7 +810,7 @@
                         <div class="scrolling_inner">
 
                             <div class="box03 color group desk">
-                            @Html.Action("Partail_ColorByProductsId", "ProductDetail", new { productid = Model.ProductsId, capacity = Model.Capacity.Trim() })
+                            @Html.Action("Partail_ColorByProductsId", "ProductDetail", new { productid = Model.ProductsId, capacity = Model.Capacity.Trim(),color=Model.Color.Trim() })
                             </div>
                         </div>
                         <div class="scrolling_inner">
@@ -860,7 +860,7 @@
                             <div class="block__promo">
                                 <div class="pr-top">
                                     <p class="pr-txtb">Khuyến mãi </p>
-                                    <i class="pr-txt">Giá và khuyến mãi dự kiến áp dụng đến 23:59 | 31/10</i>
+                                    <i class="pr-txt">Giá và khuyến mãi </i>
                                 </div>
                                 <div class="pr-content">
                                     <div class="pr-item">

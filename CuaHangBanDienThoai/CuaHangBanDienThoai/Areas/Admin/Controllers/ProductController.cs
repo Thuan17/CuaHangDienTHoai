@@ -131,7 +131,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     model.CPU = req.CPU.Trim();
                     model.GPU = req.GPU.Trim();
                     model.BatteryCapacity = req.BatteryCapacity.Trim();
-                   
+                    model.IsHot = false;
+                    model.IsActive = false;
                 model.ProductCategoryId=req.ProductCategoryId;
                     model.ProductCompanyId = req.ProductCompanyId;
 
@@ -269,6 +270,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     GPU = product.GPU.Trim(),
                     BatteryCapacity = product.BatteryCapacity.Trim(),
                     Alias=product.Alias.Trim(),     
+                    IsActive=(bool)product.IsActive,
+                    IsHot=(bool)product.IsHot,
+                  
 
 
                     Description = product.Description,
@@ -472,8 +476,52 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
-      
-      
+        [HttpPost]
+        public async Task<ActionResult> IsActive(int id)
+        {
+            try
+            {
+                var item = await db.Products.FindAsync(id);
+                if (item != null)
+                {
+                    item.IsActive = !item.IsActive;
+                    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    return Json(new { success = true, isActive = item.IsActive });
+                }
+                return Json(new { success = false, msg = "Không tìm thấy mã sản phẩm" });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, msg = "Lỗi cập nhập tag hiển thị " });
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> IsHome(int id)
+        {
+            try
+            {
+                var item = await db.Products.FindAsync(id);
+
+                if (item != null)
+                {
+                    item.IsHot = !item.IsHot;
+                    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    return Json(new { success = true, isHot = item.IsHot });
+                }
+
+                return Json(new { success = false, msg = "Không tìm thấy mã sản phẩm" });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, msg = "Lỗi cập nhập tag hiển thị trang chủ" });
+            }
+        }
+
 
 
 

@@ -5698,6 +5698,8 @@
     <Content Include="Views\ProductDetail\Details.cshtml" />
     <Content Include="Views\ProductDetail\Partail_ColorByProductsId.cshtml" />
     <Content Include="Views\ProductDetail\Capacity.cshtml" />
+    <Content Include="Views\Product\Capacity.cshtml" />
+    <Content Include="Views\ProductDetail\Partial_DetailByCapactity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

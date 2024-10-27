@@ -277,6 +277,8 @@
     <NavigationProperty Name="ProductCompany" Relationship="Self.FK_Product_ProductCompany" FromRole="Products" ToRole="ProductCompany" />
     <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ProductDetail_Products" FromRole="Products" ToRole="ProductDetail" />
     <NavigationProperty Name="Review" Relationship="Self.FK_Review_Products" FromRole="Products" ToRole="Review" />
+    <Property Name="IsHot" Type="Boolean" />
+    <Property Name="IsActive" Type="Boolean" />
   </EntityType>
   <EntityType Name="Provinces">
     <Key>

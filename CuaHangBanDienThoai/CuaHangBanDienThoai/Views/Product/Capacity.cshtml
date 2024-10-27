@@ -1,0 +1,43 @@
+﻿@model List<CuaHangBanDienThoai.Models.ProductColorViewModel>
+
+
+<div class="prods-group" data-iscompare="True" data-mergename="" data-lstarranged="305658,305659,305660">
+    <ul>
+
+
+        @*<li data-url="/dtdd/iphone-15-pro-max" data-id="305658" data-index="0" class="merge__item item act">256GB</li>
+        <li data-url="//" data-id="305659" data-index="1" class="merge__item item ">512GB</li>
+        <li data-url="//" data-id="305660" data-index="2" class="merge__item item ">1TB</li>*@
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                if (ViewBag.Capacity.Trim() == item.Capacity.Trim())
+                {
+                    @*<a href="/dtdd/iphone-16-pro" data-index="0" class="box03__item item act">@item.Capacity.Trim()</a>*@
+
+                    <li data-url="/dtdd/iphone-15-pro-max" data-id="305658" data-index="0" class="merge__item item act">
+
+                        <a href="javascript:void(0);" class="w-100 p-0 m-0  capacity-link" data-pro-id="@item.ProductslId" data-product-detail-id="@item.ProductDetailId" data-capacity="@item.Capacity">
+                            @item.Capacity.Trim() 
+                        </a>
+
+                    </li>
+                }
+                else
+                {
+                    <li data-url="/dtdd/iphone-15-pro-max" data-id="305658" data-index="0" class="merge__item item ">
+
+                        <a href="javascript:void(0);" class="w-100 p-0 m-0  capacity-link" data-pro-id="@item.ProductslId" data-product-detail-id="@item.ProductDetailId" data-capacity="@item.Capacity">
+                            @item.Capacity.Trim() 
+                        </a>
+
+                    </li>
+                }
+
+
+            }
+        }
+
+    </ul>
+</div>

@@ -14,20 +14,22 @@ namespace CuaHangBanDienThoai.Controllers
         private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
         public ActionResult Index(int? page, decimal? minPrice, decimal? maxPrice)
         {
-            IEnumerable<ProductDetail> items = db.ProductDetail.Where(x => x.IsActive == true );
+            IEnumerable<Products> items = db.Products.Where(x=>x.IsActive==true );
 
-            if (minPrice.HasValue)
-            {
-                items = items.Where(x => x.Price >= minPrice.Value);
-            }
+            //if (minPrice.HasValue)
+            //{
+            //    items = items.Where(x => x.Price >= minPrice.Value);
+            //}
 
-            if (maxPrice.HasValue)
-            {
-                items = items.Where(x => x.Price <= maxPrice.Value);
-            }
+            //if (maxPrice.HasValue)
+            //{
+            //    items = items.Where(x => x.Price <= maxPrice.Value);
+            //}
 
-            items = items.OrderByDescending(x => x.Products.ProductCategory).ToList();
-
+            items = items
+         .OrderByDescending(x => x.IsHot) 
+         .ThenByDescending(x => x.ProductCategory) 
+         .ToList();
             if (items != null)
             {
                 var pageSize = 16;
@@ -41,19 +43,56 @@ namespace CuaHangBanDienThoai.Controllers
                 }
 
                 ViewBag.PageSize = pageSize;
-                ViewBag.PageNumber = pageIndex; // Số trang hiện tại
-                ViewBag.PageCount = pagedList.PageCount; // Tổng số trang
-                ViewBag.FirstItemOnPage = pagedList.FirstItemOnPage; // Số sản phẩm đầu tiên trên trang
-                ViewBag.LastItemOnPage = pagedList.LastItemOnPage; // Số sản phẩm cuối cùng trên trang
-                ViewBag.TotalItemCount = pagedList.TotalItemCount; // Tổng số sản phẩm
-                ViewBag.MinPrice = items.Min(x => x.Price);
-                ViewBag.MaxPrice = items.Max(x => x.Price);
+                ViewBag.PageNumber = pageIndex; 
+                ViewBag.PageCount = pagedList.PageCount; 
+                ViewBag.FirstItemOnPage = pagedList.FirstItemOnPage;
+                ViewBag.LastItemOnPage = pagedList.LastItemOnPage; 
+                ViewBag.TotalItemCount = pagedList.TotalItemCount; 
+                //ViewBag.MinPrice = items.Min(x => x.Price);
+                //ViewBag.MaxPrice = items.Max(x => x.Price);
                 return View(pagedList);
             }
 
             return View();
         }
+        public ActionResult Capacity(int productid, string Capacity)
+        {
+            if (productid != null )
+            {
+                using (var dbContext = new CUAHANGDIENTHOAIEntities())
+                {
+                    var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
+                    .Where(p => p.ProductsId == productid)
+                    .GroupBy(p => p.Capacity.Trim())
+                    .Select(g => new
+                    {
+                        Capacity = g.Key,
+                        ProductDetailId = g.Min(p => p.ProductDetailId),
 
+                    })
+                    .ToList();
+
+                    var viewModels = uniqueCapacitiesWithIdsAndImages.Select(item => new ProductColorViewModel
+                    {
+
+                        ProductDetailId = item.ProductDetailId,
+                        ProductslId = productid,
+                        Capacity = item.Capacity,
+
+                    }).ToList();
+
+                    ViewBag.ProductId = productid;
+                    ViewBag.Capacity = Capacity;
+                    return PartialView(viewModels);
+                }
+            }
+            else
+            {
+                return PartialView(null);
+            }
+
+
+        }
 
 
         public ActionResult Partial_ItemsByCateId()
