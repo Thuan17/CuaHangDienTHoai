@@ -358,5 +358,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Banner">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Banner">
+        <MappingFragment StoreEntitySet="Banner">
+          <ScalarProperty Name="IsBackground" ColumnName="IsBackground" />
+          <ScalarProperty Name="Link" ColumnName="Link" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="BannerId" ColumnName="BannerId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

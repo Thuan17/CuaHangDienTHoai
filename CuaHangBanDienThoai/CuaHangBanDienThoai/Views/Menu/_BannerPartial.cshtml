@@ -1,0 +1,41 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.ViewModels.BannerPairViewModel>
+
+@if (Model != null && Model.Any())
+{
+    <div class="billboard ">
+        <div class="swiper main-swiper">
+            <div class="swiper-wrapper">
+                @foreach (var pair in Model)
+                {
+                    <div class="swiper-slide w-100">
+                        <div class="banner_content">
+
+                            <div class="banner_content_left">
+                                <a href="@Url.Content(!string.IsNullOrEmpty(pair.LeftBanner.Link)?pair.LeftBanner.Link:"#")" class="w-100 h-100 m-0 p-0">
+                                    <img src="@Url.Content(pair.LeftBanner.Image)" class="banner_content_img" />
+                                </a>
+
+
+                            </div>
+                            @*<img src="~/images/banner/bannerNew2.png" />*@
+                            @if (pair.RightBanner != null)
+                            {
+                                <div class="banner_content_right">
+                                    <a href="@Url.Content(!string.IsNullOrEmpty(pair.RightBanner.Link)?pair.RightBanner.Link:"#")" class="w-100 h-100 m-0 p-0">
+
+                                        <img src="@Url.Content(pair.RightBanner.Image)" class="banner_content_img" />
+                                    </a>
+
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+    </div>
+
+}

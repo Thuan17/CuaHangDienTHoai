@@ -15,6 +15,24 @@ namespace CuaHangBanDienThoai.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+       name: "Add_Banner",
+       url: "them-moi-banner",
+       defaults: new { controller = "Banner", action = "Add", alias = UrlParameter.Optional },
+        namespaces: new[] { "CuaHangBanDienThoai.Areas.Admin.Controllers" }
+
+   );
+
+
+            context.MapRoute(
+                name: "Index_Banner",
+                url: "quanly-banner",
+                defaults: new { controller = "Banner", action = "Index", alias = UrlParameter.Optional },
+                namespaces: new[] { "CuaHangBanDienThoai.Areas.Admin.Controllers" }
+
+            );
+
+
+            context.MapRoute(
                 name: "Detail_ProductDetail",
                 url: "chitiet-san-pham-con/{alias}",
                 defaults: new { controller = "ProductDetail", action = "Detail" }

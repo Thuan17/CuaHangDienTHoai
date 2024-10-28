@@ -1470,12 +1470,12 @@ company-services
 	}
 
 	.grid_sorting_button.active:hover {
-		background: #FE7C7F !important;
+		border-bottom: 1px solid #fe4c50;
 	}
 
 	.grid_sorting_button.active {
-		color: #FFFFFF;
-		background: #fe4c50;
+		color: black;
+		border-bottom: 1px solid #fe4c50 ;/*background: #fe4c50;*/
 	}
 
 /*********************************
@@ -2215,3 +2215,39 @@ company-services
 
 
 
+.price-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding: 10px;
+}
+
+.listproduct .item-compare {
+	font-size: 0;
+	margin-bottom: 5px;
+}
+
+
+	.listproduct .item-compare span {
+		background: #f2f4f7;
+		border: none;
+		color: #667085;
+	}
+
+	.listproduct .item-compare.gray-bg span {
+		border: 1px solid #eaeaea;
+		background: #eaeaea;
+	}
+
+	.listproduct .item-compare span {
+		border: 1px solid #e0e0e0;
+		border-radius: 2px;
+		color: #333;
+		display: inline-block;
+		font-size: 12px;
+		line-height: 12px;
+		margin-right: 5px;
+		padding: 4px 5px;
+		white-space: nowrap;
+	}

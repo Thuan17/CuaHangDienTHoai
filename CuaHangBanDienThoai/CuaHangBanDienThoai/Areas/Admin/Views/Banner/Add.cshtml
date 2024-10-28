@@ -1,0 +1,319 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_AddBanner
+@{
+    ViewBag.Title = "Thêm mới banner";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .error-message {
+        display: none;
+        color: red;
+    }
+
+    .error-border {
+        border: 2px solid red;
+    }
+
+    .btnXoaAnh {
+        position: absolute;
+        z-index: 10;
+        top: 8%;
+        right: 40px;
+    }
+</style>
+
+
+<link href="~/Content/ckeditor5/ckeditor5.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                <li class="breadcrumb-item"><a href="/quan-ly-banner">Banner </a></li>
+                <li class="breadcrumb-item active">Thêm mới</li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Thêm Banner
+                    </h6>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <form id="myFormBanner" enctype="multipart/form-data">
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <input type="hidden" id="ImagesJson" name="Items" />
+                        <input type="hidden" id="IsGiftCategory" name="IsGiftCategory" />
+
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="row ">
+
+
+
+                                        </div>
+                                        <div class="row ">
+
+                                            <div id="Linkontainer" class="form-group col-lg-12">
+                                                <label for="exampleInputEmail1">Liên kết </label>
+                                                @Html.TextBoxFor(x => x.Link, new { @class = "form-control", @placeholder = "Liên kết sản phẩm", id = "Link" })
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 text-right">
+                                                <input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <table class="table table-hover" id="tbAnhSanPham">
+                                                    <thead>
+                                                        <tr>
+
+                                                            <th class="text-center">Ảnh</th>
+
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="tbHtml">
+                                                    </tbody>
+                                                </table>
+                                                <input type="hidden" id="tCurrentId" value="0" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div> <!-- /.card -->
+                        <div class="col-12 text-center">
+                            <button type="button" onclick=" $('#myFormBanner').submit();" class="btn btn-success col-8">Thêm mới</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*<script src="~/Scripts/admin/Admin_ProductAdd.js"></script>*@
+
+
+<script>
+    $(document).on('click', '.btnXoaAnh', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $('#trow_' + id).remove();
+        $('#tCurrentId_Product').val(0);
+    });
+    function BrowseServer(field) {
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (fileUrl) {
+            addImageProduct(fileUrl);
+        };
+        finder.popup();
+    }
+    function checkImage(image) {
+        const width = image.naturalWidth;
+        const height = image.naturalHeight;
+        const aspectRatio = width / height;
+        const isCorrectAspectRatio = aspectRatio === (1920 / 1080);
+        return isCorrectAspectRatio;
+    }
+    function validateForm() {
+        const Images = $('#tCurrentId').val().trim();
+        let isValid = true;
+
+        if (!Images) {
+            Swal.fire({
+                icon: "warning",
+                title: "Lỗi",
+                text: "Vui lòng chọn ảnh!",
+                footer: '<input type="button" class="btn btn-primary" id="iTaiAnh" onclick="BrowseServer();" value="Tải ảnh" />'
+            });
+            isValid = false;
+        }
+
+        return isValid;
+    }
+    function submitForm(formData) {
+        $.ajax({
+            url: '/Admin/Banner/Add',
+            type: 'POST',
+            data:  formData,
+            success: function (res) {
+                if (res.success) {
+                    if (res.Code = 1) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Thêm banner thành công",
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                        });
+
+                        setTimeout(() => window.location.href = "/admin/banner/index", 1500);
+                    }
+                } else {
+                    if (res.Code = -2) {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: res.msg,
+                        });
+                    } else if (res.Code = -3) {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: res.msg,
+                        });
+                    } else if (res.Code = -99) {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: res.msg,
+                        });
+                    }
+
+                }
+
+
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Hệ thống gặp lỗi thêm sản phẩm.",
+                });
+                console.error(xhr.responseText);
+            }
+        });
+
+
+    }
+    $(document).ready(function () {
+        $('#myFormBanner').submit(function (e) {
+            e.preventDefault();
+            let isValid = validateForm();
+
+            const Link = $('#Link').val().trim();
+            const Images = $('#tCurrentId').val().trim();
+            const formData = $('#myFormBanner').serialize();
+            if (!Link) {
+                Swal.fire({
+                    title: "Bạn muốn bỏ liên kết?",
+                    text: "Bỏ trống liên kết",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                         submitForm(formData);
+                    }
+                });
+            } else {
+                submitForm(formData);
+            }
+        });
+    });
+
+
+
+    function addImageProduct(url) {
+        var currentId = 1;
+
+        var imgCheck = new Image();
+        imgCheck.src = url;
+        imgCheck.onload = function () {
+            if (checkImage(imgCheck)) {
+                var str = `
+                          <tr id="trow_${currentId}">
+                              <td class="text-center"><img  id="img_${currentId}" style="width:100%" src="${url}" /> <input type='hidden' value="${url}"id="Images" name="Images"/>
+                              <a href="#" data-id="${currentId}" class="btn btn-sm btn-danger btnXoaAnh">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                      <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                  </svg>
+                              </a>
+                              </td>
+
+                          </tr>`;
+                var existingRow = $('#trow_' + currentId);
+
+                if (existingRow.length) {
+                    existingRow.replaceWith(str);
+                } else {
+                    $('#tbHtml').append(str);
+                }
+
+                $('#tCurrentId').val(currentId);
+
+            }
+            else {
+                Swal.fire({
+                    title: "Tỷ lệ ảnh không đúng 1920x1080 px",
+                    text: "Bạn muốn thay đổi",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        BrowseServer();
+                    }
+                });
+            }
+        };
+
+
+
+
+    }
+
+</script>
+
+
+
+
+

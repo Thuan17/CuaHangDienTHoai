@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.Banner>
+@if (Model != null)
+{
+    <div class="swiper main-swiper sw">
+        <div class="swiper-wrapper ">
+            @foreach (var item in Model)
+            {
+                <div class="swiper-slide  sw_slide">
+                    <div class="banner_content w-100">
+                        <a href="@Url.Content(!string.IsNullOrEmpty(item.Link)?item.Link:"#")" class="m-0 p-0 w-100">
+                            <img src="@item.Image" class="banner_content_img" />
+                        </a>
+
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="swiper main-swiper sw">
+        <div class="swiper-wrapper ">
+            <div class="swiper-slide  sw_slide">
+                <div class="banner_content w-100">
+                    @*<img src="~/images/banner/NewTyLeFull1920x1080.png" />*@
+                    <img src="~/images/banner/NewTyLeFull1920x1080_33.png" class="banner_content_img" />
+                </div>
+            </div>
+            <div class="swiper-slide sw_slide">
+                <div class="banner_content  w-100">
+                    <img src="~/images/banner/NewTyLeFull1920x1080_33.png" class="banner_content_img" />
+                </div>
+            </div>
+        </div>
+    </div>
+}

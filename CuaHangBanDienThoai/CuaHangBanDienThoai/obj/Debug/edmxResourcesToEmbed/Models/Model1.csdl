@@ -809,5 +809,18 @@
       <End Role="Voucher" EntitySet="Voucher" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
+    <EntitySet Name="Banner" EntityType="CUAHANGDIENTHOAIModel.Banner" />
   </EntityContainer>
+  <EntityType Name="Banner">
+    <Key>
+      <PropertyRef Name="BannerId" />
+    </Key>
+    <Property Name="BannerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="Image" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsBackground" Type="Boolean" />
+  </EntityType>
 </Schema>

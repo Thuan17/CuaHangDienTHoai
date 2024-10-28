@@ -51,5 +51,6 @@ namespace CuaHangBanDienThoai.Models
         public virtual DbSet<Voucher> Voucher { get; set; }
         public virtual DbSet<VoucherDetail> VoucherDetail { get; set; }
         public virtual DbSet<Wards> Wards { get; set; }
+        public virtual DbSet<Banner> Banner { get; set; }
     }
 }

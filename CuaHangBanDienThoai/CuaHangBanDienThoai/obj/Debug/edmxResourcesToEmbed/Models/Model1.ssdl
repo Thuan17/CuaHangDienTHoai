@@ -9,6 +9,18 @@
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="IsLock" Type="bit" />
   </EntityType>
+  <EntityType Name="Banner">
+    <Key>
+      <PropertyRef Name="BannerId" />
+    </Key>
+    <Property Name="BannerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="Image" Type="varchar(max)" Nullable="false" />
+    <Property Name="Link" Type="varchar(max)" />
+    <Property Name="IsBackground" Type="bit" />
+  </EntityType>
   <EntityType Name="Bill">
     <Key>
       <PropertyRef Name="BillId" />
@@ -634,6 +646,7 @@
   </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="BillDetail" EntityType="Self.BillDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />

@@ -124,13 +124,13 @@ namespace CuaHangBanDienThoai.Controllers
         public ActionResult Partial_ItemsByCateId()
         {
             var items = (from pd in db.ProductDetail
-                         join p in db.Products on pd.ProductsId equals p.ProductsId
+                         join p in db.Products  on pd.ProductsId equals p.ProductsId
                          where pd.IsHome == true && pd.IsActive == true 
                          group new { p, pd } by p.ProductCompanyId into grouped
                          orderby grouped.Key descending
                          select grouped)
               .Take(4)
-              .SelectMany(g => g.Select(x => x.pd).OrderBy(r => Guid.NewGuid()).Take(3))
+              .SelectMany(g => g.Select(x => x.pd).OrderBy(r => Guid.NewGuid()).Take(4))
               .ToList();
 
             var randomizedItems = items.OrderBy(x => Guid.NewGuid()).ToList();

@@ -1,0 +1,17 @@
+﻿@model CuaHangBanDienThoai.Models.Banner
+@if (Model != null)
+{
+    <a aria-label="slide" data-cate="0" data-place="1998" href="@Url.Content(!string.IsNullOrEmpty(Model.Link)?Model.Link:"#")">
+
+
+        <img src="@Model.Image.Trim()" />
+    </a>
+}
+else
+{
+    <a aria-label="slide" data-cate="0" data-place="1998" href="/san-pham">
+
+
+        <img src="~/images/banner/NewTyLeFull1920x1080_33.png" />
+    </a>
+}

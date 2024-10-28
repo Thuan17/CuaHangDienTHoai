@@ -4,19 +4,57 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using CuaHangBanDienThoai.ViewModels;
 namespace CuaHangBanDienThoai.Controllers
 {
     public class MenuController : Controller
     {
         // GET: Menu
 
-        private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();   
+        private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();     
         public ActionResult Index()
         {
             return View();
         }
+        public ActionResult Banner()
+        {
+            var banners = db.Banner.Where(x => x.IsActive == true && x.IsBackground == false).ToList();
 
+            var bannerPairs = new List<BannerPairViewModel>();
+
+            for (int i = 0; i < banners.Count; i += 2)
+            {
+                var pair = new BannerPairViewModel
+                {
+                    LeftBanner = banners[i],
+                    RightBanner = (i + 1 < banners.Count) ? banners[i + 1] : null
+                };
+                bannerPairs.Add(pair);
+            }
+
+            return PartialView("_BannerPartial", bannerPairs);
+        }
+        public ActionResult BigBanner()
+        {
+            var banners = db.Banner.FirstOrDefault(x => x.IsActive == true && x.IsBackground == true);
+            if (banners != null)
+            {
+                return PartialView("_BigBannerPartial", banners);
+            }
+            return PartialView("_BigBannerPartial");
+
+        }
+        public ActionResult BannerMobile()
+        {
+            var banners = db.Banner.Where(x => x.IsActive == true).ToList();
+            if (banners != null)
+            {
+                return PartialView("_BanneMobilerPartial", banners);
+            }
+            return PartialView("_BanneMobilerPartial");
+
+
+        }
         public ActionResult MenuTop()
         {
             var Product = db.ProductDetail.Where(x => x.IsActive == true && x.IsHome == true ).ToList();

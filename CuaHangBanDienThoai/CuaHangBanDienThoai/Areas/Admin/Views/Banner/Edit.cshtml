@@ -1,0 +1,66 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditBanner
+<form id="myFormBannerEdit" enctype="multipart/form-data">
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.BannerId)
+    @Html.HiddenFor(x => x.CreatedDate)
+    @Html.HiddenFor(x => x.CreatedBy)
+    @Html.HiddenFor(x => x.Image)
+    <input type="hidden" id="ImagesJson" name="Items" />
+    <input type="hidden" id="IsGiftCategory" name="IsGiftCategory" />
+
+
+    <div class="active tab-pane" id="activity">
+        <div class="row ">
+
+            <div id="Linkontainer" class="form-group col-lg-12 d-flex align-items-center">
+                <label for="exampleInputEmail1" class="col-1 mb-0">Liên kết</label>
+                @Html.TextBoxFor(x => x.Link, new { @class = "form-control col-11", @placeholder = "Liên kết sản phẩm", id = "Link" })
+            </div>
+
+
+        </div>
+        <div class="row ">
+            <div class="d-flex align-items-center">
+                <div class="toggle d-flex pl-5" style="">
+                    <b class="text-dark"> Hiển thị :  </b>
+                    <label class="toggle pl-3" for="toggleIsBackground_@Model.BannerId">
+
+                        <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                            <div style="display: flex; align-items: center;">
+                                @Html.CheckBoxFor(x => x.IsActive, new { @class = "toggle__input check_IsActive" })
+
+                                <div class="toggle__fill"></div>
+                            </div>
+                        </span>
+                    </label>
+                </div>
+                <div class="toggle d-flex pl-5" style="">
+                    <b class="text-dark"> Ảnh nền :  </b>
+                    <label class="toggle pl-3" for="toggleIsBackground_@Model.BannerId">
+
+                        <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                            <div style="display: flex; align-items: center;">
+                                @Html.CheckBoxFor(x => x.IsBackground, new { @class = "toggle__input check_IsBackground" })
+
+                                <div class="toggle__fill"></div>
+                            </div>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="tbHtml">
+            <img src="@Model.Image" data-productid="@Model.BannerId" data-productImage="@Model.Image" class="text-center" data-index="@Model.BannerId" style="width:100%" height="500" onclick="BrowseServerUpdate(this);" />
+            <input type="hidden" id="tCurrentNewId_@Model.BannerId" value="0" />
+        </div>
+
+
+    </div>
+    <div class="col-12 pt-3 text-center">
+        <button type="button" onclick=" $('#myFormBannerEdit').submit();" class="btn btn-success col-8">Lưu thay đổi</button>
+    </div>
+
+</form>
+<script src="~/Scripts/admin/BannerEdit.js"></script>

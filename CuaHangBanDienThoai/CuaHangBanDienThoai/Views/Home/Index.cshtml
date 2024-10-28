@@ -2,16 +2,26 @@
     ViewBag.Title = "Cửa hàng điện thoại";
 }
 
+
 <style>
     h3.card-title, p, b {
         font-weight: normal;
     }
 </style>
-@*<div class="big-banner">
-        @Html.Action("BigBanner", "Menu")
+<div class="big-banner">
+    @Html.Action("BigBanner", "Menu")
 
 
-    </div>*@
+</div>
+
+<section id="billboard">
+    @Html.Action("Banner", "Menu")
+
+    <div class="billboardMobile w-100">
+        @Html.Action("BannerMobile", "Menu")
+    </div>
+
+</section>
 
 
 

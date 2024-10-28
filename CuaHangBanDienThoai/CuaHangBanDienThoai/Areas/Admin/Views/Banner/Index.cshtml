@@ -1,0 +1,328 @@
+﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.Banner>
+@using PagedList.Mvc
+@using CuaHangBanDienThoai.Common
+@{
+    ViewBag.Title = "Quản lý chi tiết sản phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+
+    #popupBanner {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        z-index: 2700;
+        max-width: 90%;
+        min-width: 90%;
+        height: 900px;
+        overflow: hidden;
+    }
+</style>
+<div class="bg-sg" style="display: none ">
+
+</div>
+
+
+<div id="popupBanner" style="display: none">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title">
+                <h5>
+                    Thông tin banner
+                </h5>
+            </div>
+            <div class="card-tools">
+                <div class="btn btnCloseEditBanner">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataBannerEdit">
+                <div class="text-center">
+                    <img src="~/Content/ckfinder/ckfinder/plugins/gallery/colorbox/images/loading.gif" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Bảng quản lý tất cả Banner</h1>
+    <p class="mb-4">
+        <span><span class="col-2"></span> </span>
+        @*<a target="_blank" href="https://datatables.net">official DataTables documentation</a>.*@
+        <a href="/he-thong-quan-ly">Hệ thống quản lý</a>
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Quản lý banner
+                    </h6>
+                    <div class="d-flex">      <span class="text-danger ">            <label class="text-dark">Tổng số banner :</label> @ViewBag.Count</span></div>
+                </div>
+
+                <div class="col-10 text-right">
+
+                    <a href="/them-moi-banner" class="btn btn-success">
+                        Tạo mới
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body" id="loaddata">
+
+            <div class="loaddata">
+                <div class="table-responsive">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr class="text-gray-100">
+                                @*<th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 " style="max-width: 30px;">
+                                        <input type="checkbox" class="checkAll" />
+                                    </th>*@
+                                <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">Hình ảnh</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Any())
+                            {
+                                int i = 1;
+                                foreach (var item in Model)
+                                {
+
+                                    var strCheckIsActive = item.IsActive.GetValueOrDefault() ? "<i class='fa fa-check text-success'></i>" : "<i class='fas fa-times text-danger'></i>";
+
+                                    string displayAlias = null;
+                                    string alias = null;
+                                    if (!string.IsNullOrEmpty(item.Link))
+                                    {
+                                        int maxLength = 30;
+                                        alias = item.Link;
+                                        displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+
+                                    }
+
+
+                                    <tr>
+
+                                        <td style="width:100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; ">
+
+
+                                            <img src="@item.Image" class="avatar avatar-sm me-3 w-100  " style="width:100%" height="500" />
+                                            <br />
+                                            <div class="d-flex mt-3 align-middle text-center">
+                                                <div class="pl-1 d-flex align-items-center">
+                                                    @if (!string.IsNullOrEmpty(item.Link))
+                                                    {
+                                                        <div class="copy-container">
+                                                            <b>Liên kết : </b>@displayAlias
+                                                            <button class="copy-button btn btn-success col-12" onclick="copyToClipboard('@alias')">Sao chép</button>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <p class="text-danger mb-0"><b class="text-dark">Liên kết :</b> Không có liên kết sản phẩm</p>
+                                                    }
+                                                </div>
+                                                <div class="toggle d-flex align-items-center pl-5" style="flex-grow: 1;">
+                                                    <b class="text-dark"> Hiển thị : </b>
+                                                    <label class="toggle mt-1 pl-3  m-0 " for="toggleIsActive_@item.BannerId">
+                                                        <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center;">
+                                                                <input class="toggle__input check_IsActive" name="" type="checkbox" id="toggleIsActive_@item.BannerId" @(item.IsActive.GetValueOrDefault() ? "checked" : "")>
+                                                                <div class="toggle__fill"></div>
+                                                            </div>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <div class="toggle d-flex align-items-center" style="flex-grow: 1;">
+                                                    <b class="text-dark"> Ảnh nền : </b>
+                                                    <label class="toggle pl-3  m-0" for="toggleIsBackground_@item.BannerId">
+                                                        <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                                            <div style="display: flex; align-items: center;">
+                                                                <input class="toggle__input check_IsBackground" name="" type="checkbox" id="toggleIsBackground_@item.BannerId" @(item.IsBackground.GetValueOrDefault() ? "checked" : "")>
+                                                                <div class="toggle__fill"></div>
+                                                            </div>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <p class="pl-5 align-self-center m-0">
+                                                    <b class="text-dark"> Ngày tạo :</b> @String.Format("{0:dd/MM/yyyy}", item.CreatedDate)
+                                                </p>
+                                                <p class="text-danger mb-0 pl-5 align-self-center" style="max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                                    <b class="text-dark"> Tạo bởi :</b> @(!string.IsNullOrEmpty(item.CreatedBy) ? item.CreatedBy : "Không có dữ liệu")
+                                                </p>
+
+                                                <div class="d-flex align-items-center">
+                                                    <button class="btn btn-warning mx-1 d-flex align-items-center justify-content-center btnCapNhatBanner" data-id="@item.BannerId">
+
+                                                        Chỉnh sửa
+                                                    </button>
+                                                    <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnDeleteBanner" data-id="@item.BannerId" style="min-width: 80px;">
+
+                                                        Xoá
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </td>
+
+
+                                    </tr>
+                                    i++;
+                                }
+
+                            }
+                            else
+                            {
+
+                                <tr class="text-center text-danger">
+                                    <td colspan="5">
+                                        <p>Không tồn tại bảng ghi nào !!!</p>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                @if (Model != null && Model.Any())
+                {
+
+                    <hr />
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination pagination-sm">
+                                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                        @Html.ActionLink("Đầu", "Index", new { page = 1 }, new { @class = "page-link" })
+                                    </li>
+                                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                        @Html.ActionLink("<<", "Index", new { page = Model.PageNumber - 1 }, new { @class = "page-link" })
+                                    </li>
+                                    @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                                    {
+                                        <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                            @Html.ActionLink(i.ToString(), "Index", new { page = i }, new { @class = "page-link" })
+                                        </li>
+                                    }
+                                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                        @Html.ActionLink(">>", "Index", new { page = Model.PageNumber + 1 }, new { @class = "page-link" })
+                                    </li>
+                                    <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                        @Html.ActionLink("Cuối", "Index", new { page = Model.PageCount }, new { @class = "page-link" })
+                                    </li>
+                                </ul>
+
+                            </nav>
+                        </div>
+                    </div>
+
+                }
+
+
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="~/Scripts/admin/Banner.js"></script>
+    <script>
+        function copyToClipboard(text) {
+
+            var tempTextarea = document.createElement("textarea");
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+
+
+            tempTextarea.select();
+            tempTextarea.setSelectionRange(0, 99999);
+
+            document.execCommand("copy");
+            document.body.removeChild(tempTextarea);
+
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 1000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+
+            Toast.fire({
+                icon: "success",
+                title: "Đã sao chép mã "
+            });
+        }
+        $(document).ready(function (e) {
+            $('body').on('change', '.toggle__input', function () {
+                var checkbox = $(this);
+                var id = checkbox.attr('id').split('_')[1];
+                var isActive = checkbox.is(':checked');
+                var toggleType = checkbox.attr('class').split(' ')[1];
+                var url = '';
+                if (toggleType === 'check_IsActive') {
+                    url = '/admin/banner/IsActive';
+                } else if (toggleType === 'check_IsBackground') {
+                    url = '/admin/banner/IsBackground';
+                }
+                if (isActive && toggleType === 'check_IsBackground') {
+                    $('.check_IsBackground').not(checkbox).prop('checked', false);
+                }
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        isActive: isActive
+                    },
+                    success: function (rs) {
+                        if (rs.success) {
+                            console.log('Trạng thái đã được cập nhật thành công');
+                        } else {
+                            console.error('Cập nhật trạng thái không thành công');
+                            checkbox.prop('checked', !isActive);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Có lỗi xảy ra khi cập nhật trạng thái.');
+                        checkbox.prop('checked', !isActive);
+                    }
+                });
+
+
+
+            });
+        });
+    </script>
+
+}
+
+
