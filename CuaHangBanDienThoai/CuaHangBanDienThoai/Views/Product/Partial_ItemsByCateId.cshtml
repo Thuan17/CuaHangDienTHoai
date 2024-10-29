@@ -24,7 +24,7 @@
         }
         var strImg = "";
         var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
-        var Name = item.Products.ProductCategory.Title.Trim() + "   " + item.Products.Title.Trim();
+        var Name =   item.Products.Title.Trim()+" "+item.Ram.Trim() + "/"+item.Capacity.Trim();
         if (CheckImage != null)
         {
             strImg = CheckImage.Image;
@@ -43,12 +43,12 @@
             <div class="     product discount product_filter_item  ">
 
                 <div class="product_image__item ">
-                    <a href="/chi-tiet/@item.Alias-p@(item.ProductsId)" class="p-0 align-items-center text-center" >
+                    <a href="/san-pham/@item.Alias" class="p-0 align-items-center text-center" >
                         <img src="@strImg" alt="@Name-TenoStore "style=" width:80%!important;" >
                     </a>
                 </div>
                 @*<div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>*@
-                @if (item.IsSale == true && item.PriceSale > 0)
+                @if ( item.PriceSale > 0)
                 {
                     <div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center">
                         @{
@@ -64,11 +64,11 @@
                 }
 
             <div class="product_info ">
-                <div class="pl-0  mb-1" style="max-height: 15px !important;">
-                    <h5 class=" mt-0 " style="text-align: center; margin-bottom: 0 !important; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                <div class="pl-0 product_name mb-1" style="max-height: 15px !important;">
+                    <h5 class="product_name mt-2" style="text-align: center; margin-bottom: 0 !important; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
                         @Name.Trim()
                     </h5>
-                    <p class="align-items-center text-center mb-0">@Detail</p>
+                  
                 </div>
 
                 <br />
@@ -95,9 +95,9 @@
 
             </div>
 
-                @*<div class="">
-                    <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
-                </div>*@
+                    <div class="">
+                        <a href="javascript:void(0);" class="btnbuynow btnAddtoCartItem" data-productid="@item.ProductsId">Mua ngay</a>
+                    </div>
             </div>
         </div>
 

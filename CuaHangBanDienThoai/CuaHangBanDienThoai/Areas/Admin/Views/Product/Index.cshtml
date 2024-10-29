@@ -203,12 +203,12 @@
 
                                     <td class="align-middle text-center">
                                         <div class="toggle" style="">
-                                            <label class="toggle" for="toggleIsHome_@item.ProductsId">
+                                            <label class="toggle" for="toggleIsHot_@item.ProductsId">
                                                 @*<p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>*@
                                                 <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
                                                     <div style="display: flex; align-items: center;">
 
-                                                        <input class="toggle__input check_IsHome" name="" type="checkbox" id="toggleIsHome_@item.ProductsId" @(item.IsHot.GetValueOrDefault() ? "checked" : "")>
+                                                        <input class="toggle__input check_IsHot" name="" type="checkbox" id="toggleIsHot_@item.ProductsId" @(item.IsHot.GetValueOrDefault() ? "checked" : "")>
                                                         <div class="toggle__fill"></div>
                                                     </div>
                                                 </span>
@@ -327,7 +327,7 @@
                 if (toggleType === 'check_IsActive') {
                     url = '/admin/Product/IsActive';
                 } else if (toggleType === 'check_IsHot') {
-                    url = '/admin/Product/IsHome';
+                    url = '/admin/Product/IsHot';
                 } 
 
                 $.ajax({

@@ -498,7 +498,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> IsHome(int id)
+        public async Task<ActionResult> IsHot(int id)
         {
             try
             {

@@ -4,23 +4,21 @@
 <link href="~/Content/css/client/MenuTop.css" rel="stylesheet" />
 <style>
     .product__item {
-       
         border: none !important;
         box-shadow: none !important;
     }
-
-  
-
+    
 </style>
 @if (Model != null && Model.Any())
 {
     <div class="row">
-        <div class="col text-center pb-1">
-            <div class="section_title text-uppercase">
-                <h4>sản phẩm bán chạy </h4>
+        <div class="col pb-1">
+            <div class=" section_title2 text-uppercase">
+                <h4>sản phẩm bán chạy</h4>
             </div>
         </div>
     </div>
+
     <div class="row mt-3">
 
         <div class="swiper product-swiper p-1" style="z-index: 50; border: none !important; box-shadow: none !important;">
@@ -44,8 +42,8 @@
                     }
                     var strImg = "";
                     var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
-                    var Name = item.Products.ProductCategory.Title.Trim() + "   " + item.Products.Title.Trim();
-                    var Detail = item.Ram.Trim()+ "   " + item.Capacity.Trim();
+                    var Name = item.Products.Title.Trim();
+                    var Detail = item.Ram.Trim() + "   " + item.Capacity.Trim();
                     if (CheckImage != null)
                     {
                         strImg = CheckImage.Image;
@@ -73,41 +71,41 @@
                                     </div>
                                 }
 
-                            <div class="product_info">
-                                <div class="pl-0 product_name mb-1" style="max-height: 15px !important;">
-                                    <h5 class="product_name mt-2" style="text-align: center; margin-bottom: 0 !important; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
-                                        @Name.Trim()
-                                    </h5>
-                                    <p class="align-items-center text-center mb-0">@Detail</p>
-                                </div>
+                                <div class="product_info">
+                                    <div class="pl-0 product_name mb-1" style="max-height: 15px !important;">
+                                        <h5 class="product_name mt-2" style="text-align: center; margin-bottom: 0 !important; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                            @Name.Trim()
+                                        </h5>
+                                        <p class="align-items-center text-center mb-0">@Detail</p>
+                                    </div>
 
-                                <br />
+                                    <br />
 
 
-                                <div class="item-compare gray-bg mt-2 mb-0">
-                                    <span>Super Retina XDR</span>
-                                    <span> @($"{item.Products.Screensize.Trim()}")" </span>
-                                </div>
-                                @if (item.PriceSale > 0)
-                                {
-                                    <div class="price-container pl-0 pr-0">
-                                        <strong class="price">@($"{Common.FormatNumber(item.PriceSale)}đ")</strong>
-                                        <div class="box-p">
-                                            <p class="price-old black">@($"{Common.FormatNumber(item.Price)}đ")</p>
+                                    <div class="item-compare gray-bg mt-2 mb-0">
+                                        <span>Super Retina XDR</span>
+                                        <span> @($"{item.Products.Screensize.Trim()}")" </span>
+                                    </div>
+                                    @if (item.PriceSale > 0)
+                                    {
+                                        <div class="price-container pl-0 pr-0">
+                                            <strong class="price">@($"{Common.FormatNumber(item.PriceSale)}đ")</strong>
+                                            <div class="box-p">
+                                                <p class="price-old black">@($"{Common.FormatNumber(item.Price)}đ")</p>
+
+                                            </div>
+                                        </div>
+
+                                    }
+                                    else
+                                    {
+                                        <div class="price-container pl-0 pr-0">
+                                            <strong class="price">@($"{Common.FormatNumber(item.Price)}đ")</strong>
 
                                         </div>
-                                    </div>
 
-                                }
-                                else
-                                {
-                                    <div class="price-container pl-0 pr-0">
-                                        <strong class="price">@($"{Common.FormatNumber(item.Price)}đ")</strong>
-
-                                    </div>
-
-                                }
-                            </div>
+                                    }
+                                </div>
                             </div>
                         </a>
                         @*<a href="javascript:void(0);" class=" btnbuynow  btnAddtoCartTop  p-0 m-0" style="z-index:15;" data-productid="@item.ProductsId">Mua ngay</a>*@

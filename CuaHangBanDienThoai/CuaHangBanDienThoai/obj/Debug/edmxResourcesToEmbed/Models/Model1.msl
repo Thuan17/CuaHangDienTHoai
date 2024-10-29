@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="CUAHANGDIENTHOAIModelStoreContainer" CdmEntityContainer="CUAHANGDIENTHOAIEntities">
+  <EntityContainerMapping StorageEntityContainer="CUAHANGDIENTHOAI_DANLTWModelStoreContainer" CdmEntityContainer="CUAHANGDIENTHOAIEntities">
     <EntitySetMapping Name="AccountEmployee">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.AccountEmployee">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.AccountEmployee">
         <MappingFragment StoreEntitySet="AccountEmployee">
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
@@ -11,8 +11,21 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Banner">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Banner">
+        <MappingFragment StoreEntitySet="Banner">
+          <ScalarProperty Name="BannerId" ColumnName="BannerId" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Link" ColumnName="Link" />
+          <ScalarProperty Name="IsBackground" ColumnName="IsBackground" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Bill">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Bill">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Bill">
         <MappingFragment StoreEntitySet="Bill">
           <ScalarProperty Name="BillId" ColumnName="BillId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
@@ -33,7 +46,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="BillDetail">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.BillDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.BillDetail">
         <MappingFragment StoreEntitySet="BillDetail">
           <ScalarProperty Name="BillDetailId" ColumnName="BillDetailId" />
           <ScalarProperty Name="Price" ColumnName="Price" />
@@ -44,7 +57,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Cart">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Cart">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Cart">
         <MappingFragment StoreEntitySet="Cart">
           <ScalarProperty Name="CartId" ColumnName="CartId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
@@ -52,7 +65,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="CartItem">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.CartItem">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.CartItem">
         <MappingFragment StoreEntitySet="CartItem">
           <ScalarProperty Name="CartItem1" ColumnName="CartItem" />
           <ScalarProperty Name="CartId" ColumnName="CartId" />
@@ -65,7 +78,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Customer">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Customer">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Customer">
         <MappingFragment StoreEntitySet="Customer">
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
@@ -82,7 +95,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Districts">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Districts">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Districts">
         <MappingFragment StoreEntitySet="Districts">
           <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -91,7 +104,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Employee">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Employee">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Employee">
         <MappingFragment StoreEntitySet="Employee">
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
@@ -112,7 +125,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ImportWarehouse">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ImportWarehouse">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.ImportWarehouse">
         <MappingFragment StoreEntitySet="ImportWarehouse">
           <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -125,7 +138,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ImportWarehouseDetail">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ImportWarehouseDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.ImportWarehouseDetail">
         <MappingFragment StoreEntitySet="ImportWarehouseDetail">
           <ScalarProperty Name="ImportWarehouseDetailId" ColumnName="ImportWarehouseDetailId" />
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
@@ -135,7 +148,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Invoice">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Invoice">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Invoice">
         <MappingFragment StoreEntitySet="Invoice">
           <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
@@ -153,7 +166,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="InvoiceDetail">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.InvoiceDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.InvoiceDetail">
         <MappingFragment StoreEntitySet="InvoiceDetail">
           <ScalarProperty Name="InvoiceDetailId" ColumnName="InvoiceDetailId" />
           <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
@@ -164,7 +177,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ProductCategory">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductCategory">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.ProductCategory">
         <MappingFragment StoreEntitySet="ProductCategory">
           <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
@@ -180,7 +193,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ProductCompany">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductCompany">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.ProductCompany">
         <MappingFragment StoreEntitySet="ProductCompany">
           <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
@@ -194,9 +207,8 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ProductDetail">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.ProductDetail">
         <MappingFragment StoreEntitySet="ProductDetail">
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
           <ScalarProperty Name="Color" ColumnName="Color" />
           <ScalarProperty Name="Price" ColumnName="Price" />
@@ -210,11 +222,12 @@
           <ScalarProperty Name="IsSale" ColumnName="IsSale" />
           <ScalarProperty Name="IsHot" ColumnName="IsHot" />
           <ScalarProperty Name="Alias" ColumnName="Alias" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="ProductDetailImage">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductDetailImage">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.ProductDetailImage">
         <MappingFragment StoreEntitySet="ProductDetailImage">
           <ScalarProperty Name="ProductImageId" ColumnName="ProductImageId" />
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
@@ -224,10 +237,8 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Products">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Products">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Products">
         <MappingFragment StoreEntitySet="Products">
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="IsHot" ColumnName="IsHot" />
           <ScalarProperty Name="ProductsId" ColumnName="ProductsId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -254,11 +265,13 @@
           <ScalarProperty Name="ProductCategoryId" ColumnName="ProductCategoryId" />
           <ScalarProperty Name="ProductCompanyId" ColumnName="ProductCompanyId" />
           <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="IsHot" ColumnName="IsHot" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Provinces">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Provinces">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Provinces">
         <MappingFragment StoreEntitySet="Provinces">
           <ScalarProperty Name="idProvinces" ColumnName="idProvinces" />
           <ScalarProperty Name="name" ColumnName="name" />
@@ -266,7 +279,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Review">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Review">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Review">
         <MappingFragment StoreEntitySet="Review">
           <ScalarProperty Name="ReviewDetailId" ColumnName="ReviewDetailId" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -281,7 +294,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Role">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Role">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Role">
         <MappingFragment StoreEntitySet="Role">
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
@@ -290,7 +303,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Supplier">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Supplier">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Supplier">
         <MappingFragment StoreEntitySet="Supplier">
           <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -299,19 +312,8 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.sysdiagrams">
-        <MappingFragment StoreEntitySet="sysdiagrams">
-          <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="tb_Function">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.tb_Function">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.tb_Function">
         <MappingFragment StoreEntitySet="tb_Function">
           <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
           <ScalarProperty Name="TitLe" ColumnName="TitLe" />
@@ -319,7 +321,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Voucher">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Voucher">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Voucher">
         <MappingFragment StoreEntitySet="Voucher">
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
@@ -336,7 +338,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="VoucherDetail">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.VoucherDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.VoucherDetail">
         <MappingFragment StoreEntitySet="VoucherDetail">
           <ScalarProperty Name="VoucherDetailId" ColumnName="VoucherDetailId" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
@@ -350,24 +352,11 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Wards">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Wards">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAI_DANLTWModel.Wards">
         <MappingFragment StoreEntitySet="Wards">
           <ScalarProperty Name="idWards" ColumnName="idWards" />
           <ScalarProperty Name="name" ColumnName="name" />
           <ScalarProperty Name="idDistricts" ColumnName="idDistricts" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Banner">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Banner">
-        <MappingFragment StoreEntitySet="Banner">
-          <ScalarProperty Name="IsBackground" ColumnName="IsBackground" />
-          <ScalarProperty Name="Link" ColumnName="Link" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="BannerId" ColumnName="BannerId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

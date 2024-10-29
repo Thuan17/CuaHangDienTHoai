@@ -57,7 +57,7 @@ namespace CuaHangBanDienThoai.Controllers
         }
         public ActionResult MenuTop()
         {
-            var Product = db.ProductDetail.Where(x => x.IsActive == true && x.IsHome == true ).ToList();
+            var Product = db.ProductDetail.Where(x => x.IsActive == true && x.IsHome == true ).OrderByDescending(x=>x.Products.IsHot==true).ToList();   
             if (Product.Count > 0)
             {
 

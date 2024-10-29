@@ -2035,7 +2035,7 @@ input[type="number"]::-webkit-outer-spin-button {
 		display: inline-block;
 	}
 
-	.section_title::after {
+	/*.section_title::after {
 		display: block;
 		position: absolute;
 		top: calc(100% + 13px);
@@ -2050,7 +2050,7 @@ input[type="number"]::-webkit-outer-spin-button {
 		background: #fe4c50;
 		content: '';
 	}
-
+*/
 /*********************************
 4.1 Product Sorting
 *********************************/

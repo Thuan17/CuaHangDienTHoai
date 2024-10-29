@@ -30,20 +30,8 @@ namespace CuaHangBanDienThoai.Models
                 httpContext.Session["AdminRole"] = role;
 
             }
-           
-
-
             var userFunctions = GetFunctionsByStaffId(staffId.Value);
-
-
             return requiredFunctions.Any(func => userFunctions.Contains(func));
-
-
-
-
-
-          
-          
         }
         public string GetTitleFunctionsByStaffId(int staffId)
         {
@@ -72,7 +60,6 @@ namespace CuaHangBanDienThoai.Models
             }
             else
             {
-               
                 filterContext.Result = new RedirectResult("~/Home/NoRole");
             }
         }

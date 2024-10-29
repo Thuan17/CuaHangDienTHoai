@@ -1760,25 +1760,51 @@ company-services
 	text-align: center;
 }
 
+.section_title2 {
+	display: inline-block;
+	text-align: center;
+	margin-top: 12px;
+}
+	.section_title h4 {
+		text-align: left;
+		
+		margin-left: 0;
+		padding-left: 0;
+	}
 	.section_title h2 {
 		display: inline-block;
 	}
 
-	.section_title::after {
-		display: block;
-		position: absolute;
-		top: calc(100% + 13px);
-		left: 50%;
-		-webkit-transform: translateX(-50%);
-		-moz-transform: translateX(-50%);
-		-ms-transform: translateX(-50%);
-		-o-transform: translateX(-50%);
-		transform: translateX(-50%);
-		width: 60px;
-		height: 5px;
-		background: #fe4c50;
-		content: '';
-	}
+.section_title::after {
+	display: block;
+	position: absolute;
+	top: calc(100% + 13px);
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	width: 60px;
+	height: 5px;
+	background: #fe4c50;
+	content: '';
+}
+.section_title2::after {
+	display: block;
+	position: absolute;
+	/*		top: calc(100% + 13px);*/
+	left: 10%;
+	-webkit-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	transform: translateX(-50%);
+	width: 360px;
+	height: 5px;
+	background: #fe4c50;
+	content: '';
+}
 
 .timer {
 	margin-top: 66px;
