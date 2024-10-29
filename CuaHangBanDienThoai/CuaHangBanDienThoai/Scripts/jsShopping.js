@@ -292,35 +292,43 @@ $(document).ready(function () {
     });
 
 
-    $('body').on('click', '.btnAddtoCart', function (e) {
+    $('body').on('click', '.btnAddtoCart', function (e)
+    {
         e.preventDefault();
         var id = $(this).data('productid');
-        var selectedOption = $('.custom-select .select-option:has(input:checked)');
-        var productCaseId = 0;
-        if (selectedOption.length != 0) {
-            productCaseId = selectedOption.data('productcaseid');
-            
-        }
+      
         var quantity = $('#quantity_value').val();
         if (quantity == null) {
             quantity = 1;
         }
+        if (!window.sessionStorage.getItem('CustomerId')) {
+         
+            $.ajax({
+                url: '/Account/SetRedirectUrl', 
+                type: 'POST',
+                data: { redirectUrl: window.location.href },
+                success: function () {
+                   
+                    window.location.href = '/dang-nhap';
+                }
+            });
+            return;
+        }
+
         $.ajax({
-            url: '/ShoppingCart/AddToCart',
+            url: '/Cart/AddtoCart',
             type: 'POST',
-            data: { id: id, quantity: quantity, productCaseid: productCaseId },
+            data: { id: id, quantity: quantity },
             success: function (rs) {
                 if (rs.Success) {
-                    if (rs.Code == 1) {
-                       
-                        ShowCount();
-                        loadTotalQuantitySession();
-                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', rs.msg);
-                        LoadCartSmall();
-                        registerEvents();
-                    }
+
+                    ShowCount();
+                    /*  loadTotalQuantitySession();*/
+                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', rs.msg);
+                    //LoadCartSmall();
+                    //registerEvents();
                 } else {
-                    if (rs.Code == -99) {
+                    if (rs.code == -99) {
                         createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', rs.msg);
                     } else {
                         createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', rs.msg);
@@ -332,7 +340,6 @@ $(document).ready(function () {
             }
         });
     });
-
 
 
     function createToast(type, icon, title, text) {
@@ -558,7 +565,7 @@ function loadTotalQuantitySession() {
 function ShowCount() {
     var checkout_count = $(".checkout_count");
     $.ajax({
-        url: '/shoppingcart/ShowCount',
+        url: '/Cart/ShowCount',
         type: 'GET',
         success: function (rs) {
             if (rs.Count > 0) {

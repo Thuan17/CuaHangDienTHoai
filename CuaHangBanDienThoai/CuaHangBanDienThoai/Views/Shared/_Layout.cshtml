@@ -259,18 +259,32 @@
                                                     </div>
                                                 </div>
                                             </a>
-                                            <a class="linkGritem pt-2" href="/#" target="_blank">
-                                                <div class="icon-box-left ">
-                                                    <div class="icon-box-img">
 
-                                                        @*<img src="~/images/gif/user.gif"width="40" height="40" class="m-0"  />*@
-                                                        <img src="~/images/gif/user.gif" />
+                                            @if (Session["customer"] == null)
+                                            {
+
+                                                <a class="linkGritem pt-2 toggler__cart__btn  ps-0  hamburger_container_cart" href="#">
+                                                    <div class="icon-box-left ">
+                                                        <div class="icon-box-img">
+                                                            <img src="~/images/gif/cart.gif" />
+
+
+                                                        </div>
+                                                        <div class="icon-box-text-item ">
+                                                            <p class="m-0 text-uppercase">giỏ hàng</p>
+                                                            <span id="checkout_items" class="checkout_count "></span>
+                                                        </div>
                                                     </div>
-                                                    <div class="icon-box-text-item ">
-                                                        <p class="m-0 text-uppercase">tài khoản</p>
-                                                    </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                int idKhach = (int)Session["CustomerId"];
+                                                var img = Session["userImage"] ?? "/images/logo/logoweb.png";
+                                                var FullName = Session["customerName"];
+                                                var LastName = Session["lastName"];
+
+                                        <div class="cart-dropdown m-0 p-0">
                                             <a class="linkGritem pt-2 toggler__cart__btn  ps-0  hamburger_container_cart" href="#">
                                                 <div class="icon-box-left ">
                                                     <div class="icon-box-img">
@@ -284,8 +298,66 @@
                                                     </div>
                                                 </div>
                                             </a>
+                                            <div class="menu-cart">
+                                                <ul>
+                                                   @Html.Action("PartialCartLayout","Cart",new {id= idKhach })
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
+                                                   
+                                                    }
+                                                    @if (Session["customer"] == null)
+                                                    {<a class="linkGritem pt-2" href="/dang-nhap">
+                                                            <div class="icon-box-left ">
+
+
+
+                                                                <div class="icon-box-img">
+
+
+                                                                    <img src="~/images/gif/user.gif" />
+                                                                </div>
+                                                                <div class="icon-box-text-item ">
+
+
+
+
+                                                                    <p class="m-0 text-uppercase">tài khoản</p>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    }
+                                                    else
+                                                    {
+                                                        var img = Session["userImage"] ?? "/images/logo/logoweb.png";
+                                                        var FullName = Session["customerName"];
+                                                        var LastName = Session["lastName"];
+
+                                                        <div class="account-dropdown m-0 p-0">
+                                                            <div class="linkGritem pt-2">
+                                                                <div class="icon-box-left">
+                                                                    <div class="icon-box-img">
+                                                                        <img src="@img" style="height: 35px; width: 35px;" />
+                                                                    </div>
+                                                                    <div class="icon-box-text-item acctive ml-2" style="margin-left: 15px !important;">
+                                                                        <p class="m-0 text-uppercase">@LastName</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="account-menu">
+                                                                <ul>
+                                                                    <li><a href="/thong-tin-ca-nhan">@FullName</a></li>
+                                                                    <li><a href="/don-hang">Đơn hàng của tôi</a></li>
+                                                                    <li><a href="/dang-xuat">Đăng xuất</a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+
+
+                                                    }
+
+                                                </div>
+                                            </div>
 
 
 
@@ -486,7 +558,7 @@
         </div>
     </footer>
 
-
+   
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!--  jQuery UI -->

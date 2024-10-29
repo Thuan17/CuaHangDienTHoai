@@ -1944,9 +1944,110 @@ input[type="number"]::-webkit-outer-spin-button {
 	font-size:16px ;
 
 }
+.icon-box-text-item .acctive p {
+	margin-left: 15px !important;
+}
+
+.account-dropdown {
+	position: relative; 
+	display: inline-block; 
+}
+
+.account-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	
+	right: -40%;
+	background-color: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 200px;
+	border-radius: 8px;
+	z-index: 2500;
+}
+
+
+.account-dropdown:hover .account-menu {
+	display: block;
+}
+
+
+.account-menu ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+	.account-menu ul li {
+		padding: 10px;
+		border-bottom: 1px solid #f0f0f0;
+	}
+
+		.account-menu ul li a {
+			text-decoration: none;
+			color: #333;
+			display: block;
+		}
+
+		.account-menu ul li:hover {
+			background-color: #f5f5f5;
+		}
 
 
 
+.menu-cart {
+	display: none;
+	position: absolute;
+	top: 100%;
+	right: 0;
+	background-color: #fff;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 200px;
+	border-radius: 8px;
+	z-index: 2500;
+}
+
+.cart-dropdown:hover .menu-cart {
+	display: block;
+}
+
+
+.menu-cart ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+	.menu-cart ul li {
+		padding: 10px;
+		border-bottom: 1px solid #f0f0f0;
+	}
+
+		.menu-cart ul li a {
+			text-decoration: none;
+			color: #333;
+			display: block;
+		}
+
+		.menu-cart ul li:hover {
+			background-color: #f5f5f5;
+		}
+
+
+
+.menu-cart .product-item {
+	display: flex; /* Sử dụng flexbox để căn chỉnh */
+	align-items: center; /* Căn giữa theo chiều dọc */
+	padding: 5px; /* Khoảng cách giữa các sản phẩm */
+}
+
+.product-image {
+	margin-right: 10px; /* Khoảng cách giữa hình ảnh và tên sản phẩm */
+}
+
+.product-name p {
+	margin: 0; /* Loại bỏ margin mặc định */
+}
 
 
 

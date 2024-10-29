@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -23,31 +24,37 @@ namespace CuaHangBanDienThoai.Controllers
         {
             return View();      
         }
+        [HttpPost]
+        public ActionResult SetRedirectUrl(string redirectUrl)
+        {
+            Session["redirectUrl"] = redirectUrl; 
+            return Json(new { success = true }); 
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(string email, string password)
+        public async Task<ActionResult> Login(string userInput, string password)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
 
-                    int failedAttempts = (int?)Session[$"FailedAttempts_{email}"] ?? 0;
+                    int failedAttempts = (int?)Session[$"FailedAttemptsCustomer_{userInput}"] ?? 0;
 
 
                     var f_password = MaHoaPass(password);
 
 
                     var account = db.Customer
-                                    .FirstOrDefault(s => s.Email == email && s.Password == f_password);
+                                    .FirstOrDefault(s => (s.Email == userInput || s.PhoneNumber == userInput) && s.Password == f_password);
 
                     if (account != null)
                     {
 
                         if (account.IsLock == true)
                         {
-                            return Json(new { success = false, code = -4, msg = "Tài khoản đã bị khóa, vui lòng liên hệ quản trị viên!" });
+                            return Json(new { success = false, code = -2, msg = "Tài khoản đã bị khóa, vui lòng liên hệ quản trị viên!" });
                         }
 
 
@@ -56,56 +63,44 @@ namespace CuaHangBanDienThoai.Controllers
                             account.IsLock = true;
                             await db.SaveChangesAsync();
                             failedAttempts = 0;
-                            Session[$"FailedAttempts_{Code}"] = 0;
-                            return Json(new { success = false, code = -5, message = "Tài khoản đã bị khóa sau nhiều lần đăng nhập sai." });
+                            Session[$"FailedAttemptsCustomer_{userInput}"] = 0;
+                            return Json(new { success = false, code = -2, message = "Tài khoản đã bị khóa sau nhiều lần đăng nhập sai." });
                         }
+                        var fullName = account.CustomerName.Trim();
+                        var lastName = fullName.Split(' ').Last();
+                        Session["customer"] = account;
+                        Session["userImage"] = account.Image ?? "/images/logo/logoweb.png";
+                        Session["lastName"] = lastName.Trim();
+                        Session["customerName"] = account.CustomerName.Trim();
+                        Session["CustomerId"] = account.CustomerId;
 
-
-                        var employee = db.Employee.FirstOrDefault(s => s.EmployeeId == account.EmployeeId);
-                        if (employee == null)
+                        if (account.Image != null)
                         {
-                            return Json(new { success = false, code = -2, msg = "Không tìm thấy thông tin nhân viên." });
+                            Session["userimg"] = account.Image;
                         }
-
-                        var Funtion = db.Employee.FirstOrDefault(s => s.EmployeeId == account.EmployeeId);
-
-                        Session["EmployeeId"] = employee.EmployeeId;
-                        Session["AdminRole"] = employee.EmployeeId;
-
-
-                        Session["user"] = account;
-                        Session["nameuser"] = employee.NameEmployee;
-                        Session["userName"] = employee;
-                        if (employee.Image != null)
+                        if (Session["redirectUrl"] != null)
                         {
-                            Session["userimg"] = employee.Image;
+                            string redirectUrl = Session["redirectUrl"].ToString();
+                            Session.Remove("redirectUrl");
+                          
+                            return Json(new { success = true, code = 1, msg = "Chào mừng trở lại" , redirectUrl = redirectUrl.Trim(), customerId = account.CustomerId }); 
                         }
+                        return Json(new { success = true, code = 1, msg = "Chào mừng trở lại", customerId= account.CustomerId }); ;
 
 
-                        string redirectUrl = DetermineRedirectUrl((int)employee.FunctionId, employee.tb_Function.TitLe);
-                        if (redirectUrl != null)
-                        {
-                            return Json(new { success = true, redirectUrl = redirectUrl, msg = "Chào mừng trở lại!" });
-                        }
-                        else
-                        {
-                            failedAttempts++;
-                            Session[$"FailedAttempts_{Code}"] = failedAttempts;
-                            return Json(new { success = false, code = -1, msg = "Chức năng không hợp lệ." });
-                        }
                     }
                     else
                     {
                         failedAttempts++;
-                        Session[$"FailedAttempts_{Code}"] = failedAttempts;
+                        Session[$"FailedAttemptsCustomer_{userInput}"] = failedAttempts;
 
-                        return Json(new { success = false, code = -4, msg = "Tài khoản hoặc mật khẩu không đúng." });
+                        return Json(new { success = false, code = -2, msg = "Tài khoản hoặc mật khẩu không đúng." });
                     }
                 }
                 else
                 {
 
-                    return Json(new { success = false, code = -5, msg = "Thông tin đăng nhập không hợp lệ." });
+                    return Json(new { success = false, code = -2, msg = "Thông tin đăng nhập không hợp lệ." });
                 }
             }
             catch (Exception ex)
@@ -114,6 +109,29 @@ namespace CuaHangBanDienThoai.Controllers
                 return Json(new { success = false, code = -100, message = "Lỗi hệ thống: " + ex.Message });
             }
         }
+
+
+
+        public ActionResult Logout()
+        {
+            if (Session["customer"] != null)
+            {
+              
+                Session["customer"] = null;
+                Session["userImage"] = null;
+                Session["lastName"] = null;
+                Session["customerName"] = null;
+                Session["CustomerId"] = null;
+                Session.Clear(); 
+
+              
+                return Redirect("/dang-nhap");
+            }
+
+           
+            return Redirect("/trang-chu");
+        }
+
 
         public static string MaHoaPass(string str)
         {

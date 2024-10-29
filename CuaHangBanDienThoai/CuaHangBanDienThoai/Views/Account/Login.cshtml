@@ -23,26 +23,30 @@
                             </p>
                         </div>
                     </div>
-                    <form action="#" class="signin-form">
+                    <form id="logInForm" enctype="multipart/form-data" class="signin-form">
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
                         <div class="form-group mt-3">
-                            <input type="text" class="form-control" required>
-                            <label class="form-control-placeholder" for="username">Số điện thoại hoặc email</label>
+                            <input type="text" class="form-control " name="userInput" id="userInput" required>
+                            <label class="form-control-placeholder" name="userInput" id="userInput" for="username">Số điện thoại hoặc email</label>
                         </div>
                         <div class="form-group">
-                            <input id="password-field" type="password" class="form-control" required>
+                            <input id="password-field" type="password" name="password" class="form-control" required>
                             <label class="form-control-placeholder" for="password">Mật khẩu</label>
                             <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">Sign In</button>
+                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                                Đăng nhập
+                            </button>
                         </div>
                         <div class="form-group d-md-flex">
                             <div class="w-100 text-left">
                                 <a href="#">Bạn không nhớ mật khẩu ?</a>
                             </div>
                             @*<div class="w-50 text-md-right">
-                                <a href="#">Bạn không nhớ mật khẩu ?</a>
-                            </div>*@
+                                    <a href="#">Bạn không nhớ mật khẩu ?</a>
+                                </div>*@
                         </div>
                     </form>
                     <p class="text-center">Bạn chưa có tài khoản ?  <a data-toggle="tab" href="/dang-ky">Đăng ký </a></p>
@@ -50,4 +54,111 @@
             </div>
         </div>
     </div>
-</div>  
+
+
+</div>
+<script src="~/Scripts/ProductClient/js/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#logInForm').submit(function (event) {
+            event.preventDefault();
+            let isValid = validateForm();
+          
+            const formData = $('#logInForm').serialize();
+            const token = $('input[name="__RequestVerificationToken"]').val();
+            if (isValid) {
+                const userInput = $('#userInput').val().trim();
+                const passwordfield = $('#password-field').val().trim();
+                $.ajax({
+                    url: '/Account/Login',
+                    type: 'POST',
+                    data: formData,
+                    success: function (res) {
+
+                        if (res.success) {
+
+                            createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg);
+
+                            const url = res.redirectUrl; 
+                            sessionStorage.setItem('CustomerId', res.customerId);
+                            if (url) {
+                                setTimeout(() => {
+                                    window.location.href = url; 
+                                }, 1500);
+                            } else {
+                               
+                                setTimeout(() => {
+                                    window.location.href = "/trang-chu";
+                                }, 1500);
+                            }
+                           
+                        } else {
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+                        }
+                       
+
+                    },
+                    error: function (xhr) {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+
+        });
+    });
+
+
+    function validateForm() {
+        const userInput = $('#userInput').val().trim();
+        const passwordfield = $('#password-field').val().trim();
+        const allFields = [
+            'userInput', 'password-field'
+        ];
+
+        const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+        if (isAllEmpty) {
+            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Vui lòng nhập đầy đủ');
+            return false;
+        }
+        let isValid = true;
+        if (!userInput) {
+            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Vui lòng nhập đầy đủ');
+            isValid = false;
+        }
+        if (!userInput) {
+            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Mật khẩu không để trống');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+
+
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+            <div class="toastNotifi ${type}">
+                <i class="${icon}"></i>
+                <div class="content">
+                    <div class="title">${title}</div>
+                    <span>${text}</span>
+                </div>
+                <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+            </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+</script>

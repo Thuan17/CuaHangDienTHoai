@@ -1,0 +1,28 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.CartItem>
+<li class="text-center ">Giỏ hàng <span class="text-danger">@(Model!=null?Model.Count():0)</span></li>
+@if (Model != null)
+{
+
+
+    foreach (var item in Model)
+    {
+        <li>
+            <div class="product-item">
+                <div class="product-image">
+                    <img src="URL_ẢNH_SẢN_PHẨM" alt="Tên sản phẩm" style="height: 50px; width: 50px;" />
+                </div>
+                <div class="product-name">
+                    <p>@item.ProductDetail.Products.Title.Trim()</p>
+                </div>
+            </div>
+        </li>
+
+    }
+}
+else
+{
+    <li>
+        <img src="~/images/logo/CartNull.png" style="width:190px;" class="align-items-center text-center" />
+    </li>
+}
+

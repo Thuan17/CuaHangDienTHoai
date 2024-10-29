@@ -42,7 +42,7 @@
                     }
                     var strImg = "";
                     var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
-                    var Name = item.Products.Title.Trim();
+                    var Name = item.Products.Title.Trim() + " " + item.Ram.Trim() + "/" + item.Capacity.Trim();
                     var Detail = item.Ram.Trim() + "   " + item.Capacity.Trim();
                     if (CheckImage != null)
                     {
@@ -108,7 +108,7 @@
                                 </div>
                             </div>
                         </a>
-                        @*<a href="javascript:void(0);" class=" btnbuynow  btnAddtoCartTop  p-0 m-0" style="z-index:15;" data-productid="@item.ProductsId">Mua ngay</a>*@
+                        <a href="javascript:void(0);" class=" btnbuynow  btnAddtoCartTop  p-0 m-0" style="z-index:15;" data-productid="@item.ProductsId">Mua ngay</a>
                     </div>
                 }
             </div>

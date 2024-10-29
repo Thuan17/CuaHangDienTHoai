@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="CUAHANGDIENTHOAI_DANLTWModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="AccountEmployee">
     <Key>
       <PropertyRef Name="EmployeeId" />
@@ -93,7 +93,7 @@
     <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="NumberofPurchases" Type="Int32" />
     <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
-    <Property Name="Lock" Type="Boolean" />
+    <Property Name="IsLock" Type="Boolean" />
     <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
     <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
@@ -105,8 +105,8 @@
     <Property Name="idDistricts" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="idProvinces" Type="Int32" />
-    <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__02FC7413" FromRole="Districts" ToRole="Provinces" />
-    <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__1332DBDC" FromRole="Districts" ToRole="Wards" />
+    <NavigationProperty Name="Provinces" Relationship="Self.FK__Districts__idPro__3B75D760" FromRole="Districts" ToRole="Provinces" />
+    <NavigationProperty Name="Wards" Relationship="Self.FK__Wards__idDistric__3E52440B" FromRole="Districts" ToRole="Wards" />
   </EntityType>
   <EntityType Name="Employee">
     <Key>
@@ -298,7 +298,7 @@
     </Key>
     <Property Name="idProvinces" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__02FC7413" FromRole="Provinces" ToRole="Districts" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Districts__idPro__3B75D760" FromRole="Provinces" ToRole="Districts" />
   </EntityType>
   <EntityType Name="Review">
     <Key>
@@ -334,6 +334,16 @@
     <Property Name="Phone" Type="Int32" />
     <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Supplier" FromRole="Supplier" ToRole="ImportWarehouse" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
   </EntityType>
   <EntityType Name="tb_Function">
     <Key>
@@ -382,7 +392,7 @@
     <Property Name="idWards" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
     <Property Name="idDistricts" Type="Int32" />
-    <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__1332DBDC" FromRole="Wards" ToRole="Districts" />
+    <NavigationProperty Name="Districts" Relationship="Self.FK__Wards__idDistric__3E52440B" FromRole="Wards" ToRole="Districts" />
   </EntityType>
   <Association Name="FK_AccountEmployee_Employee">
     <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
@@ -480,7 +490,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Districts__idPro__02FC7413">
+  <Association Name="FK__Districts__idPro__3B75D760">
     <End Role="Provinces" Type="Self.Provinces" Multiplicity="0..1" />
     <End Role="Districts" Type="Self.Districts" Multiplicity="*" />
     <ReferentialConstraint>
@@ -492,7 +502,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Wards__idDistric__1332DBDC">
+  <Association Name="FK__Wards__idDistric__3E52440B">
     <End Role="Districts" Type="Self.Districts" Multiplicity="0..1" />
     <End Role="Wards" Type="Self.Wards" Multiplicity="*" />
     <ReferentialConstraint>
@@ -707,6 +717,7 @@
     <EntitySet Name="Review" EntityType="Self.Review" />
     <EntitySet Name="Role" EntityType="Self.Role" />
     <EntitySet Name="Supplier" EntityType="Self.Supplier" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
     <EntitySet Name="tb_Function" EntityType="Self.tb_Function" />
     <EntitySet Name="Voucher" EntityType="Self.Voucher" />
     <EntitySet Name="VoucherDetail" EntityType="Self.VoucherDetail" />
@@ -743,11 +754,11 @@
       <End Role="ProductDetail" EntitySet="ProductDetail" />
       <End Role="CartItem" EntitySet="CartItem" />
     </AssociationSet>
-    <AssociationSet Name="FK__Districts__idPro__02FC7413" Association="Self.FK__Districts__idPro__02FC7413">
+    <AssociationSet Name="FK__Districts__idPro__3B75D760" Association="Self.FK__Districts__idPro__3B75D760">
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
     </AssociationSet>
-    <AssociationSet Name="FK__Wards__idDistric__1332DBDC" Association="Self.FK__Wards__idDistric__1332DBDC">
+    <AssociationSet Name="FK__Wards__idDistric__3E52440B" Association="Self.FK__Wards__idDistric__3E52440B">
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>
@@ -811,5 +822,46 @@
       <End Role="Voucher" EntitySet="Voucher" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(CUAHANGDIENTHOAIModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(CUAHANGDIENTHOAIModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
   </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
 </Schema>
