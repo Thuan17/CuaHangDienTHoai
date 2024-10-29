@@ -13,11 +13,49 @@ namespace CuaHangBanDienThoai.Controllers
         // GET: Cart
         private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
 
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            return View();
-        }
+            if (Session["CustomerId" ]==null&& id == null && id <= 0)
+            {
+                return PartialView();
+            }
+            if(Session["CustomerId"] != null&&id == null)
+            {
+                id = (int)Session["CustomerId"];
+            }
+            
+            var cart = db.Cart.FirstOrDefault(x => x.CustomerId == id);
+            if (cart == null)
+            {
+                return PartialView();
+            }
+            var cartDetail = db.CartItem.Where(x => x.CartId == cart.CartId).ToList();
+            if (cartDetail != null)
+            {
+                return PartialView(cartDetail);
 
+            }
+            return PartialView();
+        }
+        public ActionResult Partial_Item_Cart_Small(int? id)
+        {
+            if (id==null&&id <= 0)
+            {
+                return PartialView();
+            }
+            var cart = db.Cart.FirstOrDefault(x => x.CustomerId == id);
+            if (cart == null)
+            {
+                return PartialView();
+            }
+            var cartDetail = db.CartItem.Where(x => x.CartId == cart.CartId).ToList();
+            if (cartDetail != null)
+            {
+                return PartialView(cartDetail);
+
+            }
+            return PartialView();
+        }
         public ActionResult PartialCartLayout(int? id)
         {
             if (id <= 0)
@@ -30,7 +68,7 @@ namespace CuaHangBanDienThoai.Controllers
                 return PartialView();
             }
             var cartDetail = db.CartItem.Where(x => x.CartId == cart.CartId).ToList();
-            if (cartDetail == null)
+            if (cartDetail != null)
             {
                 return PartialView(cartDetail);
                 
@@ -60,7 +98,7 @@ namespace CuaHangBanDienThoai.Controllers
                             if (checkIdCartItem != null)
                             {
                                 checkIdCartItem.Quantity += quantity;
-                                checkIdCartItem.TemPrice = checkIdCartItem.Price * checkIdCartItem.Quantity;
+                              
                                 db.SaveChanges();
                             }
                             else
@@ -75,9 +113,7 @@ namespace CuaHangBanDienThoai.Controllers
                                         ProductDetailId = productDetail.ProductDetailId,
                                         Quantity = quantity,
 
-                                        Price = (decimal)productDetail.Price,
-                                        TemPrice = (decimal)productDetail.PriceSale,
-                                        PriceTotal = (decimal)productDetail.Price * quantity
+                                       
                                     };
                                     db.CartItem.Add(cartitem);
                                     db.SaveChanges();
@@ -133,6 +169,6 @@ namespace CuaHangBanDienThoai.Controllers
             }
             return Json(new { Count = 0 }, JsonRequestBehavior.AllowGet);
         }
-
+        
     }
 }

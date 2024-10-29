@@ -122,7 +122,7 @@ namespace CuaHangBanDienThoai.Controllers
                 Session["lastName"] = null;
                 Session["customerName"] = null;
                 Session["CustomerId"] = null;
-                Session.Clear(); 
+               
 
               
                 return Redirect("/dang-nhap");

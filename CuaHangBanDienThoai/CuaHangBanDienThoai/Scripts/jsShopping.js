@@ -140,6 +140,7 @@ $(document).ready(function () {
         menuActive = menu.hasClass('hamburger_menu');
         menuActiveCart = menu.hasClass('hamburger_menu_cart');
         menuActiveCart = true;
+       
         LoadCartSmall();
     }
 
@@ -154,18 +155,24 @@ $(document).ready(function () {
     }
   
     function LoadCartSmall() {
-        $.ajax({
-            url: '/shoppingcart/Partial_Item_Cart_Small',
-            type: 'GET',
-            success: function (data) {
-                $('.hamburger_menu_cart').html(data);
+        const customerId = sessionStorage.getItem('CustomerId');
+        if (!customerId) {
+            $.ajax({
+                url: '/Cart/Partial_Item_Cart_Small',
+                type: 'GET',
+                data: { id: sessionStorage.getItem('CustomerId') },
 
-                registerEvents();
-            },
-            error: function () {
-                console.log('Error loading content');
-            }
-        });
+                success: function (data) {
+                    $('.hamburger_menu_cart').html(data);
+
+                    registerEvents();
+                },
+                error: function () {
+                    console.log('Error loading content');
+                }
+            });
+        }
+       
     }
  
     function registerEvents() {

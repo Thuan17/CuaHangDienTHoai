@@ -1,28 +1,78 @@
 ﻿@model IEnumerable<CuaHangBanDienThoai.Models.CartItem>
-<li class="text-center ">Giỏ hàng <span class="text-danger">@(Model!=null?Model.Count():0)</span></li>
-@if (Model != null)
-{
+@using CuaHangBanDienThoai.Common;
 
 
-    foreach (var item in Model)
+
+<div class="text-center ">Giỏ hàng <span class="text-danger">@(Model!=null?Model.Count():0)</span></div>
+<ul>
+    @if (Model != null)
+    {
+
+
+        foreach (var item in Model)
+        {
+            @functions {
+
+                public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                {
+                    if (originalPrice == 0 || salePrice >= originalPrice)
+                    {
+                        return 0;
+                    }
+
+                    decimal discount = 1 - (salePrice / originalPrice);
+                    return (int)(discount * 100);
+                }
+            }
+            var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
+
+
+            <li>
+                <div class="product_itemcart">
+                    <div class="product_imagecart">
+                        <img src="@item.ProductDetail.Products.Image.Trim()" alt="Tên sản phẩm" />
+                    </div>
+                    <div class="product_namecart">
+                        <p>@Name.Trim()</p>
+                        <div class="product_pricecart">
+                            <div class="ProducPriceCart">
+                                @if (item.ProductDetail.PriceSale > 0)
+                                {
+                                    <div class="PriceSaleCart">
+                                        @($"{Common.FormatNumber(item.ProductDetail.PriceSale)}đ")
+                                        <span class="DiscountPercentageCart">
+                                            @($"-{CalculateDiscountPercentage((decimal)item.ProductDetail.Price, (decimal)item.ProductDetail.PriceSale)}%")
+                                        </span>
+                                    </div>
+                                    <div class="OriginalPice">
+                                        <p>
+                                            @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
+                                        </p>
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mb-0 text-danger PriceSaleCart">
+                                        @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+
+
+        }
+    }
+    else
     {
         <li>
-            <div class="product-item">
-                <div class="product-image">
-                    <img src="URL_ẢNH_SẢN_PHẨM" alt="Tên sản phẩm" style="height: 50px; width: 50px;" />
-                </div>
-                <div class="product-name">
-                    <p>@item.ProductDetail.Products.Title.Trim()</p>
-                </div>
-            </div>
+            <img src="~/images/logo/CartNull.png" style="width:190px;" class="align-items-center text-center" />
         </li>
-
     }
-}
-else
-{
-    <li>
-        <img src="~/images/logo/CartNull.png" style="width:190px;" class="align-items-center text-center" />
-    </li>
-}
 
+
+</ul>

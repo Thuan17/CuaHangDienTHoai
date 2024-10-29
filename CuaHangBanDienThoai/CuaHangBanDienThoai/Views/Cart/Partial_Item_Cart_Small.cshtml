@@ -1,0 +1,138 @@
+﻿
+@model IEnumerable<CuaHangBanDienThoai.Models.CartItem>
+@using CuaHangBanDienThoai.Common
+@{ 
+    Layout = null;
+}
+
+<div class="hamburger_close_cart"><i class="fa fa-times text-danger" aria-hidden="true"></i></div>
+<div class="hamburger_menu_content_cart">
+    <h3 class="text-center text-uppercase" style=" border-bottom: solid 1px #b5aec4;"> Giỏ hàng</h3>
+
+
+    @if (Model != null)
+    {
+        var tongtien = decimal.Zero;
+        var price = decimal.Zero;
+        <ul class="menu_top_nav_cart">
+            @foreach (var item in Model)
+            {
+                @functions {
+
+                    public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                    {
+                        if (originalPrice == 0 || salePrice >= originalPrice)
+                        {
+                            return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                        }
+
+                        decimal discount = 1 - (salePrice / originalPrice);
+                        return discount * 100;
+                    }
+                }
+                var strImg = "";
+                var CheckImage = item.ProductDetail.Products.Image.Trim();
+                var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
+
+                if (CheckImage != null)
+                {
+                    strImg = CheckImage;
+                }
+
+
+                tongtien += ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
+                price=((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
+                <li class="menu_item_cart  cart_list">
+
+                    <div class="group__cart">
+                        <div class="cart__left">
+
+                            @if (strImg != null)
+                            {
+                                <img src="@strImg" alt="@Name" class="cart__left__img" />
+                            }
+                            else
+                            {
+                                <img src="~/images/logo/logoWeb.png" alt="product-item" class="cart__left__img" />
+                            }
+
+
+                            <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteCart" type="button" data-productid="@item.ProductDetailId">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                                Xoá
+                            </button>
+
+                        </div>
+                        <div class="cart__right">
+                            <a href="/san-pham/@item.ProductDetail.Alias" class="text-dark title cart__right__Titlle"><b>@Name</b></a>
+                            <div class="Describe">
+                                    <p class="text-dark">Danh mục: @item.ProductDetail.Products.ProductCategory.Title.Trim()</p>
+                                    <p class="text-dark">Hãng:  @item.ProductDetail.Products.ProductCompany.Title.Trim()</p>
+
+                                </div>
+
+                            <div class="QuanPrice ml-1">
+                                    <div class="quantityGroup">
+                                        <div class="container-quantity">
+                                            <button id="decrementCartS_@item.ProductDetailId" data-productid="@item.ProductDetailId" class="btnquantityCartS mt-0 btn-decrement">-</button>
+                                            <input type="number" class="QuantityCartSmall" id="cart_small_@item.ProductDetailId    " data-productid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
+                                            <button id="incrementCartS_@item.ProductDetailId" data-productid="@item.ProductDetailId" class="btnquantityCartS mt-0  btn-increment">+</button>
+                                        </div>
+                                    </div>
+
+                                 
+                                        <div class=" priceGroup">
+                                            x   <b class="pt-2">  @($"{Common.FormatNumber(price)}đ")</b>
+                                        </div>
+
+                                 
+                                </div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+        <div class="Group__price">
+            <div class="left__price">
+                <b>Tổng tiền tạm tính <span class="   text-danger">(@Model.Count()) </span> sản phẩm :</b>
+            </div>
+            <div class="right__price">
+                @CuaHangBanDienThoai.Common.Common.FormatNumber(tongtien) đ
+            </div>
+        </div>
+        <div class="Group__buy__cart">
+            <div class="left__bynow   left__bynowCart">
+                <div class="block-button twoprice left__bynow__Group">
+                    <a href="/thanh-toan" class="btn-buynow  btn-buynowCart red jsBuy twoprice ">
+                        <span class="text-uppercase">MUA NGAY</span>
+                    </a>
+                </div>
+            </div>
+            <div class="right__addcart">
+                <div class="block-button twoprice">
+                    <a href="/gio-hang" class="twoprice  btn-AddtoCart " @*data-productid="@Model.ProductsId"*@>
+                        <img src="~/images/icon/shoppingcart2.png" class="btn-AddtoCart-img" />
+                        <span class="text-uppercase">xem giỏ hàng</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="cart_null">
+                <img src="~/images/logo/CartNull.png" class="text-center img_CarNUll" alt="Không có sản phẩm nào trong giỏ hàng của bạn" />
+            </div>
+
+
+    }
+
+
+
+</div>
+
+
+

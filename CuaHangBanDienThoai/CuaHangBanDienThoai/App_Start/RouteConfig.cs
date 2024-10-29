@@ -79,7 +79,7 @@ namespace CuaHangBanDienThoai
             routes.MapRoute(
          name: "Giohang",
          url: "gio-hang",
-         defaults: new { controller = "ShoppingCart", action = "Index", id = UrlParameter.Optional },
+         defaults: new { controller = "Cart", action = "Index", id = UrlParameter.Optional },
             namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
      );
             routes.MapRoute(

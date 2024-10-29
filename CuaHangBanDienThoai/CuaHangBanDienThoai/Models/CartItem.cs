@@ -17,9 +17,6 @@ namespace CuaHangBanDienThoai.Models
         public int CartItem1 { get; set; }
         public int CartId { get; set; }
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public decimal PriceTotal { get; set; }
-        public decimal TemPrice { get; set; }
         public int ProductDetailId { get; set; }
     
         public virtual Cart Cart { get; set; }
