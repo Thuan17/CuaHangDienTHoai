@@ -68,28 +68,31 @@
                         </div>
                         <div class="cart__right">
                             <a href="/san-pham/@item.ProductDetail.Alias" class="text-dark title cart__right__Titlle"><b>@Name</b></a>
-                            <div class="Describe">
-                                    <p class="text-dark">Danh mục: @item.ProductDetail.Products.ProductCategory.Title.Trim()</p>
-                                    <p class="text-dark">Hãng:  @item.ProductDetail.Products.ProductCompany.Title.Trim()</p>
+                           
+                      
+                            <div class="Describe pt-0">
+                                <p class="text-dark">Màu sắc: @item.ProductDetail.Color.Trim()</p>
+                                <p class="text-dark">Danh mục: @item.ProductDetail.Products.ProductCategory.Title.Trim()</p>
+                                <p class="text-dark">Hãng:  @item.ProductDetail.Products.ProductCompany.Title.Trim()</p>
 
-                                </div>
+                            </div>
 
                             <div class="QuanPrice ml-1">
-                                    <div class="quantityGroup">
-                                        <div class="container-quantity">
-                                            <button id="decrementCartS_@item.ProductDetailId" data-productid="@item.ProductDetailId" class="btnquantityCartS mt-0 btn-decrement">-</button>
-                                            <input type="number" class="QuantityCartSmall" id="cart_small_@item.ProductDetailId    " data-productid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
-                                            <button id="incrementCartS_@item.ProductDetailId" data-productid="@item.ProductDetailId" class="btnquantityCartS mt-0  btn-increment">+</button>
-                                        </div>
+                                <div class="quantityGroup">
+                                    <div class="container-quantity">
+                                        <button id="decrementCartS_@item.ProductDetailId" data-productid="@item.ProductDetailId" class="btnquantityCartS mt-0 btn-decrement">-</button>
+                                        <input type="number" class="QuantityCartSmall" id="cart_small_@item.ProductDetailId    " data-productdetailid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
+                                        <button id="incrementCartS_@item.ProductDetailId" data-productid="@item.ProductDetailId" class="btnquantityCartS mt-0  btn-increment">+</button>
                                     </div>
-
-                                 
-                                        <div class=" priceGroup">
-                                            x   <b class="pt-2">  @($"{Common.FormatNumber(price)}đ")</b>
-                                        </div>
-
-                                 
                                 </div>
+
+
+                                <div class=" priceGroup">
+                                    x   <b class="pb-2">  @($"{Common.FormatNumber(price)}đ")</b>
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
                 </li>

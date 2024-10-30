@@ -2,7 +2,11 @@
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -37,6 +41,77 @@ namespace CuaHangBanDienThoai.Controllers
             }
             return PartialView();
         }
+        public ActionResult Partial_Index(int? id)
+        {
+
+
+            if (Session["CustomerId"] == null && id == null && id <= 0)
+            {
+                return PartialView();
+            }
+            if (Session["CustomerId"] != null && id == null)
+            {
+                id = (int)Session["CustomerId"];
+            }
+
+            var cart = db.Cart.FirstOrDefault(x => x.CustomerId == id);
+            if (cart == null)
+            {
+                return PartialView();
+            }
+            if (id != null && id > 0)
+            {
+                var cartDetail = db.CartItem.Where(x => x.CartId == cart.CartId).ToList();
+                if (cartDetail != null)
+                {
+                    return PartialView(cartDetail);
+
+                }
+                return PartialView();
+            }
+            return PartialView();
+        }
+     
+        [HttpGet]
+        public JsonResult GetPrice(int cartitemid)
+        {
+
+            if (cartitemid <= 0)
+            {
+                return Json(new { TotalPrice = "0 đ" }, JsonRequestBehavior.AllowGet);
+            }
+            var cartId = db.CartItem.FirstOrDefault(x => x.CartItemId == cartitemid);
+            if (cartId == null)
+            {
+                return Json(new { TotalPrice = "0 đ" }, JsonRequestBehavior.AllowGet);
+            }
+            var cart = db.Cart.FirstOrDefault(x => x.CartId == cartId.CartId);
+            if (cartId == null)
+            {
+                return Json(new { TotalPrice = "0 đ" }, JsonRequestBehavior.AllowGet);
+            }
+
+            decimal totalPrice = 0;
+            decimal price = 0;
+
+            var cartItems = db.CartItem.Where(x => x.CartId == cartId.CartId).ToList();
+
+            if ( cart.CartItem.Any())
+            {
+
+               foreach ( var item in cartItems)
+                {
+                    price = ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
+                    totalPrice += price * item.Quantity;
+                }
+               
+                var formattedPrice = CuaHangBanDienThoai.Common.Common.FormatNumber(totalPrice);
+                return Json(new { TotalPrice = formattedPrice }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { TotalPrice = "0 đ" }, JsonRequestBehavior.AllowGet);
+        }
+
+
         public ActionResult Partial_Item_Cart_Small(int? id)
         {
             if (id==null&&id <= 0)
@@ -75,6 +150,118 @@ namespace CuaHangBanDienThoai.Controllers
             }
             return PartialView();
         }
+
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateQuantity(int cartitemid, int productdetailid, int quantity)
+        {
+            if (Session["customer"] == null || Session["CustomerId"] == null)
+            {
+                return Json(new { Code = -2, msg = "Vui lòng đăng nhập", url = "/dang-nhap" });
+            }
+
+            if (cartitemid <= 0 || productdetailid <= 0 || quantity <= 0)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Thông tin không hợp lệ" });
+            }
+
+            try
+            {
+                using (var dbContextTransaction = db.Database.BeginTransaction())
+                {
+                    int customerId = (int)Session["CustomerId"];
+
+                    var cart = await db.Cart.FirstOrDefaultAsync(x => x.CustomerId == customerId);
+                    if (cart == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy giỏ hàng của bạn" });
+                    }
+
+                    var cartItem = await db.CartItem.FirstOrDefaultAsync(
+                        x => x.CartItemId == cartitemid && x.ProductDetailId == productdetailid);
+
+                    if (cartItem == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Sản phẩm không tồn tại trong giỏ hàng" });
+                    }
+
+                   
+                    int newQuantity =  quantity;
+                    if (newQuantity <= 0)
+                    {
+                        db.CartItem.Remove(cartItem); 
+                    }
+                    else
+                    {
+                        cartItem.Quantity = newQuantity;
+                        db.Entry(cartItem).State = EntityState.Modified;
+                    }
+
+                    await db.SaveChangesAsync();
+                    dbContextTransaction.Commit();
+
+                    return Json(new { Success = true, Code = 1, newQuantity });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, Code = -99, msg = "Lỗi hệ thống: " + ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult>DeleteCartItem(int cartitemid, int productdetailid)
+        {
+            if (Session["customer"] == null || Session["CustomerId"] == null)
+            {
+                return Json(new { Code = -2, msg = "Vui lòng đăng nhập", url = "/dang-nhap" });
+            }
+
+            if (cartitemid <= 0 || productdetailid <= 0 )
+            {
+                return Json(new { Success = false, Code = -2, msg = "Thông tin không hợp lệ" });
+            }
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try 
+                {
+                    int customerId = (int)Session["CustomerId"];
+
+                    var cart = await db.Cart.FirstOrDefaultAsync(x => x.CustomerId == customerId);
+                    if (cart == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy giỏ hàng của bạn" });
+                    }
+
+                    var cartItem = await db.CartItem.FirstOrDefaultAsync(
+                        x => x.CartItemId == cartitemid && x.ProductDetailId == productdetailid);
+
+                    if (cartItem == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Sản phẩm không tồn tại trong giỏ hàng" });
+                    }
+                    db.CartItem.Remove(cartItem);
+                    await db.SaveChangesAsync();
+                    dbContextTransaction.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Xoá sản phẩm thành công" });
+
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Lỗi hệ thống: " + ex.Message });
+
+
+                }     
+            }
+        }
+
+
+
+
+
+
         [HttpPost]
         public ActionResult AddtoCart(int id, int quantity)
         {

@@ -20,145 +20,134 @@
                 <h4 class="m-0 flex-grow-1 text-center position-relative" style="flex: 1;">
                     <b>Giỏ hàng</b>
                 </h4>
-                @*<div class="text-right ml-auto">
-                    @if (ViewBag.Count != null)
-                    {
-                        <span class="text-danger">@ViewBag.Count</span><span> sản phẩm</span>
-                    }
-                    else
-                    {
-                        <span class="text-danger">0</span><span> sản phẩm</span>
-                    }
-                </div>*@
+              
             </div>
         </div>
+        <div class="loaddata m-0 p-0 w-100">
+            @if (Model != null)
+            {
 
-
-
-
-        @if (Model != null)
-        {
-
-            var i = 0;
-            var tongtien = decimal.Zero;
-            var price = decimal.Zero;
-            <div class="   pl-0 pr-0"style="padding-left:0px !important">
-                <div class="main align-items-center p-0 CheckOutGr">
-                    <div class="text-center align-items-center" style="border:none!important">
-                  <input type="checkbox"class="checkAll mb-0" />
-                    </div>
-                    <div class="CheckOutImg" style="border:none!important">
-                        <b class="text-black ml-3">Hình </b>
-                    </div>
-
-                    <div class="CheckOutGrContent">
-                        <b class="text-black  pl-1" style="border:none!important">Sản phẩm</b>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="  ItemCheckOut pl-0 pr-0">
-               
-                  
-                <div class="row border-top ">
-                    @foreach (var item in Model)
-                    {
-
-                        @functions {
-
-                            public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
-                            {
-                                if (originalPrice == 0 || salePrice >= originalPrice)
-                                {
-                                    return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
-                                }
-
-                                decimal discount = 1 - (salePrice / originalPrice);
-                                return discount * 100;
-                            }
-                        }
-
-                        var strImg = "";
-                        var CheckImage = item.ProductDetail.Products.Image.Trim();
-                        var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
-
-                        if (CheckImage != null)
-                        {
-                            strImg = CheckImage;
-                        }
-
-
-                        tongtien += ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
-                        price = ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
-                       
-                    <div class=" main mt-2 align-items-center p-0 CheckOutGr border-bottom-0" style="border-bottom:1px solid black !important">
-                        <div class="text-center" style="border: none; padding: 0; margin: 0;">
-                            <input type="checkbox" class="checkAll mb-0" style="margin-top: 0; top:0%;" />
+                var i = 0;
+                var tongtien = decimal.Zero;
+                var price = decimal.Zero;
+                <div class="   pl-0 pr-0" style="padding-left:0px !important">
+                    <div class="main align-items-center p-0 CheckOutGr">
+                        <div class="text-center align-items-center" style="border:none!important">
+                            <input type="checkbox"id="SelectAll" class=" mb-0" />
                         </div>
                         <div class="CheckOutImg" style="border:none!important">
-                            <div class=" text-center GrImg">
-                                <img class="ContentImg" src="@strImg" alt="@Name">
-                                <div class="d-flex justify-content-center align-items-center">
-                                    <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteItemCheckOut" data-productid="@item.ProductDetailId">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
-                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                        </svg>
-                                        Xoá
-                                    </button>
-                                </div>
-                            </div>
-
+                            <b class="text-black ml-3">Hình </b>
                         </div>
 
-                        <div class="CheckOutGrContent row">
-
-                            <div class="ContentInfor col-lg-10">
-                                <b class="d-flex">
-                                    <a href="/san-pham/@item.ProductDetail.Alias" class="text-dark title">@Name</a>
-                                </b>
-                                <div class="Describe">
-                                    <p class="text-dark">Danh mục: @item.ProductDetail.Products.ProductCategory.Title.Trim()</p>
-                                    <p class="text-dark">Hãng:  @item.ProductDetail.Products.ProductCompany.Title.Trim()</p>
-
-                                </div>
-                            </div>
-                            <div class="PriceQuantity col-md-2">
-                                <div class="Price ">
-                                    @if (item.ProductDetail.PriceSale > 0)
-                                    {
-                                        <span class="text-danger text-xxl-center">
-
-                                            @($"{Common.FormatNumber(item.ProductDetail.PriceSale)}đ")
-                                        </span>
-                                        <br />
-                                        <span class="text-decoration-line-through">
-
-                                            @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
-                                        </span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-danger">
-                                            @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
-                                        </span>
-                                    }
-                                </div>
-                                <div class="Quantity d-flex align-items-center">
-                                    <a href="#" class="btnMinus  d-flex justify-content-center align-items-center">-</a>
-                                    <input type="number" class="QuantityCheckOut inputQuantity mx-2" id="checkout_@item.ProductDetailId" data-productid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
-                                    <a href="#" class="btnFlus d-flex justify-content-center align-items-center">+</a>
-                                </div>
-                            </div>
-
+                        <div class="CheckOutGrContent">
+                            <b class="text-black  pl-1" style="border:none!important">Sản phẩm</b>
                         </div>
+                    </div>
+                </div>
+
+
+
+                <div class="  ItemCheckOut pl-0 pr-0">
+
+
+                    <div class="row border-top ">
+                        @foreach (var item in Model)
+                        {
+
+                            @functions {
+
+                                public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                                {
+                                    if (originalPrice == 0 || salePrice >= originalPrice)
+                                    {
+                                        return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                                    }
+
+                                    decimal discount = 1 - (salePrice / originalPrice);
+                                    return discount * 100;
+                                }
+                            }
+
+                            var strImg = "";
+                            var CheckImage = item.ProductDetail.Products.Image.Trim();
+                            var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
+
+                            if (CheckImage != null)
+                            {
+                                strImg = CheckImage;
+                            }
+
+                            price = ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
+                            tongtien += price * item.Quantity;
+
+
+                            <div class=" main mt-2 align-items-center p-0 CheckOutGr border-bottom-0" style="border-bottom:1px solid black !important">
+                                <div class="text-center" style="border: none; padding: 0; margin: 0;">
+                                    <input type="checkbox"data-prodetailid="@item.ProductDetailId" class="cbkItem mb-0" style="margin-top: 0; top:0%;" />
+                                </div>
+                                <div class="CheckOutImg" style="border:none!important">
+                                    <div class=" text-center GrImg">
+                                        <img class="ContentImg" src="@strImg" alt="@Name">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteItemCheckOut" data-cartitemid="@item.CartItemId" data-productdetailid="@item.ProductDetailId" >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+                                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                </svg>
+                                                Xoá
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="CheckOutGrContent row">
+
+                                    <div class="ContentInfor col-lg-10">
+                                        <b class="d-flex">
+                                            <a href="/san-pham/@item.ProductDetail.Alias" class="text-dark title mb-0" style="margin-bottom:0px !important;">@Name</a>
+                                        </b>
+                                        <div class="Describe pt-0">
+                                            <p class="text-dark mb-0"><label>Màu sắc:</label> @item.ProductDetail.Color.Trim()</p>
+                                            <p class="text-dark mb-0"><label>Danh mục:</label> @item.ProductDetail.Products.ProductCategory.Title.Trim()</p>
+                                            <p class="text-dark mb-0"><label>Hãng</label>  @item.ProductDetail.Products.ProductCompany.Title.Trim()</p>
+
+                                        </div>
+                                    </div>
+                                    <div class="PriceQuantity col-md-2">
+                                        <div class="Price ">
+                                            @if (item.ProductDetail.PriceSale > 0)
+                                            {
+                                                <span class="text-danger text-xxl-center">
+
+                                                    @($"{Common.FormatNumber(item.ProductDetail.PriceSale)}đ")
+                                                </span>
+                                                <br />
+                                                <span class="text-decoration-line-through">
+
+                                                    @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger">
+                                                    @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
+                                                </span>
+                                            }
+                                        </div>
+                                        <div class="Quantity d-flex align-items-center">
+                                            <a href="#" class="btnMinus  d-flex justify-content-center align-items-center">-</a>
+                                            <input type="number" class="QuantityCheckOut inputQuantity mx-2" id="checkout_@item.ProductDetailId" data-cartitemid="@item.CartItemId" data-productdetailid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
+                                            <a href="#" class="btnFlus d-flex justify-content-center align-items-center">+</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
 
                     </div>
-                    }
-
-                </div>
                     <hr />
                     <div class="row mt-1">
                         <div class="col-8">
@@ -168,82 +157,151 @@
                             <span class="text-danger priceCheckOut">    @($"{Common.FormatNumber(tongtien)}đ") </span>
                         </div>
                     </div>
-
-
-                
-            </div>
-            <div class="form-row submit-btn">
-                <div class="input-data">
-                    <div class="inner"></div>
-                    <a href="/thanh-toan" @*type="submit"*@ class="btnCheckOutS ">Mua Hàng</a>
-
                 </div>
-            </div>
-            <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
-
-        }
-        else
-        {
-            <div class="col-12 ">
-                <div class="cart_null">
-
-                    <img src="~/images/logo/CartNull.png" class="text-center align-items-center d-flex" width="150" height="350" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+                <div class="form-row submit-btn">
+                    <div class="input-data">
+                        <div class="inner"></div>
+                        <a href="#" type="submit" class="btnCheckOutS btn-dat-hang ">Mua Hàng</a>
+                        @*<button type="button" class="btn btn-success btn-block btn-dat-hang full-width-button text-white" style="width:100%">Đặt Hàng</button>*@
+                    </div>
                 </div>
                 <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
-            </div>
-        }
+
+            }
+            else
+            {
+                <div class="col-12 ">
+                    <div class="cart_null">
+
+                        <img src="~/images/logo/CartNull.png" class="text-center align-items-center d-flex" width="150" height="350" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+                    </div>
+                    <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
+                </div>
+            }
+        </div>
+      
     </div>
 </div>
 
 
+<script>
+    $(document).ready(function () {
+
+
+        CheckAccount();
+       
 
 
 
-
-
-
-
-
-
-
-@*<div class="card ">
-        <div class="row">
-            <div class="col-md-12 cart">
-                <div class="title">
-                    <div class="row align-items-center">
-                        <div class="col">
-                            <h4><b>Giỏ hàng</b></h4>
-                        </div>
-                        <div class="col d-flex justify-content-end text-right">
-                            @if (ViewBag.Count != null)
-                            {
-                                <span class="text-danger">@ViewBag.Count</span><span>sản phẩm</span>
-                            }
-                            else
-                            {
-                                <span class="text-danger">0</span><span>sản phẩm</span>
-                            }
-                        </div>
-                    </div>
-
-
-                </div>
-                @if (ViewBag.CheckCart != null)
-                {
-                    <div class=" cart ItemCheckOut">
-                        @Html.Action("Partial_Item_ThanhToan", "ShoppingCart")
-                    </div>
-
+        $('body').on('change', '#SelectAll', function () {
+            var checkStatus = this.checked;
+            var checkboxes = $('.ItemCheckOut input:checkbox');
+            checkboxes.each(function () {
+                this.checked = checkStatus;
+                if (this.checked) {
+                    checkboxes.attr('selected', 'checked');
+                } else {
+                    checkboxes.attr('selected', '');
+                    $('#show_success').html("Vui lòng chọn sản phẩm");
                 }
-                else
-                {
-                    <img src="//theme.hstatic.net/200000420363/1001162486/14/empty_cart.png?v=240" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
-                    <div class="back-to-shop"><a href="/san-pham">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
+            });
+
+        });
+
+        //Start dưaht hàng
+        $('.btn-dat-hang').on('click', function () {
+         
+            if (!window.sessionStorage.getItem('CustomerId')) {
+
+                $.ajax({
+                    url: '/Account/SetRedirectUrl',
+                    type: 'POST',
+                    data: { redirectUrl: window.location.href },
+                    success: function () {
+
+                        window.location.href = '/dang-nhap';
+                    }
+                });
+                return;
+            }
+            const customerid = sessionStorage.getItem('CustomerId');
+
+           
+            var selectedProductIds = getSelectedProductIds();
+            console.log('selectedProductIds', selectedProductIds.length); 
+
+            if (selectedProductIds != null && selectedProductIds.length > 0) {
+                sendAjaxRequest(selectedProductIds);
+            } else {
+                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Vui lòng chọn sản phẩm');
+            }
+
+        });
+
+      
+
+        function getSelectedProductIds() {
+            var selectedProductIds = [];
+            $('.cbkItem:checked').each(function () {
+                var prodetailid = $(this).data('prodetailid');
+                if (!selectedProductIds.includes(prodetailid)) {
+                    selectedProductIds.push(prodetailid);
                 }
 
+            });
+            return selectedProductIds;
+        }
+    });
+   
+    function CheckAccount() {
+        if (!window.sessionStorage.getItem('CustomerId')) {
+            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Phiên đăng nhập đã hết hạn');
+            let countdown = 6;
+            const interval = setInterval(function () {
 
-            </div>
+                countdown--;
+                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý',
+                    `Phiên đăng nhập đã hết hạn. Chuyển hướng sau ${countdown} giây...`);
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    $.ajax({
+                        url: '/Account/SetRedirectUrl',
+                        type: 'POST',
+                        data: { redirectUrl: window.location.href },
+                        success: function () {
 
-        </div>
+                            window.location.href = '/dang-nhap';
+                        }
+                    });
+                }
 
-    </div>*@
+            }, 1000);
+            return;
+        }
+    }
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+           <div class="toastNotifi ${type}">
+               <i class="${icon}"></i>
+               <div class="content">
+                   <div class="title">${title}</div>
+                   <span>${text}</span>
+               </div>
+               <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+           </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+    
+</script>

@@ -5744,6 +5744,7 @@
     <Content Include="Views\Cart\PartialCartLayout.cshtml" />
     <Content Include="Views\Cart\Partial_Item_Cart_Small.cshtml" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Cart\Partial_Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -68,9 +68,9 @@
   </EntityType>
   <EntityType Name="CartItem">
     <Key>
-      <PropertyRef Name="CartItem1" />
+      <PropertyRef Name="CartItemId" />
     </Key>
-    <Property Name="CartItem1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CartItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="CartId" Type="Int32" Nullable="false" />
     <Property Name="Quantity" Type="Int32" Nullable="false" />
     <Property Name="ProductDetailId" Type="Int32" Nullable="false" />

@@ -14,7 +14,7 @@ namespace CuaHangBanDienThoai.Models
     
     public partial class CartItem
     {
-        public int CartItem1 { get; set; }
+        public int CartItemId { get; set; }
         public int CartId { get; set; }
         public int Quantity { get; set; }
         public int ProductDetailId { get; set; }

@@ -67,7 +67,7 @@
     <EntitySetMapping Name="CartItem">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.CartItem">
         <MappingFragment StoreEntitySet="CartItem">
-          <ScalarProperty Name="CartItem1" ColumnName="CartItem" />
+          <ScalarProperty Name="CartItemId" ColumnName="CartItemId" />
           <ScalarProperty Name="CartId" ColumnName="CartId" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />

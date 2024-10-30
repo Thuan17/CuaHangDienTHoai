@@ -65,9 +65,9 @@
         </EntityType>
         <EntityType Name="CartItem">
           <Key>
-            <PropertyRef Name="CartItem" />
+            <PropertyRef Name="CartItemId" />
           </Key>
-          <Property Name="CartItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CartItemId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CartId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="ProductDetailId" Type="int" Nullable="false" />
@@ -848,9 +848,9 @@
         </EntityType>
         <EntityType Name="CartItem">
           <Key>
-            <PropertyRef Name="CartItem1" />
+            <PropertyRef Name="CartItemId" />
           </Key>
-          <Property Name="CartItem1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CartItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CartId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
@@ -1672,7 +1672,7 @@
           <EntitySetMapping Name="CartItem">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.CartItem">
               <MappingFragment StoreEntitySet="CartItem">
-                <ScalarProperty Name="CartItem1" ColumnName="CartItem" />
+                <ScalarProperty Name="CartItemId" ColumnName="CartItemId" />
                 <ScalarProperty Name="CartId" ColumnName="CartId" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
