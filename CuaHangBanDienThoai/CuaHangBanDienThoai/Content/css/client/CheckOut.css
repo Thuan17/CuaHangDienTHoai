@@ -35,6 +35,25 @@ form .form-row .textarea {
     border-bottom: 2px solid rgba(0,0,0, 0.12);
     background-color:white;
 }
+    
+    .input-data input[readonly] {
+        background-color: white; 
+        color: #333; 
+        cursor: not-allowed; 
+    }
+
+     
+        .input-data input[readonly] ~ label {
+            transform: translateY(-20px); 
+            font-size: 14px;
+            color: #3498db; 
+        }
+
+       
+        .input-data input[readonly] ~ .underline:before {
+            transform: scaleX(1);
+            background: linear-gradient(to right, #56d8e4, #9f01ea, #56d8e4, #9f01ea); 
+        }
 
     .input-data input:focus ~ label, .textarea textarea:focus ~ label,
     .input-data input:valid ~ label, .textarea textarea:valid ~ label {
@@ -650,3 +669,114 @@ form .form-row .textarea {
 
    
 }
+
+
+
+
+.gift-group {
+    position: relative;
+    display: block; /* Sử dụng block để chiếm toàn bộ chiều rộng */
+    width: 100%; /* Đảm bảo chiếm 100% chiều rộng */
+}
+
+
+.custom-select {
+    position: relative;
+    display: inline-block;
+    width: 100%; /* Chiếm 100% chiều rộng */
+}
+
+.select-selected {
+    width: 100% !important;
+    background-color: #ddd;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-sizing: border-box; /* Bao gồm padding và border */
+}
+
+.select-items {
+    display: none; /* Ẩn dropdown ban đầu */
+    position: absolute; /* Để dropdown xuất hiện bên dưới */
+    width: 100%; /* Chiếm 100% chiều rộng của parent */
+}
+
+
+.select-items {
+    position: absolute; /* Đặt thành absolute để có thể đè lên các yếu tố khác */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: none;
+    z-index: 9888; /* Đảm bảo giá trị z-index đủ cao */
+    max-height: 250px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .select-items .select-option {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        box-sizing: border-box;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+
+        .select-items .select-option:hover {
+            background-color: #f0f0f0;
+            transform: translateY(-3px);
+        }
+
+    .select-items .select-option-title {
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    .select-items .select-option:hover .select-option-title {
+        color: red;
+        transform: translateY(-3px);
+    }
+
+.imageCase-item {
+    max-width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+.select-selected.select-active + .select-items {
+    display: block;
+}
+
+
+
+.select-option {
+    width: 100%;
+    display: flex;
+    padding: 0px;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.select-option-checkbox {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+    .select-option-checkbox input {
+        margin: 0;
+        vertical-align: middle;
+    }
+
+.select-option-title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.select-option-image {
+    width: 50px;
+    height: 50px;
+}
+

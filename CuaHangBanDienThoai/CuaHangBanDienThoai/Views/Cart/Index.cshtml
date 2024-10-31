@@ -252,7 +252,38 @@
             return selectedProductIds;
         }
     });
-   
+
+    function sendAjaxRequest(selectedProductIds) {
+        if (selectedProductIds) {
+            $.ajax({
+                url: '/ShoppingCart/CheckOutProduct',
+                data: { producdetailid: selectedProductIds },
+                type: 'POST',
+                dataType: 'json',
+                success: function (res) {
+                    if (res.Success) {
+                        if (res.Code = 1) {
+                            if (res.url) {
+                                setTimeout(() => window.location.href = res.url, 1500);
+                            }
+                        }
+                    } else {
+                        if (res.Code = -2) {
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+                        } else if (res.Code = -99) {
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+                        }
+                    }
+                }
+            });
+        } else {
+            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Vui lòng chọn sản phẩm');
+        }
+      
+    }
+
+
+
     function CheckAccount() {
         if (!window.sessionStorage.getItem('CustomerId')) {
             createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Phiên đăng nhập đã hết hạn');

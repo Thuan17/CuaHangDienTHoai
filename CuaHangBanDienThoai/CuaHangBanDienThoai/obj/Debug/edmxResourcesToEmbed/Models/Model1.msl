@@ -11,6 +11,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="AddressCustomer">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.AddressCustomer">
+        <MappingFragment StoreEntitySet="AddressCustomer">
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="AddressCusomerId" ColumnName="AddressCusomerId" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Banner">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Banner">
         <MappingFragment StoreEntitySet="Banner">
@@ -83,7 +95,6 @@
           <ScalarProperty Name="Email" ColumnName="Email" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Birthday" ColumnName="Birthday" />
-          <ScalarProperty Name="Loaction" ColumnName="Loaction" />
           <ScalarProperty Name="NumberofPurchases" ColumnName="NumberofPurchases" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="IsLock" ColumnName="IsLock" />

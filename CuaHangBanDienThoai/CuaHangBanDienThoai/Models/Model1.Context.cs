@@ -26,6 +26,7 @@ namespace CuaHangBanDienThoai.Models
         }
     
         public virtual DbSet<AccountEmployee> AccountEmployee { get; set; }
+        public virtual DbSet<AddressCustomer> AddressCustomer { get; set; }
         public virtual DbSet<Banner> Banner { get; set; }
         public virtual DbSet<Bill> Bill { get; set; }
         public virtual DbSet<BillDetail> BillDetail { get; set; }

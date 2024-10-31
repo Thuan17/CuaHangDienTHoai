@@ -17,6 +17,7 @@ namespace CuaHangBanDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
+            this.AddressCustomer = new HashSet<AddressCustomer>();
             this.Bill = new HashSet<Bill>();
             this.Cart = new HashSet<Cart>();
         }
@@ -27,12 +28,13 @@ namespace CuaHangBanDienThoai.Models
         public string Email { get; set; }
         public string Password { get; set; }
         public Nullable<System.DateTime> Birthday { get; set; }
-        public string Loaction { get; set; }
         public Nullable<int> NumberofPurchases { get; set; }
         public string Code { get; set; }
         public Nullable<bool> IsLock { get; set; }
         public string Image { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<AddressCustomer> AddressCustomer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bill { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

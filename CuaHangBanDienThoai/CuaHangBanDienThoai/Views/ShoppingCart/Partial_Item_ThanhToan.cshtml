@@ -1,0 +1,116 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.ShoppingCartItem>
+@using CuaHangBanDienThoai.Common
+
+@if (Model != null)
+{
+    var i = 0;
+    var tongtien = decimal.Zero;
+    var price = decimal.Zero;
+    <div class="row border-top ">
+        @foreach (var item in Model)
+        {
+            @functions {
+
+                public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                {
+                    if (originalPrice == 0 || salePrice >= originalPrice)
+                    {
+                        return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                    }
+
+                    decimal discount = 1 - (salePrice / originalPrice);
+                    return discount * 100;
+                }
+            }
+
+            var strImg = "";
+            var CheckImage = item.ProductDetail.Products.Image.Trim();
+            var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
+
+            if (CheckImage != null)
+            {
+                strImg = CheckImage;
+            }
+
+
+            price = ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
+            tongtien += price * item.Quantity;
+
+            <div class=" main mt-2 align-items-center p-0 CheckOutGr">
+                <div class="CheckOutImg" style="border:none!important">
+                    <div class=" text-center GrImg">
+                        <img class="ContentImg" src="@strImg" alt="@Name">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteItemCheckOut"data-productdetailid="@item.ProductDetailId" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                                Xoá
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="CheckOutGrContent row">
+                    <div class="ContentInfor col-lg-10">
+                        <div class="ContentInfor col-lg-10">
+                            <b class="d-flex">
+                                <a href="/san-pham/@item.ProductDetail.Alias" class="text-dark title mb-0" style="margin-bottom:0px !important;">@Name</a>
+                            </b>
+                            <div class="Describe pt-0">
+                                <p class="text-dark mb-0"><label>Màu sắc:</label> @item.ProductDetail.Color.Trim()</p>
+                                <p class="text-dark mb-0"><label>Danh mục:</label> @item.ProductDetail.Products.ProductCategory.Title.Trim()</p>
+                                <p class="text-dark mb-0"><label>Hãng</label>  @item.ProductDetail.Products.ProductCompany.Title.Trim()</p>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="PriceQuantity col-md-2">
+                        <div class="Price ">
+                            @if (item.ProductDetail.PriceSale > 0)
+                            {
+                                <span class="text-danger text-xxl-center">
+
+                                    @($"{Common.FormatNumber(item.ProductDetail.PriceSale)}đ")
+                                </span>
+                                <br />
+                                <span class="text-decoration-line-through">
+
+                                    @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-danger">
+                                    @($"{Common.FormatNumber(item.ProductDetail.Price)}đ")
+                                </span>
+                            }
+                        </div>
+                        <div class="Quantity d-flex align-items-center">
+                            <a href="#" class="btnMinus  d-flex justify-content-center align-items-center">-</a>
+                            <input type="number" class="QuantityCartSmall inputQuantity mx-2" id="checkout_@item.ProductDetailId" data-productdetailid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
+                            <a href="#" class="btnFlus d-flex justify-content-center align-items-center">+</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+    <hr />
+    <div class="row mt-1">
+        <div class="col-8">
+            <b>Tạm tính <span class="text-danger">(@Model.Count())</span> sản phẩm:</b>
+        </div>
+        <div class="col-4 d-flex justify-content-end align-items-center">
+            <span class="text-danger priceCheckOut">    @($"{Common.FormatNumber(tongtien)}đ") </span>
+        </div>
+    </div>
+
+
+}
+

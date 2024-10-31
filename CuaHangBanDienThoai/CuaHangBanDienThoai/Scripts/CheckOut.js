@@ -1,4 +1,5 @@
 ﻿
+
 function createToast(type, icon, title, text) {
 
     const notifications = document.querySelector('.notifications');

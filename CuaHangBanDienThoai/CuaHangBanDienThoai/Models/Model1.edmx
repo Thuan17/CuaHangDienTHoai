@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -13,6 +13,17 @@
           <Property Name="Code" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IsLock" Type="bit" />
+        </EntityType>
+        <EntityType Name="AddressCustomer">
+          <Key>
+            <PropertyRef Name="AddressCusomerId" />
+          </Key>
+          <Property Name="AddressCusomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" />
+          <Property Name="CustomerName" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="Banner">
           <Key>
@@ -82,7 +93,6 @@
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="Password" Type="varchar" MaxLength="100" />
           <Property Name="Birthday" Type="date" />
-          <Property Name="Loaction" Type="nvarchar(max)" />
           <Property Name="NumberofPurchases" Type="int" />
           <Property Name="Code" Type="char" MaxLength="10" />
           <Property Name="IsLock" Type="bit" />
@@ -382,6 +392,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AddressCusomer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="AddressCustomer" Type="Self.AddressCustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="AddressCustomer">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bill_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
@@ -648,6 +670,7 @@
         </Association>
         <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
           <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillDetail" EntityType="Self.BillDetail" Schema="dbo" store:Type="Tables" />
@@ -685,6 +708,10 @@
           <AssociationSet Name="FK_AccountEmployee_Employee" Association="Self.FK_AccountEmployee_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="AccountEmployee" EntitySet="AccountEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AddressCusomer_Customer" Association="Self.FK_AddressCusomer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="AddressCustomer" EntitySet="AddressCustomer" />
           </AssociationSet>
           <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -775,8 +802,7 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -789,6 +815,18 @@
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IsLock" Type="Boolean" />
           <NavigationProperty Name="Employee" Relationship="Self.FK_AccountEmployee_Employee" FromRole="AccountEmployee" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="AddressCustomer">
+          <Key>
+            <PropertyRef Name="AddressCusomerId" />
+          </Key>
+          <Property Name="AddressCusomerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsDefault" Type="Boolean" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_AddressCusomer_Customer" FromRole="AddressCustomer" ToRole="Customer" />
+          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Banner">
           <Key>
@@ -867,11 +905,11 @@
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Birthday" Type="DateTime" Precision="0" />
-          <Property Name="Loaction" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="NumberofPurchases" Type="Int32" />
           <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="IsLock" Type="Boolean" />
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="AddressCustomer" Relationship="Self.FK_AddressCusomer_Customer" FromRole="Customer" ToRole="AddressCustomer" />
           <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
           <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
         </EntityType>
@@ -1183,6 +1221,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_AddressCusomer_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="AddressCustomer" Type="Self.AddressCustomer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="AddressCustomer">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Bill_Customer">
           <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
           <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
@@ -1473,6 +1523,7 @@
         </Association>
         <EntityContainer Name="CUAHANGDIENTHOAIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" />
+          <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" />
           <EntitySet Name="Banner" EntityType="Self.Banner" />
           <EntitySet Name="Bill" EntityType="Self.Bill" />
           <EntitySet Name="BillDetail" EntityType="Self.BillDetail" />
@@ -1502,6 +1553,10 @@
           <AssociationSet Name="FK_AccountEmployee_Employee" Association="Self.FK_AccountEmployee_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="AccountEmployee" EntitySet="AccountEmployee" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AddressCusomer_Customer" Association="Self.FK_AddressCusomer_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="AddressCustomer" EntitySet="AddressCustomer" />
           </AssociationSet>
           <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
             <End Role="Customer" EntitySet="Customer" />
@@ -1616,6 +1671,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AddressCustomer">
+            <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.AddressCustomer">
+              <MappingFragment StoreEntitySet="AddressCustomer">
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="AddressCusomerId" ColumnName="AddressCusomerId" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Banner">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Banner">
               <MappingFragment StoreEntitySet="Banner">
@@ -1688,7 +1755,6 @@
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Birthday" ColumnName="Birthday" />
-                <ScalarProperty Name="Loaction" ColumnName="Loaction" />
                 <ScalarProperty Name="NumberofPurchases" ColumnName="NumberofPurchases" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="IsLock" ColumnName="IsLock" />

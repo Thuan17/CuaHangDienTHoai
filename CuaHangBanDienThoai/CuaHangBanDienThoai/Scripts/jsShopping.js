@@ -518,9 +518,41 @@ $(document).ready(function () {
 
         }
     }
+    function UpdateQuantityCheckOut(productdetailid, quantity) {
+        console.log("UpdateQuantityCheckOut", productdetailid, quantity)
+        if (productdetailid && quantity) {
+
+            $.ajax({
+                type: 'POST',
+                url: '/ShoppingCart/UpdateQuantitySession',
+                data: {
+                    
+                    productdetailid: productdetailid,
+                    quantity: quantity
+                },
+                success: function (rs) {
+                    if (rs.Success) {
+                        if (rs.Code === 1) {
+                            loadTotalPriceSession();
+                     
+                        } else {
+                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', rs.msg);
+                        }
+                    } else {
+                        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Cập nhập không thành công');
+                    }
+                },
+                error: function () {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Lỗi máy chủ');
+                }
+            });
+        }
+
+    }
+
 
     function UpdateQuantity(cartitemid, productdetailid, quantity) {
-        console.log("UpdateQuantity", cartitemid, productdetailid, quantity);
+   
       
         if (cartitemid && productdetailid && quantity) {
 
@@ -535,7 +567,7 @@ $(document).ready(function () {
             success: function (rs) {
                 if (rs.Success) {
                     if (rs.Code === 1) {
-                        loadTotalPriceSession(cartitemid);
+                        loadTotalPrice(cartitemid);
                         /*loadTotalQuantitySession();*/
                     } else {
                         createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', rs.msg);
@@ -553,19 +585,34 @@ $(document).ready(function () {
     }
 
 
-  
+    $('body').on('change', '.QuantityCartSmall', function () {
+        if (isSyncingQuantity || isDeletingItem) return;
+        isSyncingQuantity = true;
+
+        var productdetailid = $(this).data('productdetailid');
+
+        var quantity = $(this).val();
+/*        $('.quantitycheckout[data-productdetailid="' + productdetailid + '"]').val(quantity);*/
+        if (productdetailid  && quantity) {
+            UpdateQuantityCheckOut(productdetailid, quantity);
+
+            isSyncingQuantity = false;
+        }
+        isSyncingQuantity = false;
+    });
+
    
 
     $('body').on('change', '.QuantityCartSmall', function () {
         if (isSyncingQuantity || isDeletingItem) return;
         isSyncingQuantity = true;
 
-        var productid = $(this).data('productid');
+        var productdetailid = $(this).data('productdetailid');
+
         var quantity = $(this).val();
+        $('.QuantityCheckOut[data-productdetailid="' + productdetailid + '"]').val(quantity);
 
-        $('.QuantityCheckOut[data-productid="' + productid + '"]').val(quantity);
-
-        UpdateQuantity(productid, quantity);
+        UpdateQuantity(productdetailid, quantity);
 
         isSyncingQuantity = false;
     });
@@ -599,9 +646,22 @@ $(document).ready(function () {
 });           
 
 
+function loadTotalPriceSession() {
+    $.ajax({
+        url: '/shoppingcart/GetPrice',
+        type: 'GET',
+        success: function (data) {
+            console.log("loadTotalPriceSession", data.TotalPrice);
+            $('.priceCheckOut').html(data.TotalPrice + ' đ');
+        },
+        error: function (xhr, status, error) {
+            console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+        }
+    });
+}
 
 
-function loadTotalPriceSession(cartitemid ) {
+function loadTotalPrice(cartitemid ) {
     $.ajax({
         url: '/Cart/GetPrice',
         type: 'GET',

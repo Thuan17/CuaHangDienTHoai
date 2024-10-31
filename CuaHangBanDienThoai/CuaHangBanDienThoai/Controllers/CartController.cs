@@ -117,7 +117,7 @@ namespace CuaHangBanDienThoai.Controllers
             if (id==null&&id <= 0)
             {
                 return PartialView();
-            }
+            } 
             var cart = db.Cart.FirstOrDefault(x => x.CustomerId == id);
             if (cart == null)
             {

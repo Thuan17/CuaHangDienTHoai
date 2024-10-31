@@ -9,6 +9,17 @@
     <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="IsLock" Type="bit" />
   </EntityType>
+  <EntityType Name="AddressCustomer">
+    <Key>
+      <PropertyRef Name="AddressCusomerId" />
+    </Key>
+    <Property Name="AddressCusomerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CustomerId" Type="int" />
+    <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="IsDefault" Type="bit" />
+    <Property Name="CustomerName" Type="nvarchar(max)" />
+    <Property Name="PhoneNumber" Type="varchar" MaxLength="15" />
+  </EntityType>
   <EntityType Name="Banner">
     <Key>
       <PropertyRef Name="BannerId" />
@@ -77,7 +88,6 @@
     <Property Name="Email" Type="varchar" MaxLength="100" />
     <Property Name="Password" Type="varchar" MaxLength="100" />
     <Property Name="Birthday" Type="date" />
-    <Property Name="Loaction" Type="nvarchar(max)" />
     <Property Name="NumberofPurchases" Type="int" />
     <Property Name="Code" Type="char" MaxLength="10" />
     <Property Name="IsLock" Type="bit" />
@@ -377,6 +387,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_AddressCusomer_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="AddressCustomer" Type="Self.AddressCustomer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="AddressCustomer">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Bill_Customer">
     <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
     <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
@@ -643,6 +665,7 @@
   </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Banner" EntityType="Self.Banner" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="BillDetail" EntityType="Self.BillDetail" Schema="dbo" store:Type="Tables" />
@@ -680,6 +703,10 @@
     <AssociationSet Name="FK_AccountEmployee_Employee" Association="Self.FK_AccountEmployee_Employee">
       <End Role="Employee" EntitySet="Employee" />
       <End Role="AccountEmployee" EntitySet="AccountEmployee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AddressCusomer_Customer" Association="Self.FK_AddressCusomer_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="AddressCustomer" EntitySet="AddressCustomer" />
     </AssociationSet>
     <AssociationSet Name="FK_Bill_Customer" Association="Self.FK_Bill_Customer">
       <End Role="Customer" EntitySet="Customer" />

@@ -1,0 +1,63 @@
+﻿@model CuaHangBanDienThoai.Models.ShoppingCart
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+}
+
+<link href="~/Content/css/Cart/css/bootstrap/main.css" rel="stylesheet" />
+<link href="~/Content/css/Cart/css/bootstrap/util.css" rel="stylesheet" />
+<link href="~/Content/css/Cart/css/bootstrap/owl.carousel.min.css" rel="stylesheet" />
+<link href="~/Content/css/client/CheckOut.css" rel="stylesheet" />
+
+<link href="~/Content/css/Notification.css" rel="stylesheet" />
+
+
+
+
+<div class="container container_Index bg-white">
+    <ul class="breadcrumbs mb-1 pl-0 pt-2 d-flex align-items-center ">
+        <li class="breadcrumb-item m-0 p-0"><a href="/trang-chu">Cửa hàng</a></li>
+        <li class="breadcrumb-item m-0 p-0"> <a href="/gio-hang">Giỏ Hàng</a></li>
+        <li class="breadcrumb-item active"> Đặt hàng</li>
+
+    </ul>
+    <div class="row">
+        <div class="mt-2"><h5 class="text-uppercase">Đơn hàng của bạn</h5></div>
+        @if (ViewBag.CheckCart != null)
+        {<div class="   pl-0 pr-0 mt-2">
+                <div class="main align-items-center p-0 CheckOutGr border-0">
+                    <div class="CheckOutImg" style="border:none!important">
+                        <b class="text-black ml-3 mb-0">Hình </b>
+                    </div>
+
+                    <div class="CheckOutGrContent">
+                        <b class="text-black  pl-1 mb-0" style="border:none!important">Sản phẩm</b>
+                    </div>
+                </div>
+            </div>
+
+            <div class=" cart ItemCheckOut" style="padding:0 !important ; ">
+                @Html.Action("Partial_Item_ThanhToan", "ShoppingCart")
+            </div>
+
+            <div class="col-12 border-bottom border-dark"></div>
+            <div class="CustomerCheckOut">
+                @Html.Action("Partial_ThongTinKhachHang", "ShoppingCart")
+            </div>
+        }
+        else
+        {
+            <div class="col-12 cart">
+                <div class="cart_null">
+
+                    <img src="~/images/logo/CartNull.png" class="text-center img_CarNUll" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+                </div>
+                <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
+            </div>
+        }
+    </div>
+</div>
+<script src="~/Scripts/CheckOut.js"></script>
+
