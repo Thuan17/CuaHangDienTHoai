@@ -1,0 +1,34 @@
+﻿@model CuaHangBanDienThoai.Models.AddressCustomer
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.AddressCusomerId)
+    @Html.HiddenFor(x => x.CustomerId)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="align-items-center">
+  
+    <div class="ThongTin">
+        <button class="float-left btn btn-danger"style="width:120px;"> <i class="bi bi-arrow-90deg-left"></i> Quay lại </button>
+        <p>
+            <strong>Địa chỉ:</strong>           @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control mb-0" } })
+            <strong>Số điện thoại:</strong>  @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control mb-0" } })
+            <strong>Người nhận:</strong>   @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control mb-0" } })
+
+        </p>
+        <div class="d-flex align-items-center">
+            <strong class="mr-2 w-100">Mặc định :</strong>
+            <span class="float-left"> @Html.RadioButton("IsDefault", "true", (bool)Model.IsDefault, new { @class = "mb-0" })   </span>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btnUpdateAddress btn btn-success"> Lưu lại</button>
+    </div>
+</div>
+
+
+   
+}
+

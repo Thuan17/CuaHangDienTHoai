@@ -83,19 +83,96 @@ namespace CuaHangBanDienThoai.Controllers
 
         //    return PartialView();
         //}
-        public ActionResult Partial_ThongTinKhachHang(int? addressid , int? customerid)
+        public ActionResult Partail_ChangeAddress()
         {
             if (Session["CustomerId"] == null && Session["customer"] == null)
             {
-                return View(); // No logged-in user
+                return View();
             }
 
             int customerId = (int)Session["CustomerId"];
             if (customerId > 0)
             {
-                // Fetch customer and address data
                 var customer = db.Customer.Find(customerId);
-                var checkAddress = db.AddressCustomer.FirstOrDefault(a => a.CustomerId == customerId);
+                var checkAddress = db.AddressCustomer.Where(a => a.CustomerId == customerId).ToList();
+                if(customer!=null&& checkAddress != null)
+                {
+                    ViewBag.CustomerId = customerId;
+                    return PartialView(checkAddress);
+                }
+               
+            }
+            return PartialView();
+        }
+        public ActionResult Partail_EditAddress(int addressid)
+        {
+            if (addressid > 0)
+            {
+                var address = db.AddressCustomer.Find(addressid);   
+                return PartialView(address);    
+            }
+            return PartialView();   
+        }
+
+
+        [HttpPost]
+        public ActionResult ChangeAddressDefault(int? addressid , int ? customerid)
+        {
+            if (Session["CustomerId"] == null && Session["customer"] == null)
+            {
+                return Json(new { Code = -3, msg = "Phiên đăng nhập hết hạn " });
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (addressid > 0 && customerid > 0)
+                    {
+                        var address = db.AddressCustomer.FirstOrDefault(x => x.CustomerId == customerid && x.AddressCusomerId == addressid);
+                        if (address != null)
+                        {
+
+                            var change = db.AddressCustomer.Where(x => x.CustomerId == customerid).ToList();
+                            foreach(var item in change)
+                            {
+                                item.IsDefault = false;
+                            }
+
+                            address.IsDefault = true;   
+                            db.Entry(address).State = EntityState.Modified;
+                             db.SaveChanges();
+                            dbContext.Commit();
+                            return Json(new { Success = true, Code = 1, msg = "Đã thay đổi địa chỉ mặc định" });
+                        }
+                    }
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy mã" });
+                    }
+
+                }
+                catch(Exception ex) 
+                {
+                    dbContext.Rollback();   
+                    return Json(new { Success = false,Code = -99, msg = "Lỗi hệ thống" });
+                
+                }
+            }
+              
+        }
+
+        public ActionResult Partial_ThongTinKhachHang()
+        {
+            if (Session["CustomerId"] == null && Session["customer"] == null)
+            {
+                return View(); 
+            }
+
+            int customerId = (int)Session["CustomerId"];
+            if (customerId > 0)
+            {
+              
+                var customer = db.Customer.Find(customerId);
+                var checkAddress = db.AddressCustomer.FirstOrDefault(a => a.CustomerId == customerId&& a.IsDefault == true);
              
                 ShoppingCart cart = (ShoppingCart)Session["Cart"];
                 if (cart != null && cart.Items.Any())

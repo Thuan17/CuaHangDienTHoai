@@ -161,18 +161,30 @@ COLOR PALETTE
 	z-index: 90;
 	display: none;
 }
+.bg-sg2 {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #000;
+	opacity: 0.5;
+	z-index: 2500;
+}
 
-/* .bg-sg {
-            position: fixed;
-            top: 15%;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: #000;
-            opacity: 0.8;
-            z-index: 70;
-            display: none;
-        }*/
+#popupBill2 {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 20px;
+	/*   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+	z-index: 2700;
+	max-width: 80%;
+	min-width:350px;
+	height: 850px;
+	overflow: hidden;
+}
 
 .hide{
 	display:none;

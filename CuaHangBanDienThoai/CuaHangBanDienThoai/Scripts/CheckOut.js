@@ -93,6 +93,9 @@ $(document).ready(function () {
     var PriceShip = $('.PriceShip');
 
 
+
+
+
     $('.expressitem').on('click', function () {
         var checkbox = $(this).find('input[type="checkbox"]');
         var isChecked = checkbox.prop('checked');

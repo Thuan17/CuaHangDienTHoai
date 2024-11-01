@@ -5755,6 +5755,8 @@
     <Content Include="Views\ShoppingCart\CheckOut.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_Item_ThanhToan.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_ThongTinKhachHang.cshtml" />
+    <Content Include="Views\ShoppingCart\Partail_ChangeAddress.cshtml" />
+    <Content Include="Views\ShoppingCart\Partail_EditAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

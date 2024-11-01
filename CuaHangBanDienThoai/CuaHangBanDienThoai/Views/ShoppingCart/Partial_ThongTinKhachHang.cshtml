@@ -13,7 +13,7 @@
             <div class="d-flex justify-content-between align-items-center w-100">
                 <h5 class="text-uppercase mb-0">Thông tin khách hàng</h5>
                 <button type="button" class="btn btn-sm btnAddAddress btn-success px-2 py-1 " style="font-size: 14px;width:120px; border-radius:12px;">
-                    Tạo địa chỉ mới
+                   Thay đổi
                 </button>
             </div>
 
@@ -324,9 +324,113 @@ else
     </form>
 
 }
+<script>
+    function CheckAccount() {
+        if (!window.sessionStorage.getItem('CustomerId')) {
+            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Phiên đăng nhập đã hết hạn');
+            let countdown = 6;
+            const interval = setInterval(function () {
 
+                countdown--;
+                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý',
+                    `Phiên đăng nhập đã hết hạn. Chuyển hướng sau ${countdown} giây...`);
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    $.ajax({
+                        url: '/Account/SetRedirectUrl',
+                        type: 'POST',
+                        data: { redirectUrl: window.location.href },
+                        success: function () {
+
+                            window.location.href = '/Account/Logout';
+                        }
+                    });
+                }
+
+            }, 1000);
+            return;
+        }
+    }
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+           <div class="toastNotifi ${type}">
+               <i class="${icon}"></i>
+               <div class="content">
+                   <div class="title">${title}</div>
+                   <span>${text}</span>
+               </div>
+               <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+           </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+
+    $(document).ready(function () {
+
+        $('.btnAddAddress').on('click', function () {
+            $.ajax({
+                url: '/ShoppingCart/Partail_ChangeAddress',
+                type: 'GET',
+                success: function (data) {
+
+                    $('#loadDataBillEdit').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                }
+            });
+
+        }); 
+
+
+
+        CheckAccount();
+        var bg2 = $(".bg-sg2");
+        var popup2 = $("#popupBill2");
+        var btnAddAddress = $('.btnAddAddress');
+        const customerId = sessionStorage.getItem('CustomerId');
+        bg2.on('click', function () {
+            bg2.hide();
+            popup2.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg2.hide();
+            popup2.hide();
+        });
+        if (customerId) {
+
+            btnAddAddress.each(function () {
+                $(this).on('click', function (e) {
+                    e.preventDefault();
+                    bg2.show();
+                    popup2.show();
+
+
+                });
+            });
+        } else {
+
+        }
+        
+
+
+    });
+</script>
 
 <script>
+
     $(document).ready(function () {
         function initializeSelectBox() {
             var selectedDiv = document.getElementById('select-selected');

@@ -1,0 +1,193 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.AddressCustomer>
+    <style>
+        /* Parent container styles to align children horizontally */
+        .text-center.d-flex {
+            display: flex;
+            align-items: center; /* Aligns items vertically in the center */
+            justify-content: center; /* Optional: centers both elements within the container */
+            gap: 8px; /* Adds some spacing between the radio input and the button */
+        }
+
+        /* Radio input styling to ensure consistent height alignment */
+        .IsDefault {
+            margin: 0; /* Removes default margin */
+            vertical-align: middle; /* Aligns input vertically in the center */
+        }
+
+        /* Button styling for the edit icon */
+        .editAddress {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border: none;
+            background-color: transparent;
+            color: #007bff;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .editAddress i {
+                font-size: 16px;
+            }
+
+            .editAddress:hover {
+                background-color: #e2e6ea;
+                color: #0056b3;
+            }
+
+    
+    </style>
+<table class="table table-hover mt-3 p-0 m-0">
+    <thead>
+        <tr>
+            <th>Thông tin</th>
+            <th class="text-center">Mặc định</th>
+        </tr>
+    </thead>
+    <tbody class="loadAddress">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr data-addressid="@item.AddressCusomerId" data-customerid="@item.CustomerId"  id="address-container-@item.AddressCusomerId">
+                    <td class="">
+                        <div class="ThongTin">
+                            <p><strong>Địa chỉ:</strong> @item.Location <strong>Số điện thoại:</strong> @item.PhoneNumber.Trim() <strong>Người nhận:</strong>  @item.CustomerName.Trim() </p>
+
+                        </div>
+                    </td>
+                    <td class="text-center align-items-center d-flex mt-3 h-100">
+                        
+                        <input type="radio" name="IsDefault" data-addressid="@item.AddressCusomerId" data-customerid="@item.CustomerId" class="IsDefault" @(item.IsDefault == true ? "checked" : "") />
+                        <button class="editAddress" data-addressid="@item.AddressCusomerId" data-customerid="@item.CustomerId" >
+                            <i class="bi bi-pen-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            <tr class="">
+                <td colspan="2">
+                    <button type="submit" class="btn btn-success btnConfiAddress hide" >Xác nhận </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+<script>
+    $(document).ready(function () {
+        var bg2 = $(".bg-sg2");
+        var popup2 = $("#popupBill2");
+        var isDefault = $(".IsDefault");
+
+
+
+
+
+        var btnConfiAddress = $(".btnConfiAddress");
+        var editAddress = $(".editAddress");
+        const addressidTR = $(this).data('addressid');
+        editAddress.each(function () {
+           
+            var addressid = $(this).data('addressid');
+            var customerid = $(this).data('customerid');
+            console.log("editAddress", addressid, customerid)
+            if (addressid && customerid) {
+                $(this).on('click', function () {
+                    $.ajax({
+                        url: '/ShoppingCart/Partail_EditAddress',
+                        type: 'GET',
+                        data: { addressid: addressid },
+                        success: function (res) {
+                            $('#address-container-' + addressid).html(res);
+
+                        }, error: function (xhr, status, error) {
+                            console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Có lỗi xảy ra khi lấy dữ liệu giá:');
+                        }
+                    });
+
+                });
+
+            } else {
+
+            }
+
+        });
+
+
+
+
+
+
+        isDefault.each(function () {
+            var addressid = $(this).data('addressid');
+            var customerid = $(this).data('customerid');
+            if (addressid && customerid) {
+                $(this).on('click', function () {
+
+
+                    btnConfiAddress.removeClass("hide");
+                    btnConfiAddress.on('click', function () {
+                     
+                        $.ajax({
+                            url: '/ShoppingCart/ChangeAddressDefault',
+                            type: 'POST',
+                            data: { addressid: addressid, customerid: customerid },
+                            success: function (res) {
+                                if (res.Success) {
+                                    if (res.Code = 1) {
+                                        $.ajax({
+                                            url: '/ShoppingCart/Partial_ThongTinKhachHang',
+                                            type: 'GET',
+                                            success: function (data) {
+                                                createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg);
+                                                $('#CustomerCheckOut').html(data);
+                                                bg2.hide();
+                                                popup2.hide();
+                                            }, error: function (xhr, status, error) {
+                                                console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                                                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Có lỗi xảy ra khi lấy dữ liệu giá:');
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    if (rs.code == -99) {
+                                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', rs.msg);
+                                    } else {
+                                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', rs.msg);
+                                    }
+                                }
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Có lỗi xảy ra khi lấy dữ liệu giá:');
+                            }
+
+
+                        });
+
+                    });
+
+
+                  
+                });
+            } else {
+                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Có lỗi xảy ra khi lấy dữ liệu giá:');
+            }
+
+         
+
+        });
+    
+
+
+
+
+    });
+</script>
