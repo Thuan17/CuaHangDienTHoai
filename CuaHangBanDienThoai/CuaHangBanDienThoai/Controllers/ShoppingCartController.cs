@@ -1,11 +1,15 @@
 ﻿using CuaHangBanDienThoai.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CuaHangBanDienThoai.Models.Payment;
+using System.Text;
 
 namespace CuaHangBanDienThoai.Controllers
 {
@@ -13,14 +17,24 @@ namespace CuaHangBanDienThoai.Controllers
     {
         // GET: ShoppingCart
 
-        private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();   
+
+
+
+
+        private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
+
+
+
+
+
+
         public ActionResult Index()
         {
             return View();
         }
         public ActionResult CheckOut()
         {
-            if(Session["CustomerId"]==null&& Session["customer"] == null)
+            if (Session["CustomerId"] == null && Session["customer"] == null)
             {
                 return View();
             }
@@ -35,9 +49,598 @@ namespace CuaHangBanDienThoai.Controllers
                 return View(cart);
             }
             return View();
-          
+
 
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]  
+        public ActionResult CheckOut(int customerid  ,OrderView req)
+        {
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+
+                if (customerid < 0 && Session["CustomerId"] == null)
+                {
+                    return Json(new { Success = false, Code = -3, msg = "Phiên đặng nhập đã hết hạn" });
+                }
+
+
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+                        if (Session["CustomerId"] != null)
+                        {
+                            int idKhach = (int)Session["CustomerId"];
+                            if(idKhach!= customerid)
+                            {
+                                return Json(new { Success = false, Code = -3, msg = "Phiên đặng nhập đã hết hạn" });
+                            }
+
+
+                            var inforKhachHang = db.Customer.FirstOrDefault(x => x.CustomerId == idKhach);
+                            ShoppingCart cart = (ShoppingCart)Session["Cart"];
+
+                            if (cart != null)
+                            {
+                                var insufficientItems = ProcessCartItems(cart, idKhach);
+                                if (insufficientItems.Any())
+                                {
+                                    return Json(new { Success = false, Code = -4, InsufficientItems = insufficientItems.Select(i => new { i.ProductDetailId, i.ProductName }) });
+                                }
+
+                                var order = CreateOrder(cart, inforKhachHang, req.TypePaymentVN);
+
+                                if (order == null)
+                                {
+                                    return Json(new { Success = false, Code = -2, msg="Đơn hàng thất bại" });
+                                }
+
+
+                                db.OrderCustomer.Add(order);
+                                db.SaveChanges();
+                                int OrderId = order.OrderId;
+                                inforKhachHang.NumberofPurchases += 1;
+                                db.Entry(inforKhachHang).State = EntityState.Modified;
+                                db.SaveChanges();
+
+                              
+                                var itemWithVoucher = cart.Items.FirstOrDefault(item => item.PercentPriceReduction.HasValue && item.PercentPriceReduction > 0);
+
+                                //if (itemWithVoucher != null)
+                                //{
+
+                                //    if (!UpdateVoucherDetail(itemWithVoucher.CodeVoucher, order))
+                                //    {
+                                //        return Json(new { Success = false, Code = -2, msg= "Áp dụng voucher thất bại" }); 
+                                //    }
+                                //}
+
+
+                                if (req.TypePaymentVN == 2)
+                                {
+                                    dbContextTransaction.Commit();
+                                    var url = UrlPayment(req.TypePaymentVN, order.Code);
+                                   
+
+                                    return Json(new { Success = true, Code = req.TypePaymentVN, Url = url });
+                                }
+                                else
+                                {
+                                    SendConfirmationEmails(cart, order, inforKhachHang);
+
+
+                                    cart.ClearCart();
+
+                                    dbContextTransaction.Commit();
+                                    string orderCode = order.Code;
+                                    return Json(new { Success = true, Code = 1, Url = $"muahangthanhcong/{orderCode}", OrderCode = orderCode });
+                                }
+                            }
+                            else
+                            {
+                                return Json(new {Success=false , Code =-2 });
+                            }
+                        }
+                        else
+                        {
+                            return Json(new { Success = false, Code = -2 });
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, Code = -2 });
+                    }
+                  
+                }
+                catch (Exception ex)
+                {
+                    dbContextTransaction.Rollback();
+                    return Json(new { Success = false, Code = -99 });
+                }
+            }
+        }
+        #region/* Thanh toán vnpay*/
+
+        public string UrlPayment(int TypePaymentVN, string orderCode)
+        {
+            var urlPayment = "";
+            var order = db.OrderCustomer.FirstOrDefault(x => x.Code == orderCode);
+
+            if (order == null) // Kiểm tra xem đơn hàng có tồn tại không
+            {
+                return ""; // Trả về chuỗi rỗng nếu không tìm thấy đơn hàng
+            }
+
+            // Get Config Info
+            string vnp_Returnurl = ConfigurationManager.AppSettings["vnp_Returnurl"]; // URL nhận kết quả trả về 
+            string vnp_Url = ConfigurationManager.AppSettings["vnp_Url"]; // URL thanh toán của VNPAY 
+            string vnp_TmnCode = ConfigurationManager.AppSettings["vnp_TmnCode"]; // Mã định danh merchant kết nối (Terminal Id)
+            string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; // Secret Key
+
+            // Build URL for VNPAY
+            VnPayLibrary vnpay = new VnPayLibrary();
+            var Price = (long)order.TotalAmount * 100;
+            vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
+            vnpay.AddRequestData("vnp_Command", "pay");
+            vnpay.AddRequestData("vnp_TmnCode", vnp_TmnCode);
+            vnpay.AddRequestData("vnp_Amount", Price.ToString());
+            if (TypePaymentVN == 1)
+            {
+                vnpay.AddRequestData("vnp_BankCode", "VNPAYQR");
+            }
+            else if (TypePaymentVN == 2)
+            {
+                vnpay.AddRequestData("vnp_BankCode", "VNBANK");
+            }
+            else if (TypePaymentVN == 3)
+            {
+                vnpay.AddRequestData("vnp_BankCode", "INTCARD");
+            }
+
+            vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
+            vnpay.AddRequestData("vnp_CurrCode", "VND");
+            vnpay.AddRequestData("vnp_IpAddr", Utils.GetIpAddress());
+            vnpay.AddRequestData("vnp_Locale", "vn");
+            vnpay.AddRequestData("vnp_OrderInfo", "Thanh toán đơn hàng :" + order.Code);
+            vnpay.AddRequestData("vnp_OrderType", "other");
+
+            vnpay.AddRequestData("vnp_ReturnUrl", vnp_Returnurl);
+            vnpay.AddRequestData("vnp_TxnRef", order.Code);
+
+            urlPayment = vnpay.CreateRequestUrl(vnp_Url, vnp_HashSecret);
+
+            return urlPayment;
+        }
+
+        #endregion
+
+        public ActionResult VnpayReturn()
+        {
+            try
+            {
+                if (Request.QueryString.Count > 0)
+                {
+                    string vnp_HashSecret = ConfigurationManager.AppSettings["vnp_HashSecret"]; // Chuỗi bí mật
+                    var vnpayData = Request.QueryString;
+                    VnPayLibrary vnpay = new VnPayLibrary();
+
+                    foreach (string s in vnpayData)
+                    {
+                        // Lấy tất cả dữ liệu truy vấn querystring
+                        if (!string.IsNullOrEmpty(s) && s.StartsWith("vnp_"))
+                        {
+                            vnpay.AddResponseData(s, vnpayData[s]);
+                        }
+                    }
+
+                    string orderCode = Convert.ToString(vnpay.GetResponseData("vnp_TxnRef"));
+                    string vnp_ResponseCode = vnpay.GetResponseData("vnp_ResponseCode");
+                    string vnp_TransactionStatus = vnpay.GetResponseData("vnp_TransactionStatus");
+                    String vnp_SecureHash = Request.QueryString["vnp_SecureHash"];
+                    String TerminalID = Request.QueryString["vnp_TmnCode"];
+                    long vnp_Amount = Convert.ToInt64(vnpay.GetResponseData("vnp_Amount")) / 100;
+                    String bankCode = Request.QueryString["vnp_BankCode"];
+
+                    bool checkSignature = vnpay.ValidateSignature(vnp_SecureHash, vnp_HashSecret);
+                    if (checkSignature)
+                    {
+                        var itemOrder = db.OrderCustomer.FirstOrDefault(x => x.Code == orderCode);
+                        var customer = db.Customer.FirstOrDefault(x => x.CustomerId == itemOrder.CustomerId);
+                        if (vnp_ResponseCode == "00" && vnp_TransactionStatus == "00")
+                        {
+                            if (itemOrder != null && customer != null)
+                            {
+                                itemOrder.TypePayment = 2; // Đã thanh toán
+                                db.OrderCustomer.Attach(itemOrder);
+                                db.Entry(itemOrder).State = System.Data.Entity.EntityState.Modified;
+                                db.SaveChanges();
+                                ShoppingCart cart = (ShoppingCart)Session["Cart"];
+                                SendConfirmationEmails(cart, itemOrder, customer);
+
+                                ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
+                            }
+                            else
+                            {
+
+                                UpdateWarehouseQuantity(itemOrder);
+                                return RedirectToAction("CheckOutFailVnpay", "ShoppingCart");
+
+                                //ViewBag.InnerText = "Có lỗi xảy ra trong quá trình xử lý. Mã lỗi: " + vnp_ResponseCode;
+                            }
+                        }
+                        else
+                        {
+                            if (itemOrder != null)
+                            {
+                                UpdateWarehouseQuantity(itemOrder);
+                                return RedirectToAction("CheckOutFailVnpay", "ShoppingCart");
+                            }
+                            ViewBag.InnerText = "Có lỗi xảy ra trong quá trình xử lý. Mã lỗi: " + vnp_ResponseCode;
+                        }
+                        ViewBag.ThanhToanThanhCong = "Số tiền thanh toán (VND): " + vnp_Amount.ToString();
+                        return View();
+                    }
+                }
+                return RedirectToAction("Index", "Error"); // Redirect đến trang lỗi nếu không có query string hoặc xác thực không thành công
+            }
+            catch (Exception ex)
+            {
+                // Redirect đến trang lỗi nếu có ngoại lệ xảy ra
+                return RedirectToAction("Index", "Error");
+            }
+        }
+
+        private void SendConfirmationEmails(ShoppingCart cart, OrderCustomer order, Customer customerInfo)
+        {
+            var itemsTable = GenerateItemsTable(cart);
+            var totalAmount = cart.Items.Sum(item => item.Price * item.Quantity);
+
+            string contentCustomer = System.IO.File.ReadAllText(Server.MapPath("~/Content/templates/send2.html"));
+            contentCustomer = ReplaceOrderPlaceholders(contentCustomer, order, customerInfo, itemsTable, totalAmount);
+            CuaHangBanDienThoai.Common.Common.SendMail("PadaMiniStore", "Đơn hàng #" + order.Code, contentCustomer, customerInfo.Email);
+
+            string contentAdmin = System.IO.File.ReadAllText(Server.MapPath("~/Content/templates/send1.html"));
+            contentAdmin = ReplaceOrderPlaceholders(contentAdmin, order, customerInfo, itemsTable, totalAmount);
+            CuaHangBanDienThoai.Common.Common.SendMail("PadaMiniStore", "Đơn hàng mới #" + order.Code, contentAdmin, ConfigurationManager.AppSettings["EmailAdmin"]);
+        }
+        private string GenerateItemsTable(ShoppingCart cart)
+        {
+            var sb = new StringBuilder();
+            foreach (var item in cart.Items)
+            {
+                sb.Append("<tr>")
+                    .Append("<td>").Append(item.ProductName).Append("</td>")
+                    .Append("<td>").Append(item.Quantity).Append("</td>")
+                    .Append("<td>").Append(CuaHangBanDienThoai.Common.Common.FormatNumber(item.PriceTotal, 0)).Append("</td>")
+                    .Append("</tr>");
+            }
+            return sb.ToString();
+        }
+
+        private string ReplaceOrderPlaceholders(string template, OrderCustomer order, Customer customerInfo, string itemsTable, decimal totalAmount)
+        {
+            return template
+                .Replace("{{MaDon}}", order.Code)
+                .Replace("{{SanPham}}", itemsTable)
+                .Replace("{{NgayDat}}", DateTime.Now.ToString("dd/MM/yyyy"))
+                .Replace("{{TenKhachHang}}", order.CustomerName)
+                .Replace("{{Phone}}", order.Phone)
+                .Replace("{{Email}}", customerInfo.Email)
+                .Replace("{{DiaChiNhanHang}}", order.Location)
+                .Replace("{{ThanhTien}}", CuaHangBanDienThoai.Common.Common.FormatNumber(totalAmount, 0))
+                .Replace("{{TongTien}}", CuaHangBanDienThoai.Common.Common.FormatNumber(totalAmount, 0));
+        }
+
+
+        private bool UpdateVoucherDetail(string codeVoucher, OrderCustomer order)
+        {
+            try
+            {
+                var voucherDetail = db.VoucherDetail.FirstOrDefault(x => x.Code == codeVoucher && x.Status == false);
+                if (voucherDetail != null)
+                {
+                    var existingOrder = db.OrderCustomer.FirstOrDefault(o => o.OrderId == order.OrderId);
+                    if (existingOrder != null)
+                    {
+
+                        if (voucherDetail.VoucherId>0)
+                        {
+                            var existingVoucher = db.Voucher.FirstOrDefault(v => v.VoucherId == voucherDetail.VoucherId);
+                            if (existingVoucher != null)
+                            {
+                                voucherDetail.OrderId = order.OrderId;
+                                voucherDetail.UsedDate = DateTime.Now;
+                                voucherDetail.Status = true;
+                                db.SaveChanges();
+                                return true; 
+                            }
+                            else
+                            {
+                                return false; 
+                            }
+                        }
+                        else
+                        {
+                            return false; 
+                        }
+                    }
+                    else
+                    {
+                        return false; 
+                    }
+                }
+                else
+                {
+                    UpdateWarehouseQuantity(order);
+                    return false; // Không tìm thấy voucher hoặc đã được sử dụng
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý ngoại lệ nếu cần
+                return false; // Có lỗi khi cập nhật voucher
+            }
+        }
+        private void UpdateWarehouseQuantity(OrderCustomer itemOrder)
+        {
+            var orderDetails = db.OrderDetail.Where(od => od.OrderId == itemOrder.OrderId).ToList();
+
+            foreach (var orderDetail in orderDetails)
+            {
+                // Lấy thông tin sản phẩm chi tiết từ đơn hàng
+                int productDetailId = (int)orderDetail.ProductDetailId;
+                int quantity = orderDetail.Quantity;
+
+                // Cập nhật số lượng sản phẩm trong kho
+                var warehouseDetail = db.ProductDetail.FirstOrDefault(w => w.ProductDetailId == productDetailId);
+                if (warehouseDetail != null)
+                {
+                    // Trả lại số lượng sản phẩm vào kho
+                    warehouseDetail.Quantity += quantity;
+                    db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                }
+                else
+                {
+                    // Xử lý khi không tìm thấy sản phẩm trong kho (nếu cần)
+                }
+            }
+            // Lưu thay đổi vào cơ sở dữ liệu
+            db.SaveChanges();
+
+            RestoreCartItems(itemOrder);
+
+            //DeleteOrderAndOrderDetails(itemOrder);
+
+
+        }
+        private void RestoreCartItems(OrderCustomer itemOrder)
+        {
+            var orderDetails = db.OrderDetail.Where(od => od.OrderId == itemOrder.OrderId).ToList();
+            int customerId = (int)itemOrder.CustomerId;
+
+
+            var cart = db.Cart.FirstOrDefault(c => c.CustomerId == customerId);
+            if (cart == null)
+            {
+                // Tạo mới giỏ hàng nếu chưa tồn tại
+                cart = new Cart { CustomerId = customerId };
+                db.Cart.Add(cart);
+                db.SaveChanges();
+            }
+            foreach (var orderDetail in orderDetails)
+            {
+                var cartItem = new CartItem
+                {
+                    CartId = cart.CartId,
+                    ProductDetailId = (int)orderDetail.ProductDetailId,
+                    Quantity = orderDetail.Quantity,
+                   
+                };
+
+                db.CartItem.Add(cartItem);
+            }
+            db.SaveChanges();
+        }
+        private string GenerateOrderCode()
+        {
+            Random ran = new Random();
+            return "DH" + string.Concat(Enumerable.Range(0, 5).Select(_ => ran.Next(0, 10)));
+        }
+        private OrderCustomer CreateOrder(ShoppingCart cart, Customer customerInfo, int typePayment)
+        {
+            var addresscustomer = db.AddressCustomer.FirstOrDefault(x => x.CustomerId == customerInfo.CustomerId && x.IsDefault == true);
+            if (addresscustomer != null)
+
+            {
+                var order = new OrderCustomer
+                {
+                    CustomerName = customerInfo.CustomerName.Trim(),
+                    Phone = addresscustomer.PhoneNumber.Trim(),
+                    Location = addresscustomer.Location.Trim(),
+                    Email = customerInfo.Email,
+
+                    TypePayment = typePayment,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now,
+                    Confirm = false,
+                  
+                    IsDelivery = false,
+                    Success = false,
+                    Code = GenerateOrderCode(),
+                    CustomerId = customerInfo.CustomerId,
+
+                };
+                decimal totalAmount = 0;
+                int totalQuantity = 0;
+                foreach (var item in cart.Items)
+                {
+
+                    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0 && item.CodeVoucher != null)
+                    {
+                        totalAmount += item.PriceTotal;
+
+                    }
+                    else
+                    {
+                        totalAmount += item.PriceTotal;
+                    }
+                    totalQuantity += item.Quantity;
+                }
+
+
+                order.TotalAmount = totalAmount;
+            
+
+                // Thêm các chi tiết đơn hàng
+                cart.Items.ForEach(row => order.OrderDetail.Add(new OrderDetail
+                {
+                    ProductDetailId = row.ProductDetailId,
+                    Quantity = row.Quantity,
+                    Price = row.PriceTotal
+                }));
+
+                return order;
+
+            }
+            return null;    
+
+          
+        }
+        private List<ShoppingCartItem> ProcessCartItems(ShoppingCart cart, int customerId)
+        {
+            List<ShoppingCartItem> insufficientItems = new List<ShoppingCartItem>();
+            List<int> rollbackQuantities = new List<int>();
+            List<ShoppingCartItem> removedItems = new List<ShoppingCartItem>();
+
+            try
+            {
+                var itemsCopy = new List<ShoppingCartItem>(cart.Items);
+
+                foreach (var item in itemsCopy)
+                {
+                    var warehouseDetail = db.ProductDetail.FirstOrDefault(w => w.ProductDetailId == item.ProductDetailId);
+
+                    if (warehouseDetail != null && warehouseDetail.Quantity >= item.Quantity)
+                    {
+                        rollbackQuantities.Add((int)warehouseDetail.Quantity);
+
+                        warehouseDetail.Quantity -= item.Quantity;
+                        db.Entry(warehouseDetail).State = System.Data.Entity.EntityState.Modified;
+
+                        DeleteCartSucces(customerId, item.ProductDetailId);
+
+                        removedItems.Add(item);
+                    }
+                    else
+                    {
+                        insufficientItems.Add(item);
+                    }
+                }
+
+                // Kiểm tra nếu có sản phẩm không đủ hàng
+                if (insufficientItems.Any())
+                {
+                    // Rollback lại số lượng sản phẩm đã giảm
+                    foreach (var removedItem in removedItems)
+                    {
+                        var originalQuantity = rollbackQuantities[removedItems.IndexOf(removedItem)];
+                        var currentWarehouseDetail = db.ProductDetail.FirstOrDefault(w => w.ProductDetailId == removedItem.ProductDetailId);
+                        if (currentWarehouseDetail != null)
+                        {
+                            currentWarehouseDetail.Quantity += removedItem.Quantity;
+                            db.Entry(currentWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                        }
+                    }
+
+                 
+                    db.SaveChanges();
+                }
+                else
+                {
+                    // Nếu tất cả sản phẩm đều đủ hàng, lưu thay đổi và commit giao dịch
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+
+                // Rollback lại số lượng sản phẩm đã giảm
+                foreach (var removedItem in removedItems)
+                {
+                    var originalQuantity = rollbackQuantities[removedItems.IndexOf(removedItem)];
+                    var currentWarehouseDetail = db.ProductDetail.FirstOrDefault(w => w.ProductDetailId == removedItem.ProductDetailId);
+                    if (currentWarehouseDetail != null)
+                    {
+                        currentWarehouseDetail.Quantity += removedItem.Quantity;
+                        db.Entry(currentWarehouseDetail).State = System.Data.Entity.EntityState.Modified;
+                    }
+                }
+
+                // Lưu thay đổi vào cơ sở dữ liệu
+                db.SaveChanges();
+            }
+
+            return insufficientItems;
+        }
+        private void DeleteCartSucces(int idKhachHang, int productId)
+        {
+            if (Session["CustomerId"] != null)
+            {
+                int idKhach = (int)Session["CustomerId"];
+                var checkCart = db.Cart.FirstOrDefault(x => x.CustomerId == idKhach);
+                if (checkCart != null)
+                {
+                    var checkItemCart = db.CartItem.SingleOrDefault(x => x.CartId == checkCart.CartId && x.ProductDetailId == productId);
+                    if (checkItemCart != null)
+                    {
+                        db.CartItem.Remove(checkItemCart);
+                        db.SaveChanges();
+                    }
+                }
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteFromCartSession(int productdetaili) // ko có tìa khoản 
+        {
+            try
+            {
+                ShoppingCart cart = (ShoppingCart)Session["Cart"];
+                if (cart != null)
+                {
+                    var checkProduct = cart.Items.FirstOrDefault(x => x.ProductDetailId == productdetaili);
+                    if (checkProduct != null)
+                    {
+                        cart.Remove(productdetaili);
+                        return Json(new { Success = true, msg = "Đã xoá thành công", Code = 1 });
+                    }
+                    else
+                    {
+                        return Json(new { Success = false, msg = "Lỗi mã sản phẩm", Code = -1 });
+                    }
+                }
+                else
+                {
+                    return Json(new { Success = false, msg = "Không tồn tại sản phẩm", Code = -2 });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, msg = "Lỗi máy chủ !", Code = -100 });
+            }
+
+
+        }
+
+
+
 
         public ActionResult Partial_Item_ThanhToan()
         {
@@ -48,41 +651,7 @@ namespace CuaHangBanDienThoai.Controllers
             }
             return PartialView();
         }
-        //public ActionResult Partial_ThongTinKhachHangData()
-        //{
-        //    if (Session["CustomerId"] == null && Session["customer"] == null)
-        //    {
-        //        return View();
-        //    }
 
-        //    int customerId = (int)Session["CustomerId"];
-        //    if (customerId > 0)
-        //    {
-        //        var checkAddress = (from ci in db.AddressCusomer
-        //                            join pd in db.Customer on ci.CustomerId equals pd.CustomerId
-        //                            where ci.CustomerId == customerId
-        //                            select ci).FirstOrDefault();
-        //        ShoppingCart cart = (ShoppingCart)Session["Cart"];
-        //        if (cart != null && cart.Items.Any())
-        //        {
-        //            if (checkAddress != null)
-        //            {
-        //                ViewBag.TotalPrice = cart.GetTotalPrice();
-        //                return PartialView(checkAddress);
-        //            }
-        //            else
-        //            {
-        //                ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name");
-        //                return PartialView();
-        //            }
-        //        }
-        //    }
-
-
-
-
-        //    return PartialView();
-        //}
         public ActionResult Partail_ChangeAddress()
         {
             if (Session["CustomerId"] == null && Session["customer"] == null)
@@ -95,12 +664,12 @@ namespace CuaHangBanDienThoai.Controllers
             {
                 var customer = db.Customer.Find(customerId);
                 var checkAddress = db.AddressCustomer.Where(a => a.CustomerId == customerId).ToList();
-                if(customer!=null&& checkAddress != null)
+                if (customer != null && checkAddress != null)
                 {
                     ViewBag.CustomerId = customerId;
                     return PartialView(checkAddress);
                 }
-               
+
             }
             return PartialView();
         }
@@ -108,11 +677,113 @@ namespace CuaHangBanDienThoai.Controllers
         {
             if (addressid > 0)
             {
-                var address = db.AddressCustomer.Find(addressid);   
-                return PartialView(address);    
+                var address = db.AddressCustomer.Find(addressid);
+                return PartialView(address);
             }
-            return PartialView();   
+            return PartialView();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditAddress(AddressCustomer model)
+        {
+            if (ModelState.IsValid)
+            {
+
+
+                var existingAddress = db.AddressCustomer
+                              .FirstOrDefault(a =>
+                                  a.CustomerId == model.CustomerId &&
+                                  a.Location.Trim().ToLower() == model.Location.Trim().ToLower() &&
+                                  a.PhoneNumber.Trim() == model.PhoneNumber.Trim());
+
+                if (existingAddress != null)
+                {
+                    return Json(new { Success = false, Code = -2, msg = "Địa chỉ này đã tồn tại trong hệ thống." });
+                }
+                db.AddressCustomer.Attach(model);
+                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return Json(new { Success = true });
+            }
+            return Json(new { Success = false, msg = "Vui lòng điền đủ thông tin" });
+        }
+
+
+        public ActionResult Partial_AddNewAddress()
+        {
+            if (Session["CustomerId"] == null && Session["customer"] == null)
+            {
+                return PartialView();
+            }
+            else
+            {
+                int customerId = (int)Session["CustomerId"];
+                return PartialView();
+            }
+        }
+
+
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ThemAddressCustomer(int customerId, CLient_AddressCustomer req, AddressCustomer model)
+        {
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (customerId > 0)
+                    {
+                        var customer = db.Customer.Find(customerId);
+                        if (customer != null)
+                        {
+                            if (req.Location == null && req.CustomerName == null && req.PhoneNumber == null)
+                            {
+                                return Json(new { Success = false, Code = -2, msg = "Vui lòng điền đầy đủ !!!" });
+                            }
+
+                            // Kiểm tra xem địa chỉ đã tồn tại hay chưa
+                            var existingAddress = db.AddressCustomer
+                                .FirstOrDefault(a =>
+                                    a.CustomerId == customerId &&
+                                    a.Location.Trim().ToLower() == req.Location.Trim().ToLower() &&
+                                    a.PhoneNumber.Trim() == req.PhoneNumber.Trim());
+
+                            if (existingAddress != null)
+                            {
+                                return Json(new { Success = false, Code = -2, msg = "Địa chỉ này đã tồn tại trong hệ thống." });
+                            }
+
+                            model.CustomerId = customerId;
+                            model.CustomerName = req.CustomerName.Trim();
+                            model.PhoneNumber = req.PhoneNumber.Trim();
+                            model.Location = req.Location.Trim();
+                            db.AddressCustomer.Add(model);
+                            db.SaveChanges();
+
+                            dbContext.Commit();
+                            return Json(new { Success = true, Code = 1, msg = "Thêm thành công" });
+                        }
+                        else
+                        {
+                            return Json(new { Success = false, Code = -2, msg = "Phiên đăng nhập đã hết hạn" });
+                        }
+                    }
+                    return Json(new { Success = false, Code = -2, msg = "Phiên đăng nhập đã hết hạn" });
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Lỗi hệ thống" });
+                }
+            }
+        }
+
+
+
 
 
         [HttpPost]
@@ -164,63 +835,38 @@ namespace CuaHangBanDienThoai.Controllers
         {
             if (Session["CustomerId"] == null && Session["customer"] == null)
             {
-                return View(); 
+                return View();
             }
 
             int customerId = (int)Session["CustomerId"];
             if (customerId > 0)
             {
-              
                 var customer = db.Customer.Find(customerId);
-                var checkAddress = db.AddressCustomer.FirstOrDefault(a => a.CustomerId == customerId&& a.IsDefault == true);
-             
+                var checkAddress = db.AddressCustomer.FirstOrDefault(a => a.CustomerId == customerId && a.IsDefault == true);
+
                 ShoppingCart cart = (ShoppingCart)Session["Cart"];
                 if (cart != null && cart.Items.Any())
                 {
-
-
-
                     ViewBag.TotalPrice = cart.GetTotalPrice();
-                    if (checkAddress != null)
+
+                  
+                    var viewModel = new OrderView
                     {
-                        OrderView viewModel;
+                        Email = customer?.Email
+                    };
 
-                        if (checkAddress.IsDefault==true)
-                        {
-                            viewModel = new OrderView
-                            {
-                                NameCustomer = checkAddress.CustomerName,
-                                PhoneCustomer = checkAddress.PhoneNumber,
-                                Email = customer.Email,
-                                Location = checkAddress.Location
-                            };
-
-                            var CustomerAddresses = db.AddressCustomer
-                             .Select(address => new OrderViewNonDefault
-                             {
-                                 AddressCusomerId = address.AddressCusomerId,
-                                 CustomerId = (int)address.CustomerId,
-                                 Location = address.Location,
-                                 CustomerName = address.CustomerName,
-                                 PhoneNumber = address.PhoneNumber,
-                             }).ToList();
-                            ViewBag.AddressCustomerNonDefault = CustomerAddresses;
-
-
-                            return PartialView(viewModel);
-                        }
-                      
-
-                       
-                    }
-                    else
+                    if (checkAddress != null && checkAddress.IsDefault == true)
                     {
-                        ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name");
-                     return PartialView();
+                        viewModel.NameCustomer = checkAddress.CustomerName;
+                        viewModel.PhoneCustomer = checkAddress.PhoneNumber;
+                        viewModel.Location = checkAddress.Location;
                     }
 
+                    return PartialView(viewModel); 
                 }
             }
+
+         
             ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name");
             return PartialView();
         }
@@ -312,12 +958,12 @@ namespace CuaHangBanDienThoai.Controllers
 
                             if (cartItem != null)
                             {
-
+                                var Name = cartItem.ProductDetail.Products.Title.Trim() + " " + cartItem.ProductDetail.Ram.Trim() + "/" + cartItem.ProductDetail.Capacity.Trim();
                                 ShoppingCartItem item = new ShoppingCartItem
                                 {
                                     ProductDetailId = (int)cartItem.ProductDetailId,
-
-                                    Quantity = cartItem.Quantity,
+                                    ProductName = Name ?? "",
+                                     Quantity = cartItem.Quantity,
                                     ProductDetail = cartItem.ProductDetail,
                                 };
 
@@ -359,7 +1005,38 @@ namespace CuaHangBanDienThoai.Controllers
 
         }
 
-
-
+        public ActionResult CheckOutSuceess(string Code)
+        {
+         
+            if (Code != null)
+            {
+                var order = db.OrderCustomer.FirstOrDefault(b => b.Code == Code);
+                if (order != null)
+                {
+                    ViewBag.Code = order.Code;
+                    ViewBag.item = order;
+                    return View(order);
+                }
+                return View();
+            }
+            else
+            {
+                ViewBag.Code = "";
+                return View();
+            }
+        }
+        public ActionResult Partial_BillDetail(int id)
+        {
+            if (id > 0)
+            {
+                var orderDetail = db.OrderDetail.Where(x => x.OrderId == id).ToList();
+                if (orderDetail != null)
+                {
+                    ViewBag.BillDetail = orderDetail;
+                    return PartialView(orderDetail);
+                }
+            }
+            return View();
+        }
     }
 }

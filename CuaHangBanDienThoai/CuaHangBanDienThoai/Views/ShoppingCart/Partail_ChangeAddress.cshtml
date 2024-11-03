@@ -43,7 +43,15 @@
 <table class="table table-hover mt-3 p-0 m-0">
     <thead>
         <tr>
-            <th>Thông tin</th>
+            <th class="d-flex">
+                Thông tin
+                <button type="button" class="btnThemAddress btn btn-success ml-2 mt-0 d-flex justify-content-center align-items-center text-center" style="width: 25px; height: 25px;padding-left:15px; padding: 0;border-radius:8px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="12" height="12" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                </button>
+
+            </th>
             <th class="text-center">Mặc định</th>
         </tr>
     </thead>
@@ -54,9 +62,9 @@
             {
                 <tr data-addressid="@item.AddressCusomerId" data-customerid="@item.CustomerId"  id="address-container-@item.AddressCusomerId">
                     <td class="">
-                        <div class="ThongTin">
+                        <div class="ThongTin ">
                             <p><strong>Địa chỉ:</strong> @item.Location <strong>Số điện thoại:</strong> @item.PhoneNumber.Trim() <strong>Người nhận:</strong>  @item.CustomerName.Trim() </p>
-
+                           
                         </div>
                     </td>
                     <td class="text-center align-items-center d-flex mt-3 h-100">
@@ -84,10 +92,30 @@
         var bg2 = $(".bg-sg2");
         var popup2 = $("#popupBill2");
         var isDefault = $(".IsDefault");
+        
+      
 
 
+        $('.btnThemAddress').on('click', function () {
+            var newRow = $('<tr><td colspan="2" id="new-address-row"></td></tr>');
+            $('.loadAddress').append(newRow);
+
+            $.ajax({
+                url: '/ShoppingCart/Partial_AddNewAddress', 
+                type: 'GET',
+                success: function (res) {
+                   
+                    $('#new-address-row').html(res);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra khi tải địa chỉ mới:', error);
+                    createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Không thể tải địa chỉ mới.');
+                }
+
+            });
 
 
+        });
 
         var btnConfiAddress = $(".btnConfiAddress");
         var editAddress = $(".editAddress");

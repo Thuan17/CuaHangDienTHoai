@@ -431,7 +431,7 @@ $(document).ready(function () {
         }
     }
 
-    $('.btnCheckOutS').off('click').on('click', function (event) {
+    $('.btnCheckOut').off('click').on('click', function (event) {
         event.preventDefault();
 
         let isValid = validateForm();
@@ -442,7 +442,7 @@ $(document).ready(function () {
 
             $('.loading-overlay').show();
             $('.sent').show();
-            $('.btnCheckOutS').prop('disabled', true);
+            $('.btnCheckOut').prop('disabled', true);
             $.ajax({
                 url: '/ShoppingCart/CheckOut',
                 type: 'POST',
@@ -462,13 +462,13 @@ $(document).ready(function () {
                         if (res.Code === -1) {
                             $('.loading-overlay').hide();
                             $('.sent').hide();
-                            $('.btnCheckOutS').prop('disabled', false);
+                            $('.btnCheckOut').prop('disabled', false);
                             createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', res.msg);
 
                         } else if (res.Code === -2) {
                             $('.loading-overlay').hide();
                             $('.sent').hide();
-                            $('.btnCheckOutS').prop('disabled', false);
+                            $('.btnCheckOut').prop('disabled', false);
                             if (res.InsufficientItems && res.InsufficientItems.length > 0) {
                                 message = "\n";
                                 res.InsufficientItems.forEach(function (item) {
@@ -496,7 +496,7 @@ $(document).ready(function () {
                 error: function (xhr) {
                     $('.loading-overlay').hide();
                     $('.sent').hide();
-                    $('.btnCheckOutS').prop('disabled', false);
+                    $('.btnCheckOut').prop('disabled', false);
 
                     Swal.fire({
                         icon: "error",

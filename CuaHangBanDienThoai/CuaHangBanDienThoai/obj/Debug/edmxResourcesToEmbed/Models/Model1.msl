@@ -14,12 +14,12 @@
     <EntitySetMapping Name="AddressCustomer">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.AddressCustomer">
         <MappingFragment StoreEntitySet="AddressCustomer">
-          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
-          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
           <ScalarProperty Name="AddressCusomerId" ColumnName="AddressCusomerId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="Location" ColumnName="Location" />
           <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -184,6 +184,41 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="OrderCustomer">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.OrderCustomer">
+        <MappingFragment StoreEntitySet="OrderCustomer">
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
+          <ScalarProperty Name="TypePayment" ColumnName="TypePayment" />
+          <ScalarProperty Name="Confirm" ColumnName="Confirm" />
+          <ScalarProperty Name="Success" ColumnName="Success" />
+          <ScalarProperty Name="SuccessDate" ColumnName="SuccessDate" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Location" ColumnName="Location" />
+          <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="IsDelivery" ColumnName="IsDelivery" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderDetail">
+      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.OrderDetail">
+        <MappingFragment StoreEntitySet="OrderDetail">
+          <ScalarProperty Name="OrderDetailId" ColumnName="OrderDetailId" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
+          <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ProductCategory">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ProductCategory">
         <MappingFragment StoreEntitySet="ProductCategory">
@@ -342,6 +377,8 @@
     <EntitySetMapping Name="Voucher">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Voucher">
         <MappingFragment StoreEntitySet="Voucher">
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="PercentPriceReduction" ColumnName="PercentPriceReduction" />
@@ -364,6 +401,7 @@
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
           <ScalarProperty Name="BillId" ColumnName="BillId" />
+          <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="Status" ColumnName="Status" />

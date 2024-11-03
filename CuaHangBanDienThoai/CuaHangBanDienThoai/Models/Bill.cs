@@ -17,8 +17,8 @@ namespace CuaHangBanDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Bill()
         {
-            this.BillDetail = new HashSet<BillDetail>();
             this.VoucherDetail = new HashSet<VoucherDetail>();
+            this.BillDetail = new HashSet<BillDetail>();
         }
     
         public int BillId { get; set; }
@@ -37,10 +37,10 @@ namespace CuaHangBanDienThoai.Models
         public string Note { get; set; }
         public Nullable<int> CustomerId { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherDetail> VoucherDetail { get; set; }
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillDetail> BillDetail { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VoucherDetail> VoucherDetail { get; set; }
     }
 }

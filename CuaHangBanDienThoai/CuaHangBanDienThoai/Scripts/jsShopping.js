@@ -257,16 +257,29 @@ $(document).ready(function () {
             isDeletingItem = false;
         });
     }
-
-    $('body').on('click', '.btnDeleteItemCheckOut', function (e) {
+    $('body').on('click', '.btnDeleteItemCart', function (e) {
         e.preventDefault();
         if (isDeletingItem || isSyncingQuantity) return;
         isDeletingItem = true;
 
         var productdetailid = $(this).data('productdetailid');
         var cartitemid = $(this).data('cartitemid');
-        if (productdetailid && cartitemid ) {
+        if (productdetailid && cartitemid) {
             deleteItemCart(cartitemid, productdetailid);
+            registerEvents();
+            isDeletingItem = false;
+        }
+        isDeletingItem = false;
+    });
+    $('body').on('click', '.btnDeleteItemCheckOut', function (e) {
+        e.preventDefault();
+        if (isDeletingItem || isSyncingQuantity) return;
+        isDeletingItem = true;
+
+        var productdetailid = $(this).data('productdetailid');
+      
+        if (productdetailid ) {
+            deleteItemCheckOut(productdetailid);
             registerEvents();
             isDeletingItem = false;
         }
@@ -473,7 +486,38 @@ $(document).ready(function () {
             closeMenu(menuCart, fsOverlayCart);
         }
     });
+    function deleteItemCheckOut(productdetaili) {
+        if (productdetaili > 0) {
+            $.ajax({
+                url: '/ShoppingCart/DeleteFromCartSession',
+                type: 'POST',
+                data: { productdetaili: productdetaili },
+                success: function (rs) {
+                    if (rs.Success && rs.Code === 1) {
+                        $.ajax({
+                            url: '/ShoppingCart/Partial_Item_ThanhToan',
+                            type: 'GET',
+                            success: function (data) {
+                                $('#ItemCheckOut').html(data);
+                            }
 
+                        });
+
+                        registerEvents();
+                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', rs.msg);
+                    } else {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Lỗi', rs.msg);
+                    }
+                },
+                error: function () {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Không thể xóa sản phẩm');
+                },
+                complete: function () {
+                    isDeletingItem = false;
+                }
+            });
+        }
+    }
 
     function deleteItemCart(cartitemid, productdetailid) {
         isDeletingItem = true;

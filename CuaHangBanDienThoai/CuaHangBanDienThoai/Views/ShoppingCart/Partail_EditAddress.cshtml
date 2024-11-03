@@ -1,34 +1,174 @@
 ﻿@model CuaHangBanDienThoai.Models.AddressCustomer
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(x => x.AddressCusomerId)
-    @Html.HiddenFor(x => x.CustomerId)
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<div class="align-items-center">
-  
-    <div class="ThongTin">
-        <button class="float-left btn btn-danger"style="width:120px;"> <i class="bi bi-arrow-90deg-left"></i> Quay lại </button>
-        <p>
-            <strong>Địa chỉ:</strong>           @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control mb-0" } })
-            <strong>Số điện thoại:</strong>  @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control mb-0" } })
-            <strong>Người nhận:</strong>   @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control mb-0" } })
 
-        </p>
+
+
+<td colspan="2" class="" style="min-width:210px;">
+ 
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(x => x.AddressCusomerId)
+        @Html.HiddenFor(x => x.CustomerId)
+
+        <div class="ThongTin">
+            <p class="d-flex">
+                <strong>Địa chỉ:</strong> @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control mb-0", style = "border:none; border-bottom:1px solid black ; border-radius:0 !important" } })
+
+            </p>
+            <p class="d-flex">
+
+                <strong>Số điện thoại:</strong>  @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control mb-0", style = "border:none; border-bottom:1px solid black ; border-radius:0 !important" } })
+            </p>
+            <p class="d-flex">
+
+                <strong>Người nhận:</strong> @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control mb-0", style = "border:none; border-bottom:1px solid black ; border-radius:0 !important" } })
+            </p>
+
+
+            <div class="d-flex align-items-center">
+                <strong class="mr-2 w-100">Mặc định :</strong>
+                <span class="float-left"> @Html.RadioButton("IsDefault", "true", (bool)Model.IsDefault, new { @class = "mb-0", style = "border:none; border-bottom:1px solid black ; border-radius:0 !important" })   </span>
+            </div>
+            <hr class="col-12 mt-2  m-0" />
+
+            <div class="form-group pt-2 text-center ">
+
+
+                <button type="submit" class="btn btn-success mt-0">Lưu Lại</button>
+                <button type="button" class="btn mt-0 pb-0  btnExEdit text-center" style="background-color: transparent; width: 60px; height: 60px">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" color="red" width="25" height="25" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
+                    </svg>
+
+                </button>
+            </div>
+        </div>
+
+    }
+
+
+</td>
+
+
+
+
+
+<script>
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+
+
+    $(document).ready(function () {
+        $(".btnExEdit").on("click", function () {
+
+            $.ajax({
+                url: '/ShoppingCart/Partail_ChangeAddress',
+                type: 'GET',
+                success: function (data) {
+
+                    $('#loadDataBillEdit').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                }
+            });
+
+        });
+
+
+
+        $("form").on("submit", function (e) {
+            e.preventDefault(); 
+
+           
+            const token = $('input[name="__RequestVerificationToken"]').val();
+
+          
+            const formData = $(this).serialize();
+
+            $.ajax({
+                url: '/ShoppingCart/EditAddress',
+                type: 'POST',
+                data: formData,
+                headers: {
+                    'RequestVerificationToken': token
+                },
+                success: function (response) {
+                    if (response.Success) {
+                     
+                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Thay đổi địa chỉ thành công');
+                        $.ajax({
+                            url: '/ShoppingCart/Partail_ChangeAddress',
+                            type: 'GET',
+                            success: function (data) {
+
+                                $('#loadDataBillEdit').html(data);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                            }
+                        });
+
+
+                    } else {
+                        if (response.Code = -2) {
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', response.msg);
+                        } else if (response.Code = -99) {
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', response.msg);
+                        }
+
+                    }
+                },
+                error: function () {
+                  
+                    createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Hệ thống tạm ngưng');
+                }
+            });
+        });
+
+    });
+</script>
+
+@*<td class="">
+        <div class="ThongTin">
+            <p>
+                <strong>Địa chỉ:</strong> @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control mb-0" } })
+                <strong>Số điện thoại:</strong>  @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control mb-0" } })
+                <strong>Người nhận:</strong> @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control mb-0" } })
+            </p>
+
+        </div>
+    </td>
+    <td class="text-center align-items-center d-flex mt-3 h-100">
+
         <div class="d-flex align-items-center">
             <strong class="mr-2 w-100">Mặc định :</strong>
             <span class="float-left"> @Html.RadioButton("IsDefault", "true", (bool)Model.IsDefault, new { @class = "mb-0" })   </span>
         </div>
-
-    </div>
-
-    <div class="form-group">
         <button type="submit" class="btnUpdateAddress btn btn-success"> Lưu lại</button>
-    </div>
-</div>
-
-
-   
-}
-
+    </td>*@

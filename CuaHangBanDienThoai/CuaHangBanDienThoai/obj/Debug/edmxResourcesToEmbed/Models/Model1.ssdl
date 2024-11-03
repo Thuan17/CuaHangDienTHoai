@@ -169,6 +169,39 @@
     <Property Name="Quantity" Type="int" Nullable="false" />
     <Property Name="ProductDetailId" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="OrderCustomer">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="CreatedBy" Type="nvarchar(max)" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="Modifiedby" Type="nvarchar(max)" />
+    <Property Name="TypePayment" Type="int" Nullable="false" />
+    <Property Name="Confirm" Type="bit" />
+    <Property Name="Success" Type="bit" />
+    <Property Name="SuccessDate" Type="datetime" />
+    <Property Name="Note" Type="nvarchar" MaxLength="250" />
+    <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CustomerId" Type="int" />
+    <Property Name="CustomerName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="IsDelivery" Type="bit" />
+  </EntityType>
+  <EntityType Name="OrderDetail">
+    <Key>
+      <PropertyRef Name="OrderDetailId" />
+    </Key>
+    <Property Name="OrderDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="ProductDetailId" Type="int" />
+  </EntityType>
   <EntityType Name="ProductCategory">
     <Key>
       <PropertyRef Name="ProductCategoryId" />
@@ -329,6 +362,8 @@
     <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
     <Property Name="UsedDate" Type="datetime" />
     <Property Name="Quantity" Type="int" />
+    <Property Name="StartDate" Type="datetime" />
+    <Property Name="EndDate" Type="datetime" />
   </EntityType>
   <EntityType Name="VoucherDetail">
     <Key>
@@ -339,9 +374,10 @@
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="UsedDate" Type="datetime" />
     <Property Name="BillId" Type="int" />
-    <Property Name="VoucherId" Type="int" />
-    <Property Name="Code" Type="char" MaxLength="60" />
-    <Property Name="Status" Type="bit" />
+    <Property Name="OrderId" Type="int" />
+    <Property Name="VoucherId" Type="int" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="Status" Type="bit" Nullable="false" />
   </EntityType>
   <EntityType Name="Wards">
     <Key>
@@ -360,6 +396,30 @@
       </Principal>
       <Dependent Role="Districts">
         <PropertyRef Name="idProvinces" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VoucherDe__BillI__6DCC4D03">
+    <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
+    <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Bill">
+        <PropertyRef Name="BillId" />
+      </Principal>
+      <Dependent Role="VoucherDetail">
+        <PropertyRef Name="BillId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__VoucherDe__Order__6EC0713C">
+    <End Role="OrderCustomer" Type="Self.OrderCustomer" Multiplicity="0..1" />
+    <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderCustomer">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="VoucherDetail">
+        <PropertyRef Name="OrderId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -555,6 +615,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_OrderCustomer_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="OrderCustomer" Type="Self.OrderCustomer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="OrderCustomer">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_Order">
+    <End Role="OrderCustomer" Type="Self.OrderCustomer" Multiplicity="0..1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="OrderCustomer">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_OrderDetail_ProductDetail">
+    <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="0..1" />
+    <End Role="OrderDetail" Type="Self.OrderDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Principal>
+      <Dependent Role="OrderDetail">
+        <PropertyRef Name="ProductDetailId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Product_ProductCompany">
     <End Role="ProductCompany" Type="Self.ProductCompany" Multiplicity="0..1" />
     <End Role="Products" Type="Self.Products" Multiplicity="*" />
@@ -639,30 +735,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_VoucherDetail_Bill">
-    <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
-    <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Bill">
-        <PropertyRef Name="BillId" />
-      </Principal>
-      <Dependent Role="VoucherDetail">
-        <PropertyRef Name="BillId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_VoucherDetail_Voucher">
-    <End Role="Voucher" Type="Self.Voucher" Multiplicity="0..1" />
-    <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Voucher">
-        <PropertyRef Name="VoucherId" />
-      </Principal>
-      <Dependent Role="VoucherDetail">
-        <PropertyRef Name="VoucherId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" Schema="dbo" store:Type="Tables" />
@@ -678,6 +750,8 @@
     <EntitySet Name="ImportWarehouseDetail" EntityType="Self.ImportWarehouseDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="InvoiceDetail" EntityType="Self.InvoiceDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderCustomer" EntityType="Self.OrderCustomer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCompany" EntityType="Self.ProductCompany" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductDetail" EntityType="Self.ProductDetail" Schema="dbo" store:Type="Tables" />
@@ -695,6 +769,14 @@
     <AssociationSet Name="FK__Districts__idPro__3B75D760" Association="Self.FK__Districts__idPro__3B75D760">
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VoucherDe__BillI__6DCC4D03" Association="Self.FK__VoucherDe__BillI__6DCC4D03">
+      <End Role="Bill" EntitySet="Bill" />
+      <End Role="VoucherDetail" EntitySet="VoucherDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__VoucherDe__Order__6EC0713C" Association="Self.FK__VoucherDe__Order__6EC0713C">
+      <End Role="OrderCustomer" EntitySet="OrderCustomer" />
+      <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
     <AssociationSet Name="FK__Wards__idDistric__3E52440B" Association="Self.FK__Wards__idDistric__3E52440B">
       <End Role="Districts" EntitySet="Districts" />
@@ -760,6 +842,18 @@
       <End Role="ProductDetail" EntitySet="ProductDetail" />
       <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
     </AssociationSet>
+    <AssociationSet Name="FK_OrderCustomer_Customer" Association="Self.FK_OrderCustomer_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="OrderCustomer" EntitySet="OrderCustomer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_Order" Association="Self.FK_OrderDetail_Order">
+      <End Role="OrderCustomer" EntitySet="OrderCustomer" />
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK_OrderDetail_ProductDetail" Association="Self.FK_OrderDetail_ProductDetail">
+      <End Role="ProductDetail" EntitySet="ProductDetail" />
+      <End Role="OrderDetail" EntitySet="OrderDetail" />
+    </AssociationSet>
     <AssociationSet Name="FK_Product_ProductCompany" Association="Self.FK_Product_ProductCompany">
       <End Role="ProductCompany" EntitySet="ProductCompany" />
       <End Role="Products" EntitySet="Products" />
@@ -787,14 +881,6 @@
     <AssociationSet Name="FK_Staff_Employee" Association="Self.FK_Staff_Employee">
       <End Role="tb_Function" EntitySet="tb_Function" />
       <End Role="Employee" EntitySet="Employee" />
-    </AssociationSet>
-    <AssociationSet Name="FK_VoucherDetail_Bill" Association="Self.FK_VoucherDetail_Bill">
-      <End Role="Bill" EntitySet="Bill" />
-      <End Role="VoucherDetail" EntitySet="VoucherDetail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_VoucherDetail_Voucher" Association="Self.FK_VoucherDetail_Voucher">
-      <End Role="Voucher" EntitySet="Voucher" />
-      <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

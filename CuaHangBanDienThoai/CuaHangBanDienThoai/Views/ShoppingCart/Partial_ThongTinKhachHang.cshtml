@@ -1,189 +1,49 @@
 ﻿@model CuaHangBanDienThoai.Models.OrderView
 @using CuaHangBanDienThoai.Common
 <script src="~/Scripts/CheckOut.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
 @if (Model != null)
 {
 
-
-<div class="col-12 ">
-
-
-        <div class="loadAddress">
-            <div class="d-flex justify-content-between align-items-center w-100">
-                <h5 class="text-uppercase mb-0">Thông tin khách hàng</h5>
-                <button type="button" class="btn btn-sm btnAddAddress btn-success px-2 py-1 " style="font-size: 14px;width:120px; border-radius:12px;">
-                   Thay đổi
-                </button>
-            </div>
-
-            <div class="form-row">
-                <div class="row col-md-12">
-
-                </div>
-            </div>
-            <div class="form-group">
-               
-                <div class="gift-group">
-                    <label for="gift-select">Chọn Case:</label>
-                    <div class="custom-select">
-                        <div id="select-selected" class="select-selected col-lg-12">Thay đổi địa chỉ giao hàng:</div>
-                        <div class="select-items select-hide">
-                            <div class="select-option-container">
-                                @if (ViewBag.AddressCustomerNonDefault != null)
-                                {
-                                    var AddressCustomerNonDefault = ViewBag.AddressCustomerNonDefault as List<CuaHangBanDienThoai.Models.OrderViewNonDefault>;
-                                    foreach (var item in AddressCustomerNonDefault)
-                                    {
-                                        <div class="select-option" data-addressCusomerId="@item.AddressCusomerId" data-customerId="@item.CustomerId">
-                                            <div class="select-option-title">
-                                                <p>@item.Location.Trim()</p>
-                                            </div>
-                                            <div class="select-option-checkbox">
-                                                <label>Mặc định</label>
-                                                <input type="checkbox" class="select-option-checkbox" data-addressCusomerId="@item.AddressCusomerId" data-customerId="@item.CustomerId" />
-                                            </div>
-                                        </div>
-                                    }
-                                }
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="form-row">
-                <div class="row col-md-12">
-                    <div class="col-lg-6">
-                        <div class="input-data">
-                            <input type="text" name="NameCustomer" id="NameCustomer"
-                                   value="@Model.NameCustomer.Trim()"
-                                   @(string.IsNullOrEmpty(Model.NameCustomer) ? "" : "readonly")>
-                            <div class="underline"></div>
-                            <label for="">Người nhận</label>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6">
-                        <div class="input-data">
-                            <input type="number" name="PhoneCustomer" id="PhoneCustomer" value="@Model.PhoneCustomer" @(string.IsNullOrEmpty(Model.PhoneCustomer) ? "" : "readonly")>
-                            <div class="underline"></div>
-                            <label for="PhoneCustomer">
-                                Số Điện Thoại
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row col-md-12">
-                    <div class="col-lg-12">
-                        <div class="input-data">
-                            <input type="text" name="Location" id="Location"
-                                   value="@Model.Location.Trim()"
-                                   @(string.IsNullOrEmpty(Model.Location) ? "" : "readonly")>
-                            <div class="underline"></div>
-                            <label for="">Địa chỉ</label>
-                        </div>
-                    </div>
-
-
-
-                </div>
-
-            </div>
-
-
-
-
-
-
-            <div class="row form-row">
-
-                <div class="input-data textarea">
-                    <textarea rows="8" cols="80" name="Note" id="Note" required></textarea>
-                    <br />
-                    <div class="underline"></div>
-                    <label for="">Ghi chú</label>
-                    <br />
-
-                </div>
-            </div>
-
-        </div>
-        <br />
-        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-            <div class="col"><b>Tạm tính</b></div>
-            <div class="col d-flex justify-content-end text-right pt-1">
-                <p>  <span class="text-danger priceCheckOut">  @($"{Common.FormatNumber(ViewBag.TotalPrice)}đ") </span></p>
-            </div>
-
-        </div>
-        <div class="row PriceShip hide">
-            <div class="col"><b>Phí ship  </b></div>
-            <div class="col d-flex justify-content-end text-right pt-1">
-                @*<p> <span class="text-danger    ">Phí thay đổi lộ trình: 5.500 đồng /km</span></p>*@
-            </div>
-
-        </div>
-        <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-
-
-        </div>
-        <div class="row justify-content-center ">
-
-            <div class="loading-overlay" style="display:none;">
-                <img src="~/Content/css/client/ajax-loader.gif" class="loading-spinner" />
-                <h5 class="sent">Đang gửi ...</h5>
-                <div class="innerLoad  col-3"></div>
-            </div>
-            <div class="form-row submit-btn">
-                <div class="input-data m-0">
-                    <div class="inner"></div>
-                    <button @*type="submit"*@ class="btnCheckOutS " onclick="if(validateForm()) $('#checkOutForm').submit();">Đặt hàng</button>
-
-                </div>
-            </div>
-
-            <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
-        </div>
-
-    </div>
-}
-else
-{
     <form id="checkOutForm" enctype="multipart/form-data">
+
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
-        <div class="m-0 p-0">
-            <input type="text" name="NameProvince" class="NameProvince" style="display:none;" />
-            <input type="text" name="NameDistrict" class="NameDistrict" style="display:none;" />
-            <input type="text" name="NameWard" class="NameWard" style="display:none;" />
-
-        </div>
-
-
-
         <div class="col-12 ">
 
 
-            <div>
-                <div><h5 class="text-uppercase">Thông tin khách hàng</h5></div>
+            <div class="loadAddress">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <h5 class="text-uppercase mb-0">Thông tin khách hàng</h5>
+                    <button type="button" class="btn btn-sm btnAddAddress btn-success px-2 py-1 " style="font-size: 14px;width:120px; border-radius:12px;">
+                        Thay đổi
+                    </button>
+                </div>
+
+                <div class="form-row">
+                    <div class="row col-md-12">
+
+                    </div>
+                </div>
+
+
+
 
                 <div class="form-row">
                     <div class="row col-md-12">
                         <div class="col-lg-6">
                             <div class="input-data">
-                                <input type="text" name="NameCustomer" id="NameCustomer" required>
+                                <input type="text" name="NameCustomer" id="NameCustomer"
+                                       value="@Model.NameCustomer.Trim()"
+                                       @(string.IsNullOrEmpty(Model.NameCustomer) ? "" : "readonly")>
                                 <div class="underline"></div>
                                 <label for="">Người nhận</label>
                             </div>
+
                         </div>
                         <div class="col-md-6">
                             <div class="input-data">
-                                <input type="number" name="PhoneCustomer" id="PhoneCustomer" required pattern="0\d{9}">
+                                <input type="number" name="PhoneCustomer" id="PhoneCustomer" value="@Model.PhoneCustomer" @(string.IsNullOrEmpty(Model.PhoneCustomer) ? "" : "readonly")>
                                 <div class="underline"></div>
                                 <label for="PhoneCustomer">
                                     Số Điện Thoại
@@ -192,7 +52,30 @@ else
                         </div>
 
                     </div>
+                    <div class="row col-md-12">
+                        <div class="col-lg-12">
+                            <div class="input-data">
+                                <input type="text" name="Email" id="Email"
+                                       value="@Model.Email.Trim()"
+                                       @(string.IsNullOrEmpty(Model.Email) ? "" : "readonly")>
+                                <div class="underline"></div>
+                                <label for="">Email</label>
+                            </div>
+                        </div>
 
+                    </div>
+                    <div class="row col-md-12">
+                        <div class="col-lg-12">
+                            <div class="input-data">
+                                <input type="text" name="Location" id="Location"
+                                       value="@Model.Location.Trim()"
+                                       @(string.IsNullOrEmpty(Model.Location) ? "" : "readonly")>
+                                <div class="underline"></div>
+                                <label for="">Địa chỉ</label>
+                            </div>
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -200,78 +83,9 @@ else
 
 
 
-                <div class="row AddressGroup pl-0 pr-0">
 
-                    <div class="CityDistrictity pl-0 pr-0 row">
-                        <div class="col-lg-6 city">
-                            <label class="cityLabel" for="ddlProvinces">Tỉnh / Thành</label>
-                            @Html.DropDownListFor(
-                                x => x.NameProvince,
-                                ViewBag.Provinces as SelectList,
-                                "Chọn danh mục Tỉnh/Thành phố ",
-                                new { @class = "custom__select custom__select__city", @id = "ddlProvinces" }
-                            )
-                            @Html.ValidationMessageFor(x => x.NameProvince, null, new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-6  city ">
-                            <label class="cityLabel" for="ddlDistricts">Quận / Huyện</label>
-                            @Html.DropDownListFor(
-                               x => x.NameDistrict,
-                               new SelectList(Enumerable.Empty<SelectListItem>()), "Chọn danh mục Quận/Huyện",
-                               new
-                                    {
-                                        @class = "custom__select custom__select__districts",
-                                   @id = "ddlDistricts",
-                                        data_idDistricts = "idDistricts"
-                               })
-                            @Html.ValidationMessageFor(x => x.NameDistrict, null, new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="Location pl-0 pr-0 row">
-                        <div class="col-lg-6 city">
-                            <label class="cityLabel" for="ddlWards">Phường / Xã</label>
-                            @Html.DropDownListFor(x => x.NameWard,
-                               new SelectList(Enumerable.Empty<SelectListItem>()),
-                               "Chọn danh mục Phường/Xã",
-                               new
-                                    {
-                                        @class = "custom__select custom__select__wards",
-                               @id = "ddlWards"
-                                    })
-                            @Html.ValidationMessageFor(x => x.NameWard, null, new { @class = "text-danger" })
-                        </div>
-                        <div class="col-md-6">
-                            <div class="  form-row">
-                                <div class="input-data">
-                                    <input type="text" name="Location" id="Location" required>
-                                    <div class="underline"></div>
-                                    <label for="">Địa Chỉ</label>
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-12 ">
-                            <div class="expressDeliveryGr">
-                                <ul class="expressDeliveryGrUl">
-
-                                    <li class="expressitem">
-                                        @Html.CheckBoxFor(x => x.delivery, new { @class = "custom-control-input", @id = "delivery" })
-
-                                        <span>Hoả tốc (TP.Hồ Chí Minh)</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="row form-row">
-                    <div class="input-data">
-                        <input type="text" name="Email" id="Email" required>
-                        <div class="underline"></div>
-                        <label for="">Email</label>
-                    </div>
+
                     <div class="input-data textarea">
                         <textarea rows="8" cols="80" name="Note" id="Note" required></textarea>
                         <br />
@@ -281,7 +95,42 @@ else
 
                     </div>
                 </div>
+                <div class="col-lg-12 ">
+                    <div class="expressDeliveryGr">
+                        <ul class="expressDeliveryGrUl">
 
+                            <li class="expressitem">
+
+                                <input type="checkbox" class="custom-control-input" id="delivery" name="delivery" />
+                                <span>Hoả tốc (TP.Hồ Chí Minh)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                    <div class="form-group">
+                        <label>Hình thức thanh toán</label>
+                        <select class="form-control" id="drTypePayment" name="TypePayment">
+                            <option value="1" selected>COD</option>
+                            <option value="2" id="chuyenkhoan">Chuyển khoản</option>
+
+                        </select>
+                    </div>
+                    <div class="form-group" id="load_form_payment" style="display:none;">
+                        <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
+                        <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
+                        <label>
+
+                            <input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="0" checked /><img src="~/images/Logo/Logo-VNPAY-QR-1.png" style=" width:80px;height:15px" /> Cổng thanh toán VNPAYQR
+
+                        </label>
+                        <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+                        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
+                        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
+                        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
+                    </div>
+
+                </div>
             </div>
             <br />
             <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
@@ -312,7 +161,7 @@ else
                 <div class="form-row submit-btn">
                     <div class="input-data m-0">
                         <div class="inner"></div>
-                        <button @*type="submit"*@ class="btnCheckOutS " onclick="if(validateForm()) $('#checkOutForm').submit();">Đặt hàng</button>
+                        <button @*type="submit"*@ class="btnCheckOutS ">Đặt hàng</button>
 
                     </div>
                 </div>
@@ -324,6 +173,34 @@ else
     </form>
 
 }
+<script>
+
+
+    $(document).ready(function () {
+        $('.TypePaymentVN').on('change', function () {
+            if ($(this).prop('checked')) {
+                $('.TypePaymentVN').not(this).prop('checked', false);
+            }
+        });
+
+        $('body').on('change', '#drTypePayment', function () {
+            var type = $(this).val();
+            $('#load_form_payment').hide();
+            if (type == "2") {
+                $('#load_form_payment').show();
+            }
+        });
+        $("#searchString").on("input", function () {
+            var inputValue = $(this).val().trim();
+            if (inputValue !== "") {
+                searchProduct(inputValue);
+            }
+        });
+
+
+    });
+
+</script>
 <script>
     function CheckAccount() {
         if (!window.sessionStorage.getItem('CustomerId')) {
@@ -361,14 +238,14 @@ else
 
         let newToast = document.createElement('div');
         newToast.innerHTML = `
-           <div class="toastNotifi ${type}">
-               <i class="${icon}"></i>
-               <div class="content">
-                   <div class="title">${title}</div>
-                   <span>${text}</span>
-               </div>
-               <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
-           </div>`;
+                   <div class="toastNotifi ${type}">
+                       <i class="${icon}"></i>
+                       <div class="content">
+                           <div class="title">${title}</div>
+                           <span>${text}</span>
+                       </div>
+                       <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+                   </div>`;
         notifications.appendChild(newToast);
 
 
@@ -377,8 +254,14 @@ else
 
 
     $(document).ready(function () {
+        CheckAccount();
+        $('.btnAddAddress').on('click', function (e) {
 
-        $('.btnAddAddress').on('click', function () {
+            console.log("customerId", customerId);
+
+            e.preventDefault();
+            bg2.show();
+            popup2.show();
             $.ajax({
                 url: '/ShoppingCart/Partail_ChangeAddress',
                 type: 'GET',
@@ -391,15 +274,19 @@ else
                 }
             });
 
-        }); 
+        });
 
 
 
-        CheckAccount();
         var bg2 = $(".bg-sg2");
         var popup2 = $("#popupBill2");
         var btnAddAddress = $('.btnAddAddress');
         const customerId = sessionStorage.getItem('CustomerId');
+
+
+
+        console.log("customerId", customerId);
+
         bg2.on('click', function () {
             bg2.hide();
             popup2.hide();
@@ -410,83 +297,74 @@ else
             popup2.hide();
         });
         if (customerId) {
-
-            btnAddAddress.each(function () {
-                $(this).on('click', function (e) {
-                    e.preventDefault();
-                    bg2.show();
-                    popup2.show();
+            console.log("customerId", customerId);
 
 
+            $('.btnCheckOutS').off('click').on('click', function (event) {
+                event.preventDefault();
+
+                const formData = $('#checkOutForm').serialize();
+                const token = $('input[name="__RequestVerificationToken"]').val();
+                const dataToSend = formData + '&customerId=' + encodeURIComponent(customerId);
+                console.log("btnCheckOutS", dataToSend);
+                //$('.loading-overlay').show();
+                //$('.sent').show();
+                $('.btnCheckOutS').prop('disabled', true);
+                $.ajax({
+                    url: '/ShoppingCart/CheckOut',
+                    type: 'POST',
+                    data: dataToSend,
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (res) {
+                        if (res.Success) {
+                            if (res.Code == 1) {
+                                createToast('success', 'fa-solid fa-circle-exclamation', 'Thành công ', 'Mã đơn:  ' + res.OrderCode);
+                                setTimeout(() => {
+                                    window.location.href = res.Url;
+                                }, 1500);
+                            } else {
+                                location.href = res.Url;
+                            }
+                        } else {
+                            if (res.Code == -4) {
+                                //$('.loading-overlay').hide();
+                                //$('.sent').hide();
+                          /*      $('.btnCheckOutS').prop('disabled', false);*/
+                                if (res.InsufficientItems && res.InsufficientItems.length > 0) {
+                                  /*  createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Số lượng kho không đủ');*/
+                                    message = "\n";
+                                    res.InsufficientItems.forEach(function (item) {
+                                        message += "\n" + item.ProductName + "\n";
+                                    });
+
+                                    Swal.fire({
+                                        icon: "warning",
+                                        title: "Số lượng không đủ",
+                                        text: message
+                                    });
+
+                                    $('.btnCheckOutS').prop('disabled', false);
+                                } else {
+                                    createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Số lượng kho không đủ');
+                                }
+                            }
+                        }
+                    }, error: function (res) {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Thất bại', 'Hệ thống tạm ngưng');
+                    }
                 });
             });
+
+
+
         } else {
 
         }
-        
+
 
 
     });
 </script>
 
-<script>
-
-    $(document).ready(function () {
-        function initializeSelectBox() {
-            var selectedDiv = document.getElementById('select-selected');
-            var items = document.querySelector('.select-items');
-            var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
-
-            selectedDiv.addEventListener('click', function () {
-                console.log("Dropdown clicked"); // Xem có vào đây không
-                items.style.display = items.style.display === 'block' ? 'none' : 'block';
-            });
-
-            checkboxes.forEach(function (checkbox) {
-                checkbox.addEventListener('change', function () {
-                    if (this.checked) {
-                        var caseTitle = this.closest('.select-option').querySelector('.select-option-title').textContent;
-                        selectedDiv.textContent = caseTitle;
-
-                        checkboxes.forEach(function (box) {
-                            if (box !== checkbox) {
-                                box.checked = false;
-                            }
-                        });
-
-                        items.style.display = 'none';
-                    }
-                });
-            });
-
-            items.addEventListener('click', function (event) {
-                var target = event.target;
-
-                if (target.classList.contains('select-option-title')) {
-                    var selectOption = target.closest('.select-option');
-                    var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
-
-                    if (checkbox) {
-                        checkbox.checked = true;
-                        checkboxes.forEach(function (box) {
-                            if (box !== checkbox) {
-                                box.checked = false;
-                            }
-                        });
-
-                        var caseTitle = selectOption.querySelector('.select-option-title').textContent;
-                        selectedDiv.textContent = caseTitle;
-                        items.style.display = 'none';
-                    }
-                }
-            });
-
-            document.addEventListener('click', function (event) {
-                if (!event.target.closest('.custom-select')) {
-                    items.style.display = 'none';
-                }
-            });
-        }
-        initializeSelectBox();
-    });
-</script>

@@ -28,7 +28,7 @@ namespace CuaHangBanDienThoai
             routes.MapRoute(
           name: "ChekOutSuccess",
           url: "muahangthanhcong/{code}",
-          defaults: new { controller = "ShoppingCart", action = "CheckOutSucees", id = UrlParameter.Optional },
+          defaults: new { controller = "ShoppingCart", action = "CheckOutSuceess", id = UrlParameter.Optional },
           namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
       );
             routes.MapRoute(

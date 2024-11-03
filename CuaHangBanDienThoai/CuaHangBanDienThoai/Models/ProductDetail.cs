@@ -21,6 +21,7 @@ namespace CuaHangBanDienThoai.Models
             this.CartItem = new HashSet<CartItem>();
             this.ImportWarehouseDetail = new HashSet<ImportWarehouseDetail>();
             this.InvoiceDetail = new HashSet<InvoiceDetail>();
+            this.OrderDetail = new HashSet<OrderDetail>();
             this.ProductDetailImage = new HashSet<ProductDetailImage>();
         }
     
@@ -47,6 +48,8 @@ namespace CuaHangBanDienThoai.Models
         public virtual ICollection<ImportWarehouseDetail> ImportWarehouseDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InvoiceDetail> InvoiceDetail { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderDetail> OrderDetail { get; set; }
         public virtual Products Products { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductDetailImage> ProductDetailImage { get; set; }
