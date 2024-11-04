@@ -1,0 +1,20 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.OrderDetail>
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
+        <div class="d-flex p-0">
+            <span class="text-dark">@Name.Trim()</span>
+
+            <span class="pl-1 text-danger">x @item.Quantity</span>
+        </div>
+
+
+    }
+}
+else
+{
+    <p class="text-danger text-center">Lỗi dữ liệu </p>
+}

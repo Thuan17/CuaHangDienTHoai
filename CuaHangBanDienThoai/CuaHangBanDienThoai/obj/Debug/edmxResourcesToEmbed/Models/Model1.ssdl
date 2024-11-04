@@ -178,7 +178,7 @@
     <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="TypePayment" Type="int" Nullable="false" />
     <Property Name="Confirm" Type="bit" />
@@ -399,7 +399,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__VoucherDe__BillI__6DCC4D03">
+  <Association Name="FK__VoucherDe__BillI__7E02B4CC">
     <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
     <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
     <ReferentialConstraint>
@@ -411,7 +411,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__VoucherDe__Order__6EC0713C">
+  <Association Name="FK__VoucherDe__Order__7EF6D905">
     <End Role="OrderCustomer" Type="Self.OrderCustomer" Multiplicity="0..1" />
     <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
     <ReferentialConstraint>
@@ -770,11 +770,11 @@
       <End Role="Provinces" EntitySet="Provinces" />
       <End Role="Districts" EntitySet="Districts" />
     </AssociationSet>
-    <AssociationSet Name="FK__VoucherDe__BillI__6DCC4D03" Association="Self.FK__VoucherDe__BillI__6DCC4D03">
+    <AssociationSet Name="FK__VoucherDe__BillI__7E02B4CC" Association="Self.FK__VoucherDe__BillI__7E02B4CC">
       <End Role="Bill" EntitySet="Bill" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
-    <AssociationSet Name="FK__VoucherDe__Order__6EC0713C" Association="Self.FK__VoucherDe__Order__6EC0713C">
+    <AssociationSet Name="FK__VoucherDe__Order__7EF6D905" Association="Self.FK__VoucherDe__Order__7EF6D905">
       <End Role="OrderCustomer" EntitySet="OrderCustomer" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>

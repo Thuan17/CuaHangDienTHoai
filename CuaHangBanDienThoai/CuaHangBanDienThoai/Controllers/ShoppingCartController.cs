@@ -218,6 +218,9 @@ namespace CuaHangBanDienThoai.Controllers
 
         public ActionResult VnpayReturn()
         {
+
+
+        
             try
             {
                 if (Request.QueryString.Count > 0)
@@ -260,6 +263,9 @@ namespace CuaHangBanDienThoai.Controllers
                                 SendConfirmationEmails(cart, itemOrder, customer);
 
                                 ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
+                                ViewBag.Code= orderCode;    
+
+
                             }
                             else
                             {
@@ -283,11 +289,11 @@ namespace CuaHangBanDienThoai.Controllers
                         return View();
                     }
                 }
-                return RedirectToAction("Index", "Error"); // Redirect đến trang lỗi nếu không có query string hoặc xác thực không thành công
+                return RedirectToAction("Index", "Error");
             }
             catch (Exception ex)
             {
-                // Redirect đến trang lỗi nếu có ngoại lệ xảy ra
+
                 return RedirectToAction("Index", "Error");
             }
         }

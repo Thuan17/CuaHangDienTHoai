@@ -1,0 +1,232 @@
+﻿
+@model CuaHangBanDienThoai.Models.Admin_EditOrder
+@using CuaHangBanDienThoai.Common
+<link href="~/Content/css/admin/Bill.css" rel="stylesheet" />
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+            <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                <h5 class="fs-6 mb-3 details__Text">Thông tin khách hàng</h5>
+                <div class="infor__customer">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-data">
+                                <b for="">Mã đơn :</b>
+                                <sapn>@Model.Code </sapn>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-data">
+                                <b for="PhoneCustomer">
+                                    Ngày đặt :
+                                </b>
+                                <sapn>@Model.CreatedDate</sapn>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-data">
+                                <b for="">Người nhận :</b>
+                                <sapn>@Model.CustomerName </sapn>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-data">
+                                <b for="PhoneCustomer">
+                                    Số Điện Thoại :
+                                </b>
+                                <sapn>@Model.Phone</sapn>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-data">
+                                <b for="">Email :</b>
+                                <sapn>@Model.Email</sapn>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-data ">
+                                <b>Vận chuyển:</b>
+                                <span class="">
+                                    @if (Model.IsDelivery == true)
+                                    {
+                                        <span class="bg-danger text-white">
+                                            Hoả tốc
+                                        </span>
+                                    }
+                                   
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @if (Model.Modifiedby != null)
+
+                    {
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">Chỉnh sửa bởi :</b>
+                                    <sapn>@Model.Modifiedby</sapn>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data ">
+                                    <b>Chỉnh sửa ngày:</b>
+                                    <span class="">
+                                        <span class="">
+                                            @String.Format("{0:dd:MM:yyyy HH:mm:ss}", Model.ModifiedDate)
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-data">
+                                <b>Xác nhận :</b>
+                                <span class="@(Model.Success ? "bg-success text-white col-4 text-center" : "col-4 text-center bg-danger text-white")">
+                                    @(Model.Success ? "Đã xác nhận" : "Chưa xác nhận")
+                                </span>
+
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                            <div class="input-data ">
+                                <b>Trạng thái :</b>
+                                <span class="@(Model.OrderStatus == "Chưa giao" ? "bg-warning" :
+                                              Model.OrderStatus == "Đã giao" ? "bg-success"  :
+                                              Model.OrderStatus == "Đơn huỷ" ? "bg-danger" :
+                                              Model.OrderStatus == "Đơn trả" ? "bg-dark" : "") text-white col-6 text-center">
+                                    @Model.OrderStatus
+                                    @if (Model.OrderStatus == "Đã giao" && Model.StatusDate != null)
+                                    {
+                                        <span>
+                                            @String.Format("{0:dd/MM/yyyy }", Model.StatusDate)
+                                        </span>
+
+                                    }
+
+
+                                </span>
+                            </div>
+                        </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="input-data ">
+
+                                <b>Địa chỉ :</b>
+                                <sapn>@Model.Location.Trim()</sapn>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="input-dat">
+                        <b>Tổng tiền:</b>
+                        <span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span>
+                    </div>
+                    <div class="input-data ">
+                        @if (Model.Note != null)
+                        {<b for="">Ghi ch:</b>
+                            <sapn>@Model.Note.Trim()</sapn>
+                        }
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <hr class="col-8 text-center" />
+
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+
+            <b class="fs-6 mb-3 text-left">Danh sách sản phẩm <span class="text-danger">@Model.Items.Count()</span> </b>
+            <div class="table-content table-responsive order-table ">
+                <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="td__img ">
+                                Hình
+                            </th>
+                            <th class="td__product">
+                                Sản phẩm
+                            </th>
+
+                            <th class="td__quantity-price">
+                                Số lượng/ Giá
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div style="max-height: 320px; overflow-y: auto;">
+                <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            string strImg = "";
+                            var image = item.productDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                            if (image != null)
+                            {
+                                strImg = image.Image;
+                            }
+                            else
+                            {
+
+                                strImg = "~/Content/css/admin/login/images/logoWeb.png";
+                            }
+                            var Name = item.productDetail.Products.Title.Trim() + " " + item.productDetail.Ram.Trim() + "/" + item.productDetail.Capacity.Trim();
+                            <tr class="text-center">
+                                <td class="td__imgItem p-0">
+                                    <a href="/san-pham/@item.productDetail.Alias" target="_blank">
+
+                                        <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
+                                    </a>
+
+                                </td>
+                                <td calss="td__productItem">
+                                    <a href="/san-pham/@item.productDetail.Alias" target="_blank" class="pro-name">
+
+                                        @Name
+                                        <div class="cart__meta-text">
+                                            <div class="Describe pt-0">
+                                                <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
+                                                <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
+                                                <p class="text-dark mb-0"><label>Hãng</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+
+                                            </div>
+                                        </div>
+
+                                    </a>
+                                </td>
+
+                                <td class="td__quantity-price__item">
+                                    @item.Quantity/  @Common.FormatNumber(item.Price) ₫
+                                </td>
+                            </tr>
+
+
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+}
+
+

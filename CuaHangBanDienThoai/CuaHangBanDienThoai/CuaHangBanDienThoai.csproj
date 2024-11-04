@@ -160,6 +160,7 @@
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\BannerController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
@@ -189,6 +190,7 @@
     <Compile Include="Models\Admin_AddProductCompany.cs" />
     <Compile Include="Models\Admin_AddProductDetail.cs" />
     <Compile Include="Models\Admin_EditBanner.cs" />
+    <Compile Include="Models\Admin_EditOrder.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
     <Compile Include="Models\Admin_EditProductDetail.cs" />
     <Compile Include="Models\AuthorizeCustomer.cs" />
@@ -5445,6 +5447,7 @@
     <Content Include="Scripts\admin\admin-notifications.js" />
     <Content Include="Scripts\admin\Banner.js" />
     <Content Include="Scripts\admin\BannerEdit.js" />
+    <Content Include="Scripts\admin\Bill.js" />
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
     <Content Include="Scripts\admin\js\AddProductCategory.js" />
@@ -5459,6 +5462,7 @@
     <Content Include="Scripts\admin\js\sb-admin-2.js" />
     <Content Include="Scripts\admin\js\sb-admin-2.min.js" />
     <Content Include="Scripts\admin\New.js" />
+    <Content Include="Scripts\admin\Order.js" />
     <Content Include="Scripts\admin\Product.js" />
     <Content Include="Scripts\admin\ProductDetailEdit.js" />
     <Content Include="Scripts\admin\ProductDetails.js" />
@@ -5612,6 +5616,10 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Order\Partial_DetailOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partail_ProductOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partial_EditOrder.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

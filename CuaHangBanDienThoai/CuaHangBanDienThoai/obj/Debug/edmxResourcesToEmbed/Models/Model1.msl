@@ -377,8 +377,6 @@
     <EntitySetMapping Name="Voucher">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Voucher">
         <MappingFragment StoreEntitySet="Voucher">
-          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
           <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="PercentPriceReduction" ColumnName="PercentPriceReduction" />
@@ -390,6 +388,8 @@
           <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
           <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+          <ScalarProperty Name="EndDate" ColumnName="EndDate" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

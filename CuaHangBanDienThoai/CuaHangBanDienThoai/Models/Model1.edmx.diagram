@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2b4b780227d640ddbbd6234cbf06ec7b" Name="Diagram1">
+      <Diagram DiagramId="f1e37a8d2e134220a5cac0f993ce32b5" Name="Diagram1">
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AccountEmployee" Width="1.5" PointX="8.25" PointY="34" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AddressCustomer" Width="1.5" PointX="8.25" PointY="16.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Banner" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
@@ -32,12 +32,12 @@
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Supplier" Width="1.5" PointX="3" PointY="35.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Function" Width="1.5" PointX="3.75" PointY="30.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Voucher" Width="1.5" PointX="2.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Voucher" Width="1.5" PointX="12.75" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.VoucherDetail" Width="1.5" PointX="10.5" PointY="13.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Wards" Width="1.5" PointX="15.25" PointY="1.875" IsExpanded="true" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_AccountEmployee_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_AddressCusomer_Customer" ManuallyRouted="false" />
-        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__VoucherDe__BillI__6DCC4D03" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__VoucherDe__BillI__7E02B4CC" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_Bill_Customer" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_BillDetail_Bill" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_BillDetail_ProductDetail" ManuallyRouted="false" />
@@ -56,7 +56,7 @@
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_ImportWarehouse_ProductDetail" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_Invoice_Invoice" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_Invoice_ProductDetail" ManuallyRouted="false" />
-        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__VoucherDe__Order__6EC0713C" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__VoucherDe__Order__7EF6D905" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_OrderDetail_Order" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_OrderDetail_ProductDetail" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_Products_ProductCategory" ManuallyRouted="false" />

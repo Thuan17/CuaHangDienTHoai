@@ -14,6 +14,16 @@ namespace CuaHangBanDienThoai.Areas.Admin
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+
+
+            context.MapRoute(
+             name: "Index_Bill",
+             url: "quan-ly-don-hang",
+             defaults: new { controller = "Order", action = "Index", alias = UrlParameter.Optional }
+
+         );
+
+
             context.MapRoute(
        name: "Add_Banner",
        url: "them-moi-banner",

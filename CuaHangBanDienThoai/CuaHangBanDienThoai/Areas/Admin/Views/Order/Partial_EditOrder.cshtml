@@ -1,0 +1,510 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditOrder
+@using CuaHangBanDienThoai.Common
+<link href="~/Content/css/admin/Bill.css" rel="stylesheet" />
+@if (Model != null)
+{
+    <form id="editBill" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.OrderId)
+        @Html.HiddenFor(model => model.Code)
+        @Html.HiddenFor(model => model.CreatedDate)
+        @Html.HiddenFor(model => model.SuccessDate)
+        @*@Html.HiddenFor(model => model.StatusDate)*@
+        @*@Html.HiddenFor(model => model.OrderStatus)
+        @Html.HiddenFor(model => model.IsConfirm)*@
+
+
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                    <h5 class="fs-6 mb-3 details__Text">Thông tin khách hàng</h5>
+                    <div class="infor__customer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">Mã đơn :</b>
+                                    <sapn>@Model.Code </sapn>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data">
+                                    <b for="PhoneCustomer">
+                                        Ngày đặt :
+                                    </b>
+                                    <span>@(Model.CreatedDate.ToString("dd/MM/yyyy") ?? "Date not available")</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+
+
+
+
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">Người nhận :</b>
+                                    <input type="text" name="NameCustomer" id="CustomerName" value="@Model.CustomerName.Trim()" required>
+                                    <div class="underline"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data">
+                                    <b for="PhoneCustomer">
+                                        Số Điện Thoại :
+                                    </b>
+                                    <input type="text" name="Phone" id="PhoneCustomer" value="@Model.Phone.Trim()" required>
+                                    <div class="underline"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">Email :</b>
+                                    <input type="text" name="Email" id="Email" value="@Model.Email.Trim()" required>
+                                    <div class="underline"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data ">
+                                    <b>Trạng thái:</b>
+                                    <span class="">
+                                        @if (Model.IsDelivery == true)
+                                        {
+                                            <span class="bg-danger text-white">
+                                                Hoả tốc
+                                            </span>
+                                        }
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="input-data ">
+
+                                    <b>Địa Chỉ :</b>
+                                    <input type="text" name="Location" id="Location" value="@Model.Location.Trim()" required>
+                                    <div class="underline"></div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="input-dat" id="loadPrice">
+                            <b>Tổng tiền:</b>
+                            <span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span>
+                        </div>
+                        <div class="input-data ">
+                            @if (Model.Note != null)
+                            {<b for="">Ghi ch:</b>
+                                <sapn>@Model.Note.Trim()</sapn>
+                            }
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <hr class="col-8 text-center" />
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 " id="loadListItem">
+
+                <b class="fs-6 mb-3 text-left">Danh sách sản phẩm <span class="text-danger">@Model.Items.Count()</span> </b>
+                <div class="table-content table-responsive order-table ">
+                    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                        <thead>
+                            <tr class="">
+                                <th class="td__img ">
+                                    Hình
+                                </th>
+                                <th class="td__product">
+                                    Sản phẩm
+                                </th>
+
+                                <th class="td__quantity-price">
+                                    Giá/Số lượng
+                                </th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div style="max-height: 320px; overflow-y: auto;">
+                    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                string strImg = "";
+                                var image = item.productDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                                if (image != null)
+                                {
+                                    strImg = image.Image;
+                                }
+                                else
+                                {
+
+                                    strImg = "~/Content/css/admin/login/images/logoWeb.png";
+                                }
+                                var Name = item.productDetail.Products.Title.Trim() + " " + item.productDetail.Ram.Trim() + "/" + item.productDetail.Capacity.Trim();
+                                <tr class="">
+                                    <td class="td__imgItem p-0">
+                                        <a href="/san-pham/@item.productDetail.Alias" target="_blank">
+
+
+                                            <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
+                                        </a>
+                                        <button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemBill" data-billId="@Model.OrderId" data-billDetailId="@item.OrderDetailId">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+                                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                            </svg>
+                                            Xoá
+                                        </button>
+                                    </td>
+                                    <td calss="td__productItem text-left">
+                                        <a href="/san-pham/@item.productDetail.Alias" target="_blank" class="pro-name">
+
+                                            @Name
+                                            <div class="cart__meta-text">
+                                                <div class="Describe pt-0">
+                                                    <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
+                                                    <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
+                                                    <p class="text-dark mb-0"><label>Hãng</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+
+                                    <td class="td__quantity-price__item">
+                                        @Common.FormatNumber(item.Price) x<input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Bill"
+                                                                                 id="@item.ProductDetailId"
+                                                                                 billDetailId="@item.OrderDetailId"
+                                                                                 billId="@Model.OrderId" />
+
+
+                                        <br />
+
+                                    </td>
+
+                                </tr>
+
+
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                    <button type="button" class="btn btn-success" id="saveBill">Lưu đơn @Model.Code</button>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+
+}
+
+<script>
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+
+
+    $(document).ready(function () {
+        var billId = @Model.OrderId;
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+        function loadListItem(billId) {
+            if (billId != null) {
+              $.ajax({
+                  url: '/Admin/Bill/Partail_ItemEditBill',
+                  type: 'GET',
+                  data: { billId: billId },
+                  success: function (response) {
+                      $("#loadListItem").html(response);
+
+                  },
+                  error: function (xhr, status, error) {
+                      console.error(xhr.responseText);
+                      createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                  }
+              });
+          }
+        }
+
+
+
+
+        function updateTotalPrice(billId) {
+            console.log('updateTotalPrice', billId);
+            $.ajax({
+                url: '/admin/Bill/GetTotalPrice',
+                type: 'GET',
+                data: { billId: billId },
+                success: function (response) {
+                    $('#loadPrice').html('   <b>Tổng tiền</b><span class="text-danger">' + response + '</span>');
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Đã xảy ra lỗi khi cập nhật tổng tiền.');
+                }
+            });
+        }
+
+
+        //$('body').on('input', '.Update_Quantity_For_Edit_Bill', function (e) {
+        //    var productsId = input.attr('id');
+        //    var billDetailId = input.data('billDetailId');
+        //    var billId = input.data('billId');
+        //    var newQuantity = input.val().trim();
+
+        //    console.log("productsId", productsId);
+        //    console.log("billDetailId", billDetailId);
+        //    console.log("billId", billId);
+        //    console.log("newQuantity", newQuantity);
+
+        //});
+        $(document).on('input', '.Update_Quantity_For_Edit_Bill', function () {
+            var input = $(this);
+            var productsId = input.attr('id');
+            var billDetailId = input.attr('billDetailId');
+            var billId = input.attr('billId');
+            var newQuantity = input.val().trim();
+
+            console.log("productsId:", productsId);
+            console.log("billDetailId:", billDetailId);
+            console.log("billId:", billId);
+            console.log("newQuantity:", newQuantity);
+            if (!input.data('original-value')) {
+                input.data('original-value', input.val()); // Lưu giá trị ban đầu
+            }
+            if (newQuantity === "" || parseInt(newQuantity) === 0) {
+                // Hiển thị cảnh báo và yêu cầu xác nhận
+                if (confirm("Số lượng không thể nhỏ hơn 0. Bạn có muốn khôi phục lại số lượng cũ không?")) {
+                    // Khôi phục lại số lượng cũ
+                    input.val(input.data('original-value'));
+                } else {
+
+                    return;
+                }
+            } else {
+                $.ajax({
+                    url: '/Admin/Bill/UpdateQuantityForEditNew',
+                    type: 'POST',
+                    data: {
+                        productId: productsId,
+                        billId: billId,
+                        billDetailId: billDetailId,
+                        newQuantity: newQuantity
+                    },
+                    success: function (response) {
+                            if (response.success) {
+
+                                updateTotalPrice(billId);
+                            } else {
+
+                                input.val(input.data('original-quantity'));
+                                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+
+                            input.val(input.data('original-quantity'));
+                        }
+                });
+            }
+        });
+
+
+
+
+        function deleteItem(billId, billDetailId) {
+
+                   $.ajax({
+                       url: '/Admin/Bill/DeleteItem', // Đảm bảo đường dẫn URL là chính xác
+                       type: 'POST', // Phương thức HTTP là POST
+                       data: { billId: billId, billDetailId: billDetailId }, // Truyền dữ liệu
+                       success: function (response) {
+                           if (response.success) {
+                               // Xóa thành công, cập nhật lại danh sách sản phẩm và tổng tiền
+                               loadListItem(billId);
+                               updateTotalPrice(billId);
+                               createToast('', 'fa-solid fa-circle-check', 'Thành công', response.message)
+                           } else {
+                               // Hiển thị thông báo lỗi
+                               createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                           }
+                       },
+                       error: function (xhr, status, error) {
+                           console.error(xhr.responseText);
+                           createToast()
+                       }
+                   });
+               }
+
+
+
+        $(document).off('click', '.btnDeleteItemBill').on('click', '.btnDeleteItemBill', function () {
+            var billDetailId = $(this).data('billdetailid');
+            var billId = $(this).data('billid');
+            console.log('BillDetailId:', billDetailId);
+            console.log('BillId:', billId);
+            if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+                deleteItem(billId, billDetailId)
+            }
+        });
+
+     function submitForm() {
+            var isValid = true;
+
+            var NameCustomer = $('#NameCustomer').val().trim();
+            var phoneNumber = $('#PhoneCustomer').val().trim();
+            var Address = $('#Location').val().trim();
+            var Email = $('#Email').val().trim();
+
+            if (!NameCustomer) {
+                showError('NameCustomer', 'Vui lòng điền tên.');
+                isValid = false;
+            } else {
+                removeError('NameCustomer');
+            }
+
+            const phoneNumberRegex = /^0\d{9}$/;
+
+            if (!phoneNumber) {
+                showError('PhoneCustomer', 'Số điện thoại không để trống.');
+                isValid = false;
+            } else if (phoneNumber.length >11) {
+                showError('PhoneCustomer', 'Định dạng số điện thoại không đúng.');
+                isValid = false;
+            } else if (!phoneNumberRegex.test(phoneNumber)) {
+                showError('PhoneCustomer', 'Định dạng số điện thoại không đúng.');
+                isValid = false;
+            } else {
+                removeError('PhoneCustomer');
+            }
+
+            if (!Email) {
+                showError('Email', "Vui lòng điền Email.");
+                isValid = false;
+            } else if (Email.length > 300) {
+                showError('Email', "Email quá dài.");
+                isValid = false;
+            } else {
+                removeError('Email');
+            }
+
+            if (!Address) {
+                showError('Address', 'Vui lòng điền địa chỉ.');
+                isValid = false;
+            } else {
+                removeError('Address');
+            }
+
+            if (isValid) {
+                var form = $('#editBill')[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    url: '/Admin/Bill/Edit',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response.success) {
+                            if (response.Code === 1) {
+               /*                 createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.orderCode);*/
+                                $.ajax({
+                                    url: '/Admin/Bill/GetUpdatedBillRow',
+                                    type: 'GET',
+                                    data: { billId: response.billId },
+                                    success: function (res) {
+                                        console.log('HTML nhận được:', res);
+                                        $('.tr_IndexBill_' + billId).replaceWith(res);
+                                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập đơn thành công');
+
+                                        setTimeout(function () {
+                                            bg.hide();
+                                            popup.hide();
+
+                                        },1450);
+
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.error("Lỗi AJAX:", xhr.responseText);
+                                        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
+                                        window.location.reload();
+                                    }
+                                });
+                            }
+                        }
+                        else {
+                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                        }
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Lỗi AJAX:", xhr.responseText); createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                    }
+                });
+            }
+        }
+
+        function removeError(elementId) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.remove('error-border');
+            }
+        }
+
+        function showError(elementId, errorMessage) {
+            const element = document.getElementById(elementId);
+            if (element) {
+                element.classList.add('error-border');
+            }
+            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
+        }
+
+
+
+
+
+        $('#saveBill').click(function () {
+            submitForm(); // Gọi hàm xử lý submit form của bạn
+        });
+    });
+</script>
