@@ -26,6 +26,8 @@ namespace CuaHangBanDienThoai.Models
         public string Phone { get;set; }
         public string Email { get;set; }
         public bool IsDelivery { get;set; }
+        public string OrderStatus { get; set; }
+        public DateTime StatusDate { get; set; }
         public Admin_EditOrder()
         {
             Items = new List<Admin_EditOrderItem>();

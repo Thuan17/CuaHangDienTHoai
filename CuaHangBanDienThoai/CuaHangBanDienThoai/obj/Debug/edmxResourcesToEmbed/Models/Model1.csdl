@@ -225,6 +225,8 @@
     <NavigationProperty Name="Customer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="OrderCustomer" ToRole="Customer" />
     <NavigationProperty Name="VoucherDetail" Relationship="Self.FK__VoucherDe__Order__7EF6D905" FromRole="OrderCustomer" ToRole="VoucherDetail" />
     <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderCustomer" ToRole="OrderDetail" />
+    <Property Name="OrderStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="StatusDate" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="OrderDetail">
     <Key>

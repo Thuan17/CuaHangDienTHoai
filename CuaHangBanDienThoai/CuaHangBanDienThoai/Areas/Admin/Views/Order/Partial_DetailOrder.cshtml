@@ -79,15 +79,15 @@
 
                             </div>
                         </div>
-                        @*<div class="col-md-6">
+                        <div class="col-md-6">
                 <div class="input-data ">
                     <b>Trạng thái :</b>
                     <span class="@(Model.OrderStatus == "Chưa giao" ? "bg-warning" :
-                                  Model.OrderStatus == "Đã giao" ? "bg-success"  :
+                                  Model.OrderStatus == "Đã xuất kho" ? "bg-success"  :
                                   Model.OrderStatus == "Đơn huỷ" ? "bg-danger" :
                                   Model.OrderStatus == "Đơn trả" ? "bg-dark" : "") text-white col-6 text-center">
                         @Model.OrderStatus
-                        @if (Model.OrderStatus == "Đã giao" && Model.StatusDate != null)
+                        @if (Model.StatusDate != null&& Model.OrderStatus !="Chưa giao")
                         {
                             <span>
                                 @String.Format("{0:dd/MM/yyyy }", Model.StatusDate)
@@ -98,7 +98,7 @@
 
                     </span>
                 </div>
-            </div>*@
+            </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-6">

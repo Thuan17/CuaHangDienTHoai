@@ -124,8 +124,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         Email = Order.Email,
                         CustomerId =(int) Order.CustomerId,
                         IsDelivery = Order.IsDelivery ?? false,
-                       Confirm = (bool)Order.Confirm,   
-                      
+                       Confirm = (bool)Order.Confirm,
+                        OrderStatus = Order.OrderStatus,
+                        StatusDate = Order.StatusDate ?? DateTime.MinValue,
+
                         SuccessDate = Order.SuccessDate ?? DateTime.MinValue,
                     };
 
@@ -192,7 +194,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         Email = Order.Email,
                         CustomerId = (int)Order.CustomerId,
                         IsDelivery = Order.IsDelivery ?? false,
-
+                        OrderStatus = Order.OrderStatus,
+                        StatusDate = Order.StatusDate ?? DateTime.MinValue,
 
                         SuccessDate = Order.SuccessDate ?? DateTime.MinValue,
                     };
@@ -313,7 +316,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                          seller.Email = model.Email;
                       
                          seller.IsDelivery = (bool)model.IsDelivery ;
-                 
+                    if (model.StatusDate != default(DateTime))
+                    {
+                        seller.StatusDate = model.StatusDate;
+                    }
 
 
                     db.Entry(seller).State = EntityState.Modified;
@@ -410,7 +416,40 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult UpdateOrderStatus(int OrderId, string status)
+        {
 
+            var Order = db.OrderCustomer.SingleOrDefault(b => b.OrderId == OrderId);
+
+            if (Order != null)
+            {
+               
+                    if (status == "Đã giao" && Order.Confirm == false)
+                    {
+                        return Json(new { success = false, message = "Vui lòng xác nhận đơn hàng.", code = Order.Code });
+                    }
+                Order.OrderStatus = status;
+               
+                if (status == "Chưa giao")
+                {
+                   
+                    Order.StatusDate = null;
+                }
+                else 
+                {
+                   
+                    Order.StatusDate = DateTime.Now;
+                }
+              
+
+                db.SaveChanges();
+
+                return Json(new { success = true, code = Order.Code });
+            }
+
+            return Json(new { success = false, message = "Hoá đơn không tồn tại.", code = Order.Code });
+        }
 
 
 

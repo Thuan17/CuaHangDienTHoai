@@ -73,15 +73,15 @@
 
     $("select[name='Trangthai']").change(function () {
         var selectElement = $(this);
-        var billId = selectElement.attr("id").split("_")[1];
+        var orderid = selectElement.attr("id").split("_")[1];
         var selectedStatus = selectElement.val(); // Lấy giá trị đã chọn
 
 
         $.ajax({
-            url: '/Admin/Bill/UpdateOrderStatus', // URL tới Action của bạn
+            url: '/Admin/Order/UpdateOrderStatus', // URL tới Action của bạn
             type: 'POST',
             data: {
-                billId: billId,
+                OrderId: orderid,
                 status: selectedStatus
             },
             success: function (response) {

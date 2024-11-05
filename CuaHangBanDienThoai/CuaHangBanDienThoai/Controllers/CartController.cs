@@ -270,7 +270,7 @@ namespace CuaHangBanDienThoai.Controllers
                 id = (int)Session["CustomerId"];
             }
 
-            var order = db.OrderCustomer.FirstOrDefault(x => x.CustomerId == id);
+            var order = db.OrderCustomer.Where(x => x.CustomerId == id).OrderByDescending(x => x.OrderId ).ToList();
             if (order != null)
             {
                 return View(order);
@@ -278,8 +278,18 @@ namespace CuaHangBanDienThoai.Controllers
            
             return View();
         }
-
-
+        public ActionResult Partial_OrderDetail(int id)
+        {
+            if(id> 0)
+            {
+                var detail =db.OrderDetail.Where(x=>x.OrderId==id).ToList();
+                if (detail != null)
+                {
+                    return PartialView(detail);
+                }
+            }
+            return PartialView();   
+        }
 
         [HttpPost]
         public ActionResult AddtoCart(int id, int quantity)

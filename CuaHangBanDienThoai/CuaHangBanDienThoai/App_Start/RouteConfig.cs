@@ -60,7 +60,7 @@ namespace CuaHangBanDienThoai
             
             routes.MapRoute(
                name: "DonHangCuaTui",
-              url: "don-hang-cua-tui/{id}",
+              url: "tat-ca-don-hang/{id}",
                defaults: new { controller = "Cart", action = "MyOrder", id = UrlParameter.Optional },
                 namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );

@@ -187,6 +187,8 @@
     <EntitySetMapping Name="OrderCustomer">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.OrderCustomer">
         <MappingFragment StoreEntitySet="OrderCustomer">
+          <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+          <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
           <ScalarProperty Name="OrderId" ColumnName="OrderId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />

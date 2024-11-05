@@ -1,37 +1,200 @@
-﻿@model CuaHangBanDienThoai.Models.OrderCustomer
-
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.OrderCustomer>
+@using CuaHangBanDienThoai.Common;
 @{
     ViewBag.Title = "Tẩt cả đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .tab-pane .card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    .container_Index .card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
 
-<div class="container container_Index bg-white">
+</style>
+<link href="~/Content/css/client/CheckoutSuccess.css" rel="stylesheet" />
+<link href="~/Content/css/client/CheckOut.css" rel="stylesheet" />
+<link href="~/Content/css/TimeLine.css" rel="stylesheet" />
+<div class="container container_Index bg-white" style="min-height:650px; ">
     <ul class="breadcrumbs mb-1 pl-0 pt-2 d-flex align-items-center ">
         <li class="breadcrumb-item m-0 p-0"><a href="/#">Tài khoản</a></li>
-        
+
         <li class="breadcrumb-item active">Đơn hàng</li>
 
     </ul>
     @if (Model != null)
     {
-        <div class="row   ">
-            <div class="card p-3 shadow w-100 p-0 m-0">
-                <h2 class="text-center p-3">Card with Tabs</h2>
+
+        <div class="card" style="width:100% !important">
+            <div class="card-header">
                 <nav>
                     <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả đơn</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Chờ xác nhận</button>
+                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Đơn huỷ</button>
                     </div>
                 </nav>
-                <div class="tab-content p-3 border bg-light" id="nav-tabContent">
+            </div>
+            <div class="card-body p-0 m-0">
+                <div class="tab-content  border bg-light" id="nav-tabContent">
                     <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <p>
-                            <strong>This is some placeholder content the Home tab's associated content.</strong>
-                            Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps
-                            classes to control the content visibility and styling. You can use it with tabs, pills, and any
-                            other <code>.nav</code>-powered navigation.
-                        </p>
+                        <div class="card m-0  border-0 " style="width:100% !important">
+                            <div class=" py-2">
+                                @foreach (var item in Model)
+                                {
+
+
+                                    <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                                        <div class="step completed">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="bi bi-cart-check-fill"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Đặt hàng thành công</h4>
+                                        </div>
+                                        <div class="step @((bool)item.Confirm ? "completed" : "")">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="bi bi-check-all"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Xác nhận</h4>
+                                        </div>
+                                        <div class="step @(item.OrderStatus=="Đã xuất kho" ? "completed":"")">
+                                            <div class="step-icon-wrap ">
+                                                <div class="step-icon"><i class="bi bi-bank"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Xuất kho</h4>
+                                        </div>
+                                        <div class="step @(item.OrderStatus=="Đã xuất kho" ? "completed":"")">
+                                            <div class="step-icon-wrap ">
+                                                <div class="step-icon"><i class="bi bi-truck"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Vận chuyển  </h4>
+                                        </div>
+                                        <div class="step">
+                                            <div class="step-icon-wrap">
+                                                <div class="step-icon"><i class="bi bi-house-heart-fill"></i></div>
+                                            </div>
+                                            <h4 class="step-title">Thành công</h4>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 pb-3">
+                                            <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                                                <h3 class="fs-6 mb-3 details__Text">Thông tin nhận hàng</h3>
+                                                <div class=" row p-0 m-0">
+                                                    <div class="col-lg-6">
+                                                        <div class="input-data">
+                                                            <b for="">Mã đơn :</b>
+                                                            <sapn>@item.Code </sapn>
+                                                        </div>
+                                                        <div class=" input-data">
+                                                            <b for="">Người nhận :</b>
+                                                            <sapn>@item.CustomerName</sapn>
+                                                        </div>
+                                                        <div class="input-data">
+                                                            <b for="PhoneCustomer">
+                                                                Số Điện Thoại :
+                                                            </b>
+                                                            <sapn>@item.Phone</sapn>
+                                                        </div>
+                                                        <div class="input-data">
+                                                            <b for="">Email :</b>
+                                                            <sapn>@item.Email</sapn>
+                                                        </div>
+                                                        <div class="input-data ">
+
+                                                            <b>Địa Chỉ :</b>
+                                                            <sapn>@item.Location.Trim()</sapn>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-data ">
+                                                            <b>Trạng thái thanh toán :</b>
+                                                            <span class="@(item.TypePayment == 0 ? "text-danger" : "bg-success text-white pr-1 pl-1")">
+                                                                @(item.TypePayment == 0 ? "COD" : "Đã thanh toán")
+                                                            </span>
+
+                                                        </div>
+
+                                                        <div class="input-data ">
+                                                            <b>Vận chuyển:</b>
+                                                            <span class="">
+                                                                @if (item.IsDelivery == true)
+                                                                {
+                                                                    <span class="bg-danger text-white">
+                                                                        Hoả tốc
+                                                                    </span>
+                                                                }
+
+
+                                                            </span>
+                                                        </div>
+                                                        <div class="input-data">
+                                                            <b for="PhoneCustomer">
+                                                                Ngày đặt :
+                                                            </b>
+                                                            <sapn>@item.CreatedDate</sapn>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-data ">
+                                                        <b for="">Ghi chú :</b>
+                                                        <sapn>@(item.Note??"")</sapn>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                            <div class="checkout-item-ordered">
+                                                <h2 class="fs-6 mb-3 text-left">Thứ tự sản phẩm</h2>
+                                                <div class="table-content table-responsive order-table mb-4">
+                                                    <table class="table table-bordered align-middle table-hover text-center mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th class="td__img fw-">
+                                                                    Hình
+                                                                </th>
+                                                                <th class="td__product">
+                                                                    Sản phẩm
+                                                                </th>
+
+                                                                <th class="td__quantity-price">
+                                                                    Số lượng/ Giá
+                                                                </th>
+                                                            </tr>
+
+                                                        </thead>
+                                                        @Html.Action("Partial_BillDetail", "ShoppingCart", new { id = item.OrderId })
+                                                        <tfoot>
+
+                                                            <tr>
+                                                                <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                    Tổng tiền:
+                                                                </td>
+                                                                <td class="fw-500 last">
+                                                                    <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                                </td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr class="col-12 text-center bg-black" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+
+
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <p>
@@ -51,7 +214,17 @@
                     </div>
                 </div>
             </div>
-        </div>}
+            <div class="card-footer">
+
+            </div>
+        </div>
+        
+      
+    
+
+
+
+    }
 </div>
 
-  
+

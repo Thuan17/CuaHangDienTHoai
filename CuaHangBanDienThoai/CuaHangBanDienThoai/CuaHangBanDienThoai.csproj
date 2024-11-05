@@ -5024,6 +5024,7 @@
     <Content Include="Content\css\ProductClient\styles\single_styles.css" />
     <Content Include="Content\css\ProductDetail.css" />
     <Content Include="Content\css\test.css" />
+    <Content Include="Content\css\TimeLine.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\templates\DonHang.html" />
     <Content Include="Content\templates\HoaDon.html" />
@@ -5782,6 +5783,7 @@
     <Content Include="Views\ShoppingCart\Partial_BillDetail.cshtml" />
     <Content Include="Views\ShoppingCart\VnpayReturn.cshtml" />
     <Content Include="Views\Cart\MyOrder.cshtml" />
+    <Content Include="Views\Cart\Partial_OrderDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

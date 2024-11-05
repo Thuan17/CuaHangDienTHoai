@@ -11,9 +11,9 @@
         @Html.HiddenFor(model => model.SuccessDate)
         @Html.HiddenFor(model => model.TypePayment)
         @Html.HiddenFor(model => model.CustomerId)
-        @*@Html.HiddenFor(model => model.StatusDate)*@
-        @*@Html.HiddenFor(model => model.OrderStatus)
-        @Html.HiddenFor(model => model.IsConfirm)*@
+        @Html.HiddenFor(model => model.StatusDate)
+        @Html.HiddenFor(model => model.OrderStatus)
+     
 
 
         <div class="row">
@@ -71,14 +71,22 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="input-data ">
-                                    <b>Trạng thái:</b>
-                                    <span class="">
-                                        @if (Model.IsDelivery == true)
+                                    <b>Trạng thái :</b>
+                                    <span class="@(Model.OrderStatus == "Chưa giao" ? "bg-warning" :
+                  Model.OrderStatus == "Đã xuất kho" ? "bg-success"  :
+                   Model.OrderStatus == "Đơn huỷ" ? "bg-danger" :
+                   Model.OrderStatus == "Đơn trả" ? "bg-dark" : "") text-white col-6 text-center">
+                                        @Model.OrderStatus
+                                        @if (Model.StatusDate != null && Model.OrderStatus != "Chưa giao")
                                         {
-                                            <span class="bg-danger text-white">
-                                                Hoả tốc
+                                            <span>
+                                                @String.Format("{0:dd/MM/yyyy }", Model.StatusDate)
                                             </span>
+
                                         }
+
+
+
                                     </span>
                                 </div>
                             </div>
