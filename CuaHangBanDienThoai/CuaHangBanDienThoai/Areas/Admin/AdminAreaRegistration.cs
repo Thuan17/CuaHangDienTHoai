@@ -14,10 +14,15 @@ namespace CuaHangBanDienThoai.Areas.Admin
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            context.MapRoute(
+      name: "BillNonIsConfirm_Order",
+      url: "don-chua-xu-ly",
+      defaults: new { controller = "Order", action = "OrderNonIsConfirm", alias = UrlParameter.Optional }
 
+  );
 
             context.MapRoute(
-             name: "Index_Bill",
+             name: "Index_Order",
              url: "quan-ly-don-hang",
              defaults: new { controller = "Order", action = "Index", alias = UrlParameter.Optional }
 
@@ -158,7 +163,16 @@ defaults: new { controller = "ProductCategory", action = "Add" }
               defaults: new { controller = "Account", action = "Logout", alias = UrlParameter.Optional }
 
           );
-          
+
+            context.MapRoute(
+     name: "Index_Home_ỉnexc",
+     url: "he-thong-quan-ly",
+     defaults: new { controller = "Home", action = "Index", alias = UrlParameter.Optional },
+      namespaces: new[] { "CuaHangBanDienThoai.Areas.Admin.Controllers" }
+
+ );
+
+
             context.MapRoute(
          name: "Index_Home",
          url: "hethongquanly",

@@ -56,8 +56,17 @@ namespace CuaHangBanDienThoai
                defaults: new { controller = "ProductDetail", action = "Details", id = UrlParameter.Optional },
                 namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );
+            
+            
+            routes.MapRoute(
+               name: "DonHangCuaTui",
+              url: "don-hang-cua-tui/{id}",
+               defaults: new { controller = "Cart", action = "MyOrder", id = UrlParameter.Optional },
+                namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+           );
 
-          
+
+
             routes.MapRoute(
                 name: "DangKy",
                 url: "dang-ky",

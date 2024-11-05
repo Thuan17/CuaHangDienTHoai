@@ -58,12 +58,72 @@
                                             Hoả tốc
                                         </span>
                                     }
-                                   
+
 
                                 </span>
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-data">
+                                <b>Xác nhận :</b>
+                                <span class="@(Model.Confirm ? "bg-success text-white col-4 text-center" : "col-4 text-center bg-danger text-white")">
+                                    @(Model.Confirm ? "Đã xác nhận" : "Chưa xác nhận")
+                                </span>
+
+                            </div>
+                        </div>
+                        @*<div class="col-md-6">
+                <div class="input-data ">
+                    <b>Trạng thái :</b>
+                    <span class="@(Model.OrderStatus == "Chưa giao" ? "bg-warning" :
+                                  Model.OrderStatus == "Đã giao" ? "bg-success"  :
+                                  Model.OrderStatus == "Đơn huỷ" ? "bg-danger" :
+                                  Model.OrderStatus == "Đơn trả" ? "bg-dark" : "") text-white col-6 text-center">
+                        @Model.OrderStatus
+                        @if (Model.OrderStatus == "Đã giao" && Model.StatusDate != null)
+                        {
+                            <span>
+                                @String.Format("{0:dd/MM/yyyy }", Model.StatusDate)
+                            </span>
+
+                        }
+
+
+                    </span>
+                </div>
+            </div>*@
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="input-data ">
+                                <b>Trạng thái thanh toán :</b>
+                                <span class="@(Model.TypePayment == 0 ? "text-danger" : "bg-success text-white pr-1 pl-1")">
+                                    @(Model.TypePayment == 0 ? "Chưa thanh toán" : "Đã thanh toán")
+                                </span>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-data ">
+
+                                <b>Địa chỉ :</b>
+                                <sapn>@Model.Location.Trim()</sapn>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
                     @if (Model.Modifiedby != null)
 
                     {
@@ -89,56 +149,13 @@
 
 
 
-
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="input-data">
-                                <b>Xác nhận :</b>
-                                <span class="@(Model.Success ? "bg-success text-white col-4 text-center" : "col-4 text-center bg-danger text-white")">
-                                    @(Model.Success ? "Đã xác nhận" : "Chưa xác nhận")
-                                </span>
-
-                            </div>
-                        </div>
-                        @*<div class="col-md-6">
-                            <div class="input-data ">
-                                <b>Trạng thái :</b>
-                                <span class="@(Model.OrderStatus == "Chưa giao" ? "bg-warning" :
-                                              Model.OrderStatus == "Đã giao" ? "bg-success"  :
-                                              Model.OrderStatus == "Đơn huỷ" ? "bg-danger" :
-                                              Model.OrderStatus == "Đơn trả" ? "bg-dark" : "") text-white col-6 text-center">
-                                    @Model.OrderStatus
-                                    @if (Model.OrderStatus == "Đã giao" && Model.StatusDate != null)
-                                    {
-                                        <span>
-                                            @String.Format("{0:dd/MM/yyyy }", Model.StatusDate)
-                                        </span>
-
-                                    }
-
-
-                                </span>
-                            </div>
-                        </div>*@
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="input-data ">
-
-                                <b>Địa chỉ :</b>
-                                <sapn>@Model.Location.Trim()</sapn>
-                            </div>
-
-                        </div>
-
-                    </div>
                     <div class="input-dat">
                         <b>Tổng tiền:</b>
                         <span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span>
                     </div>
                     <div class="input-data ">
                         @if (Model.Note != null)
-                        {<b for="">Ghi ch:</b>
+                        {<b for="">Ghi chú:</b>
                             <sapn>@Model.Note.Trim()</sapn>
                         }
 
@@ -189,7 +206,7 @@
                                 strImg = "~/Content/css/admin/login/images/logoWeb.png";
                             }
                             var Name = item.productDetail.Products.Title.Trim() + " " + item.productDetail.Ram.Trim() + "/" + item.productDetail.Capacity.Trim();
-                            <tr class="text-center">
+                            <tr class="text-lg-left">
                                 <td class="td__imgItem p-0">
                                     <a href="/san-pham/@item.productDetail.Alias" target="_blank">
 
@@ -205,8 +222,8 @@
                                             <div class="Describe pt-0">
                                                 <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
                                                 <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
-                                                <p class="text-dark mb-0"><label>Hãng</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
-
+                                                <p class="text-dark mb-0"><label>Hãng :</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+                                                <p class="text-dark mb-0"><label>Mã :</label>  @item.productDetail.Alias.Trim()</p>
                                             </div>
                                         </div>
 

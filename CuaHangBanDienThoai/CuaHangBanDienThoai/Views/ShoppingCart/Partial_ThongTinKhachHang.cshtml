@@ -307,8 +307,8 @@
                 const token = $('input[name="__RequestVerificationToken"]').val();
                 const dataToSend = formData + '&customerId=' + encodeURIComponent(customerId);
                 console.log("btnCheckOutS", dataToSend);
-                //$('.loading-overlay').show();
-                //$('.sent').show();
+                $('.loading-overlay').show();
+                $('.sent').show();
                 $('.btnCheckOutS').prop('disabled', true);
                 $.ajax({
                     url: '/ShoppingCart/CheckOut',
@@ -329,11 +329,11 @@
                             }
                         } else {
                             if (res.Code == -4) {
-                                //$('.loading-overlay').hide();
-                                //$('.sent').hide();
-                          /*      $('.btnCheckOutS').prop('disabled', false);*/
+                                $('.loading-overlay').hide();
+                                $('.sent').hide();
+                                $('.btnCheckOutS').prop('disabled', false);
                                 if (res.InsufficientItems && res.InsufficientItems.length > 0) {
-                                  /*  createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Số lượng kho không đủ');*/
+                                    /*  createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Số lượng kho không đủ');*/
                                     message = "\n";
                                     res.InsufficientItems.forEach(function (item) {
                                         message += "\n" + item.ProductName + "\n";
@@ -348,6 +348,13 @@
                                     $('.btnCheckOutS').prop('disabled', false);
                                 } else {
                                     createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Số lượng kho không đủ');
+                                }
+                            } else if (res.Code = -2) {
+                                createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
+                                if (res.Url!=null ) {
+                                    setTimeout(() => {
+                                        window.location.href = res.Url;
+                                    }, 1500);
                                 }
                             }
                         }

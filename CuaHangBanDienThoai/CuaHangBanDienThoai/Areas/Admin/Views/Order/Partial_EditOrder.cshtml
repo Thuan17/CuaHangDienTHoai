@@ -1,14 +1,16 @@
 ﻿@model CuaHangBanDienThoai.Models.Admin_EditOrder
 @using CuaHangBanDienThoai.Common
-<link href="~/Content/css/admin/Bill.css" rel="stylesheet" />
+@*<link href="~/Content/css/admin/Order.css" rel="stylesheet" />*@
 @if (Model != null)
 {
-    <form id="editBill" enctype="multipart/form-data">
+    <form id="editOrder" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.OrderId)
         @Html.HiddenFor(model => model.Code)
         @Html.HiddenFor(model => model.CreatedDate)
         @Html.HiddenFor(model => model.SuccessDate)
+        @Html.HiddenFor(model => model.TypePayment)
+        @Html.HiddenFor(model => model.CustomerId)
         @*@Html.HiddenFor(model => model.StatusDate)*@
         @*@Html.HiddenFor(model => model.OrderStatus)
         @Html.HiddenFor(model => model.IsConfirm)*@
@@ -45,7 +47,7 @@
                             <div class="col-lg-6">
                                 <div class="input-data">
                                     <b for="">Người nhận :</b>
-                                    <input type="text" name="NameCustomer" id="CustomerName" value="@Model.CustomerName.Trim()" required>
+                                    <input type="text" name="CustomerName" id="CustomerName" value="@Model.CustomerName.Trim()" required>
                                     <div class="underline"></div>
                                 </div>
                             </div>
@@ -54,7 +56,7 @@
                                     <b for="PhoneCustomer">
                                         Số Điện Thoại :
                                     </b>
-                                    <input type="text" name="Phone" id="PhoneCustomer" value="@Model.Phone.Trim()" required>
+                                    <input type="text" name="Phone" id="Phone" value="@Model.Phone.Trim()" required>
                                     <div class="underline"></div>
                                 </div>
                             </div>
@@ -82,7 +84,17 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
+                                <div class="input-data ">
+                                    <b>Trạng thái thanh toán :</b>
+                                    <span class="@(Model.TypePayment == 0 ? "text-danger" : "bg-success text-white pr-1 pl-1")">
+                                        @(Model.TypePayment == 0 ? "Chưa thanh toán" : "Đã thanh toán")
+                                    </span>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
                                 <div class="input-data ">
 
                                     <b>Địa Chỉ :</b>
@@ -91,15 +103,17 @@
                                 </div>
 
                             </div>
-
                         </div>
+
+
+                     
                         <div class="input-dat" id="loadPrice">
                             <b>Tổng tiền:</b>
                             <span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span>
                         </div>
                         <div class="input-data ">
                             @if (Model.Note != null)
-                            {<b for="">Ghi ch:</b>
+                            {<b for="">Ghi chú:</b>
                                 <sapn>@Model.Note.Trim()</sapn>
                             }
 
@@ -158,7 +172,7 @@
 
                                             <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
                                         </a>
-                                        <button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemBill" data-billId="@Model.OrderId" data-billDetailId="@item.OrderDetailId">
+                                        <button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemOrder" data-orderid="@Model.OrderId" data-orderdetailid="@item.OrderDetailId">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
                                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
@@ -174,7 +188,8 @@
                                                 <div class="Describe pt-0">
                                                     <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
                                                     <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
-                                                    <p class="text-dark mb-0"><label>Hãng</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+                                                    <p class="text-dark mb-0"><label>Hãng :</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+                                                    <p class="text-dark mb-0"><label>Mã :</label>  @item.productDetail.Alias.Trim()</p>
 
                                                 </div>
                                             </div>
@@ -182,10 +197,10 @@
                                     </td>
 
                                     <td class="td__quantity-price__item">
-                                        @Common.FormatNumber(item.Price) x<input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Bill"
+                                        @Common.FormatNumber(item.Price) x<input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Order"
                                                                                  id="@item.ProductDetailId"
-                                                                                 billDetailId="@item.OrderDetailId"
-                                                                                 billId="@Model.OrderId" />
+                                                                                  orderdetailid="@item.OrderDetailId"
+                                                                                 orderid="@Model.OrderId" />
 
 
                                         <br />
@@ -203,7 +218,7 @@
             </div>
             <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
                 <div class="col-10 d-grid gap-2 col-10 mx-auto">
-                    <button type="button" class="btn btn-success" id="saveBill">Lưu đơn @Model.Code</button>
+                    <button type="button" class="btn btn-success" id="saveOrder">Lưu đơn @Model.Code</button>
                 </div>
             </div>
         </div>
@@ -241,15 +256,15 @@
 
 
     $(document).ready(function () {
-        var billId = @Model.OrderId;
+        var orderid = @Model.OrderId;
         var bg = $(".bg-sg");
         var popup = $("#popupBill");
-        function loadListItem(billId) {
-            if (billId != null) {
+        function loadListItem(orderid) {
+            if (orderid != null) {
               $.ajax({
-                  url: '/Admin/Bill/Partail_ItemEditBill',
+                  url: '/Admin/Order/Partail_ItemEditorder',
                   type: 'GET',
-                  data: { billId: billId },
+                  data: { orderid: orderid },
                   success: function (response) {
                       $("#loadListItem").html(response);
 
@@ -265,12 +280,12 @@
 
 
 
-        function updateTotalPrice(billId) {
-            console.log('updateTotalPrice', billId);
+        function updateTotalPrice(orderid) {
+            console.log('updateTotalPrice', orderid);
             $.ajax({
-                url: '/admin/Bill/GetTotalPrice',
+                url: '/admin/Order/GetTotalPrice',
                 type: 'GET',
-                data: { billId: billId },
+                data: { orderid: orderid },
                 success: function (response) {
                     $('#loadPrice').html('   <b>Tổng tiền</b><span class="text-danger">' + response + '</span>');
                 },
@@ -283,36 +298,25 @@
         }
 
 
-        //$('body').on('input', '.Update_Quantity_For_Edit_Bill', function (e) {
-        //    var productsId = input.attr('id');
-        //    var billDetailId = input.data('billDetailId');
-        //    var billId = input.data('billId');
-        //    var newQuantity = input.val().trim();
 
-        //    console.log("productsId", productsId);
-        //    console.log("billDetailId", billDetailId);
-        //    console.log("billId", billId);
-        //    console.log("newQuantity", newQuantity);
-
-        //});
-        $(document).on('input', '.Update_Quantity_For_Edit_Bill', function () {
+        $(document).on('input', '.Update_Quantity_For_Edit_Order', function () {
             var input = $(this);
-            var productsId = input.attr('id');
-            var billDetailId = input.attr('billDetailId');
-            var billId = input.attr('billId');
+            var productdetailId = input.attr('id');
+            var  orderdetailid = input.attr('orderdetailid');
+            var orderid = input.attr('orderid');
             var newQuantity = input.val().trim();
 
-            console.log("productsId:", productsId);
-            console.log("billDetailId:", billDetailId);
-            console.log("billId:", billId);
+            console.log("productdetailId:", productdetailId);
+            console.log(" orderdetailid:",  orderdetailid);
+            console.log("orderid:", orderid);
             console.log("newQuantity:", newQuantity);
             if (!input.data('original-value')) {
-                input.data('original-value', input.val()); // Lưu giá trị ban đầu
+                input.data('original-value', input.val()); 
             }
             if (newQuantity === "" || parseInt(newQuantity) === 0) {
-                // Hiển thị cảnh báo và yêu cầu xác nhận
+               
                 if (confirm("Số lượng không thể nhỏ hơn 0. Bạn có muốn khôi phục lại số lượng cũ không?")) {
-                    // Khôi phục lại số lượng cũ
+                   
                     input.val(input.data('original-value'));
                 } else {
 
@@ -320,18 +324,18 @@
                 }
             } else {
                 $.ajax({
-                    url: '/Admin/Bill/UpdateQuantityForEditNew',
+                    url: '/Admin/Order/UpdateQuantityForEditNew',
                     type: 'POST',
                     data: {
-                        productId: productsId,
-                        billId: billId,
-                        billDetailId: billDetailId,
+                        productdetailId: productdetailId,
+                        orderid: orderid,
+                         orderdetailid: orderdetailid,
                         newQuantity: newQuantity
                     },
                     success: function (response) {
                             if (response.success) {
 
-                                updateTotalPrice(billId);
+                                updateTotalPrice(orderid);
                             } else {
 
                                 input.val(input.data('original-quantity'));
@@ -350,20 +354,20 @@
 
 
 
-        function deleteItem(billId, billDetailId) {
+        function deleteItem(orderid,  orderdetailid) {
 
                    $.ajax({
-                       url: '/Admin/Bill/DeleteItem', // Đảm bảo đường dẫn URL là chính xác
-                       type: 'POST', // Phương thức HTTP là POST
-                       data: { billId: billId, billDetailId: billDetailId }, // Truyền dữ liệu
+                       url: '/Admin/Order/DeleteItem',
+                       type: 'POST',
+                       data: { orderid: orderid,  orderdetailid:  orderdetailid },
                        success: function (response) {
                            if (response.success) {
-                               // Xóa thành công, cập nhật lại danh sách sản phẩm và tổng tiền
-                               loadListItem(billId);
-                               updateTotalPrice(billId);
+
+                               loadListItem(orderid);
+                               updateTotalPrice(orderid);
                                createToast('', 'fa-solid fa-circle-check', 'Thành công', response.message)
                            } else {
-                               // Hiển thị thông báo lỗi
+
                                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
                            }
                        },
@@ -373,47 +377,52 @@
                        }
                    });
                }
+ @*<button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemOrder" data-orderid="@Model.orderid" data- orderdetailid="@item. orderdetailid">
+     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+     </svg>
+     Xoá
+ </button>*@
 
-
-
-        $(document).off('click', '.btnDeleteItemBill').on('click', '.btnDeleteItemBill', function () {
-            var billDetailId = $(this).data('billdetailid');
-            var billId = $(this).data('billid');
-            console.log('BillDetailId:', billDetailId);
-            console.log('BillId:', billId);
+        $(document).off('click', '.btnDeleteItemOrder').on('click', '.btnDeleteItemOrder', function () {
+            var  orderdetailid = $(this).data('orderdetailid');
+            var orderid = $(this).data('orderid');
+            console.log(' btnDeleteItemOrder  orderdetailid:',  orderdetailid);
+            console.log('orderid:', orderid);
             if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
-                deleteItem(billId, billDetailId)
+                deleteItem(orderid,  orderdetailid)
             }
         });
-
+      
      function submitForm() {
             var isValid = true;
 
-            var NameCustomer = $('#NameCustomer').val().trim();
-            var phoneNumber = $('#PhoneCustomer').val().trim();
-            var Address = $('#Location').val().trim();
+         var customerName = $('#CustomerName').val().trim();
+            var phone = $('#Phone').val().trim();
+         var location = $('#Location').val().trim();
             var Email = $('#Email').val().trim();
 
-            if (!NameCustomer) {
-                showError('NameCustomer', 'Vui lòng điền tên.');
+         if (!customerName) {
+             showError('CustomerName', 'Vui lòng điền tên.');
                 isValid = false;
             } else {
-                removeError('NameCustomer');
+             removeError('CustomerName');
             }
 
             const phoneNumberRegex = /^0\d{9}$/;
 
-            if (!phoneNumber) {
-                showError('PhoneCustomer', 'Số điện thoại không để trống.');
+         if (!phone) {
+             showError('Phone', 'Số điện thoại không để trống.');
                 isValid = false;
-            } else if (phoneNumber.length >11) {
-                showError('PhoneCustomer', 'Định dạng số điện thoại không đúng.');
+         } else if (phone.length >11) {
+             showError('Phone', 'Định dạng số điện thoại không đúng.');
                 isValid = false;
-            } else if (!phoneNumberRegex.test(phoneNumber)) {
-                showError('PhoneCustomer', 'Định dạng số điện thoại không đúng.');
+         } else if (!phoneNumberRegex.test(phone)) {
+             showError('Phone', 'Định dạng số điện thoại không đúng.');
                 isValid = false;
             } else {
-                removeError('PhoneCustomer');
+             removeError('Phone');
             }
 
             if (!Email) {
@@ -426,19 +435,19 @@
                 removeError('Email');
             }
 
-            if (!Address) {
-                showError('Address', 'Vui lòng điền địa chỉ.');
+         if (!location) {
+             showError('Location', 'Vui lòng điền địa chỉ.');
                 isValid = false;
             } else {
-                removeError('Address');
+             removeError('Location');
             }
 
             if (isValid) {
-                var form = $('#editBill')[0];
+                var form = $('#editOrder')[0];
                 var formData = new FormData(form);
 
                 $.ajax({
-                    url: '/Admin/Bill/Edit',
+                    url: '/Admin/Order/Edit',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -446,21 +455,22 @@
                     success: function (response) {
                         if (response.success) {
                             if (response.Code === 1) {
-               /*                 createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.orderCode);*/
+           
                                 $.ajax({
-                                    url: '/Admin/Bill/GetUpdatedBillRow',
+                                    url: '/Admin/Order/GetUpdatedOrderRow',
                                     type: 'GET',
-                                    data: { billId: response.billId },
+                                    data: { OrderId: response.OrderId },
                                     success: function (res) {
-                                        console.log('HTML nhận được:', res);
-                                        $('.tr_IndexBill_' + billId).replaceWith(res);
+                                        $('.tr_IndexBill_' + orderid).replaceWith(res);
                                         createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập đơn thành công');
 
                                         setTimeout(function () {
                                             bg.hide();
                                             popup.hide();
 
-                                        },1450);
+                                        }, 1450);
+                      
+                                       
 
                                     },
                                     error: function (xhr, status, error) {
@@ -503,8 +513,8 @@
 
 
 
-        $('#saveBill').click(function () {
-            submitForm(); // Gọi hàm xử lý submit form của bạn
+        $('#saveOrder').click(function () {
+            submitForm();
         });
     });
 </script>

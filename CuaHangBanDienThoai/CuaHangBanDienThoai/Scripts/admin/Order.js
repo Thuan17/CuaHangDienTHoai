@@ -121,39 +121,54 @@
         var id = btn.data("id");
         var selectElement = $('#typeBill_' + id);
 
-
-
         $.ajax({
-            url: '/admin/Bill/IsConfirm',
+            url: '/admin/Order/IsConfirm',
             type: 'POST',
-            data: { page: 1, id: id },
+            data: { id: id },
             success: function (rs) {
                 if (rs.success) {
                     if (rs.isConfirm) {
                         btn.html("<i class='fa fa-check text-success'></i>");
-
+                      
                     } else {
                         btn.html("<i class='fas fa-times text-danger'></i>");
-                        selectElement.val("Chưa giao");
-                        updateSelectColor(selectElement);
                     }
                 }
-                else {
-                    btn.html("<i class='fas fa-times text-danger'></i>");
-                    selectElement.val("Chưa giao");
-                    updateSelectColor(selectElement);
-                    Swal.fire("Oppo !" + "\n" + response.message);
-                }
 
-            },
-            error: function () {
-                console.log("Lỗi khi xác nhận đơn hàng: " + response.message);
-                selectElement.val("Chưa giao");
-                updateSelectColor(selectElement);
-            },
-
-
+            }
         });
+
+        //$.ajax({
+        //    url: '/admin/Order/IsConfirm',
+        //    type: 'POST',
+        //    data: { page: 1, id: id },
+        //    success: function (rs) {
+        //        if (rs.success) {
+        //            if (rs.isConfirm) {
+        //                btn.html("<i class='fa fa-check text-success'></i>");
+
+        //            } else {
+        //                btn.html("<i class='fas fa-times text-danger'></i>");
+        //                selectElement.val("Chưa giao");
+        //                updateSelectColor(selectElement);
+        //            }
+        //        }
+        //        else {
+        //            btn.html("<i class='fas fa-times text-danger'></i>");
+        //            selectElement.val("Chưa giao");
+        //            updateSelectColor(selectElement);
+        //            Swal.fire("Oppo !" + "\n" + response.message);
+        //        }
+
+        //    },
+        //    error: function () {
+        //        console.log("Lỗi khi xác nhận đơn hàng: " + response.message);
+        //        selectElement.val("Chưa giao");
+        //        updateSelectColor(selectElement);
+        //    },
+
+
+        //});
     });
 });
 
@@ -182,7 +197,7 @@ $(document).ready(function () {
         if (keyword.length >= 3) {
             $('.loadding').show();
             $.ajax({
-                url: '/Admin/Bill/SuggestBill',
+                url: '/Admin/Order/SuggestOrder',
                 type: 'GET',
                 data: { search: keyword },
                 beforeSend: function () {

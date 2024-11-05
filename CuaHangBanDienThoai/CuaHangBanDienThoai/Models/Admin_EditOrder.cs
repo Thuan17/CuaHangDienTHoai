@@ -31,6 +31,43 @@ namespace CuaHangBanDienThoai.Models
             Items = new List<Admin_EditOrderItem>();
         }
 
+
+
+
+        public decimal GetPriceTotal()
+        {
+            return Items.Sum(item =>
+            {
+                if (item.ProductDetailId > 0)
+                {
+                    return (decimal)item.Price * item.Quantity;
+                }
+                else
+                {
+                    return (decimal)item.Price * item.Quantity;
+                }
+            });
+        }
+
+
+
+
+        public int GetTongSoLuong()
+        {
+            return Items.Sum(x => x.Quantity);
+        }
+        public void RemoveItem(int billtDetailId)
+        {
+
+            Items.RemoveAll(item => item.OrderDetailId == billtDetailId);
+        }
+
+
+
+
+
+
+
     }
     public class Admin_EditOrderItem
     {

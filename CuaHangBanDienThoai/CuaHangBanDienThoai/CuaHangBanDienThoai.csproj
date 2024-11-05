@@ -5620,6 +5620,10 @@
     <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Partail_ProductOrder.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Partial_EditOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partail_ItemEditorder.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\GetUpdatedOrderRow.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\SuggestOrder.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\OrderNonIsConfirm.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -5777,6 +5781,7 @@
     <Content Include="Views\ShoppingCart\CheckOutSuceess.cshtml" />
     <Content Include="Views\ShoppingCart\Partial_BillDetail.cshtml" />
     <Content Include="Views\ShoppingCart\VnpayReturn.cshtml" />
+    <Content Include="Views\Cart\MyOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -305,7 +305,7 @@
                                                 </div>
 
                                             }
-                                            @if (Session["customer"] == null)
+                                            @if (Session["customer"] == null&& Session["CustomerId"]==null)
                                             {<a class="linkGritem pt-2" href="/dang-nhap">
                                                     <div class="icon-box-left ">
 
@@ -331,7 +331,7 @@
                                                 var img = Session["userImage"] ?? "/images/logo/logoweb.png";
                                                 var FullName = Session["customerName"];
                                                 var LastName = Session["lastName"];
-
+                                                int customerid= (int)Session["CustomerId"];
                                                 <div class="account-dropdown m-0 p-0">
                                                     <div class="linkGritem pt-2">
                                                         <div class="icon-box-left">
@@ -346,7 +346,7 @@
                                                     <div class="account-menu">
                                                         <ul>
                                                             <li><a href="/thong-tin-ca-nhan">@FullName</a></li>
-                                                            <li><a href="/don-hang">Đơn hàng của tôi</a></li>
+                                                            <li><a href="/don-hang-cua-tui/@(customerid)">Đơn hàng của tôi</a></li>
                                                             <li><a href="/dang-xuat">Đăng xuất</a></li>
                                                         </ul>
                                                     </div>

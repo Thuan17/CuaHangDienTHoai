@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace CuaHangBanDienThoai.Controllers
 {
@@ -258,7 +259,25 @@ namespace CuaHangBanDienThoai.Controllers
         }
 
 
+        public ActionResult MyOrder(int? id)
+        {
+            if (Session["CustomerId"] == null && id == null && id <= 0)
+            {
+                return View();
+            }
+            if (Session["CustomerId"] != null && id == null)
+            {
+                id = (int)Session["CustomerId"];
+            }
 
+            var order = db.OrderCustomer.FirstOrDefault(x => x.CustomerId == id);
+            if (order != null)
+            {
+                return View(order);
+            }
+           
+            return View();
+        }
 
 
 

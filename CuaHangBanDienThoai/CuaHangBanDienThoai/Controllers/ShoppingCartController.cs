@@ -75,7 +75,7 @@ namespace CuaHangBanDienThoai.Controllers
                             int idKhach = (int)Session["CustomerId"];
                             if(idKhach!= customerid)
                             {
-                                return Json(new { Success = false, Code = -3, msg = "Phiên đặng nhập đã hết hạn" });
+                                return Json(new { Success = false, Code = -2, msg = "Phiên đặng nhập đã hết hạn" ,Url="dang-nhap"});
                             }
 
 
@@ -140,17 +140,17 @@ namespace CuaHangBanDienThoai.Controllers
                             }
                             else
                             {
-                                return Json(new {Success=false , Code =-2 });
+                                return Json(new {Success=false , Code =-2,msg="Vui lòng chọn sản phẩm",Url="gio-hang" });
                             }
                         }
                         else
                         {
-                            return Json(new { Success = false, Code = -2 });
+                            return Json(new { Success = false, Code = -2, msg = "Phiên đặng nhập đã hết hạn", Url = "dang-nhap" });
                         }
                     }
                     else
                     {
-                        return Json(new { Success = false, Code = -2 });
+                        return Json(new { Success = false, Code = -2 ,msg="Vui lòng điền đủ thông tin"});
                     }
                   
                 }

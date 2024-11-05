@@ -1,29 +1,33 @@
-﻿//$(document).ready(function () {
-//    CountBillNew();
-//    setInterval(function () {
-//        CountBillNew();
-//    }, 5000);
+﻿$(document).ready(function () {
+    CountOrderNew();
+    setInterval(function () {
+        CountOrderNew();
+    }, 5000);
 
-//});
-//function CountBillNew() {
-//    $.ajax({
-//        url: '/Admin/Bill/CountBillNew',
-//        type: 'GET',
-//        success: function (rs) {
-//            if (rs && typeof rs.Count !== 'undefined') {
+});
+function CountOrderNew() {
+
+    console.log("CountOrderNew");
+
+
+    $.ajax({
+        url: '/Admin/Order/CountOrderNew',
+        type: 'GET',
+        success: function (rs) {
+            if (rs && typeof rs.Count !== 'undefined') {
                
-//                $('.CountBillNew').html(rs.Count);
+                $('.CountBillNew').html(rs.Count);
                 
-//            } else {
-//                $('.CountBillNew').html("0");
-//                console.error("Phản hồi không có thuộc tính Count.");
-//            }
-//        },
-//        error: function (xhr, status, error) {
-//            console.error("Lỗi khi gọi AJAX: ", error);
-//        }
-//    });
-//}
+            } else {
+                $('.CountBillNew').html("0");
+                console.error("Phản hồi không có thuộc tính Count.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Lỗi khi gọi AJAX: ", error);
+        }
+    });
+}
 
 
 
