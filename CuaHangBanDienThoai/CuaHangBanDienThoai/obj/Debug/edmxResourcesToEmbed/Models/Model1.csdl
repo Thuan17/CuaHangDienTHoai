@@ -227,6 +227,8 @@
     <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderCustomer" ToRole="OrderDetail" />
     <Property Name="OrderStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
     <Property Name="StatusDate" Type="DateTime" Precision="3" />
+    <Property Name="ReturnDate" Type="DateTime" Precision="3" />
+    <Property Name="ReturnReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="OrderDetail">
     <Key>

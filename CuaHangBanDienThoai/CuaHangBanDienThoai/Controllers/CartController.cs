@@ -261,6 +261,25 @@ namespace CuaHangBanDienThoai.Controllers
 
         public ActionResult MyOrder(int? id)
         {
+            if (Session["CustomerId"] == null && (id == null || id <= 0))
+            {
+                return View();
+            }
+            if (Session["CustomerId"] != null && id == null)
+            {
+                id = (int)Session["CustomerId"];
+            }
+            var order = db.OrderCustomer.Where(x => x.CustomerId == id).OrderByDescending(x => x.OrderId).ToList();
+            if (order != null && order.Count > 0)
+            {
+                ViewBag.CustomerId = id;
+                return View(order);
+            }
+            return View();
+        }
+
+        public ActionResult Partail_MyOrderNonSuccess(int? id)
+        {
             if (Session["CustomerId"] == null && id == null && id <= 0)
             {
                 return View();
@@ -269,15 +288,165 @@ namespace CuaHangBanDienThoai.Controllers
             {
                 id = (int)Session["CustomerId"];
             }
+            if (id <= 0)
+            {
+                return PartialView();
 
-            var order = db.OrderCustomer.Where(x => x.CustomerId == id).OrderByDescending(x => x.OrderId ).ToList();
+            }
+            var order = db.OrderCustomer
+                     .Where(x => x.CustomerId == id
+                                 && x.Confirm == false
+                                 && x.SuccessDate == null
+                                
+                          
+                                 && x.OrderStatus == null)
+                     .OrderByDescending(x => x.OrderId)
+                     .ToList();
             if (order != null)
             {
-                return View(order);
+                return PartialView(order);
             }
-           
-            return View();
+
+            return PartialView();
         }
+
+
+        public ActionResult Partail_MyOrderCancel(int? id)
+        {
+            if (Session["CustomerId"] == null && id == null && id <= 0)
+            {
+                return View();
+            }
+            if (Session["CustomerId"] != null && id == null)
+            {
+                id = (int)Session["CustomerId"];
+            }
+            if (id <= 0)
+            {
+                return PartialView();
+
+            }
+            var order = db.OrderCustomer
+           .Where(x => x.CustomerId == id
+                      
+                       && x.OrderStatus != null
+                       && x.ReturnDate != null
+                       && (x.OrderStatus.Trim() != "Đơn huỷ" || x.OrderStatus.Trim() != "Từ chối")
+           )
+           .OrderByDescending(x => x.OrderId)
+           .ToList();
+
+            if (order != null)
+            {
+                return PartialView(order);
+            }
+
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult SuccessOrder(int orderid)
+        {
+            if (orderid < 0)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy mã đơn hàng này !!!" });
+
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var order =  db.OrderCustomer.FirstOrDefault(x => x.OrderId == orderid);
+                    if (order == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy mã đơn hàng này !!!" });
+                    }
+                    order.Success = true;   
+                    order.SuccessDate= DateTime.Now;
+                    db.Entry(order).State = EntityState.Modified;
+                    db.SaveChanges();
+                    dbContext.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Cảm ơn bạn đã xác nhận đơn hàng" });
+
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm đóng !!!" });
+                }
+            }
+        }
+
+        public ActionResult Partial_CancelOrder(int orderid)
+        {
+            if (orderid <= 0)
+            {
+                return PartialView();
+            }
+            var order = db.OrderCustomer.FirstOrDefault(x => x.OrderId == orderid);
+            if(order != null) 
+            {
+            return PartialView(order);  
+            }
+
+            return PartialView();
+        }
+     
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CancelOrder(int orderid, string returnReason)
+        {
+            if (orderid <= 0 && string.IsNullOrEmpty(returnReason))
+            {
+                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy thông tin " });
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var order = db.OrderCustomer.FirstOrDefault(x => x.OrderId == orderid);
+                    if (order == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy thông tin " });
+                    }
+                    order.OrderStatus = "Đơn huỷ";
+                    order.ReturnDate = DateTime.Now;
+                    order.ReturnReason = returnReason.Trim();
+                    db.Entry(order).State = EntityState.Modified;
+                    db.SaveChanges();
+                    dbContext.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Đơn hàng đã được huỷ thành công." });
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm đóng !!!" });
+
+                }
+            }
+        }
+
+
+
+
+        public ActionResult GetUpdatedOrderRow(int orderid)
+        {
+            if (orderid < 0)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy mã đơn hàng này !!!" });
+            }
+            var Order = db.OrderCustomer.FirstOrDefault(b => b.OrderId == orderid);
+            if (Order != null)
+            {
+                return PartialView(Order);
+            }
+            return HttpNotFound();
+        }
+
+
+
+
+
+
         public ActionResult Partial_OrderDetail(int id)
         {
             if(id> 0)

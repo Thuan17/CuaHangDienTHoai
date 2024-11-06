@@ -420,35 +420,42 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         public ActionResult UpdateOrderStatus(int OrderId, string status)
         {
 
-            var Order = db.OrderCustomer.SingleOrDefault(b => b.OrderId == OrderId);
+            var order = db.OrderCustomer.SingleOrDefault(b => b.OrderId == OrderId);
 
-            if (Order != null)
+            if (order == null)
             {
-               
-                    if (status == "Đã giao" && Order.Confirm == false)
-                    {
-                        return Json(new { success = false, message = "Vui lòng xác nhận đơn hàng.", code = Order.Code });
-                    }
-                Order.OrderStatus = status;
-               
-                if (status == "Chưa giao")
-                {
-                   
-                    Order.StatusDate = null;
-                }
-                else 
-                {
-                   
-                    Order.StatusDate = DateTime.Now;
-                }
-              
-
-                db.SaveChanges();
-
-                return Json(new { success = true, code = Order.Code });
+                return Json(new { success = false, message = "Hoá đơn không tồn tại.", code = OrderId });
             }
 
-            return Json(new { success = false, message = "Hoá đơn không tồn tại.", code = Order.Code });
+            order.OrderStatus = status;
+            order.StatusDate = DateTime.Now;
+
+            switch (status)
+            {
+                case "Chưa giao":
+                    order.Confirm = false;
+                    order.StatusDate = null;
+                    break;
+
+                case "Đã xuất kho":
+                    order.Confirm = true;
+                    break;
+
+                default:
+                   
+                    break;
+            }
+
+            try
+            {
+                db.SaveChanges();
+                return Json(new { success = true, code = order.Code, Confirm = order.Confirm });
+            }
+            catch (Exception ex)
+            {
+               
+                return Json(new { success = false, message = "Lỗi khi cập nhật hoá đơn.", code = order.Code, error = ex.Message });
+            }
         }
 
 

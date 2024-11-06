@@ -77,7 +77,30 @@
         background-color: #0da9ef;
         color: #fff
     }
+    .steps .step.cancel .step-icon {
+        border-color: #ff0000; 
+        background-color: #ff0000; 
+        color: #fff; 
+    }
+    .steps .step.cancel .step-icon-wrap::before
+    {
+        width: 50%;
+        background-color: #ff0000
+    }
+    .steps .step.cancel .step-icon-wrap::after {
+        background-color: #e1e7ec; /* Màu nền mặc định cho phần bên phải */
+        width: 50%; 
+    }
+    .steps .step:not(.cancel).completed .step-icon-wrap::before,
+    .steps .step:not(.cancel).completed .step-icon-wrap::after {
+        background-color: #0da9ef; /* Màu xanh cho các bước hoàn thành */
+    }
 
+    .steps .step:not(.cancel).completed .step-icon {
+        border-color: #0da9ef;
+        background-color: #0da9ef;
+        color: #fff;
+    }
 @media (max-width: 576px) {
     .flex-sm-nowrap .step .step-icon-wrap::before,
     .flex-sm-nowrap .step .step-icon-wrap::after {

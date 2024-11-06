@@ -103,14 +103,11 @@ namespace CuaHangBanDienThoai
                defaults: new { controller = "ProductDetail", action = "Index", id = UrlParameter.Optional },
                   namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );
-                    routes.MapRoute(
-                 name: "RedirectHome",
-                 url: "",
-                 defaults: new { controller = "Home", action = "Index", alias = UrlParameter.Optional }
-             );
+
+           
 
 
-            //// Route Trang chu
+
             routes.MapRoute(
              name: "indexHome",
              url: "trang-chu",
@@ -123,6 +120,23 @@ namespace CuaHangBanDienThoai
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
             namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+            );
+
+
+            // Route cho trang lỗi 404
+            routes.MapRoute(
+                name: "404-PageNotFound",
+                url: "khong-tim-thay-trang",
+                defaults: new { controller = "Error", action = "NotFound" },
+                   namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+            );
+
+            // Route cho trang lỗi 500
+            routes.MapRoute(
+                name: "500-InternalServerError",
+                url: "Loi-he-thong-may-chu",
+                defaults: new { controller = "Error", action = "ServerError" },
+                   namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
             );
         }
     }

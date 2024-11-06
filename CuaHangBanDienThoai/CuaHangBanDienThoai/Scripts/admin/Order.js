@@ -74,11 +74,13 @@
     $("select[name='Trangthai']").change(function () {
         var selectElement = $(this);
         var orderid = selectElement.attr("id").split("_")[1];
-        var selectedStatus = selectElement.val(); // Lấy giá trị đã chọn
-
-
+        var id = $(this).data('id');
+        var selectedStatus = selectElement.val(); 
+        var btn = $('.btnIsConfirm[data-id="' + orderid + '"]');
+        var btnCapNhatBill = $('.btnCapNhatBill[data-id="' + id + '"]');
+       
         $.ajax({
-            url: '/Admin/Order/UpdateOrderStatus', // URL tới Action của bạn
+            url: '/Admin/Order/UpdateOrderStatus',
             type: 'POST',
             data: {
                 OrderId: orderid,
@@ -86,7 +88,15 @@
             },
             success: function (response) {
                 if (response.success) {
-
+                    if (response.Confirm) {
+                        if (selectedStatus.trim() !== "Chưa giao" ) {
+                            btnCapNhatBill.addClass('hide');
+                        } 
+                        btn.html("<i class='fa fa-check text-success'></i>");
+                    } else {
+                        btn.html("<i class='fas fa-times text-danger'></i>");
+                    }
+                  
                 } else {
                     Swal.fire("Oppo !" + "\n" + response.message + "\n" + response.code);
                     console.log("Lỗi khi cập nhật trạng thái: " + response.message + "" + response.code);
@@ -105,7 +115,7 @@
             }
         });
 
-        // Cập nhật màu sắc ngay lập tức
+     
         updateSelectColor(this);
     });
 

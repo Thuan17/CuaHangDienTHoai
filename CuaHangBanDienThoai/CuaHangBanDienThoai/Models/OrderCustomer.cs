@@ -41,6 +41,8 @@ namespace CuaHangBanDienThoai.Models
         public Nullable<bool> IsDelivery { get; set; }
         public string OrderStatus { get; set; }
         public Nullable<System.DateTime> StatusDate { get; set; }
+        public Nullable<System.DateTime> ReturnDate { get; set; }
+        public string ReturnReason { get; set; }
     
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

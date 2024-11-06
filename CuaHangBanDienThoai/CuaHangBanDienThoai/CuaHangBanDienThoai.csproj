@@ -5484,6 +5484,7 @@
     <Content Include="Scripts\client\DetailProuct.js" />
     <Content Include="Scripts\client\jquery-1.11.0.min.js" />
     <Content Include="Scripts\client\modernizr.js" />
+    <Content Include="Scripts\client\MyOrder.js" />
     <Content Include="Scripts\client\plugins.js" />
     <Content Include="Scripts\client\script.js" />
     <Content Include="Scripts\CongTac.js" />
@@ -5784,6 +5785,12 @@
     <Content Include="Views\ShoppingCart\VnpayReturn.cshtml" />
     <Content Include="Views\Cart\MyOrder.cshtml" />
     <Content Include="Views\Cart\Partial_OrderDetail.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOutFailVnpay.cshtml" />
+    <Content Include="Views\ShoppingCart\CheckOutSuccess.cshtml" />
+    <Content Include="Views\Cart\GetUpdatedOrderRow.cshtml" />
+    <Content Include="Views\Cart\Partial_CancelOrder.cshtml" />
+    <Content Include="Views\Cart\Partail_MyOrderNonSuccess.cshtml" />
+    <Content Include="Views\Cart\Partail_MyOrderCancel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

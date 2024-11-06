@@ -198,6 +198,8 @@
           <Property Name="IsDelivery" Type="bit" />
           <Property Name="OrderStatus" Type="nvarchar" MaxLength="150" />
           <Property Name="StatusDate" Type="datetime" />
+          <Property Name="ReturnDate" Type="datetime" />
+          <Property Name="ReturnReason" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -1121,6 +1123,8 @@
           <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderCustomer" ToRole="OrderDetail" />
           <Property Name="OrderStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StatusDate" Type="DateTime" Precision="3" />
+          <Property Name="ReturnDate" Type="DateTime" Precision="3" />
+          <Property Name="ReturnReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -2029,6 +2033,8 @@
           <EntitySetMapping Name="OrderCustomer">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.OrderCustomer">
               <MappingFragment StoreEntitySet="OrderCustomer">
+                <ScalarProperty Name="ReturnReason" ColumnName="ReturnReason" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
                 <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
                 <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />

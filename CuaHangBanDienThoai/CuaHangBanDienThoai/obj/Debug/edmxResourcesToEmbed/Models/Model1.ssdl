@@ -193,6 +193,8 @@
     <Property Name="IsDelivery" Type="bit" />
     <Property Name="OrderStatus" Type="nvarchar" MaxLength="150" />
     <Property Name="StatusDate" Type="datetime" />
+    <Property Name="ReturnDate" Type="datetime" />
+    <Property Name="ReturnReason" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="OrderDetail">
     <Key>

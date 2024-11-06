@@ -124,24 +124,25 @@
 
                         </tr>
                         <tr>
-
+                            <td>
+                            </td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-center IsConfirmGr_@item.OrderId ">
                                     <span>Xác nhận :   <a href='#' data-id="@item.OrderId" class="btnIsConfirm">@Html.Raw(strCheckIsConfirm)</a></span>
                                 </div>
 
                             </td>
-                            <td colspan="4">
+                            <td colspan="3">
                                 <div class="d-flex flex-row align-items-stretch row m-0 p-0 ">
-                                    @*<div class="col-lg-8">
-                                <select class="custom-select Trangthai btn col-12 w-100 mx-1" id="typeBill_@item.BillId" name="Trangthai">
-                                    <option value="Chưa giao" class="bg-warning" @(item.OrderStatus == "Chưa giao" ? "selected" : "")>Chưa giao</option>
-                                    <option value="Đã giao" class="bg-success" @(item.OrderStatus == "Đã giao" ? "selected" : "")>Đã giao</option>
-                                    <option value="Đơn huỷ" class="bg-danger" @(item.OrderStatus == "Đơn huỷ" ? "selected" : "")>Đơn huỷ</option>
-                                    <option value="Đơn trả" class="bg-dark" @(item.OrderStatus == "Đơn trả" ? "selected" : "")>Đơn trả</option>
-                                </select>
-                            </div>*@
-                                    <div class="col-md-4">
+                                    <div class="col-lg-6">
+                                        <select class="custom-select Trangthai btn col-12 w-100 mx-1" id="typeBill_@item.OrderId" name="Trangthai">
+                                            <option value="Chưa giao" class="bg-warning" @(item.OrderStatus == "Chưa giao" ? "selected" : "")>Chưa giao</option>
+                                            <option value="Đã xuất kho" class="bg-success" @(item.OrderStatus == "Đã xuất kho" ? "selected" : "")>Đã xuất kho</option>
+                                            <option value="Đơn huỷ" class="bg-danger" @(item.OrderStatus == "Đơn huỷ" ? "selected" : "")>Đơn huỷ</option>
+                                            <option value="Đơn trả" class="bg-dark" @(item.OrderStatus == "Đơn trả" ? "selected" : "")>Đơn trả</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
                                         <div class="d-flex flex-row align-items-stretch">
 
                                             <button class="btn btn-primary mx-1 d-flex align-items-center justify-content-center btnXemBill" data-id="@item.OrderId">

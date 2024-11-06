@@ -263,9 +263,13 @@ namespace CuaHangBanDienThoai.Controllers
                                 SendConfirmationEmails(cart, itemOrder, customer);
 
                                 ViewBag.InnerText = "Giao dịch được thực hiện thành công. Cảm ơn quý khách đã sử dụng dịch vụ";
-                                ViewBag.Code= orderCode;    
+                                ViewBag.Code= orderCode;
 
-
+                                return RedirectToAction("CheckOutSuccess", "ShoppingCart", new
+                                {
+                                    orderCode = orderCode,
+                                    Amount=vnp_Amount.ToString()
+                                });
                             }
                             else
                             {
@@ -298,6 +302,24 @@ namespace CuaHangBanDienThoai.Controllers
             }
         }
 
+
+        public ActionResult CheckOutSuccess(string orderCode)
+        {
+            if (orderCode != null )
+            {
+                var order = db.OrderCustomer.FirstOrDefault(x => x.Code == orderCode);
+                if (order != null)
+                {
+                    return View(order);
+                }
+            }
+            return View();
+        }
+
+        public ActionResult CheckOutFailVnpay()
+        {
+            return View();
+        }
         private void SendConfirmationEmails(ShoppingCart cart, OrderCustomer order, Customer customerInfo)
         {
             var itemsTable = GenerateItemsTable(cart);
@@ -417,9 +439,21 @@ namespace CuaHangBanDienThoai.Controllers
 
             RestoreCartItems(itemOrder);
 
-            //DeleteOrderAndOrderDetails(itemOrder);
+            DeleteOrderAndOrderDetails(itemOrder);
 
 
+        }
+
+
+        private void DeleteOrderAndOrderDetails(OrderCustomer itemOrder)
+        {
+            var orderDetails = db.OrderCustomer.Where(od => od.OrderId == itemOrder.OrderId).ToList();
+            foreach (var orderDetail in orderDetails)
+            {
+                db.OrderCustomer.Remove(orderDetail);
+            }
+            db.OrderCustomer.Remove(itemOrder);
+            db.SaveChanges();
         }
         private void RestoreCartItems(OrderCustomer itemOrder)
         {

@@ -255,6 +255,16 @@
 
     $(document).ready(function () {
         CheckAccount();
+       
+
+
+
+        var bg2 = $(".bg-sg2");
+        var popup2 = $("#popupBill2");
+        var btnAddAddress = $('.btnAddAddress');
+        const customerId = sessionStorage.getItem('CustomerId');
+
+
         $('.btnAddAddress').on('click', function (e) {
 
             console.log("customerId", customerId);
@@ -275,16 +285,6 @@
             });
 
         });
-
-
-
-        var bg2 = $(".bg-sg2");
-        var popup2 = $("#popupBill2");
-        var btnAddAddress = $('.btnAddAddress');
-        const customerId = sessionStorage.getItem('CustomerId');
-
-
-
         console.log("customerId", customerId);
 
         bg2.on('click', function () {

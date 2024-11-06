@@ -1,0 +1,204 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.OrderCustomer>
+@using CuaHangBanDienThoai.Common;
+@if (Model != null && Model.Any())
+{
+    foreach (var item in Model)
+    {
+        <div class="card m-1 mb-2  bg-white card_IndexOrder_@item.OrderId" id="card_IndexOrder_@item.OrderId" style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
+
+            <div class="card-header p-0 pt-1 mt-1 m-1 bg-white">
+
+                <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                    <div class="step mb-2 completed">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon"><i class="bi bi-cart-check-fill"></i></div>
+                        </div>
+                        <h4 class="step-title">Đặt hàng thành công</h4>
+                    </div>
+                    <div class="step mb-2 @( item.OrderStatus == "Đơn huỷ" || item.OrderStatus == "Từ chối" ? "cancel" : ((bool)item.Confirm ? "completed" : ""))">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon"><i class="bi bi-check-all"></i></div>
+                        </div>
+                        <h4 class="step-title">@(item.OrderStatus == "Đơn huỷ" ? "Đơn huỷ" : (item.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)item.Confirm ? "Đã xác nhận" : "Xác nhận")) )</h4>
+                    </div>
+
+                    <div class="step mb-2 @(item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon"><i class="bi bi-bank"></i></div>
+                        </div>
+                        <h4 class="step-title">Xuất kho</h4>
+                    </div>
+
+                    <div class="step mb-2 @(item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon"><i class="bi bi-truck"></i></div>
+                        </div>
+                        <h4 class="step-title">Vận chuyển</h4>
+                    </div>
+                    <div class="step mb-2 @(item.Success == true && item.SuccessDate != null && item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
+                        <div class="step-icon-wrap">
+                            <div class="step-icon"><i class="bi bi-house-heart-fill"></i></div>
+                        </div>
+                        <h4 class="step-title">Thành công</h4>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-body p-0 m-0">
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 pb-3">
+                        <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                            <h3 class="fs-6 mb-3 details__Text">Thông tin nhận hàng</h3>
+                            <div class=" row p-0 m-0">
+                                <div class="col-lg-6">
+                                    <div class="input-data">
+                                        <b for="">Mã đơn :</b>
+                                        <sapn>@item.Code </sapn>
+                                    </div>
+                                    <div class=" input-data">
+                                        <b for="">Người nhận :</b>
+                                        <sapn>@item.CustomerName</sapn>
+                                    </div>
+                                    <div class="input-data">
+                                        <b for="PhoneCustomer">
+                                            Số Điện Thoại :
+                                        </b>
+                                        <sapn>@item.Phone</sapn>
+                                    </div>
+                                    <div class="input-data">
+                                        <b for="">Email :</b>
+                                        <sapn>@item.Email</sapn>
+                                    </div>
+                                    <div class="input-data ">
+
+                                        <b>Địa Chỉ :</b>
+                                        <sapn>@item.Location.Trim()</sapn>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-data ">
+                                        <b>Trạng thái thanh toán :</b>
+                                        <span class="@(item.TypePayment == 0 ? "text-danger" : "text-success ")    " style="width:50% !important;">
+                                            @(item.TypePayment == 0 ? "COD" : "Đã thanh toán")
+                                        </span>
+
+                                    </div>
+
+                                    <div class="input-data ">
+                                        <b>Vận chuyển:</b>
+                                        <span class="">
+                                            @if (item.IsDelivery == true)
+                                            {
+                                                <span class="bg-danger text-white">
+                                                    Hoả tốc
+                                                </span>
+                                            }
+
+
+                                        </span>
+                                    </div>
+                                    <div class="input-data">
+                                        <b for="PhoneCustomer">
+                                            Ngày đặt :
+                                        </b>
+                                        <sapn>@item.CreatedDate</sapn>
+                                    </div>
+                                </div>
+                                <div class="input-data ">
+                                    <b for="">Ghi chú :</b>
+                                    <sapn>@(item.Note ?? "")</sapn>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="checkout-item-ordered">
+                            <h2 class="fs-6 mb-3 text-left">Thứ tự sản phẩm</h2>
+                            <div class="table-content table-responsive order-table mb-4">
+                                <table class="table table-bordered align-middle table-hover text-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th class="td__img fw-">
+                                                Hình
+                                            </th>
+                                            <th class="td__product">
+                                                Sản phẩm
+                                            </th>
+
+                                            <th class="td__quantity-price">
+                                                Số lượng/ Giá
+                                            </th>
+                                        </tr>
+
+                                    </thead>
+                                    @Html.Action("Partial_BillDetail", "ShoppingCart", new { id = item.OrderId })
+                                    <tfoot>
+
+                                        <tr>
+                                            <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                Tổng tiền:
+                                            </td>
+                                            <td class="fw-500 last">
+                                                <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+            <div class="card-footer p-0 m-0 ">
+                <div class="row m-3">
+                    <div class="col-lg-12 d-flex justify-content-end align-items-center">
+                        <button class="btn btn-success mt-0 btnSuceess me-2   @(item.Success == false && item.OrderStatus == "Đã xuất kho" ? "" : "hide")   " data-id="@item.OrderId" style="width: 120px; padding: 8px;">
+                            Đã nhận được hàng
+                        </button>
+                        <button class="btn btn-danger mt-0    @(item.OrderStatus?.Trim() == "Đơn huỷ" || item.OrderStatus?.Trim() == "Từ chối" ? "" : "btnCancel")
+                                  @(item.OrderStatus?.Trim() == "Đã xuất kho" ? "hide" : "")"
+                                @(item.OrderStatus?.Trim() == "Đơn huỷ" || item.OrderStatus?.Trim() == "Từ chối" ? "disabled" : "")
+                                data-id="@item.OrderId" style="width: 180px; padding: 8px;">
+                            @(item.OrderStatus?.Trim() == "Đơn huỷ" ? "Bạn đã huỷ đơn hàng" : (item.OrderStatus?.Trim() == "Từ chối" ? "Đơn đã bị từ chối" : "Huỷ đơn hàng"))
+                        </button>
+
+
+
+
+                        <button class="btn btn-danger mt-0 btnReturn  @(item.Success == true && item.OrderStatus == "Đã xuất kho" ? "" : "hide")" data-id="@item.OrderId" style="width: 120px; padding: 8px;">
+                            Trả đơn hàng
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    }
+}
+else
+{
+<div class="card m-1 mb-2  bg-white " style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
+   
+    <div class="card-body p-0 m-0">
+        <div class="align-items-center text-center">
+
+            <img src="~/images/logo/CartNull.png" />
+        </div>
+    </div>
+</div>
+
+        }

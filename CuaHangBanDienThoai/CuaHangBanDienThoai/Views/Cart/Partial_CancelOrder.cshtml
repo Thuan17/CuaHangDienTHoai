@@ -1,0 +1,181 @@
+﻿@model CuaHangBanDienThoai.Models.OrderCustomer
+@using CuaHangBanDienThoai.Common
+@if (Model != null)
+{
+    <form id="editOrder" enctype="multipart/form-data" class="p-0">
+        @Html.AntiForgeryToken()
+      
+
+
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                    <h5 class="fs-6 mb-3 mt-0 details__Text">Thông tin đơn hàng</h5>
+                    <div class="infor__customer">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">Mã đơn :</b>
+                                    <sapn>@Model.Code </sapn>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data">
+                                    <b for="PhoneCustomer">
+                                        Ngày đặt :
+                                    </b>
+                                    <span>@(Model.CreatedDate.ToString("dd/MM/yyyy") ?? "Date not available")</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-dat" id="loadPrice">
+                            <b>Tổng tiền:</b>
+                            <span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="return-reason-group">
+                    <label>Chọn lý do trả hàng:</label>
+
+                    <!-- Radio options -->
+                    <div class="form-check">
+                        <input type="radio" id="reason1" name="returnReason" value="Tui muốn đổi sản phẩm " class="form-check-input">
+                        <label for="reason1" class="form-check-label">Tui muốn đổi sản phẩm </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input type="radio" id="reason2" name="returnReason" value="Đổi địa chỉ nhận hàng" class="form-check-input">
+                        <label for="reason2" class="form-check-label">Đổi địa chỉ nhận hàng</label>
+                    </div>
+
+                  
+                    <!-- 'Other' option with textarea -->
+                    <div class="form-check">
+                        <input type="radio" id="reasonOther" name="returnReason" value="Lý do khác" class="form-check-input">
+                        <label for="reasonOther" class="form-check-label">Lý do khác</label>
+                    </div>
+
+                    <!-- Textarea for custom reason -->
+                    <div id="otherReasonContainer" style="display: none; margin-top: 10px;">
+                        <label for="otherReason" class="form-label">Vui lòng nêu rõ lý do (tối đa 255 ký tự):</label>
+                        <textarea id="otherReason" class="form-control" name="otherReason" maxlength="255" rows="4"></textarea>
+                    </div>
+                </div>
+
+            </div>
+
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                    <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                        <button type="button" class="btn btn-success" id="saveOrder">Xác nhận huỷ @Model.Code</button>
+                    </div>
+                </div>
+            </div>
+
+
+</form>
+
+}
+
+
+<script>
+    const radioButtons = document.querySelectorAll('input[name="returnReason"]');
+    const otherReasonContainer = document.getElementById('otherReasonContainer');
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+       <div class="toastNotifi ${type}">
+           <i class="${icon}"></i>
+           <div class="content">
+               <div class="title">${title}</div>
+               <span>${text}</span>
+           </div>
+           <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+       </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+    radioButtons.forEach((radio) => {
+        radio.addEventListener('change', () => {
+            if (radio.id === 'reasonOther') {
+                otherReasonContainer.style.display = 'block';
+            } else {
+                otherReasonContainer.style.display = 'none';
+            }
+        });
+    });
+    $(document).ready(function () {
+        var bg2 = $(".bg-sg2");
+        var popup2 = $("#popupBill2");
+    $('#saveOrder').click(function () {
+        // Hỏi xác nhận trước khi hủy đơn hàng
+        const userConfirmed = confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?");
+        if (!userConfirmed) {
+            return; // Nếu người dùng không xác nhận, thoát khỏi hàm
+        }
+
+        // Lấy mã đơn hàng và lý do trả hàng
+        const orderId = '@Model.OrderId';
+        const selectedReason = $('input[name="returnReason"]:checked').val();
+        let returnReason = selectedReason;
+
+        // Nếu chọn "Lý do khác" thì lấy lý do từ textarea
+        if (selectedReason === 'Lý do khác') {
+            const otherReason = $('#otherReason').val().trim();
+            if (otherReason.length === 0) {
+                alert("Vui lòng nhập lý do khi chọn 'Lý do khác'.");
+                return;
+            }
+            returnReason = otherReason;
+        }
+
+        // Gửi yêu cầu bằng AJAX để huỷ đơn hàng
+        $.ajax({
+            url: '/Cart/CancelOrder',
+            type: 'POST',
+            data: {
+                __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                orderid: orderId,
+                returnReason: returnReason
+            },
+            success: function (data) {
+                if (data.Success) {
+                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Huỷ đơn thành công');
+                    setTimeout(function () {
+                        bg2.hide();
+                        popup2.hide();
+
+                    }, 1450);
+
+                } else {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Đã xảy ra lỗi:", error);
+                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Đã xảy ra lỗi khi huỷ đơn hàng. Vui lòng thử lại sau.');
+              
+            }
+        });
+    });
+});
+
+
+
+</script>
