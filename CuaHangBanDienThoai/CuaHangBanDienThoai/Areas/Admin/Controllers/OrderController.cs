@@ -400,7 +400,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         }
                     }
 
-
+                    sessionKey = null;
                     db.SaveChanges();
                     dbContextTransaction.Commit();
                     return Json(new { success = true, Code = 1, mess = "Cập nhập thành công", orderCode = seller.Code, OrderId = seller.OrderId });

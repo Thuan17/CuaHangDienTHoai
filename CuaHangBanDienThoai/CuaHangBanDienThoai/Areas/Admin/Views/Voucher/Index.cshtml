@@ -1,0 +1,442 @@
+﻿@model PagedList.PagedList<CuaHangBanDienThoai.Models.Voucher>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Quản lý voucher";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    p {
+        color: black !important;
+        white-space: nowrap !important; /* Không cho chữ xuống dòng */
+    }
+</style>
+<div class="bg-sg" style="display: none ">
+
+</div>
+
+
+<div id="popupBill" style="display: none">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title">
+                <h5>
+                   Voucher
+                </h5>
+            </div>
+            <div class="card-tools">
+                <div class="btn btnCloseEditBill">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                        <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="loadDataBillEdit">
+                <div class="text-center">
+
+                    <img src="~/images/gif/loading.gif" />
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+            <p>
+                Trang Voucher
+            </p>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/hethongquanly">Trang chủ </a></li>
+
+                <li class="breadcrumb-item active"> Voucher </li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Quản lý Voucher
+                        <span class="text-danger "> <label class="text-dark">Tổng số voucher :</label> @ViewBag.Count</span>
+                    </h6>
+                </div>
+
+                <div class="col-10 text-right float-end">
+
+                    @*<div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                            <div class="input-group">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm sản phẩm..."
+                                       aria-label="Search" aria-describedby="basic-addon2" id="searchinput" action="@Url.Action("SearchProduct", "Product")" method="get">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" id="searchbtn">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>*@
+
+                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                    {
+                        <a href="/them-moi-voucher" class="btn btn-success">
+                            Tạo mới
+                        </a>
+
+                    }
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+        <div class="card-body " id="loaddata">
+            <div class="table-responsive">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr class="text-gray-100">
+                            <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 " style="max-width: 30px;">
+                                <input type="checkbox" class="checkAll" />
+                            </th>
+                            <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Tiêu đề</th>
+
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Thông tin </th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Hiển thị </th>
+
+
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 100px;"></th>
+
+
+                            @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
+                            <th class="text-secondary opacity-7" style="max-width:75px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            int i = 1;
+                            foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <td style="max-width:30px;">
+                                        <input type="checkbox" class="cbkItem" value="@item.VoucherId" />@i
+                                    </td>
+
+                                    <td class="align-middle">
+                                        <p class="w-100">@item.Title.Trim()</p>
+
+
+                                    </td>
+                                    <td class="align-middle ">
+
+                                        @*<p class=" ">Ngày tạo:<span class="text-gray-700">@item.CreatedDate.ToString("dd/MM/yyyy")</span></p>
+            <p class=" ">Tạo bởi :<span class="text-gray-700">@item.CreatedBy.Trim()</span></p>*@
+
+                                        <p class="voucher" data-id="@item.VoucherId">
+                                            <label class="mb-0">Số lượng còn lại :</label>
+                                            <span id="voucherCountDisplay_@item.VoucherId">
+                                                <img src="~/images/gif/loading.gif" />
+                                            </span>
+                                        </p>
+
+
+                                        <p class="voucher" data-id="@item.VoucherId">
+                                            <label class="mb-0">Chi tiết :</label>
+                                            <span id="voucherDetailDisplay_@item.VoucherId">
+                                                <img src="~/images/gif/loading.gif" />
+                                            </span>
+                                        </p>
+                                        <p>
+                                            Ngày bắt đầu :<span class="text-gray-700">
+                                                @String.Format("{0:dd/MM/yyyy HH:mm}", item.StartDate)
+                                            </span>
+                                        </p>
+                                        <p>
+                                            Ngày kết thúc :<span class="text-gray-700">
+                                                @String.Format("{0:dd/MM/yyyy HH:mm}", item.EndDate)
+                                            </span>
+                                        </p>
+                                        <p>
+                                            Phần trăm giảm giá :<span class=" text-danger">
+                                                @item.PercentPriceReduction%
+                                            </span>
+                                            / đơn (online - tại cửa hàng)
+                                        </p>
+                                    </td>
+
+                                    <td class="align-middle text-center">
+                                        <div class="toggle" style="">
+                                            <label class="toggle" for="toggleIsSale_@item.VoucherId">
+                                                @*<p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>*@
+                                                <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                                    <div style="display: flex; align-items: center;">
+
+                                                        <input class="toggle__input check_IsSale" name="" type="checkbox" id="toggleIsSale_@item.VoucherId" @*@(item.IsSale.GetValueOrDefault() ? "checked" : "")*@>
+                                                        <div class="toggle__fill"></div>
+                                                    </div>
+                                                </span>
+                                            </label>
+                                        </div>
+
+                                    </td>
+
+
+                                    <td class="align-middle p-0 m-0 d-flex justify-content-center align-items-center"
+                                        style="max-width: 100px; width: 100px;">
+
+                                        <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
+
+                                            <button class="btn btn-primary btn-s mt-3 mb-2 text-white btnXemBill" style="min-width: 90px;" data-id="@item.VoucherId">
+
+                                                Xem
+                                            </button>
+                                            @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                            {
+                                                <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnCapNhatBill "  style="min-width: 60px;"data-id="@item.VoucherId">
+                                                    Cập nhật
+                                                </button>
+                                            }
+                                        </div>
+
+                                    </td>
+                                 
+
+
+                                </tr>
+                                i++;
+                            }
+
+                        }
+                        else
+                        {
+
+                            <tr class="text-center text-danger">
+                                <td colspan="5">
+                                    <p>Không tồn tại bảng ghi nào !!!</p>
+                                </td>
+                            </tr>
+                        }
+
+
+
+
+                    </tbody>
+                </table>
+
+
+
+
+
+
+
+
+
+
+            </div>
+            @if (Model != null && Model.Any())
+            {
+
+                <hr />
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination pagination-sm">
+                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="#" data-page="1" aria-label="First">
+                                        <span aria-hidden="true">Đầu</span>
+                                    </a>
+                                </li>
+                                <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                                    <a class="page-link" href="#" data-page="@(Model.PageNumber - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                @for (int i = Model.PageNumber; i <= Model.PageNumber + 4 && i <= Model.PageCount; i++)
+                                {
+                                    <li class="page-item @(Model.PageNumber == i ? "active" : "")">
+                                        <a class="page-link" href="#" data-page="@i">@i</a>
+                                    </li>
+                                }
+                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                    <a class="page-link" href="#" data-page="@(Model.PageNumber + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item @(Model.PageNumber == Model.PageCount ? "disabled" : "")">
+                                    <a class="page-link" href="#" data-page="@Model.PageCount" aria-label="Last">
+                                        <span aria-hidden="true">Cuối</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+            }
+
+            <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+
+    <script>
+        $(document).ready(function () {
+
+            var bg = $(".bg-sg");
+            var popup = $("#popupBill");
+            var btnCapNhatBill = $('.btnCapNhatBill');
+            var btnXemBill = $('.btnXemBill');
+            bg.on('click', function () {
+                bg.hide();
+                popup.hide();
+            });
+
+            $('.btnCloseEditBill').on('click', function () {
+                bg.hide();
+                popup.hide();
+            });
+            btnXemBill.each(function () {
+                $(this).on('click', function (e) {
+                    e.preventDefault();
+                    bg.show();
+                    popup.show();
+                    var id = $(this).data('id');
+                   
+                    if (id) {
+                        $.ajax({
+                            url: '/Admin/Voucher/Partail_Detail',
+                            data: { id: id },
+                            type: 'GET',
+                            success: function (response) {
+                                $("#loadDataBillEdit").html(response);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    }
+                });
+
+
+
+            });
+
+
+            btnCapNhatBill.each(function () {
+                $(this).on('click', function (e) {
+                    e.preventDefault();
+                    bg.show();
+                    popup.show();
+                    var id = $(this).data('id');
+
+                    if (id) {
+                        $.ajax({
+                            url: '/Admin/Voucher/Partail_Edit',
+                            data: { id: id },
+                            type: 'GET',
+                            success: function (response) {
+                                $("#loadDataBillEdit").html(response);
+                            },
+                            error: function (xhr, status, error) {
+                                console.error(xhr.responseText);
+                            }
+                        });
+                    }
+                });
+
+
+
+            });
+
+            $('.cbkItem').each(function () {
+                const voucherId = $(this).val();
+                $.getJSON('/Admin/Voucher/ConutVoucherDetailnotYetUsed', { id: voucherId }, function (data) {
+                    const displayText = `   <span class="text-success">${data.NotYetUsed}</span>/<span class="total">${data.Total}</span>`;
+                    const displayTextDetail = `<span class="text-success">Đơn online :${data.UsedOrerCount}</span> - <span class="text-danger">Đơn của hàng :${data.UsedBillCount}</span> `;
+                    $(`#voucherCountDisplay_${voucherId}`).html(displayText);
+                    $(`#voucherDetailDisplay_${voucherId}`).html(displayTextDetail);
+                }).fail(function () {
+                    $(`#voucherCountDisplay_${voucherId}`).html("Lỗi load dữ liệu ");
+                    $(`#voucherDetailDisplay_${voucherId}`).html("Lỗi load dữ liệu ");
+                });
+            });
+
+
+
+
+            $('body').on('change', '.toggle__input', function () {
+                var checkbox = $(this);
+                var id = checkbox.attr('id').split('_')[1];
+                var isActive = checkbox.is(':checked');
+                var toggleType = checkbox.attr('class').split(' ')[1];
+
+                console.log('Checkbox changed:', id, isActive, toggleType);
+
+                var url = '';
+                if (toggleType === 'check_IsActive') {
+                    url = '/admin/ProductDetail/IsActive';
+                } else if (toggleType === 'check_IsHome') {
+                    url = '/admin/ProductDetail/IsHome';
+                } else if (toggleType === 'check_IsSale') {
+                    url = '/admin/ProductDetail/IsSale';
+                }
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id: id,
+                        isActive: isActive
+                    },
+                    success: function (rs) {
+                        if (rs.success) {
+                            console.log('Trạng thái đã được cập nhật thành công');
+                        } else {
+                            console.error('Cập nhật trạng thái không thành công');
+                            checkbox.prop('checked', !isActive);
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Chú ý",
+                                text: rs.msg,
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Có lỗi xảy ra khi cập nhật trạng thái.');
+                        checkbox.prop('checked', !isActive);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: "Hệ thống lỗi",
+                        });
+                    }
+                });
+            });
+        });
+
+    </script>
+}
+
+
+

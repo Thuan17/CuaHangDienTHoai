@@ -165,6 +165,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
+    <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -189,10 +190,12 @@
     <Compile Include="Models\Admin_AddProduct.cs" />
     <Compile Include="Models\Admin_AddProductCompany.cs" />
     <Compile Include="Models\Admin_AddProductDetail.cs" />
+    <Compile Include="Models\Admin_AddVoucher.cs" />
     <Compile Include="Models\Admin_EditBanner.cs" />
     <Compile Include="Models\Admin_EditOrder.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
     <Compile Include="Models\Admin_EditProductDetail.cs" />
+    <Compile Include="Models\Admin_EditVoucher.cs" />
     <Compile Include="Models\AuthorizeCustomer.cs" />
     <Compile Include="Models\AuthorizeFunction.cs" />
     <Compile Include="Models\Banner.cs">
@@ -210,6 +213,7 @@
     <Compile Include="Models\CartItem.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CLient_AddressCustomer.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\Customer.cs">
@@ -5046,6 +5050,7 @@
     <Content Include="images\gif\home.gif" />
     <Content Include="images\gif\home2.gif" />
     <Content Include="images\gif\house.png" />
+    <Content Include="images\gif\loading.gif" />
     <Content Include="images\gif\News.gif" />
     <Content Include="images\gif\News2.gif" />
     <Content Include="images\gif\rounded.gif" />
@@ -5611,13 +5616,6 @@
     <Content Include="Content\css\login\scss\bootstrap\_utilities.scss" />
     <Content Include="Content\css\login\scss\bootstrap\_variables.scss" />
     <Content Include="Content\css\login\scss\style.scss" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Order\Partial_DetailOrder.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Order\Partail_ProductOrder.cshtml" />
@@ -5626,6 +5624,17 @@
     <Content Include="Areas\Admin\Views\Order\GetUpdatedOrderRow.cshtml" />
     <Content Include="Areas\Admin\Views\Order\SuggestOrder.cshtml" />
     <Content Include="Areas\Admin\Views\Order\OrderNonIsConfirm.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Add.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Partail_Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Voucher\Partail_Edit.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

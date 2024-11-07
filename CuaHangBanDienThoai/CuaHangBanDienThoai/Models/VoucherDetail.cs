@@ -15,8 +15,6 @@ namespace CuaHangBanDienThoai.Models
     public partial class VoucherDetail
     {
         public int VoucherDetailId { get; set; }
-        public string CreatedBy { get; set; }
-        public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> UsedDate { get; set; }
         public Nullable<int> BillId { get; set; }
         public Nullable<int> OrderId { get; set; }
@@ -26,5 +24,6 @@ namespace CuaHangBanDienThoai.Models
     
         public virtual Bill Bill { get; set; }
         public virtual OrderCustomer OrderCustomer { get; set; }
+        public virtual Voucher Voucher { get; set; }
     }
 }

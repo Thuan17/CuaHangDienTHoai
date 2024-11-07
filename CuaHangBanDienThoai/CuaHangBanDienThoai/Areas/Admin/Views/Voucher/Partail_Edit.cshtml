@@ -1,0 +1,412 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditVoucher
+@using CuaHangBanDienThoai.Common
+<link href="~/Content/css/admin/Bill.css" rel="stylesheet" />
+@if (Model != null)
+{
+    <form id="editVoucher" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.VoucherId)
+
+        @Html.HiddenFor(model => model.CreatedDate)
+        @Html.HiddenFor(model => model.Createdby)
+
+
+
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                    <h5 class="fs-6 mb-3 details__Text">Thông tin voucher</h5>
+                    <div class="infor__customer">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input-data">
+                                    <b for="">Tiêu đề :</b>
+                                    <input type="text" name="Title" id="Title" value="@Model.Title.Trim()" required>
+                                    <div class="underline"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">    Tạo bởi:</b>
+                                    <span class=" ">
+                                        @Model.Createdby
+                                    </span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data">
+                                    <b for="PhoneCustomer">
+                                        Ngày tạo :
+                                    </b>
+                                    <sapn>  @String.Format("{0:dd/MM/yyyy HH:mm}", Model.CreatedDate)</sapn>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-data">
+                                    <b for="">Phần trăm giảm giá :</b>
+                                    <input type="number" name="PercentPriceReduction" id="PercentPriceReduction"
+                                           value="@Model.PercentPriceReduction" required oninput="addPercentage()">
+                                    <div class="underline"></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-data">
+                                    <b for="PhoneCustomer">
+                                        Số lượng :
+                                    </b>
+                                    <input type="number" name="Quantity" id="Quantity" value="@Model.Quantity" required>
+                                    <div class="underline"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group d-flex">
+                                    <b for="exampleInputEmail1">Ngày bắt đầu Voucher</b>
+                                    <input type="datetime-local" name="StartDate" id="StartDate" required class="form-control"
+                                           value="@String.Format("{0:yyyy-MM-ddTHH:mm}", Model.StartDate)" autocomplete="off" />
+                                    @Html.ValidationMessageFor(x => x.StartDate, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group d-flex">
+                                    <b for="exampleInputEmail1">Ngày kết thúc Voucher</b>
+                                    <input type="datetime-local" name="EndDate" id="EndDate"
+                                           value="@String.Format("{0:yyyy-MM-ddTHH:mm}", Model.EndDate)" required class="form-control" autocomplete="off" />
+                                    @Html.ValidationMessageFor(x => x.EndDate, null, new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
+                </div>
+            </div>
+
+            <hr class="col-8 text-center" />
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+
+                <b class="fs-6 mb-3 text-left">Danh sách voucher <span class="text-danger">@Model.Items.Count()</span> </b>
+                <div class="table-content table-responsive order-table ">
+                    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="td__img ">
+                                    Chi tiết
+                                </th>
+
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div style="max-height: 320px; overflow-y: auto;">
+                    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr class="text-lg-left">
+                                    <td class="td__productItem">
+                                        <div class="cart__meta-text">
+                                            <div class="Describe pt-0">
+                                                <p class="text-dark mb-0">
+                                                    <label>Mã voucher:</label>
+
+                                                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                                    {
+                                                        @item.Code.Trim()
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" width="18" height="18  " color="red" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+                                                        </svg>
+
+                                                    }
+
+                                                </p>
+                                                <p class="text-dark mb-0">
+                                                    <label>Trạng thái:</label>
+                                                    @Html.Raw(item.Status ? "<span class='text-success'>Đã được dùng</span>" : "<span class='text-danger'>Chưa dùng</span>")
+                                                </p>
+                                                <p class="text-dark mb-0">
+                                                    <label>Dùng cho:</label>
+                                                    @Html.Raw(item.OrderId != 0 && item.orderCustomer != null ?
+                                                        $"Đơn hàng #{item.orderCustomer.Code.Trim()}" :
+                                                        (item.BillId != 0 && item.bill != null ?
+                                                            $"Đơn hàng #{item.bill.Code.Trim()}" :
+                                                            "<span class='text-danger'>Chưa dùng</span>"))
+                                                </p>
+                                                <p class="text-dark mb-0">
+                                                    <label>Dùng ngày:</label>
+                                                    @Html.Raw(item.UsedDate != null ?
+                                                        $"<span class='text-success'>{item.UsedDate:dd/MM/yyyy HH:mm}</span>" :
+                                                        "<span class='text-danger'>Chưa dùng</span>")
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+
+
+
+                    </table>
+                </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                    <button type="button" class="btn btn-success" id="saveVoucher">Lưu Voucher</button>
+                </div>
+            </div>
+
+            </div>
+    </form>
+
+}
+
+<script>
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const startDateInput = document.getElementById("StartDate");
+        const endDateInput = document.getElementById("EndDate");
+
+       
+        function formatDateToCustomFormat(dateInput) {
+            const date = new Date(dateInput.value);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
+       
+        startDateInput.addEventListener("change", function () {
+            startDateInput.value = formatDateToCustomFormat(startDateInput);
+        });
+
+        endDateInput.addEventListener("change", function () {
+            endDateInput.value = formatDateToCustomFormat(endDateInput);
+        });
+    });
+
+
+    function validateForm() {
+        var title = $('#Title').val().trim();
+        var quantity = $('#Quantity').val().trim();
+        var percentPriceReduction = $('#PercentPriceReduction').val().trim();
+        var startDateStr = $('#StartDate').val().trim();
+     
+var startDateOg = new Date("@Model.StartDate.ToString("yyyy-MM-ddTHH:mm:ss")");
+
+        var endDateStr = $('#EndDate').val().trim();
+
+        var startDateOg = new Date(startDateOg);
+        var startDate = new Date(startDateStr);
+        var endDate = new Date(endDateStr);
+        var currentDate = new Date();
+
+        let isValid = true;
+
+     
+        const allFields = ['Title', 'Quantity', 'StartDate', 'EndDate'];
+        const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+        if (isAllEmpty) {
+           
+            allFields.forEach(id => {
+                $(`#${id}`).addClass('error-border');
+            });
+            showError(allFields, "Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+
+       
+        if (!title) {
+            showError('Title', "Tiêu đề không được để trống.");
+            $('#Title').addClass('error-border');
+            isValid = false;
+        } else {
+            $('#Title').removeClass('error-border');
+        }
+
+        if (!quantity || quantity <= 0) {
+            showError('Quantity', "Số lượng không được để trống và phải lớn hơn 0.");
+            $('#Quantity').addClass('error-border');
+            isValid = false;
+        } else {
+            $('#Quantity').removeClass('error-border');
+        }
+
+        if (!percentPriceReduction || percentPriceReduction <= 0) {
+            showError('PercentPriceReduction', "Phần trăm giảm giá không được để trống và phải lớn hơn 0.");
+            $('#PercentPriceReduction').addClass('error-border');
+            isValid = false;
+        } else if (parseFloat(percentPriceReduction) > 10) {
+            showError('PercentPriceReduction', "Phần trăm giảm giá không được lớn hơn 10%.");
+            $('#PercentPriceReduction').addClass('error-border');
+            isValid = false;
+        } else {
+            $('#PercentPriceReduction').removeClass('error-border');
+        }
+
+        if (isNaN(startDate.getTime())) {
+            showError('StartDate', "Ngày bắt đầu chương trình Voucher không được để trống.");
+            $('#StartDate').addClass('error-border');
+            isValid = false;
+        }else if (startDate < startDateOg) { 
+            showError('StartDate', "Ngày bắt đầu không được nhỏ hơn ngày bắt đầu ban đầu.");
+            $('#StartDate').addClass('error-border');
+            isValid = false;
+        } else {
+            $('#StartDate').removeClass('error-border');
+        }
+
+        if (isNaN(endDate.getTime())) {
+            showError('EndDate', "Ngày kết thúc không được để trống.");
+            $('#EndDate').addClass('error-border');
+            isValid = false;
+        } else if (endDate <= startDate) {
+            showError('EndDate', "Ngày kết thúc chương trình Voucher không được nhỏ hơn hoặc bằng ngày bắt đầu.");
+            $('#EndDate').addClass('error-border');
+            isValid = false;
+        } else {
+            $('#EndDate').removeClass('error-border');
+        }
+
+        return isValid;
+    }
+
+    function showError(elements, message) {
+        if (Array.isArray(elements)) {
+            elements.forEach(id => {
+                document.getElementById(id).classList.add('error-border');
+            });
+        } else {
+            document.getElementById(elements).classList.add('error-border');
+        }
+        createToast('error', 'fa-solid fa-circle-exclamation', 'Chú ý', message);
+
+    }
+
+    // Hàm xóa lỗi
+    function removeError(elements) {
+        if (Array.isArray(elements)) {
+            elements.forEach(id => {
+                document.getElementById(id).classList.remove('error-border');
+            });
+        } else {
+            document.getElementById(elements).classList.remove('error-border');
+        }
+    }
+
+    $(document).ready(function () {
+
+        $('#saveVoucher').click(function () {
+            let isValid = validateForm();
+            if (isValid) {
+                for (var instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+                const formData = $('#editVoucher').serialize();
+                const token = $('input[name="__RequestVerificationToken"]').val();
+
+
+
+                $.ajax({
+                    url: '/Admin/Voucher/Edit',
+                    type: 'POST',
+                    data: formData,
+                    success: function (res) {
+                        OnSuccessCO(res);
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: "Hệ thống gặp lỗi thêm voucher.",
+                        });
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        });
+
+
+    });
+
+
+
+    function OnBeginCO() {
+        $('#btnRegister').attr("disabled", "disabled");
+    }
+
+    function OnSuccessCO(res) {
+        if (res.Success) {
+            if (res.Code == 1) {
+                createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập voucher thành công');
+                location.href = "/admin/Voucher/Index";
+            }
+        } else {
+            if (res.Code == -2) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Chú ý",
+                    text: res.msg,
+                });
+            }
+
+            if (res.Code == -99) {
+                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.msg);
+            }
+        }
+    }
+</script>

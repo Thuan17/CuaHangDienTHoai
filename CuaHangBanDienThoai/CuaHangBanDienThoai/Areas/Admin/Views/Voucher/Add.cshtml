@@ -1,0 +1,331 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_AddVoucher
+@{
+    ViewBag.Title = "Tạo voucher";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<link href="~/Content/ckeditor5/ckeditor5.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/hethongquanly">Trang chủ </a></li>
+                <li class="breadcrumb-item"><a href="/quan-ly-voucher">Voucher </a></li>
+                <li class="breadcrumb-item active">Thêm mới</li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Thêm Voucher
+                    </h6>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <form id="myFormVoucher" enctype="multipart/form-data">
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung voucher</a></li>
+
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="row">
+                                            <div class="col-12" id="PinContainer">
+                                                <div class="form-group">
+                                                    <div id="TitleContainer" class="form-group">
+                                                        <label for="exampleInputEmail1">Tiêu đề voucher   </label>
+                                                        @Html.TextBoxFor(x => x.Title, new { @class = "form-control", @placeholder = "Tiêu đề chương trình", id = "Title" })
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="">Số lượng</label>
+                                                    <input type="number" name="Quantity" value="0" id="Quantity" class="form-control ">
+                                                    @Html.HiddenFor(x => x.Quantity, new { @class = "", @placeholder = "Số lượng" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="">Phần trăm giảm giá /đơn hàng</label>
+                                                    <input type="number" name="PercentPriceReduction" value="0" id="PercentPriceReduction" class="form-control ">
+                                                    @Html.HiddenFor(x => x.PercentPriceReduction, new { @class = "", @placeholder = "Phần trăm giảm giá /đơn hàng" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Ngày bắt đầu Voucher</label>
+                                                    <input type="datetime-local" name="StartDate" id="StartDate" required class="form-control" autocomplete="off" />
+                                                    @Html.ValidationMessageFor(x => x.StartDate, null, new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Ngày kết thúc Voucher</label>
+                                                    <input type="datetime-local" name="EndDate" id="EndDate" required class="form-control" autocomplete="off" />
+                                                    @Html.ValidationMessageFor(x => x.EndDate, null, new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                    </div>
+
+
+
+                                    <!-- /.tab-content -->
+                                </div><!-- /.card-body -->
+
+                            </div>
+                        </div>
+
+
+                        <!-- /.card -->
+                        <div class="col-12 text-center">
+                            <button type="button" onclick="if(validateForm()) $('#myFormVoucher').submit();" class="btn btn-success col-8">Thêm mới</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function validateForm() {
+            var title = $('#Title').val().trim();
+            var quantity = $('#Quantity').val().trim();
+            var percentPriceReduction = $('#PercentPriceReduction').val().trim();
+            var startDateStr = $('#StartDate').val().trim();
+            var endDateStr = $('#EndDate').val().trim();
+
+            var startDate = new Date(startDateStr);
+            var endDate = new Date(endDateStr);
+            var currentDate = new Date();
+
+            let isValid = true;
+
+            // Kiểm tra nếu tất cả các trường đều trống
+            const allFields = ['Title', 'Quantity', 'StartDate', 'EndDate'];
+            const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+            if (isAllEmpty) {
+                // Hiển thị lỗi cho tất cả các trường và dừng form
+                allFields.forEach(id => {
+                    $(`#${id}`).addClass('error-border');
+                });
+                showError(allFields, "Vui lòng điền đầy đủ thông tin ");
+                return false;
+            }
+
+            // Reset lỗi nếu từng trường có giá trị hợp lệ
+            if (!title) {
+                showError('Title', "Tiêu đề không được để trống.");
+                $('#Title').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#Title').removeClass('error-border');
+            }
+
+            if (!quantity || quantity <= 0) {
+                showError('Quantity', "Số lượng không được để trống và phải lớn hơn 0.");
+                $('#Quantity').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#Quantity').removeClass('error-border');
+            }
+
+            if (!percentPriceReduction || percentPriceReduction <= 0) {
+                showError('PercentPriceReduction', "Phần trăm giảm giá không được để trống và phải lớn hơn 0.");
+                $('#PercentPriceReduction').addClass('error-border');
+                isValid = false;
+            } else if (parseFloat(percentPriceReduction) > 10) {
+                showError('PercentPriceReduction', "Phần trăm giảm giá không được lớn hơn 10%.");
+                $('#PercentPriceReduction').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#PercentPriceReduction').removeClass('error-border');
+            }
+
+            if (isNaN(startDate.getTime())) {
+                showError('StartDate', "Ngày bắt đầu chương trình Voucher không được để trống.");
+                $('#StartDate').addClass('error-border');
+                isValid = false;
+            } else if (startDate < currentDate) {
+                showError('StartDate', "Ngày bắt đầu chương trình Voucher không được nhỏ hơn ngày hiện tại.");
+                $('#StartDate').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#StartDate').removeClass('error-border');
+            }
+
+            if (isNaN(endDate.getTime())) {
+                showError('EndDate', "Ngày kết thúc không được để trống.");
+                $('#EndDate').addClass('error-border');
+                isValid = false;
+            } else if (endDate <= startDate) {
+                showError('EndDate', "Ngày kết thúc chương trình Voucher không được nhỏ hơn hoặc bằng ngày bắt đầu.");
+                $('#EndDate').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#EndDate').removeClass('error-border');
+            }
+
+            return isValid;
+        }
+
+        function showError(elements, message) {
+            if (Array.isArray(elements)) {
+                elements.forEach(id => {
+                    document.getElementById(id).classList.add('error-border');
+                });
+            } else {
+                document.getElementById(elements).classList.add('error-border');
+            }
+
+            Swal.fire({
+                icon: "warning",
+                title: "Chú ý",
+                text: message,
+            });
+        }
+
+        // Hàm xóa lỗi
+        function removeError(elements) {
+            if (Array.isArray(elements)) {
+                elements.forEach(id => {
+                    document.getElementById(id).classList.remove('error-border');
+                });
+            } else {
+                document.getElementById(elements).classList.remove('error-border');
+            }
+        }
+
+        $(document).ready(function () {
+
+
+            $('#myFormVoucher').submit(function (event) {
+                event.preventDefault(); 
+
+
+                let isValid = validateForm();
+                if (isValid) {
+                    for (var instance in CKEDITOR.instances) {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
+                    const formData = $('#myFormVoucher').serialize();
+                    const token = $('input[name="__RequestVerificationToken"]').val();
+
+
+                    
+                    $.ajax({
+                        url: '/Admin/Voucher/Add',
+                        type: 'POST',
+                        data: formData,
+                        success: function (res) {
+                            OnSuccessCO(res);
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi",
+                                text: "Hệ thống gặp lỗi thêm voucher.",
+                            });
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+
+        });
+
+
+
+        function OnBeginCO() {
+            $('#btnRegister').attr("disabled", "disabled");
+        }
+
+        function OnSuccessCO(res) {
+            if (res.Success) {
+                if (res.Code == 1) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+
+                    Toast.fire({
+                        icon: "success",
+                        title: "Thêm voucher thành công"
+                    });
+                    location.href = "/admin/Voucher/index";
+                }
+            } else {
+                if (res.Code == -2) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Chú ý",
+                        text: res.msg,
+                    });
+                }
+             
+                if (res.Code == -99) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Không thành công...",
+                        text: "Lỗi trong quá trình thêm",
+                    });
+                }
+            }
+        }
+    </script>
+
+
+}

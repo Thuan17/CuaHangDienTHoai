@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -361,15 +361,12 @@
             <PropertyRef Name="VoucherId" />
           </Key>
           <Property Name="VoucherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Code" Type="char" MaxLength="30" />
           <Property Name="PercentPriceReduction" Type="int" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" />
           <Property Name="CreatedBy" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="Modifiedby" Type="nvarchar(max)" />
-          <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
-          <Property Name="UsedDate" Type="datetime" />
           <Property Name="Quantity" Type="int" />
           <Property Name="StartDate" Type="datetime" />
           <Property Name="EndDate" Type="datetime" />
@@ -379,8 +376,6 @@
             <PropertyRef Name="VoucherDetailId" />
           </Key>
           <Property Name="VoucherDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CreatedBy" Type="nvarchar(max)" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="UsedDate" Type="datetime" />
           <Property Name="BillId" Type="int" />
           <Property Name="OrderId" Type="int" />
@@ -744,6 +739,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VoucherDetail_Voucher">
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="1" />
+          <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voucher">
+              <PropertyRef Name="VoucherId" />
+            </Principal>
+            <Dependent Role="VoucherDetail">
+              <PropertyRef Name="VoucherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
           <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" Schema="dbo" store:Type="Tables" />
@@ -891,8 +898,13 @@
             <End Role="tb_Function" EntitySet="tb_Function" />
             <End Role="Employee" EntitySet="Employee" />
           </AssociationSet>
+          <AssociationSet Name="FK_VoucherDetail_Voucher" Association="Self.FK_VoucherDetail_Voucher">
+            <End Role="Voucher" EntitySet="Voucher" />
+            <End Role="VoucherDetail" EntitySet="VoucherDetail" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1118,13 +1130,13 @@
           <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IsDelivery" Type="Boolean" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="OrderCustomer" ToRole="Customer" />
-          <NavigationProperty Name="VoucherDetail" Relationship="Self.FK__VoucherDe__Order__7EF6D905" FromRole="OrderCustomer" ToRole="VoucherDetail" />
-          <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderCustomer" ToRole="OrderDetail" />
           <Property Name="OrderStatus" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="StatusDate" Type="DateTime" Precision="3" />
           <Property Name="ReturnDate" Type="DateTime" Precision="3" />
           <Property Name="ReturnReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="OrderCustomer" ToRole="Customer" />
+          <NavigationProperty Name="VoucherDetail" Relationship="Self.FK__VoucherDe__Order__7EF6D905" FromRole="OrderCustomer" ToRole="VoucherDetail" />
+          <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_Order" FromRole="OrderCustomer" ToRole="OrderDetail" />
         </EntityType>
         <EntityType Name="OrderDetail">
           <Key>
@@ -1307,26 +1319,22 @@
             <PropertyRef Name="VoucherId" />
           </Key>
           <Property Name="VoucherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Code" Type="String" MaxLength="30" FixedLength="true" Unicode="false" />
           <Property Name="PercentPriceReduction" Type="Int32" />
           <Property Name="Title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
           <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UsedBy" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="Quantity" Type="Int32" />
           <Property Name="StartDate" Type="DateTime" Precision="3" />
           <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="VoucherDetail" Relationship="Self.FK_VoucherDetail_Voucher" FromRole="Voucher" ToRole="VoucherDetail" />
         </EntityType>
         <EntityType Name="VoucherDetail">
           <Key>
             <PropertyRef Name="VoucherDetailId" />
           </Key>
           <Property Name="VoucherDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UsedDate" Type="DateTime" Precision="3" />
           <Property Name="BillId" Type="Int32" />
           <Property Name="OrderId" Type="Int32" />
@@ -1335,6 +1343,7 @@
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Bill" Relationship="Self.FK__VoucherDe__BillI__7E02B4CC" FromRole="VoucherDetail" ToRole="Bill" />
           <NavigationProperty Name="OrderCustomer" Relationship="Self.FK__VoucherDe__Order__7EF6D905" FromRole="VoucherDetail" ToRole="OrderCustomer" />
+          <NavigationProperty Name="Voucher" Relationship="Self.FK_VoucherDetail_Voucher" FromRole="VoucherDetail" ToRole="Voucher" />
         </EntityType>
         <EntityType Name="Wards">
           <Key>
@@ -1693,6 +1702,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VoucherDetail_Voucher">
+          <End Role="Voucher" Type="Self.Voucher" Multiplicity="1" />
+          <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Voucher">
+              <PropertyRef Name="VoucherId" />
+            </Principal>
+            <Dependent Role="VoucherDetail">
+              <PropertyRef Name="VoucherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CUAHANGDIENTHOAIEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" />
           <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" />
@@ -1839,6 +1860,10 @@
           <AssociationSet Name="FK_Review_Products" Association="Self.FK_Review_Products">
             <End Role="Products" EntitySet="Products" />
             <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VoucherDetail_Voucher" Association="Self.FK_VoucherDetail_Voucher">
+            <End Role="Voucher" EntitySet="Voucher" />
+            <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -2033,10 +2058,6 @@
           <EntitySetMapping Name="OrderCustomer">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.OrderCustomer">
               <MappingFragment StoreEntitySet="OrderCustomer">
-                <ScalarProperty Name="ReturnReason" ColumnName="ReturnReason" />
-                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
-                <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
-                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
@@ -2055,6 +2076,10 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="IsDelivery" ColumnName="IsDelivery" />
+                <ScalarProperty Name="OrderStatus" ColumnName="OrderStatus" />
+                <ScalarProperty Name="StatusDate" ColumnName="StatusDate" />
+                <ScalarProperty Name="ReturnDate" ColumnName="ReturnDate" />
+                <ScalarProperty Name="ReturnReason" ColumnName="ReturnReason" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2228,15 +2253,12 @@
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Voucher">
               <MappingFragment StoreEntitySet="Voucher">
                 <ScalarProperty Name="VoucherId" ColumnName="VoucherId" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="PercentPriceReduction" ColumnName="PercentPriceReduction" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
-                <ScalarProperty Name="UsedBy" ColumnName="UsedBy" />
-                <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
@@ -2247,8 +2269,6 @@
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.VoucherDetail">
               <MappingFragment StoreEntitySet="VoucherDetail">
                 <ScalarProperty Name="VoucherDetailId" ColumnName="VoucherDetailId" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
                 <ScalarProperty Name="BillId" ColumnName="BillId" />
                 <ScalarProperty Name="OrderId" ColumnName="OrderId" />

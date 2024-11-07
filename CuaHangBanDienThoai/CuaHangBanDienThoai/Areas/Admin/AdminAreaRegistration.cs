@@ -15,6 +15,20 @@ namespace CuaHangBanDienThoai.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+  name: "Voucher_Add",
+  url: "them-moi-voucher",
+  defaults: new { controller = "Voucher", action = "Add", alias = UrlParameter.Optional }
+
+);
+            context.MapRoute(
+    name: "Voucher_Index",
+    url: "quan-ly-voucher",
+    defaults: new { controller = "Voucher", action = "Index", alias = UrlParameter.Optional }
+
+);
+
+
+            context.MapRoute(
       name: "BillNonIsConfirm_Order",
       url: "don-chua-xu-ly",
       defaults: new { controller = "Order", action = "OrderNonIsConfirm", alias = UrlParameter.Optional }

@@ -356,15 +356,12 @@
       <PropertyRef Name="VoucherId" />
     </Key>
     <Property Name="VoucherId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Code" Type="char" MaxLength="30" />
     <Property Name="PercentPriceReduction" Type="int" />
     <Property Name="Title" Type="nvarchar" MaxLength="250" />
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="Modifiedby" Type="nvarchar(max)" />
-    <Property Name="UsedBy" Type="nvarchar" MaxLength="250" />
-    <Property Name="UsedDate" Type="datetime" />
     <Property Name="Quantity" Type="int" />
     <Property Name="StartDate" Type="datetime" />
     <Property Name="EndDate" Type="datetime" />
@@ -374,8 +371,6 @@
       <PropertyRef Name="VoucherDetailId" />
     </Key>
     <Property Name="VoucherDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CreatedBy" Type="nvarchar(max)" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="UsedDate" Type="datetime" />
     <Property Name="BillId" Type="int" />
     <Property Name="OrderId" Type="int" />
@@ -739,6 +734,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_VoucherDetail_Voucher">
+    <End Role="Voucher" Type="Self.Voucher" Multiplicity="1" />
+    <End Role="VoucherDetail" Type="Self.VoucherDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Voucher">
+        <PropertyRef Name="VoucherId" />
+      </Principal>
+      <Dependent Role="VoucherDetail">
+        <PropertyRef Name="VoucherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <EntityContainer Name="CUAHANGDIENTHOAIModelStoreContainer">
     <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="AddressCustomer" EntityType="Self.AddressCustomer" Schema="dbo" store:Type="Tables" />
@@ -885,6 +892,10 @@
     <AssociationSet Name="FK_Staff_Employee" Association="Self.FK_Staff_Employee">
       <End Role="tb_Function" EntitySet="tb_Function" />
       <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK_VoucherDetail_Voucher" Association="Self.FK_VoucherDetail_Voucher">
+      <End Role="Voucher" EntitySet="Voucher" />
+      <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

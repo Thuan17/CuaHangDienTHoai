@@ -14,18 +14,24 @@ namespace CuaHangBanDienThoai.Models
     
     public partial class Voucher
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Voucher()
+        {
+            this.VoucherDetail = new HashSet<VoucherDetail>();
+        }
+    
         public int VoucherId { get; set; }
-        public string Code { get; set; }
         public Nullable<int> PercentPriceReduction { get; set; }
         public string Title { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifiedby { get; set; }
-        public string UsedBy { get; set; }
-        public Nullable<System.DateTime> UsedDate { get; set; }
         public Nullable<int> Quantity { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VoucherDetail> VoucherDetail { get; set; }
     }
 }
