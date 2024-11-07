@@ -1,0 +1,99 @@
+﻿@model CuaHangBanDienThoai.Models.CLient_Register
+@{
+    ViewBag.Title = "Đăng ký tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script src="~/Content/css/login/js/main.js"></script>
+<link href="~/Content/css/login/css/style.css" rel="stylesheet" />
+
+
+<div style="background-image: url('/images/bg.png');">
+    <div class="container mainLogin pt-3">
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10 mb-5 transparent-background">
+                <div class="wrap">
+                    <div class="img">
+                        <img src="~/images/logo/logo1200.png" />
+                    </div>
+                    <div class="login-wrap">
+                        <div class="d-flex algin-item-center text-center">
+                            <div class="w-100">
+                                <h3 class="mb-4 text-white">Đăng ký tài khoản</h3>
+                            </div>
+                        </div>
+                        <form id="registerForm" enctype="multipart/form-data" class="signin-form">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+
+
+                            <div class="row m-0 p-0 w-100">
+                                <div class="col-lg-6">
+                                    <div class="form-group mt-3">
+                                        <input type="text" class="form-control input-field" name="phone" id="phone" required>
+                                        <label for="userInput" class="form-control-placeholder">Số điện thoại </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-3">
+                                        <input type="text" class="form-control input-field" name="Email" id="Email" required>
+                                        <label for="userInput" class="form-control-placeholder">Email</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-0 p-0 w-100">
+                                <div class="col-lg-12">
+                                    <div class="form-group mt-5">
+                                        <input type="text" class="form-control input-field" name="fullName" id="fullName" required>
+                                        <label for="fullName" class="form-control-placeholder">Họ và tên</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row m-0 p-0 w-100">
+                                <div class="col-lg-6">
+                                    <div class="form-group mt-5">
+                                        <input id="password-field" type="password" name="password" class="form-control input-field" required>
+                                        <label for="password" class="form-control-placeholder">Mật khẩu</label>
+                                        <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mt-5">
+                                        <input id="confirm-password-field" type="password" name="confirmPassword" class="form-control input-field" required>
+                                        <label for="confirmPassword" class="form-control-placeholder">Xác nhận mật khẩu</label>
+                                        <span toggle="#confirm-password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-0 p-0 w-100">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Ngày sinh</label>
+                                        <input type="datetime-local" name="Birthday" id="Birthday" required class="form-control" autocomplete="off" />
+                                        @Html.ValidationMessageFor(x => x.Birthday, null, new { @class = "text-danger" })
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <button type="button" class="form-control btn btn-primary rounded submit px-3" onclick="if(validateForm()) $('#registerForm').submit();">  Đăng ký</button>
+                            </div>
+
+                        </form>
+                        <p class="text-center text-white">Bạn đã có tài khoản? <a class="text-danger" href="/dang-nhap">Đăng nhập</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/ProductClient/js/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/client/Register.js"></script>
+

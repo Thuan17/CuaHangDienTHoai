@@ -1,0 +1,506 @@
+﻿@model CuaHangBanDienThoai.Models.CLient_AddressCustomer
+
+@if (ViewBag.CustomerId != null && ViewBag.Provinces!=null)
+{
+    <form id="FormCreateAddress" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <div class="m-0 p-0">
+            <input type="text" name="NameProvince" class="NameProvince" style="display:none;" />
+            <input type="text" name="NameDistrict" class="NameDistrict" style="display:none;" />
+            <input type="text" name="NameWard" class="NameWard" style="display:none;" />
+
+        </div>
+
+
+
+        <div class="col-12 ">
+
+
+            <div>
+                <div><h5 class="text-uppercase">Thông tin nhận hàng</h5></div>
+
+                <div class="form-row">
+                    <div class="row col-md-12">
+                        <div class="col-lg-6">
+                            <div class="input-data">
+                                <input type="text" name="CustomerName" id="NameCustomer" required>
+                                <div class="underline"></div>
+                                <label for="">Người nhận</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="input-data">
+                                <input type="number" name="PhoneNumber" id="PhoneCustomer" required pattern="0\d{9}">
+                                <div class="underline"></div>
+                                <label for="PhoneNumber">
+                                    Số Điện Thoại
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="row AddressGroup pl-0 pr-0">
+
+                    <div class="CityDistrictity pl-0 pr-0 row">
+                        <div class="col-lg-6 city">
+                            <label class="cityLabel" for="ddlProvinces">Tỉnh / Thành</label>
+                            @Html.DropDownListFor(
+                                x => x.NameProvince,
+                                ViewBag.Provinces as SelectList,
+                                "Chọn danh mục Tỉnh/Thành phố ",
+                                new { @class = "custom__select custom__select__city", @id = "ddlProvinces" }
+                            )
+                            @Html.ValidationMessageFor(x => x.NameProvince, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6  city ">
+                            <label class="cityLabel" for="ddlDistricts">Quận / Huyện</label>
+                            @Html.DropDownListFor(
+                               x => x.NameDistrict,
+                               new SelectList(Enumerable.Empty<SelectListItem>()), "Chọn danh mục Quận/Huyện",
+                               new
+                                    {
+                                        @class = "custom__select custom__select__districts",
+                                   @id = "ddlDistricts",
+                                        data_idDistricts = "idDistricts"
+                               })
+                            @Html.ValidationMessageFor(x => x.NameDistrict, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="Location pl-0 pr-0 row">
+                        <div class="col-lg-6 city">
+                            <label class="cityLabel" for="ddlWards">Phường / Xã</label>
+                            @Html.DropDownListFor(x => x.NameWard,
+                               new SelectList(Enumerable.Empty<SelectListItem>()),
+                               "Chọn danh mục Phường/Xã",
+                               new
+                                    {
+                                        @class = "custom__select custom__select__wards",
+                               @id = "ddlWards"
+                                    })
+                            @Html.ValidationMessageFor(x => x.NameWard, null, new { @class = "text-danger" })
+                        </div>
+                        <div class="col-md-6">
+                            <div class="  form-row">
+                                <div class="input-data">
+                                    <input type="text" name="Location" id="Location" required>
+                                    <div class="underline"></div>
+                                    <label for="">Địa Chỉ</label>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+               
+
+            </div>
+            <br />
+           
+         
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+
+
+            </div>
+            <div class="row justify-content-center ">
+
+                <div class="loading-overlay" style="display:none;">
+                    <img src="~/Content/css/client/ajax-loader.gif" class="loading-spinner" />
+                    <h5 class="sent">Đang gửi ...</h5>
+                    <div class="innerLoad  col-3"></div>
+                </div>
+                <div class="form-row ">
+                    <div class="input-data m-0">
+                        <div class="inner"></div>
+                        <button @*type="submit"*@ class="btnCreateAddress  " onclick="if(validateForm()) $('#FormCreateAddress').submit();">Tạo địa chỉ nhận hàng</button>
+
+                    </div>
+                </div>
+
+                <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
+            </div>
+
+        </div>
+    </form>
+}
+<script>
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+
+    $(document).ready(function () {
+        $('.inputQuantity').on('keydown input paste', function (e) {
+            e.preventDefault();
+        });
+
+        $("#ddlProvinces").change(function () {
+            var idProvinces = $(this).val();
+            var selectedText = $("#ddlProvinces option:selected").text();
+
+            $(".NameProvince").val(selectedText);
+            console.log("Selected Province:", selectedText);
+            var ddlDistricts = $("#ddlDistricts");
+            var ddlWards = $("#ddlWards");
+            $(".NameProvince").val(selectedText);
+            console.log("Selected Province:", selectedText);
+            ddlDistricts.html('<option value="">-Chọn danh mục Quận/Huyện-</option>');
+            ddlWards.html('<option value="">Chọn danh mục Phường/Xã</option>');
+            if (!idProvinces || idProvinces == 0 || selectedText === "Chọn danh mục Tỉnh/Thành phố") {
+                ddlDistricts.html('<option value="">-Chọn danh mục Quận/Huyện-</option>');
+                ddlWards.html('<option value="">Chọn danh mục Phường/Xã</option>');
+                ddlWards[0].selectedIndex = 0;
+                return;
+            }
+
+
+            $.getJSON('/ProvincesVN/GetDistrictsByProvince', { idProvinces: idProvinces }, function (districts) {
+                var items = '<option value="">-Chọn danh mục Quận/Huyện-</option>';
+                $.each(districts, function (i, district) {
+                    items += "<option value='" + district.idDistricts + "'>" + district.name + "</option>";
+                });
+                $("#ddlDistricts").html(items);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error("Error loading districts:", textStatus, errorThrown);
+                console.error("Response from server:", jqXHR.responseText);
+            });
+        });
+
+        $("#ddlDistricts").change(function () {
+            var idDistricts = $(this).val();
+            var selectedText = $("#ddlDistricts option:selected").text();
+            $(".NameDistrict").val(selectedText);
+            console.log("Selected District:", selectedText);
+
+            $.getJSON('/ProvincesVN/GetWardsByDistrict', { idDistricts: idDistricts }, function (wards) {
+                var items = '<option value="">-Chọn danh mục Phường/Xã-</option>';
+                $.each(wards, function (i, ward) {
+                    items += "<option value='" + ward.idWards + "'>" + ward.name + "</option>";
+                });
+                $("#ddlWards").html(items);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.error("Error loading wards:", textStatus, errorThrown);
+                console.error("Response from server:", jqXHR.responseText);
+            });
+        });
+
+        $("#ddlWards").change(function () {
+            var idWards = $(this).val();
+            var selectedText = $("#ddlWards option:selected").text();
+            $(".NameWard").val(selectedText);
+        });
+    });
+
+
+
+
+    $(document).ready(function () {
+
+    var PriceShip = $('.PriceShip');
+
+
+    $('.expressitem').on('click', function () {
+        var checkbox = $(this).find('input[type="checkbox"]');
+        var isChecked = checkbox.prop('checked');
+        checkbox.prop('checked', !isChecked);
+        const groupName = checkbox.attr('name');
+        $(`input[name='${groupName}']`).not(checkbox).prop('checked', false);
+        $(`input[name='${groupName}']`).closest('.expressitem').removeClass('highlight');
+        if (!isChecked) {
+            $(this).addClass('highlight');
+            PriceShip.removeClass('hide');
+        } else {
+            $(this).removeClass('highlight');
+            PriceShip.addClass('hide');
+        }
+    });
+
+    function showErrorAddress(elements, message) {
+        if (Array.isArray(elements)) {
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const parent = element.closest('.custom__select');
+                    if (parent) {
+                        parent.classList.add('error');
+                    }
+
+                    const label = document.querySelector(`label[for='${id}']`);
+                    if (label) {
+                        label.classList.add('error');
+                    }
+                }
+            });
+        } else {
+            const element = document.getElementById(elements);
+            if (element) {
+                const parent = element.closest('.custom__select');
+                if (parent) {
+                    parent.classList.add('error');
+                }
+
+                const label = document.querySelector(`label[for='${elements}']`);
+                if (label) {
+                    label.classList.add('error');
+                }
+            }
+        }
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', message);
+       
+    }
+
+    function removeErrorAddress(elements) {
+        if (Array.isArray(elements)) {
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    const parent = element.closest('.custom__select');
+                    if (parent) {
+                        parent.classList.remove('error');
+                    }
+
+                    const label = document.querySelector(`label[for='${id}']`);
+                    if (label) {
+                        label.classList.remove('error');
+                    }
+                }
+            });
+        } else {
+            const element = document.getElementById(elements);
+            if (element) {
+                const parent = element.closest('.custom__select');
+                if (parent) {
+                    parent.classList.remove('error');
+                }
+
+                const label = document.querySelector(`label[for='${elements}']`);
+                if (label) {
+                    label.classList.remove('error');
+                }
+            }
+        }
+    }
+
+    function showError(elements, message) {
+        if (Array.isArray(elements)) {
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.add('error-border');
+                    const parent = element.closest('.input-data');
+                    if (parent) {
+                        parent.classList.add('error');
+                    }
+                }
+            });
+        } else {
+            const element = document.getElementById(elements);
+            if (element) {
+                element.classList.add('error-border');
+                const parent = element.closest('.input-data');
+                if (parent) {
+                    parent.classList.add('error');
+                }
+            }
+        }
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', message);
+
+      
+    }
+
+    function removeError(elements) {
+        if (Array.isArray(elements)) {
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.classList.remove('error-border');
+                    const parent = element.closest('.input-data');
+                    if (parent) {
+                        parent.classList.remove('error');
+                    }
+                }
+            });
+        } else {
+            const element = document.getElementById(elements);
+            if (element) {
+                element.classList.remove('error-border');
+                const parent = element.closest('.input-data');
+                if (parent) {
+                    parent.classList.remove('error');
+                }
+            }
+        }
+    }
+
+    function validateForm() {
+        const NameCustomer = $('#NameCustomer').val().trim();
+        const PhoneCustomer = $('#PhoneCustomer').val().trim();
+        const Address = $('#Location').val().trim();
+   
+        const ddlProvinces = $('#ddlProvinces').val().trim();
+        const ddlDistricts = $('#ddlDistricts').val().trim();
+        const ddlWards = $('#ddlWards').val().trim();
+
+        let isValid = true;
+        if (!ddlProvinces || ddlProvinces === "Chọn danh mục Tỉnh/Thành phố") {
+            showErrorAddress('ddlProvinces', "Vui lòng chọn Tỉnh/Thành phố.");
+            isValid = false;
+        } else {
+            removeErrorAddress('ddlProvinces');
+        }
+
+        if (!ddlDistricts || ddlDistricts === "Chọn danh mục Quận/Huyện") {
+            showErrorAddress('ddlDistricts', "Vui lòng chọn Quận/Huyện.");
+            isValid = false;
+        } else {
+            removeErrorAddress('ddlDistricts');
+        }
+
+        if (!ddlWards || ddlWards === "Chọn danh mục Phường/Xã") {
+            showErrorAddress('ddlWards', "Vui lòng chọn Phường/Xã.");
+            isValid = false;
+        } else {
+            removeErrorAddress('ddlWards');
+        }
+
+        if (!NameCustomer) {
+            showError('NameCustomer', "Vui lòng điền tên.");
+            isValid = false;
+        } else {
+            removeError('NameCustomer');
+        }
+
+        const phoneNumberRegex = /^0\d{9}$/;
+
+        if (!PhoneCustomer) {
+            showError('PhoneCustomer', "Vui lòng điền số điện thoại.");
+            isValid = false;
+        } else if (PhoneCustomer.length > 11) {
+            showError('PhoneCustomer', "Định dạng số điện thoại không đúng.");
+            isValid = false;
+        } else if (!phoneNumberRegex.test(PhoneCustomer)) {
+            showError('PhoneCustomer', "Định dạng số điện thoại không đúng.");
+            isValid = false;
+        } else {
+            removeError('PhoneCustomer');
+        }
+
+        if (!Address) {
+            showError('Location', "Vui lòng điền địa chỉ.");
+            isValid = false;
+        } else {
+            removeError('Location');
+        }
+
+    
+
+
+        return isValid;
+    }
+   
+
+    $('.btnCreateAddress').off('click').on('click', function (event) {
+        event.preventDefault();
+
+        let isValid = validateForm();
+        const customerId = sessionStorage.getItem('CustomerId');
+        if (customerId) {
+            if (isValid) {
+
+                const formData = $('#FormCreateAddress').serialize();
+                const token = $('input[name="__RequestVerificationToken"]').val();
+                const dataToSend = formData + '&customerId=' + encodeURIComponent(customerId);
+                $.ajax({
+                    url: '/ShoppingCart/ThemAddressCustomer',
+                    type: 'POST',
+                    data: dataToSend,
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    success: function (res) {
+
+                        if (res.Success) {
+                            if (res.Code === 1) {
+
+                                createToast('success', 'fa-solid fa-circle-exclamation','Thành công', 'Thành công tạo địa chỉ');
+                                setTimeout(() => {
+                                    window.location.href = '/thanh-toan';
+                                }, 1500);
+                            }
+                        } else {
+
+
+
+
+                        }
+                    },
+                    error: function (xhr) {
+
+                    }
+                });
+            } else {
+                console.log("Form validation failed");
+            }
+        } else {
+
+          
+            if (!window.sessionStorage.getItem('CustomerId')) {
+                createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Phiên đăng nhập đã hết hạn');
+                let countdown = 6;
+                const interval = setInterval(function () {
+
+                    countdown--;
+                    createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý',
+                        `Phiên đăng nhập đã hết hạn. Chuyển hướng sau ${countdown} giây...`);
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        $.ajax({
+                            url: '/Account/SetRedirectUrl',
+                            type: 'POST',
+                            data: { redirectUrl: window.location.href },
+                            success: function () {
+
+                                window.location.href = '/Account/Logout';
+                            }
+                        });
+                    }
+
+                }, 1000);
+                return;
+            }
+        }
+     
+    });
+
+});
+</script>

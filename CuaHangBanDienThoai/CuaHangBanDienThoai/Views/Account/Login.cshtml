@@ -1,70 +1,123 @@
 ﻿
 @{
-    ViewBag.Title = "Đang nhập tài khoản";
+    ViewBag.Title = "Đăng nhập tài khoản";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<style>
+   
+    .form-control {
+        background-color: transparent !important;
+        border: none;
+        border-bottom: solid 0.3px #01d28e !important;
+        box-shadow: none;
+        color: white !important; 
+    }
+
+       
+        .form-control .label {
+            color: #01d28e !important;
+        }
+
+        
+        .form-control input {
+            color: white !important; 
+        }
+
+    .wrap {
+        background-color: transparent !important;
+        border: none;
+        box-shadow: none;
+    }
+    .form-control:focus {
+        background-color: transparent !important; 
+        box-shadow: none; 
+    }
+
+    .form-control:not(:placeholder-shown) {
+        background-color: transparent !important;
+    }
+</style>
 <script src="~/Content/css/login/js/main.js"></script>
 <link href="~/Content/css/login/css/style.css" rel="stylesheet" />
-<div class="container pt-3">
 
-    <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-5">
-            <div class="wrap">
-                <div class="img" style="background-image: url(/images/logo/logoweb.png);"></div>
-                <div class="login-wrap p-4 p-md-5">
-                    <div class="d-flex">
-                        <div class="w-100">
-                            <h3 class="mb-4">Đăng nhập  </h3>
-                        </div>
-                        <div class="w-100">
-                            <p class="social-media d-flex justify-content-end">
-                                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
-                                <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
-                            </p>
-                        </div>
+
+<div style="background-image: url(/images/bg.png); ">
+    <div class="container mainLogin  pt-3">
+
+        <div class="row justify-content-center   ">
+            <div class="col-md-7 col-lg-5 mb-5 transparent-background  ">
+                <div class="wrap ">
+                    <div class="img ">
+
+                        <img src="~/images/logo/logo1200.png" />
                     </div>
-                    <form id="logInForm" enctype="multipart/form-data" class="signin-form">
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary(true)
-                        <div class="form-group mt-3">
-                            <input type="text" class="form-control " name="userInput" id="userInput" required>
-                            <label class="form-control-placeholder" name="userInput" id="userInput" for="username">Số điện thoại hoặc email</label>
-                        </div>
-                        <div class="form-group">
-                            <input id="password-field" type="password" name="password" class="form-control" required>
-                            <label class="form-control-placeholder" for="password">Mật khẩu</label>
-                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="form-control btn btn-primary rounded submit px-3">
-                                Đăng nhập
-                            </button>
-                        </div>
-                        <div class="form-group d-md-flex">
-                            <div class="w-100 text-left">
-                                <a href="#">Bạn không nhớ mật khẩu ?</a>
+                    <div class="login-wrap  p-4 p-md-5">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <h3 class="mb-4 text-white">Đăng nhập  </h3>
                             </div>
-                            @*<div class="w-50 text-md-right">
-                                    <a href="#">Bạn không nhớ mật khẩu ?</a>
-                                </div>*@
+                            <div class="w-100 hide">
+                                <p class="social-media d-flex justify-content-end">
+                                    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+                                    <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
+                                </p>
+                            </div>
                         </div>
-                    </form>
-                    <p class="text-center">Bạn chưa có tài khoản ?  <a data-toggle="tab" href="/dang-ky">Đăng ký </a></p>
+                        <form id="logInForm" enctype="multipart/form-data" class="signin-form">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            
+
+                            <div class="form-group mt-3">
+                                <input type="text" class="form-control " name="userInput" id="userInput" required>
+                                <label class="form-control-placeholder" name="userInput" id="userInput" for="username">Số điện thoại hoặc email</label>
+                            </div>
+                            <div class="form-group mt-5">
+                                <input id="password-field" type="password" name="password" class="form-control" required>
+                                <label class="form-control-placeholder" for="password">Mật khẩu</label>
+                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="form-control btn btn-primary rounded submit px-3">
+                                    Đăng nhập
+                                </button>
+                            </div>
+                            <div class="form-group d-md-flex">
+                                <div class="w-100 text-left text-white">
+                                    <a href="#" class="text-white">Bạn không nhớ mật khẩu ?</a>
+                                </div>
+                                @*<div class="w-50 text-md-right">
+                                        <a href="#">Bạn không nhớ mật khẩu ?</a>
+                                    </div>*@
+                            </div>
+                        </form>
+                        <p class="text-center text-white">Bạn chưa có tài khoản ?  <a class="text-danger"   href="/dang-ky">Đăng ký </a></p>
+                    </div>
                 </div>
             </div>
         </div>
+
+
     </div>
-
-
 </div>
+
 <script src="~/Scripts/ProductClient/js/jquery-3.2.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+
 <script>
+
+
+
+
     $(document).ready(function () {
+
         $('#logInForm').submit(function (event) {
             event.preventDefault();
             let isValid = validateForm();
-          
+
             const formData = $('#logInForm').serialize();
             const token = $('input[name="__RequestVerificationToken"]').val();
             if (isValid) {
@@ -80,23 +133,23 @@
 
                             createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg);
 
-                            const url = res.redirectUrl; 
+                            const url = res.redirectUrl;
                             sessionStorage.setItem('CustomerId', res.customerId);
                             if (url) {
                                 setTimeout(() => {
-                                    window.location.href = url; 
+                                    window.location.href = url;
                                 }, 1500);
                             } else {
-                               
+
                                 setTimeout(() => {
                                     window.location.href = "/trang-chu";
                                 }, 1500);
                             }
-                           
+
                         } else {
                             createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
                         }
-                       
+
 
                     },
                     error: function (xhr) {

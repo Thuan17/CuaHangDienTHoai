@@ -2,7 +2,7 @@
 @using CuaHangBanDienThoai.Common
 <script src="~/Scripts/CheckOut.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
-@if (Model != null)
+@if (Model != null && !string.IsNullOrEmpty(Model.NameCustomer))
 {
 
     <form id="checkOutForm" enctype="multipart/form-data">
@@ -173,6 +173,13 @@
     </form>
 
 }
+
+
+else
+{
+  @Html.Action("ThemAddress","ShoppingCart")
+
+}
 <script>
 
 
@@ -255,7 +262,7 @@
 
     $(document).ready(function () {
         CheckAccount();
-       
+
 
 
 
@@ -351,7 +358,7 @@
                                 }
                             } else if (res.Code = -2) {
                                 createToast('warring', 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
-                                if (res.Url!=null ) {
+                                if (res.Url != null) {
                                     setTimeout(() => {
                                         window.location.href = res.Url;
                                     }, 1500);

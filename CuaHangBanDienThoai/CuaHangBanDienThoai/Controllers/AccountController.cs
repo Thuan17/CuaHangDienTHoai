@@ -1,6 +1,7 @@
 ﻿using CuaHangBanDienThoai.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -85,7 +86,7 @@ namespace CuaHangBanDienThoai.Controllers
                           
                             return Json(new { success = true, code = 1, msg = "Chào mừng trở lại" , redirectUrl = redirectUrl.Trim(), customerId = account.CustomerId }); 
                         }
-                        return Json(new { success = true, code = 1, msg = "Chào mừng trở lại", customerId= account.CustomerId }); ;
+                        return Json(new { success = true, code = 1, msg = "Chào mừng trở lại", customerId= account.CustomerId }); 
 
 
                     }
@@ -110,8 +111,74 @@ namespace CuaHangBanDienThoai.Controllers
             }
         }
 
+        public ActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(CLient_Register req , Customer _khachhang)
+        {
+
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if (ModelState.IsValid)
+                    {
+
+                        int failedAttempts = (int?)Session[$"FailedAttemptsCustomer_{req.Email}"] ?? 0;
 
 
+                        var f_password = MaHoaPass(req.password);
+
+                        var checkPhone = await db.Customer.FirstOrDefaultAsync(x => x.PhoneNumber == req.phone.Trim() && x.Email == null);
+                        if (checkPhone != null)
+                        {
+
+                            checkPhone.Email = req.Email.Trim();
+                            checkPhone.PhoneNumber = req.phone.Trim();
+                            checkPhone.Password = f_password.Trim();
+                            checkPhone.Birthday = req.Birthday;
+                            checkPhone.IsLock = false;
+                            db.Entry(checkPhone).State = EntityState.Modified;
+                            await db.SaveChangesAsync();
+                            dbContext.Commit(); 
+                            return Json(new { success = true, code = 1, msg = "Đăng ký thành công", Url="/dang-nhap" });
+                        }
+                        else
+                        {
+                            _khachhang.Email = req.Email;
+                            _khachhang.PhoneNumber = req.phone.Trim();
+                            _khachhang.Password = f_password.Trim();
+                            _khachhang.Birthday = req.Birthday;
+                            _khachhang.IsLock = false;
+                            _khachhang.CustomerName = req.fullName.Trim();
+                            _khachhang.NumberofPurchases = 0;
+                            db.Customer.Add(_khachhang);
+
+                            await db.SaveChangesAsync();
+
+                            dbContext.Commit();
+                            return Json(new { success = true, code = 1, msg = "Đăng ký thành công", Url = "/dang-nhap" });
+                        }
+
+                    }
+                    else
+                    {
+
+                        return Json(new { success = false, code = -2, msg = "Thông tin đăng nhập không hợp lệ." });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();   
+                    return Json(new { success = false, code = -100, message = "Lỗi hệ thống: " + ex.Message });
+                }
+            }
+
+               
+        }
         public ActionResult Logout()
         {
             if (Session["customer"] != null)

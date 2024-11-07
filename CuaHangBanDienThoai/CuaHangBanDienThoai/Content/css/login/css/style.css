@@ -1,4 +1,4 @@
-/*!
+﻿/*!
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
  * Copyright 2011-2019 Twitter, Inc.
@@ -49,18 +49,68 @@ html {
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block; }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #212529;
-  text-align: left;
-  background-color: #fff; }
+
+.login-wrap.custom-background {
+    background-color: rgba(0, 0, 0, 0.5); /* or your desired background */
+}
+.transparent-background {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    backdrop-filter: blur(5px);
+    color: white;
+    border-radius: 25px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+/* Định dạng cho input */
+.form-control {
+    background-color: transparent !important;
+    border: none;
+    border-bottom: solid 0.3px #01d28e !important;
+    box-shadow: none;
+    color: white !important; /* Đảm bảo màu văn bản là trắng */
+}
+
+    /* Định dạng cho label */
+    .form-control .label {
+        color: #01d28e !important;
+    }
+
+    /* Đảm bảo text trong input là trắng */
+    .form-control input {
+        color: white !important; /* Áp dụng màu chữ trắng cho input */
+    }
+
+/* Xử lý .wrap nếu cần */
+.wrap {
+    background-color: transparent !important;
+    border: none;
+    box-shadow: none;
+}
+.form-control:focus {
+    background-color: transparent !important; /* Nền vẫn trong suốt khi focus */
+    box-shadow: none; /* Tắt box-shadow mặc định */
+}
+.form-control:not(:placeholder-shown) {
+    background-color: transparent !important; /* Nền trong suốt khi có nội dung */
+}
+#footer {
+    margin-top: 0 !important;
+}
+
+.img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+img {
+    max-width: 80%; /* Giữ hình ảnh không bị vượt quá chiều rộng */
+    height: 80%; /* Giữ tỉ lệ hình ảnh */
+}
 
 [tabindex="-1"]:focus {
-  outline: 0 !important; }
+    outline: 0 !important;
+}
 
 hr {
   -webkit-box-sizing: content-box;
@@ -166,7 +216,11 @@ figure {
 
 img {
   vertical-align: middle;
-  border-style: none; }
+  border-style: none; 
+  background-color:transparent !important;
+
+
+}
 
 svg {
   overflow: hidden;
@@ -8132,13 +8186,7 @@ a.text-dark:hover, a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6; } }
 
-body {
-  font-family: "Lato", Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.8;
-  font-weight: normal;
-  background: #f8f9fd;
-  color: gray; }
+
 
 a {
   -webkit-transition: .3s all ease;
@@ -8195,7 +8243,11 @@ h1, h2, h3, h4, h5,
     height: 200px; }
 
 .login-wrap {
-  position: relative; }
+  position: relative; 
+  background-color:transparent!important;
+
+
+}
   .login-wrap h3 {
     font-weight: 300; }
 

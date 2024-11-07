@@ -784,6 +784,11 @@ namespace CuaHangBanDienThoai.Controllers
                             {
                                 return Json(new { Success = false, Code = -2, msg = "Vui lòng điền đầy đủ !!!" });
                             }
+                            string Address = "";
+                            if (req.Location != null || req.NameWard != null || req.NameDistrict != null || req.NameProvince != null)
+                            {
+                                Address = $"{req.Location}, {req.NameWard}, {req.NameDistrict}, {req.NameProvince}";
+                            }
 
                             // Kiểm tra xem địa chỉ đã tồn tại hay chưa
                             var existingAddress = db.AddressCustomer
@@ -800,7 +805,17 @@ namespace CuaHangBanDienThoai.Controllers
                             model.CustomerId = customerId;
                             model.CustomerName = req.CustomerName.Trim();
                             model.PhoneNumber = req.PhoneNumber.Trim();
-                            model.Location = req.Location.Trim();
+                            model.Location = Address?.Trim()?? req.Location?.Trim();
+                            if (Address != null)
+                            {
+                                model.IsDefault = true;
+
+                            }
+                            else
+                            {
+                                model.IsDefault = false;
+                            }
+
                             db.AddressCustomer.Add(model);
                             db.SaveChanges();
 
@@ -823,7 +838,20 @@ namespace CuaHangBanDienThoai.Controllers
         }
 
 
-
+        public ActionResult ThemAddress()
+        {
+            if (Session["customer"]!=null&& Session["CustomerId"] != null)
+            {
+                int id =(int) Session["CustomerId"];
+                if (id > 0)
+                {
+                    ViewBag.Provinces = new SelectList(db.Provinces.ToList(), "idProvinces", "name");
+                    ViewBag.CustomerId = id;
+                    return PartialView();
+                }
+            }
+            return PartialView();
+        }
 
 
         [HttpPost]

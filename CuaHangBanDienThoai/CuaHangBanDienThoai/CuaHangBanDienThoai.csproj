@@ -175,6 +175,7 @@
     <Compile Include="Controllers\ProductCategoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
+    <Compile Include="Controllers\ProvincesVNController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -215,6 +216,7 @@
     </Compile>
     <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CLient_AddressCustomer.cs" />
+    <Compile Include="Models\CLient_Register.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\Customer.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -5042,6 +5044,8 @@
     <Content Include="images\background\bg-slider-2.jpg" />
     <Content Include="images\banner\NewTyLeFull1920x1080 _2.png.png" />
     <Content Include="images\banner\NewTyLeFull1920x1080_33.png" />
+    <Content Include="images\bg.png" />
+    <Content Include="images\bg2.jpg" />
     <Content Include="images\gif\bill.gif" />
     <Content Include="images\gif\cart.gif" />
     <Content Include="images\gif\cart2.gif" />
@@ -5090,6 +5094,7 @@
     <Content Include="images\icon\shoppingcart2.png" />
     <Content Include="images\icon\user.png" />
     <Content Include="images\insta-item1.jpg" />
+    <Content Include="images\login.jpg" />
     <Content Include="images\logo.png" />
     <Content Include="images\logo\CartNull.png" />
     <Content Include="images\logo\logo1200.png" />
@@ -5113,6 +5118,7 @@
     <Content Include="images\product\chinhsachPada2.png" />
     <Content Include="images\product\gift.jpg" />
     <Content Include="images\product\storeRm.png" />
+    <Content Include="images\win11.jpg" />
     <Content Include="images\_doqtine.jpg" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
@@ -5491,6 +5497,7 @@
     <Content Include="Scripts\client\modernizr.js" />
     <Content Include="Scripts\client\MyOrder.js" />
     <Content Include="Scripts\client\plugins.js" />
+    <Content Include="Scripts\client\Register.js" />
     <Content Include="Scripts\client\script.js" />
     <Content Include="Scripts\CongTac.js" />
     <Content Include="Areas\Admin\Views\web.config" />
@@ -5800,10 +5807,13 @@
     <Content Include="Views\Cart\Partial_CancelOrder.cshtml" />
     <Content Include="Views\Cart\Partail_MyOrderNonSuccess.cshtml" />
     <Content Include="Views\Cart\Partail_MyOrderCancel.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\ShoppingCart\ThemAddress.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Views\ProvincesVN\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

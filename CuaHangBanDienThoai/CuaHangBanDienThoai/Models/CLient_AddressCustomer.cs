@@ -11,5 +11,27 @@ namespace CuaHangBanDienThoai.Models
         public string CustomerName { get; set; }
         public string PhoneNumber { get; set; }
 
+
+
+
+
+
+
+
+
+
+        public string NameWard { get; set; }
+        public string NameDistrict { get; set; }
+        public string NameProvince { get; set; }
+
+        public int IdNameWard { get; set; }
+        public int IdNameDistrict { get; set; }
+        public int IdNameProvince { get; set; }
+
+
+      
+
+   
+
     }
 }
