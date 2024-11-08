@@ -102,8 +102,48 @@
 
                                 </thead>
                                 @Html.Action("Partial_BillDetail", "ShoppingCart", new { id = Model.OrderId })
-                                <tfoot>
+                            <tfoot>
+                                @{
 
+                                    var voucher = Model.VoucherDetail.FirstOrDefault(x => x.OrderId == Model.OrderId);
+
+                                    var orderDetail = Model.OrderDetail.Where(x => x.OrderId == Model.OrderId);
+                                    decimal total = 0;
+                                    if (orderDetail != null && orderDetail.Any())
+                                    {
+                                        foreach (var item in orderDetail)
+                                        {
+                                            total += item.Price;
+
+                                        }
+                                    }
+
+                                }
+
+
+
+                                @if (voucher != null)
+                                {
+                                    <tr>
+                                        <td colspan="2" class="item subtotal text-end fw-bolder">
+                                            Tổng tiền :
+                                        </td>
+                                        <td class="fw-500 last">
+                                            <b class="text-right"><span class="text-gray-200" style="text-decoration: line-through;">@Common.FormatNumber(@total) đ</span></b>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="item subtotal text-end fw-bolder">
+                                            Tổng tiền sau khi dùng voucher :
+                                        </td>
+                                        <td class="fw-500 last">
+                                            <b class="text-right"><span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span></b>
+                                        </td>
+                                    </tr>
+
+                                }
+                                else
+                                {
                                     <tr>
                                         <td colspan="2" class="item subtotal text-end fw-bolder">
                                             Tổng tiền:
@@ -112,7 +152,10 @@
                                             <b class="text-right"><span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span></b>
                                         </td>
                                     </tr>
-                                </tfoot>
+                                }
+
+
+                            </tfoot>
                             </table>
                         </div>
                     </div>

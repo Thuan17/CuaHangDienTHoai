@@ -74,6 +74,19 @@
 
                         @foreach (var item in Model)
                         {
+                            var voucher = item.VoucherDetail?.FirstOrDefault(x => x.OrderId == item.OrderId);
+                            var orderDetail = item.OrderDetail?.Where(x => x.OrderId == item.OrderId);
+
+                            decimal total = 0;
+                            if (orderDetail != null && orderDetail.Any())
+                            {
+                                foreach (var order in orderDetail)
+                                {
+                                    total += order.Price;
+
+                                }
+                            }
+
                             <div class="card m-1 mb-2  bg-white card_IndexOrder_@item.OrderId" id="card_IndexOrder_@item.OrderId" style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
 
                                 <div class="card-header p-0 pt-1 mt-1 m-1 bg-white">
@@ -174,6 +187,17 @@
                                                             </b>
                                                             <sapn>@item.CreatedDate</sapn>
                                                         </div>
+
+                                                        @if (voucher != null)
+                                                        {
+                                                            <div class="input-data">
+                                                                <b for="PhoneCustomer">
+                                                                     Áp dụng voucher :
+                                                                </b>
+                                                                <sapn>@voucher.Code</sapn>
+                                                            </div>
+                                                        }
+
                                                     </div>
                                                     <div class="input-data ">
                                                         <b for="">Ghi chú :</b>
@@ -207,15 +231,43 @@
                                                         </thead>
                                                         @Html.Action("Partial_BillDetail", "ShoppingCart", new { id = item.OrderId })
                                                         <tfoot>
+                                                         
 
-                                                            <tr>
-                                                                <td colspan="2" class="item subtotal text-end fw-bolder">
-                                                                    Tổng tiền:
-                                                                </td>
-                                                                <td class="fw-500 last">
-                                                                    <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
-                                                                </td>
-                                                            </tr>
+
+
+                                                            @if (voucher != null)
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                        Tổng tiền :
+                                                                    </td>
+                                                                    <td class="fw-500 last">
+                                                                        <b class="text-right"><span class="text-gray-200" style="text-decoration: line-through;">@Common.FormatNumber(@total) đ</span></b>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                        Tổng tiền sau khi dùng voucher :
+                                                                    </td>
+                                                                    <td class="fw-500 last">
+                                                                        <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                                    </td>
+                                                                </tr>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <tr>
+                                                                    <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                        Tổng tiền:
+                                                                    </td>
+                                                                    <td class="fw-500 last">
+                                                                        <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+
                                                         </tfoot>
                                                     </table>
                                                 </div>

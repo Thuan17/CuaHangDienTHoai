@@ -4,6 +4,19 @@
 {
     foreach (var item in Model)
     {
+        var voucher = item.VoucherDetail?.FirstOrDefault(x => x.OrderId == item.OrderId);
+        var orderDetail = item.OrderDetail?.Where(x => x.OrderId == item.OrderId);
+
+        decimal total = 0;
+        if (orderDetail != null && orderDetail.Any())
+        {
+            foreach (var order in orderDetail)
+            {
+                total += order.Price;
+
+            }
+        }
+
         <div class="card m-1 mb-2  bg-white card_IndexOrder_@item.OrderId" id="card_IndexOrder_@item.OrderId" style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
 
             <div class="card-header p-0 pt-1 mt-1 m-1 bg-white">
@@ -15,11 +28,11 @@
                         </div>
                         <h4 class="step-title">Đặt hàng thành công</h4>
                     </div>
-                    <div class="step mb-2 @( item.OrderStatus == "Đơn huỷ" || item.OrderStatus == "Từ chối" ? "cancel" : ((bool)item.Confirm ? "completed" : ""))">
+                    <div class="step mb-2 @( item.OrderStatus == "Đơn huỷ"||item.OrderStatus == "Từ chối" ? "cancel" :   ((bool)item.Confirm ? "completed" : ""))">
                         <div class="step-icon-wrap">
                             <div class="step-icon"><i class="bi bi-check-all"></i></div>
                         </div>
-                        <h4 class="step-title">@(item.OrderStatus == "Đơn huỷ" ? "Đơn huỷ" : (item.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)item.Confirm ? "Đã xác nhận" : "Xác nhận")) )</h4>
+                        <h4 class="step-title">@(item.OrderStatus== "Đơn huỷ"? "Đơn huỷ" : (item.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)item.Confirm ? "Đã xác nhận" : "Xác nhận")) )</h4>
                     </div>
 
                     <div class="step mb-2 @(item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
@@ -29,7 +42,7 @@
                         <h4 class="step-title">Xuất kho</h4>
                     </div>
 
-                    <div class="step mb-2 @(item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
+                    <div class="step mb-2 @(item.OrderStatus=="Đã xuất kho" ? "completed":"")">
                         <div class="step-icon-wrap">
                             <div class="step-icon"><i class="bi bi-truck"></i></div>
                         </div>
@@ -104,10 +117,21 @@
                                         </b>
                                         <sapn>@item.CreatedDate</sapn>
                                     </div>
+
+                                    @if (voucher != null)
+                                    {
+                                        <div class="input-data">
+                                            <b for="PhoneCustomer">
+                                                Áp dụng voucher :
+                                            </b>
+                                            <sapn>@voucher.Code</sapn>
+                                        </div>
+                                    }
+
                                 </div>
                                 <div class="input-data ">
                                     <b for="">Ghi chú :</b>
-                                    <sapn>@(item.Note ?? "")</sapn>
+                                    <sapn>@(item.Note??"")</sapn>
                                 </div>
 
                             </div>
@@ -138,14 +162,42 @@
                                     @Html.Action("Partial_BillDetail", "ShoppingCart", new { id = item.OrderId })
                                     <tfoot>
 
-                                        <tr>
-                                            <td colspan="2" class="item subtotal text-end fw-bolder">
-                                                Tổng tiền:
-                                            </td>
-                                            <td class="fw-500 last">
-                                                <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
-                                            </td>
-                                        </tr>
+
+
+
+                                        @if (voucher != null)
+                                        {
+                                            <tr>
+                                                <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                    Tổng tiền :
+                                                </td>
+                                                <td class="fw-500 last">
+                                                    <b class="text-right"><span class="text-gray-200" style="text-decoration: line-through;">@Common.FormatNumber(@total) đ</span></b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                    Tổng tiền sau khi dùng voucher :
+                                                </td>
+                                                <td class="fw-500 last">
+                                                    <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                </td>
+                                            </tr>
+
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                    Tổng tiền:
+                                                </td>
+                                                <td class="fw-500 last">
+                                                    <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                </td>
+                                            </tr>
+                                        }
+
+
                                     </tfoot>
                                 </table>
                             </div>
@@ -164,11 +216,11 @@
                         <button class="btn btn-success mt-0 btnSuceess me-2   @(item.Success == false && item.OrderStatus == "Đã xuất kho" ? "" : "hide")   " data-id="@item.OrderId" style="width: 120px; padding: 8px;">
                             Đã nhận được hàng
                         </button>
-                        <button class="btn btn-danger mt-0    @(item.OrderStatus?.Trim() == "Đơn huỷ" || item.OrderStatus?.Trim() == "Từ chối" ? "" : "btnCancel")
-                                  @(item.OrderStatus?.Trim() == "Đã xuất kho" ? "hide" : "")"
+                        <button class="btn btn-danger mt-0    @(item.OrderStatus?.Trim() == "Đơn huỷ"||item.OrderStatus?.Trim() == "Từ chối" ? "" :  "btnCancel")
+                               @(item.OrderStatus?.Trim() == "Đã xuất kho" ? "hide" : "")"
                                 @(item.OrderStatus?.Trim() == "Đơn huỷ" || item.OrderStatus?.Trim() == "Từ chối" ? "disabled" : "")
                                 data-id="@item.OrderId" style="width: 180px; padding: 8px;">
-                            @(item.OrderStatus?.Trim() == "Đơn huỷ" ? "Bạn đã huỷ đơn hàng" : (item.OrderStatus?.Trim() == "Từ chối" ? "Đơn đã bị từ chối" : "Huỷ đơn hàng"))
+                            @(item.OrderStatus?.Trim() == "Đơn huỷ" ? "Bạn đã huỷ đơn hàng" :(item.OrderStatus?.Trim() == "Từ chối"? "Đơn đã bị từ chối" : "Huỷ đơn hàng"))
                         </button>
 
 
@@ -188,17 +240,18 @@
 
 
     }
+
 }
 else
 {
-<div class="card m-1 mb-2  bg-white " style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
-   
-    <div class="card-body p-0 m-0">
-        <div class="align-items-center text-center">
+    <div class="card m-1 mb-2  bg-white " style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
 
-            <img src="~/images/logo/CartNull.png" />
+        <div class="card-body p-0 m-0">
+            <div class="align-items-center text-center">
+
+                <img src="~/images/logo/CartNull.png" />
+            </div>
         </div>
     </div>
-</div>
 
-        }
+}

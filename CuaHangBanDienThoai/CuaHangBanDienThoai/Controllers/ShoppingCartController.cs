@@ -55,7 +55,7 @@ namespace CuaHangBanDienThoai.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]  
-        public ActionResult CheckOut(int customerid  ,OrderView req)
+        public async Task < ActionResult> CheckOut(int customerid  ,OrderView req)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -79,7 +79,7 @@ namespace CuaHangBanDienThoai.Controllers
                             }
 
 
-                            var inforKhachHang = db.Customer.FirstOrDefault(x => x.CustomerId == idKhach);
+                            var inforKhachHang =await db.Customer.FirstOrDefaultAsync(x => x.CustomerId == idKhach);
                             ShoppingCart cart = (ShoppingCart)Session["Cart"];
 
                             if (cart != null)
@@ -105,17 +105,16 @@ namespace CuaHangBanDienThoai.Controllers
                                 db.Entry(inforKhachHang).State = EntityState.Modified;
                                 db.SaveChanges();
 
-                              
-                                var itemWithVoucher = cart.Items.FirstOrDefault(item => item.PercentPriceReduction.HasValue && item.PercentPriceReduction > 0);
 
-                                //if (itemWithVoucher != null)
-                                //{
 
-                                //    if (!UpdateVoucherDetail(itemWithVoucher.CodeVoucher, order))
-                                //    {
-                                //        return Json(new { Success = false, Code = -2, msg= "Áp dụng voucher thất bại" }); 
-                                //    }
-                                //}
+                                if (cart.Code != null && cart.PercentPriceReduction > 0)
+                                {
+
+                                    if (! await UpdateVoucherDetail(cart.Code, order))
+                                    {
+                                        return Json(new { Success = false, Code = -2, msg = "Áp dụng voucher thất bại" });
+                                    }
+                                }
 
 
                                 if (req.TypePaymentVN == 2)
@@ -362,26 +361,27 @@ namespace CuaHangBanDienThoai.Controllers
         }
 
 
-        private bool UpdateVoucherDetail(string codeVoucher, OrderCustomer order)
+        private async Task<bool> UpdateVoucherDetail(string codeVoucher, OrderCustomer order)
         {
             try
             {
-                var voucherDetail = db.VoucherDetail.FirstOrDefault(x => x.Code == codeVoucher && x.Status == false);
+                var voucherDetail = await db.VoucherDetail.FirstOrDefaultAsync(x => x.Code == codeVoucher && x.Status == false);
                 if (voucherDetail != null)
                 {
-                    var existingOrder = db.OrderCustomer.FirstOrDefault(o => o.OrderId == order.OrderId);
+                    var existingOrder =await db.OrderCustomer.FirstOrDefaultAsync(o => o.OrderId == order.OrderId);
                     if (existingOrder != null)
                     {
 
                         if (voucherDetail.VoucherId>0)
                         {
-                            var existingVoucher = db.Voucher.FirstOrDefault(v => v.VoucherId == voucherDetail.VoucherId);
+                            var existingVoucher = await db.Voucher.FirstOrDefaultAsync(v => v.VoucherId == voucherDetail.VoucherId);
                             if (existingVoucher != null)
                             {
                                 voucherDetail.OrderId = order.OrderId;
+                                voucherDetail.BillId = null;
                                 voucherDetail.UsedDate = DateTime.Now;
                                 voucherDetail.Status = true;
-                                db.SaveChanges();
+                               await db.SaveChangesAsync();     
                                 return true; 
                             }
                             else
@@ -510,27 +510,12 @@ namespace CuaHangBanDienThoai.Controllers
                     Success = false,
                     Code = GenerateOrderCode(),
                     CustomerId = customerInfo.CustomerId,
-
-                };
-                decimal totalAmount = 0;
-                int totalQuantity = 0;
-                foreach (var item in cart.Items)
-                {
-
-                    if (item.PercentPriceReduction.HasValue && item.PercentPriceReduction.Value > 0 && item.CodeVoucher != null)
-                    {
-                        totalAmount += item.PriceTotal;
-
-                    }
-                    else
-                    {
-                        totalAmount += item.PriceTotal;
-                    }
-                    totalQuantity += item.Quantity;
-                }
+                    TotalAmount =cart.GetTotalPrice()
+            };
+               
 
 
-                order.TotalAmount = totalAmount;
+             
             
 
                 // Thêm các chi tiết đơn hàng
@@ -951,7 +936,91 @@ namespace CuaHangBanDienThoai.Controllers
             }
             return Json(new { TotalPrice = "0 đ" }, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public JsonResult GetVoucher(string Code)
+        {
+            if (Code == null)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+            try
+            {
+                var voucher = (from chiTiet in db.VoucherDetail
+                               join voucherDetail in db.Voucher on chiTiet.VoucherId equals voucherDetail.VoucherId
+                               where chiTiet.Code.Trim() == Code.Trim() && voucherDetail.EndDate >= DateTime.Now // Kiểm tra ngày hết hạn
+                               select new
+                               {
+                                   voucherDetail.PercentPriceReduction,  // PhanTramGiam
+                                   voucherDetail.Title,
+                                   voucherDetail.CreatedBy,
+                                   voucherDetail.CreatedDate,
+                                   voucherDetail.ModifiedDate,
+                                   voucherDetail.StartDate,
+                                   voucherDetail.EndDate,
+                                   voucherDetail.Quantity,
+                                   chiTiet.Status
+                               }).FirstOrDefault();
 
+                if (voucher != null)
+                {
+                    // Kiểm tra số lượng voucher còn lại
+                    if (voucher.Quantity <= 0)
+                    {
+                        return Json(new { error = "Voucher đã hết số lượng sử dụng" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    
+                    if (voucher.Status == true) // Giả sử 1 là trạng thái "đã sử dụng"
+                    {
+                        return Json(new { error = "Voucher đã được sử dụng" }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    var formattedVoucher = new
+                    {
+                        PercentPriceReduction = voucher.PercentPriceReduction,
+                        Title = voucher.Title,
+                        CreatedBy = voucher.CreatedBy,
+                        StartDate = voucher.StartDate?.ToString("yyyy-MM-ddTHH:mm:ss"),
+
+                        EndDate = voucher.EndDate?.ToString("yyyy-MM-ddTHH:mm:ss"),
+                        voucher.Quantity,
+                        voucher.Status
+                    };
+
+                    return Json(formattedVoucher, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(new { error = "Không tìm thấy mã giảm giá hoặc mã đã hết hạn" }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi và ghi log nếu cần
+                Console.WriteLine("Lỗi trong quá trình lấy thông tin mã giảm giá: " + ex.Message);
+                return Json(new { error = "Đã xảy ra lỗi khi lấy thông tin mã giảm giá" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult UseVoucher (int percentPriceReduction ,string code )
+        {
+            if(percentPriceReduction > 0)
+            {
+                ShoppingCart cart = (ShoppingCart)Session["Cart"];
+                if (cart != null && cart.Items.Any())
+                {
+
+                    cart.PercentPriceReduction = percentPriceReduction;
+                    cart.Code = code;
+                    Session["Cart"] = cart;
+                    return Json(new { Success = true });
+                }
+               
+            }
+            return Json(new { Success = false });
+        }
 
 
         [HttpPost]

@@ -2,7 +2,7 @@
 
 @if (ViewBag.CustomerId != null && ViewBag.Provinces!=null)
 {
-    <form id="FormCreateAddress" enctype="multipart/form-data">
+    <form id="FormCreateAddress" class="pt-0" enctype="multipart/form-data">
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         <div class="m-0 p-0">
@@ -122,7 +122,7 @@
                 <div class="form-row ">
                     <div class="input-data m-0">
                         <div class="inner"></div>
-                        <button @*type="submit"*@ class="btnCreateAddress  " onclick="if(validateForm()) $('#FormCreateAddress').submit();">Tạo địa chỉ nhận hàng</button>
+                        <button @*type="submit"*@ class="btnCreateAddress col-12 btn btn-success text-center  " onclick="if(validateForm()) $('#FormCreateAddress').submit();">Tạo địa chỉ nhận hàng</button>
 
                     </div>
                 </div>

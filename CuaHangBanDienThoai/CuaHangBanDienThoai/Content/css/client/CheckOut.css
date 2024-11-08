@@ -1,4 +1,71 @@
-﻿
+﻿.grvoucher {
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: rgb(247, 247, 247);
+}
+
+.input-group {
+    width: 100%;
+}
+
+.voucherInput {
+    width: 90%;
+    height: 100%;
+    margin: 0;
+}
+
+#voucherCode {
+    width: 100%;
+    height: 100%; /* Để chiều cao đồng bộ */
+    padding: 10px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    margin: 0;
+}
+
+.btnVoucher {
+    display: flex;
+    width: 10%;
+    height: 100% !important;
+    align-items: stretch;
+    background-color: rebeccapurple !important;
+}
+
+.btnApllyVoucher, .btnRemoveVoucher {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    margin: 0;
+    height: 39px;
+    width: 100%;
+}
+
+.btnApllyVoucher {
+    border-right: 1px solid lightgray;
+}
+
+
+
+
+@media only screen and (min-width: 350px) and (max-width: 767px) {
+    .voucherInput {
+        width: 75%;
+    }
+
+    .btnVoucher {
+        width: 25%;
+    }
+}
+
 
 .ItemCheckOut {
     padding: 2% !important;

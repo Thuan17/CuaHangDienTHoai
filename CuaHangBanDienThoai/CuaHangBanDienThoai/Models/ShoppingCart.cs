@@ -10,6 +10,9 @@ namespace CuaHangBanDienThoai.Models
 
 
         public List<ShoppingCartItem> Items { get; set; }
+
+        public int PercentPriceReduction { get;set; }
+        public string  Code { get;set; }
         public ShoppingCart()
         {
 
@@ -40,6 +43,18 @@ namespace CuaHangBanDienThoai.Models
         }
         public decimal GetTotalPrice()
         {
+            if (PercentPriceReduction > 0)
+            {
+
+                decimal totalPrice = Items.Sum(x => x.PriceTotal); 
+                if (totalPrice > 0)
+                {
+                 decimal discountAmount = totalPrice * PercentPriceReduction / 100;
+                    return totalPrice- discountAmount;
+                }
+                return Items.Sum(x => x.PriceTotal);
+            }
+
             return Items.Sum(x => x.PriceTotal);
         }
         public int GetTotalQuantity()

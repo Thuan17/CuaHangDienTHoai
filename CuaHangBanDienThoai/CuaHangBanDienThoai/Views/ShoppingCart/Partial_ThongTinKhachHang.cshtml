@@ -2,6 +2,42 @@
 @using CuaHangBanDienThoai.Common
 <script src="~/Scripts/CheckOut.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.7/dist/sweetalert2.all.min.js"></script>
+
+@if (Model != null && !string.IsNullOrEmpty(Model.NameCustomer))
+{
+    <div class="row m-0 p-0">
+        <div class="col-12 m-0 p-0 w-100">
+            <div class="form-group">
+                <label class="form-label">Bạn có mã giảm giá?</label>
+                <div class="input-group grvoucher">
+                    <div class="voucherInput">
+                        <input type="text" name="voucherCode" id="voucherCode" placeholder="Mã giảm giá" />
+                    </div>
+                    <div class="btnVoucher">
+                        <button class="btn btn-danger m-0 p-0 btnRemoveVoucher d-none" data-percent="0">Xóa mã</button>
+                        <button class="btn  btn-success  m-0 p-0  btnApllyVoucher d-none" data-percent="0" data-code="0">Áp dụng</button>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="loadVoucher">
+
+            </div>
+            <div class="loadVoucherDetail">
+
+            </div>
+        </div>
+
+    </div>
+
+
+}
+
+
+
+
 @if (Model != null && !string.IsNullOrEmpty(Model.NameCustomer))
 {
 
@@ -14,8 +50,8 @@
 
             <div class="loadAddress">
                 <div class="d-flex justify-content-between align-items-center w-100">
-                    <h5 class="text-uppercase mb-0">Thông tin khách hàng</h5>
-                    <button type="button" class="btn btn-sm btnAddAddress btn-success px-2 py-1 " style="font-size: 14px;width:120px; border-radius:12px;">
+                    <h5 class="text-uppercase mb-0 mt-0">Thông tin khách hàng</h5>
+                    <button type="button" class="btn btn-sm btnAddAddress btn-success mt-0 px-2 py-1 " style="font-size: 14px;width:120px; border-radius:12px;">
                         Thay đổi
                     </button>
                 </div>
@@ -173,39 +209,18 @@
     </form>
 
 }
-
-
 else
 {
-  @Html.Action("ThemAddress","ShoppingCart")
+    @Html.Action("ThemAddress", "ShoppingCart")
 
 }
 <script>
 
 
-    $(document).ready(function () {
-        $('.TypePaymentVN').on('change', function () {
-            if ($(this).prop('checked')) {
-                $('.TypePaymentVN').not(this).prop('checked', false);
-            }
-        });
-
-        $('body').on('change', '#drTypePayment', function () {
-            var type = $(this).val();
-            $('#load_form_payment').hide();
-            if (type == "2") {
-                $('#load_form_payment').show();
-            }
-        });
-        $("#searchString").on("input", function () {
-            var inputValue = $(this).val().trim();
-            if (inputValue !== "") {
-                searchProduct(inputValue);
-            }
-        });
 
 
-    });
+
+
 
 </script>
 <script>
@@ -380,5 +395,160 @@ else
 
 
     });
+
+
+
+
+
+
+
+   /* start voucher*/
+
+
+
+
+    $(document).ready(function () {
+        $('.TypePaymentVN').on('change', function () {
+            if ($(this).prop('checked')) {
+                $('.TypePaymentVN').not(this).prop('checked', false);
+            }
+        });
+
+        $('body').on('change', '#drTypePayment', function () {
+            var type = $(this).val();
+            $('#load_form_payment').hide();
+            if (type == "2") {
+                $('#load_form_payment').show();
+            }
+        });
+        $("#searchString").on("input", function () {
+            var inputValue = $(this).val().trim();
+            if (inputValue !== "") {
+                searchProduct(inputValue);
+            }
+        });
+
+
+    });
+
+    $('#voucherCode').on('input', function () {
+        var voucherCode = $("#voucherCode").val().trim();
+        if (voucherCode && voucherCode.length >= 6) {
+            $.ajax({
+                url: '/ShoppingCart/GetVoucher',
+                type: 'GET',
+                dataType: 'json',
+                data: { Code: voucherCode },
+                success: function (voucher) {
+
+
+                    if (voucher && voucher.error == null) {
+
+
+                        var percentPriceReduction = voucher.PercentPriceReduction;
+                        showVoucherInfo(voucher.Title, percentPriceReduction);
+
+                        var currentDate = new Date();
+                        var startDate = voucher.StartDate ? new Date(voucher.StartDate) : null;
+                        var endDate = voucher.EndDate ? new Date(voucher.EndDate) : null;
+
+
+                        if (voucher.Status === true) {
+                            $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã được sử dụng</p>');
+                            $(".btnApllyVoucher, .btnRemoveVoucher").addClass("d-none");
+                        } else if (startDate && endDate && currentDate >= startDate && currentDate <= endDate) {
+                            showVoucherInfo(voucher.Title, percentPriceReduction);
+                            $(".loadVoucher").html('<p class="text-success">Mã giảm giá còn hạn sử dụng nhấn áp dụng để dùng </p>');
+                            $(".btnApllyVoucher").removeClass("d-none").attr("data-percent", percentPriceReduction).attr("data-code", voucherCode);
+                            $(".btnRemoveVoucher").removeClass("d-none");
+                        } else if (currentDate < startDate) {
+                            $(".loadVoucher").html('<p class="text-danger">Chương trình voucher chưa bắt đầu</p>');
+
+                            $(".btnRemoveVoucher").removeClass("d-none");
+                        } else if (currentDate > endDate) {
+                            $(".loadVoucher").html('<p class="text-danger">Mã giảm giá đã hết hạn sử dụng</p>');
+                            $(" .btnRemoveVoucher").removeClass("d-none");
+                        }
+                    }
+                    else if (!voucher && voucher.error != null) {
+                        $(".loadVoucher").html(`<p class="text-danger">${voucher.error}</p>`);
+
+                        $(".btnRemoveVoucher").addClass("d-none");
+                    } else {
+                        $(".loadVoucher").html("<p>Không tìm thấy mã giảm giá</p>");
+                        $(".btnRemoveVoucher").addClass("d-none");
+                    }
+                },
+
+                error: function () {
+                    console.log("Lỗi khi gửi yêu cầu kiểm tra mã giảm giá.");
+                    // Xử lý lỗi ở đây
+                }
+            });
+        }
+
+    })
+
+    $(document).ready(function () {
+        $(".btnApllyVoucher").on('click', function (e) {
+            var percentPriceReduction = $(this).attr("data-percent");
+
+            var code = $(this).attr("data-code");
+            updatePriceWithDiscount(percentPriceReduction, code);
+            $(".btnApplyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
+
+        });
+    });
+    function updatePriceWithDiscount(percentPriceReduction, code) {
+        if (percentPriceReduction && code) {
+            $.ajax({
+                url: '/ShoppingCart/UseVoucher',
+                type: 'POST',
+                data: { PercentPriceReduction: percentPriceReduction, code: code },
+                success: function (data) {
+                    if (data.Success) {
+                        document.getElementById("voucherCode").disabled = true;
+                        $(" .btnApllyVoucher").addClass("d-none");
+                        loadTotalPriceSession();
+                        createToast('success', 'fa-solid fa-circle-exclamation', 'Thành công ', 'Áp dụng voucher thành công  ');
+                    } else {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Áp dụng voucher thất bại');
+                    }
+                },
+                error: function () {
+                    createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Áp dụng voucher thất bại');
+                }
+            });
+        }
+    }
+    function loadTotalPriceSession() {
+        $.ajax({
+            url: '/shoppingcart/GetPrice',
+            type: 'GET',
+            success: function (data) {
+                console.log("loadTotalPriceSession", data.TotalPrice);
+                $('.priceCheckOut').html(data.TotalPrice + ' đ');
+            },
+            error: function (xhr, status, error) {
+                console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+            }
+        });
+    }
+    function showVoucherInfo(title, percentPriceReduction) {
+        var voucherInfo = `
+    <div class="d-flex justify-content-between">
+        <p class="mb-2">Chương trình giảm: ${title}</p>
+        <p class="mb-2 text-success">${percentPriceReduction}% / đơn hàng</p>
+    </div>
+`;
+        $(".loadVoucherDetail").html(voucherInfo);
+    }
+
+
+    
+
+
+
+    /* end voucher*/
 </script>
 
