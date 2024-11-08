@@ -1006,7 +1006,7 @@ namespace CuaHangBanDienThoai.Controllers
         [HttpPost]
         public JsonResult UseVoucher (int percentPriceReduction ,string code )
         {
-            if(percentPriceReduction > 0)
+            if (percentPriceReduction > 0)
             {
                 ShoppingCart cart = (ShoppingCart)Session["Cart"];
                 if (cart != null && cart.Items.Any())
@@ -1017,7 +1017,19 @@ namespace CuaHangBanDienThoai.Controllers
                     Session["Cart"] = cart;
                     return Json(new { Success = true });
                 }
-               
+
+            }
+            else
+            {
+                ShoppingCart cart = (ShoppingCart)Session["Cart"];
+                if (cart != null && cart.Items.Any())
+                {
+
+                    cart.PercentPriceReduction = 0;
+                    cart.Code = null;
+                    Session["Cart"] = cart;
+                    return Json(new { Success = true });
+                }
             }
             return Json(new { Success = false });
         }

@@ -14,7 +14,7 @@
                         <input type="text" name="voucherCode" id="voucherCode" placeholder="Mã giảm giá" />
                     </div>
                     <div class="btnVoucher">
-                        <button class="btn btn-danger m-0 p-0 btnRemoveVoucher d-none" data-percent="0">Xóa mã</button>
+                        <button class="btn btn-danger m-0 p-0 btnRemoveVoucher d-none" data-percent="0" data-code="0">Xóa mã</button>
                         <button class="btn  btn-success  m-0 p-0  btnApllyVoucher d-none" data-percent="0" data-code="0">Áp dụng</button>
 
                     </div>
@@ -490,6 +490,23 @@ else
     })
 
     $(document).ready(function () {
+        $('.btnRemoveVoucher').on('click', function () {
+            var percentPriceReduction = $(this).attr("data-percent");
+
+            var code = $(this).attr("data-code");
+            $('#voucherCode').val(""); 
+            $(".btnApllyVoucher").addClass("d-none").attr("data-percent", "0").attr("data-code", "");
+
+            updatePriceWithDiscount(0, "");
+            $(this).addClass("d-none").attr("data-percent", "0").attr("data-code", "");
+            $(".loadVoucherDetail").html('');
+            $(".loadVoucher").html('');
+            
+            $(" .btnApllyVoucher,.btnRemoveVoucher").addClass("d-none");
+
+        });
+
+
         $(".btnApllyVoucher").on('click', function (e) {
             var percentPriceReduction = $(this).attr("data-percent");
 
@@ -517,6 +534,25 @@ else
                 },
                 error: function () {
                     createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Áp dụng voucher thất bại');
+                }
+            });
+        } else {
+            $.ajax({
+                url: '/ShoppingCart/UseVoucher',
+                type: 'POST',
+                data: { PercentPriceReduction: percentPriceReduction, code: code },
+                success: function (data) {
+                    if (data.Success) {
+                        document.getElementById("voucherCode").disabled = true;
+                        $(" .btnApllyVoucher").addClass("d-none");
+                        loadTotalPriceSession();
+                        createToast('success', 'fa-solid fa-circle-exclamation', 'Thành công ', 'Xoá voucher thành công  ');
+                    } else {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Xoá voucher thất bại');
+                    }
+                },
+                error: function () {
+                    createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Xoá voucher thất bại');
                 }
             });
         }

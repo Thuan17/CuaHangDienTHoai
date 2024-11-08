@@ -33,6 +33,7 @@ namespace CuaHangBanDienThoai.Models
         public string Code { get; set; }
         public Nullable<bool> IsLock { get; set; }
         public string Image { get; set; }
+        public Nullable<System.DateTime> CodeCreatedAt { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AddressCustomer> AddressCustomer { get; set; }

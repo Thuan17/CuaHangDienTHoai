@@ -92,6 +92,7 @@
     <Property Name="Code" Type="char" MaxLength="10" />
     <Property Name="IsLock" Type="bit" />
     <Property Name="Image" Type="varchar(max)" />
+    <Property Name="CodeCreatedAt" Type="datetime" />
   </EntityType>
   <EntityType Name="Districts">
     <Key>

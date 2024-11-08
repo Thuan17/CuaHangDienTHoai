@@ -1,0 +1,125 @@
+﻿@model CuaHangBanDienThoai.Models.UpdatePass
+@{
+    ViewBag.Title = "Thay đổi mật khẩu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+
+    .form-control {
+        background-color: transparent !important;
+        border: none;
+        border-bottom: solid 0.3px #01d28e !important;
+        box-shadow: none;
+        color: white !important;
+    }
+
+
+        .form-control .label {
+            color: #01d28e !important;
+        }
+
+
+        .form-control input {
+            color: white !important;
+        }
+
+    .wrap {
+        background-color: transparent !important;
+        border: none;
+        box-shadow: none;
+    }
+
+    .form-control:focus {
+        background-color: transparent !important;
+        box-shadow: none;
+    }
+
+    .form-control:not(:placeholder-shown) {
+        background-color: transparent !important;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+</style>
+<script src="~/Content/css/login/js/main.js"></script>
+<link href="~/Content/css/login/css/style.css" rel="stylesheet" />
+
+@if (Model != null)
+{
+    <div style="background-image: url(/images/bg.png); ">
+        <div class="container mainLogin  pt-3">
+
+            <div class="row justify-content-center   ">
+                <div class="col-md-7 col-lg-5 mb-5 transparent-background  ">
+                    <div class="wrap ">
+                        <div class="img ">
+
+                            <img src="~/images/logo/logo1200.png" />
+                        </div>
+                        <div class="login-wrap  p-4 p-md-5">
+                            <div class="d-flex">
+                                <div class="w-100">
+                                    <h3 class="mb-4 text-white text-center">Cập nhập mật khẩu</h3>
+                                </div>
+                                <div class="w-100 hide">
+                                    <p class="social-media d-flex justify-content-end">
+                                        <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-facebook"></span></a>
+                                        <a href="#" class="social-icon d-flex align-items-center justify-content-center"><span class="fa fa-twitter"></span></a>
+                                    </p>
+                                </div>
+                            </div>
+                            <form id="UpdateForgotPassForm" enctype="multipart/form-data" class="signin-form">
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true)
+                                @Html.HiddenFor(x=>x.CustomerId)
+
+                                <div class="row m-0 p-0 w-100">
+                                    <div class="col-12 align-items-center text-left">
+                                        <p class="text-white"><label>Xin chào </label> @Model.CustomerName.Trim() ,</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group mt-5">
+                                            <input id="code-field" type="text" name="code" class="form-control input-field" required>
+                                            <label for="code" class="form-control-placeholder">Mã khôi phục</label>
+                                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group mt-5">
+                                            <input id="password-field" type="password" name="password" class="form-control input-field" required>
+                                            <label for="password" class="form-control-placeholder">Mật khẩu</label>
+                                            <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group mt-5">
+                                            <input id="confirm-password-field" type="password" name="confirmPassword" class="form-control input-field" required>
+                                            <label for="confirmPassword" class="form-control-placeholder">Xác nhận mật khẩu</label>
+                                            <span toggle="#confirm-password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="form-control btn btn-primary rounded submit px-3" onclick="if(validateForm()) $('#UpdateForgotPassForm').submit();"> Cập nhập</button>
+                                    
+                                </div>
+
+                            </form>
+                            <p class="text-center text-white"><a class="text-danger" href="/dang-nhap">Đăng nhập</a>  <a class="text-danger" href="/dang-ky">Đăng ký</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+}
+
+
+<script src="~/Scripts/ProductClient/js/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+<script src="~/Scripts/client/ForgotPass.js"></script>

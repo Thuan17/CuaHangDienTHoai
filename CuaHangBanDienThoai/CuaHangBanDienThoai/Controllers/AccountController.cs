@@ -1,13 +1,16 @@
 ﻿using CuaHangBanDienThoai.Models;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 
 namespace CuaHangBanDienThoai.Controllers
@@ -198,6 +201,155 @@ namespace CuaHangBanDienThoai.Controllers
            
             return Redirect("/trang-chu");
         }
+
+
+        public ActionResult ForgotPassword()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(string userInput)
+        {
+            if (userInput == null)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập số điện thoại hoặc số điện thoại" });
+            }
+            using (var dbConText = db.Database.BeginTransaction())
+            {
+                try {
+                    var customer = await db.Customer.FirstOrDefaultAsync(s => (s.Email == userInput || s.PhoneNumber == userInput));
+                    if (customer == null) 
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Tài khoản không hợp lệ" });
+                    }
+
+
+                    const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    var random = new Random();
+                    var randomString = new StringBuilder(3);
+
+                    for (int x = 0; x < 6; x++)
+                    {
+                        randomString.Append(chars[random.Next(chars.Length)]);
+                    }
+
+                    string randomString123 = randomString.ToString(); ;
+
+                    customer.Code = randomString123.Trim();
+                    customer .CodeCreatedAt = DateTime.Now;
+                    db.Entry(customer).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    string contentCustomer = System.IO.File.ReadAllText(Server.MapPath("~/Content/templates/SendForgotPass.html"));
+                    contentCustomer = contentCustomer.Replace("{{Code}}", customer.Code);
+                    contentCustomer = contentCustomer.Replace("{{NgayDat}}", DateTime.Now.ToString("dd/MM/yyyy"));
+                    contentCustomer = contentCustomer.Replace("{{TenKhachHang}}", customer.CustomerName.Trim());
+                    contentCustomer = contentCustomer.Replace("{{Email}}", customer.Email.Trim());
+
+                    CuaHangBanDienThoai.Common.Common.SendMail("PadaMiniStore", "Mã khôi phục tài khoản" , contentCustomer.ToString(), customer.Email);
+
+                    
+                    dbConText.Commit();
+
+                    return Json(new { Success = true, Code = 1, msg = "Mã đã được gửi qua mail",CustomerId=customer.CustomerId , Email=customer.Email?.Trim() });
+                }
+                catch(Exception ex)
+                {
+                    dbConText.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
+                }
+            }
+        }
+
+
+        public ActionResult UpadatePass(int id , string email)
+        {
+           
+            if (id>0 && email != null)
+            {
+                string decodedEmail = HttpUtility.UrlDecode(email);
+
+                var customer =  db.Customer.FirstOrDefault(s => s.CustomerId== id && s.Email.Trim()== decodedEmail.Trim());
+                if (customer != null)
+                {
+
+                    UpdatePass viewModel = new UpdatePass{ 
+                        CustomerId = customer.CustomerId,       
+                        CustomerName = customer.CustomerName,   
+                        Code = null,
+                        Password = null,
+
+                    };
+
+                    return View(viewModel);
+                }
+            }
+            return View();
+        }
+
+
+        public async Task<ActionResult> UpPassForget(UpdatePass req)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập thông tin" });
+            }
+
+            using (var dbConText = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var customer = await db.Customer.FirstOrDefaultAsync(s => s.CustomerId == req.CustomerId);
+                    if (customer == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Tài khoản không hợp lệ" });
+                    }
+
+                    var checkCode = await db.Customer.FirstOrDefaultAsync(s => s.CustomerId == customer.CustomerId && s.Code.Trim() == req.Code.Trim());
+                    if (checkCode == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Mã không hợp lệ vui lòng thử lại !!!" });
+                    }
+
+                    DateTime dateTime = DateTime.Now;
+
+                    var utcNow = DateTime.UtcNow;
+                    var codeCreatedAtUtc = checkCode.CodeCreatedAt.GetValueOrDefault().ToUniversalTime();
+
+                    var timeSinceCodeCreated = utcNow - codeCreatedAtUtc;
+                
+
+                    //var timeSinceCodeCreated = dateTime.ToLocalTime() -checkCode.CodeCreatedAt.Value.ToLocalTime()  ;
+
+
+                    if (timeSinceCodeCreated.TotalMinutes <= 5)
+                    {
+                        customer.Code = null;
+                        
+
+                        db.Entry(checkCode).State = EntityState.Modified;
+                        await db.SaveChangesAsync();
+                        dbConText.Commit();
+                        return Json(new { Success = false, Code = -3, msg = "Mã đã hết hạn.", Url = "/quen-mat-khau" });
+                    }
+
+                    var f_password = MaHoaPass(req.Password);
+                    checkCode.Password = f_password.Trim();
+                    db.Entry(checkCode).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    dbConText.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Cập nhập thành công ,hãy đăng nhập lại", Url = "/dang-nhap" });
+                }
+                catch (Exception ex)
+                {
+                    dbConText.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
+                }
+            }
+        }
+
+
 
 
         public static string MaHoaPass(string str)

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -97,6 +97,7 @@
           <Property Name="Code" Type="char" MaxLength="10" />
           <Property Name="IsLock" Type="bit" />
           <Property Name="Image" Type="varchar(max)" />
+          <Property Name="CodeCreatedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="Districts">
           <Key>
@@ -903,8 +904,7 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1015,6 +1015,7 @@
           <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
           <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
           <NavigationProperty Name="OrderCustomer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="Customer" ToRole="OrderCustomer" />
+          <Property Name="CodeCreatedAt" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="Districts">
           <Key>
@@ -1960,6 +1961,7 @@
           <EntitySetMapping Name="Customer">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="CodeCreatedAt" ColumnName="CodeCreatedAt" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />

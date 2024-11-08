@@ -107,6 +107,7 @@
     <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
     <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
     <NavigationProperty Name="OrderCustomer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="Customer" ToRole="OrderCustomer" />
+    <Property Name="CodeCreatedAt" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="Districts">
     <Key>

@@ -299,6 +299,7 @@
     <Compile Include="Models\tb_Function.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UpdatePass.cs" />
     <Compile Include="Models\Voucher.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -5493,6 +5494,7 @@
     <Content Include="Scripts\client\ajax-loader.gif" />
     <Content Include="Scripts\client\bootstrap.bundle.min.js" />
     <Content Include="Scripts\client\DetailProuct.js" />
+    <Content Include="Scripts\client\ForgotPass.js" />
     <Content Include="Scripts\client\jquery-1.11.0.min.js" />
     <Content Include="Scripts\client\modernizr.js" />
     <Content Include="Scripts\client\MyOrder.js" />
@@ -5809,6 +5811,8 @@
     <Content Include="Views\Cart\Partail_MyOrderCancel.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\ShoppingCart\ThemAddress.cshtml" />
+    <Content Include="Views\Account\ForgotPassword.cshtml" />
+    <Content Include="Views\Account\UpadatePass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

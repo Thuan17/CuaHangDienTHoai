@@ -65,8 +65,19 @@ namespace CuaHangBanDienThoai
                 namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );
 
+            routes.MapRoute(
+              name: "KHoipuc",
+              url: "khoi-phuc-mat-khau/{id}-{email}",
+              defaults: new { controller = "Account", action = "UpadatePass", id = UrlParameter.Optional, email = UrlParameter.Optional },
+              namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+          );
 
-
+            routes.MapRoute(
+               name: "Quenmatkhau",
+               url: "quen-mat-khau",
+               defaults: new { controller = "Account", action = "ForgotPassword", id = UrlParameter.Optional },
+                namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+           );
             routes.MapRoute(
                 name: "DangKy",
                 url: "dang-ky",

@@ -89,6 +89,7 @@
     <EntitySetMapping Name="Customer">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Customer">
         <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="CodeCreatedAt" ColumnName="CodeCreatedAt" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
