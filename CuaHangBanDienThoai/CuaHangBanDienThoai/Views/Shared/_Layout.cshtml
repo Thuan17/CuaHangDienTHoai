@@ -1,4 +1,4 @@
-﻿
+﻿@using CuaHangBanDienThoai.Common;
 <!DOCTYPE html>
 
 <html>
@@ -329,9 +329,12 @@
                                             else
                                             {
                                                 var img = Session["userImage"] ?? "/images/logo/logoweb.png";
-                                                var FullName = Session["customerName"];
+                                                var FullName = Session["customerName"].ToString();
                                                 var LastName = Session["lastName"];
                                                 int customerid= (int)Session["CustomerId"];
+                                                
+                                                string encodedCustomerId = Helper.EncodeCustomerId(customerid);
+                                                
                                                 <div class="account-dropdown m-0 p-0">
                                                     <div class="linkGritem pt-2">
                                                         <div class="icon-box-left">
@@ -345,7 +348,7 @@
                                                     </div>
                                                     <div class="account-menu">
                                                         <ul>
-                                                            <li><a href="/thong-tin-ca-nhan">@FullName</a></li>
+                                                            <li><a href="/thong-tin-ca-nhan/@(encodedCustomerId)-name@(CuaHangBanDienThoai.Models.Common.Filter.FilterChar(FullName))">@FullName</a></li>
                                                             <li><a href="/tat-ca-don-hang/@(customerid)">Đơn hàng của tôi</a></li>
                                                             <li><a href="/dang-xuat">Đăng xuất</a></li>
                                                         </ul>

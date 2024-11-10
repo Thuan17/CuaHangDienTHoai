@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using static CuaHangBanDienThoai.Controllers.AccountController;
 
 namespace CuaHangBanDienThoai.Controllers
 {
@@ -263,6 +265,148 @@ namespace CuaHangBanDienThoai.Controllers
         }
 
 
+        public ActionResult RessetPass(int id, string email)
+        {
+            {
+                string decodedEmail = HttpUtility.UrlDecode(email);
+
+                var customer = db.Customer.FirstOrDefault(s => s.CustomerId == id && s.Email.Trim() == decodedEmail.Trim());
+                if (customer != null)
+                {
+
+                    UpdatePass viewModel = new UpdatePass
+                    {
+                        CustomerId = customer.CustomerId,
+                        CustomerName = customer.CustomerName,
+                        Code = null,
+                        Password = null,
+
+                    };
+
+                    return View(viewModel);
+                }
+            }
+            return View();
+        }
+      
+
+
+        public JsonResult GetOrderStatistics(int customerId)
+        {
+            try
+            {
+                // Truy vấn dữ liệu từ cơ sở dữ liệu
+                var totalOrders = db.OrderCustomer.Where(o => o.CustomerId == customerId).ToList();
+                var successfulOrders = totalOrders.Count(o => o.Success == true && (o.OrderStatus?.Trim() != "Đơn huỷ" && o.OrderStatus?.Trim() != "Từ chối"));
+                var canceledOrders = totalOrders.Count(o => o.OrderStatus?.Trim() == "Đơn huỷ");
+                var nonConfirmOrders = totalOrders.Count(o => o.Confirm == false&& (o.OrderStatus?.Trim() != "Đơn huỷ"&&o.OrderStatus?.Trim() != "Từ chối"));
+
+                decimal successRate = 0;
+                decimal cancelRate = 0;
+                decimal nonConfirm = 0;
+               
+                if (totalOrders.Count > 0)
+                {
+                    successRate = (decimal)successfulOrders / totalOrders.Count * 100;
+                    cancelRate = (decimal)canceledOrders / totalOrders.Count * 100;
+                    nonConfirm = (decimal)nonConfirmOrders / totalOrders.Count * 100;
+                }
+
+                // Trả về kết quả dưới dạng JSON
+                return Json(new
+                {
+
+                    SuccessRate = successRate,
+                    SuccessCount = successfulOrders,
+                    CancelRate = cancelRate,
+                    CancelCount = canceledOrders,
+                    ConFirmRate = nonConfirm,
+                    ConFirmCount = nonConfirmOrders,
+                    TotalOrder = totalOrders.Count(),
+                }, JsonRequestBehavior.AllowGet) ;
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi và trả về thông báo lỗi chi tiết
+                Debug.WriteLine($"Lỗi: {ex.Message}");
+                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public async Task<ActionResult> Profile(string encodedId,string name )
+        {
+            if (string.IsNullOrEmpty(encodedId)&& string.IsNullOrEmpty(name))
+            {
+                return View();
+            }
+
+            try
+            {
+           
+                int customerId = DecodeCustomerId(encodedId);
+
+             
+                var customer = await db.Customer.FirstOrDefaultAsync(c => c.CustomerId == customerId);
+                if (customer == null)
+                {
+                    return View();
+                }
+
+               
+                return View(customer);
+            }
+            catch
+            {
+                // Trường hợp xảy ra lỗi trong quá trình giải mã
+                return View();
+            }
+        }
+
+
+
+        public ActionResult UpdateProFile(int customerid)
+        {
+            if (customerid > 0)
+            {
+                var customer = db.Customer.Find(customerid);
+                if (customer != null)
+                {
+                    Client_UpdateProFile viewModel = new Client_UpdateProFile { 
+                    CustomerId = customer.CustomerId, 
+                    CustomerName=customer.CustomerName.Trim(),
+                        PhoneNumber = customer.PhoneNumber.Trim(),
+                    Email=customer.Email.Trim(),
+                        Birthday = customer.Birthday,
+                    
+                    };
+                    if (viewModel != null)
+                    {
+                        return PartialView(viewModel);
+                    }
+                }
+            }
+
+
+            return PartialView();
+        }
+
+
+
+
+        public string EncodeCustomerId(int customerId)
+        {
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(customerId.ToString());
+            return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public int DecodeCustomerId(string encodedId)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(encodedId);
+            return int.Parse(System.Text.Encoding.UTF8.GetString(base64EncodedBytes));
+        }
+
+
         public ActionResult UpadatePass(int id , string email)
         {
            
@@ -314,16 +458,15 @@ namespace CuaHangBanDienThoai.Controllers
 
                     DateTime dateTime = DateTime.Now;
 
-                    var utcNow = DateTime.UtcNow;
-                    var codeCreatedAtUtc = checkCode.CodeCreatedAt.GetValueOrDefault().ToUniversalTime();
+                    var currentTimeUtc = DateTime.UtcNow; 
+                    var codeCreatedAtUtc = checkCode.CodeCreatedAt.GetValueOrDefault().ToUniversalTime(); 
 
-                    var timeSinceCodeCreated = utcNow - codeCreatedAtUtc;
-                
+                    var timeSinceCodeCreated = currentTimeUtc - codeCreatedAtUtc;
 
-                    //var timeSinceCodeCreated = dateTime.ToLocalTime() -checkCode.CodeCreatedAt.Value.ToLocalTime()  ;
+                 
 
 
-                    if (timeSinceCodeCreated.TotalMinutes <= 5)
+                    if (timeSinceCodeCreated.TotalMinutes >=5)
                     {
                         customer.Code = null;
                         
@@ -336,7 +479,9 @@ namespace CuaHangBanDienThoai.Controllers
 
                     var f_password = MaHoaPass(req.Password);
                     checkCode.Password = f_password.Trim();
+                    customer.Code = null;
                     db.Entry(checkCode).State = EntityState.Modified;
+                  
                     await db.SaveChangesAsync();
                     dbConText.Commit();
                     return Json(new { Success = true, Code = 1, msg = "Cập nhập thành công ,hãy đăng nhập lại", Url = "/dang-nhap" });

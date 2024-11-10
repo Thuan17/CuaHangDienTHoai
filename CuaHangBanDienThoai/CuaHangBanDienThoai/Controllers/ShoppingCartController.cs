@@ -681,7 +681,7 @@ namespace CuaHangBanDienThoai.Controllers
         {
             if (Session["CustomerId"] == null && Session["customer"] == null)
             {
-                return View();
+                return PartialView();
             }
 
             int customerId = (int)Session["CustomerId"];

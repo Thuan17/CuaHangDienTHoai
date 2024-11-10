@@ -167,6 +167,8 @@
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
     <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
     <Compile Include="Common\Common.cs" />
+    <Compile Include="Common\Helper.cs" />
+    <Compile Include="Common\HtmlHelpers.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CLient_AddressCustomer.cs" />
     <Compile Include="Models\CLient_Register.cs" />
+    <Compile Include="Models\Client_UpdateProFile.cs" />
     <Compile Include="Models\Common\Filter.cs" />
     <Compile Include="Models\Customer.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -5813,6 +5816,9 @@
     <Content Include="Views\ShoppingCart\ThemAddress.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\UpadatePass.cshtml" />
+    <Content Include="Views\Account\RessetPass.cshtml" />
+    <Content Include="Views\Account\Profile.cshtml" />
+    <Content Include="Views\Account\UpdateProFile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
