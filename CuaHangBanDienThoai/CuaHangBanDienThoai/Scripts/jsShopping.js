@@ -837,7 +837,7 @@ $(document).ready(function () {
             $.ajax({
                 url: "/Product/SuggestionsSearch",
                 type: "GET",
-                data: { search: inputValue },
+                data: { key: inputValue },
                 success: function (response) {
                     $(".search-suggestions").html(response);
                 },

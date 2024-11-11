@@ -82,17 +82,23 @@
                 </div>
 
                 <div class="col-10 text-right">
+                  
+
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="datetime-local" class="form-control bg-light border-0 small " placeholder="Tìm đơn hàng..."
-                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="datetime-local" class="form-control bg-light border-0 small" placeholder="Tìm đơn hàng..."
+                                   aria-label="Search" aria-describedby="basic-addon2" id="DateOrder">
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
+                                <button class="btn bg-light" type="button" id="clearInputBill">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
                                 </button>
                             </div>
+                           
                         </div>
                     </form>
+
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" id="searchBill" placeholder="Tìm đơn hàng..."
@@ -112,8 +118,8 @@
                         </div>
                     </form>
                     @*<a href="/len-don" class="btn btn-success">
-                          Lên dơn
-                        </a>*@
+          Lên dơn
+        </a>*@
                 </div>
             </div>
 

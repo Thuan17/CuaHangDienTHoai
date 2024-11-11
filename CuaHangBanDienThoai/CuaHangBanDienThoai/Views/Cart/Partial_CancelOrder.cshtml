@@ -73,7 +73,7 @@
 
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
                     <div class="col-10 d-grid gap-2 col-10 mx-auto">
-                        <button type="button" class="btn btn-success" id="saveOrder">Xác nhận huỷ @Model.Code</button>
+                        <button type="button" class="btn btn-success" data-id="@Model.OrderId" id="saveOrder">Xác nhận huỷ @Model.Code</button>
                     </div>
                 </div>
             </div>
@@ -129,9 +129,9 @@
         if (!userConfirmed) {
             return; // Nếu người dùng không xác nhận, thoát khỏi hàm
         }
-
-        // Lấy mã đơn hàng và lý do trả hàng
-        const orderId = '@Model.OrderId';
+        const orderId = $(this).data('id');
+        @*// Lấy mã đơn hàng và lý do trả hàng
+        const orderId = '@Model.OrderId';*@
         const selectedReason = $('input[name="returnReason"]:checked').val();
         let returnReason = selectedReason;
 
@@ -145,7 +145,7 @@
             returnReason = otherReason;
         }
 
-        // Gửi yêu cầu bằng AJAX để huỷ đơn hàng
+       
         $.ajax({
             url: '/Cart/CancelOrder',
             type: 'POST',
@@ -156,15 +156,39 @@
             },
             success: function (data) {
                 if (data.Success) {
-                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Huỷ đơn thành công');
-                    setTimeout(function () {
-                        bg2.hide();
-                        popup2.hide();
+                  
+                    $.ajax({
+                        url: '/Cart/GetUpdatedOrderRow',
+                        type: 'POST',
+                        data: { orderid: data.Orderid },
+                        success: function (rs) {
+                            $('.card_IndexOrder_' + data.Orderid).html(rs);
+                            createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Huỷ đơn thành công đơn hàng  ' + data.OrderCode);
 
-                    }, 1450);
+                            setTimeout(function () {
+                                bg2.hide();
+                                popup2.hide();
+
+                            }, 1450);
+                         
+                        }, error: function (xhr, status, error) {
+
+                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
+                            window.location.reload();
+                        }
+
+                    });
 
                 } else {
-                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                    if (data.Code = -2) {
+                        createToast('warning', 'fa-solid fa-circle-exclamation', 'Thất bại', data.msg);
+                    } else if (data.Code = -99) {
+                        createToast('warning', 'fa-solid fa-circle-exclamation', 'Thất bại', data.msg);
+                    }
+                    else {
+                        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Đã xảy ra lỗi khi tải lại danh sách sản phẩm.');
+                    }
+                   
                 }
             },
             error: function (xhr, status, error) {

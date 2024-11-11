@@ -490,7 +490,12 @@
                             }
                         }
                         else {
-                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                            if (response == -2) {
+                                createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
+                            } else {
+                                createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
+                            }
+                            
                         }
 
                     },

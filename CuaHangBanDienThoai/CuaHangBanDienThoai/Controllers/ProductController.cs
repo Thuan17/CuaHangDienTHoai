@@ -138,5 +138,113 @@ namespace CuaHangBanDienThoai.Controllers
 
             return PartialView(randomizedItems);
         }
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> SearchProduct(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
+                var keyLower = key.Trim().ToLower();
+
+                var productCategoryid = await db.ProductCategory
+                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
+                    .Select(x => x.ProductCategoryId)
+                    .ToListAsync();
+
+                var productCompanyid = await db.ProductCompany
+                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
+                    .Select(x => x.ProductCompanyId)
+                    .ToListAsync();
+
+
+            
+                var products = await db.Products
+                    .Where(x =>
+                        (!productCategoryid.Any() || productCategoryid.Contains((int)x.ProductCategoryId)) ||
+                        (!productCompanyid.Any() || productCompanyid.Contains((int)x.ProductCompanyId)) ||
+                        x.Title.Contains(keyLower)).Select(x => x.ProductsId)
+                         .ToListAsync();
+
+                var query = db.ProductDetail.AsQueryable()
+             .Where(x =>
+                 (products.Any() && products.Contains((int)x.ProductsId)) || 
+                 x.Color.Contains(keyLower) ||
+                 x.Capacity.Contains(keyLower));
+
+                var totalCount = await query.CountAsync();
+
+
+
+                var productdetail = await query
+                    .OrderByDescending(pd => pd.IsHot==true)
+                 
+                    .ToListAsync();
+
+                ViewBag.Key = key.Trim();
+                ViewBag.Count = totalCount;
+
+                return View(products);
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> SuggestionsSearch(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
+                var keyLower = key.Trim().ToLower();
+
+                var productCategoryid = await db.ProductCategory
+                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
+                    .Select(x => x.ProductCategoryId)
+                    .ToListAsync();
+
+                var productCompanyid = await db.ProductCompany
+                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
+                    .Select(x => x.ProductCompanyId)
+                    .ToListAsync();
+
+
+
+                var products = await db.Products
+                    .Where(x =>
+                        (!productCategoryid.Any() || productCategoryid.Contains((int)x.ProductCategoryId)) ||
+                        (!productCompanyid.Any() || productCompanyid.Contains((int)x.ProductCompanyId)) ||
+                        x.Title.Contains(keyLower)).Select(x => x.ProductsId)
+                         .ToListAsync();
+
+                var query = db.ProductDetail.AsQueryable()
+             .Where(x =>
+                 (products.Any() && products.Contains((int)x.ProductsId)) ||
+                 x.Color.Contains(keyLower) ||
+                 x.Capacity.Contains(keyLower));
+
+                var totalCount = await query.CountAsync();
+
+
+
+                var productdetail = await query
+                    .OrderByDescending(pd => pd.IsHot == true)
+
+                    .ToListAsync();
+
+                ViewBag.Key = key.Trim();
+                ViewBag.Count = totalCount;
+
+                return PartialView(productdetail);
+            }
+
+            return PartialView();
+        }
+
+
+
     }
 }

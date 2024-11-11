@@ -44,8 +44,8 @@
                     </svg>
                     :
                 </b>
-                <span class="@(Model.TypePayment == 1 ? "" : "bg-success text-white pr-1 pl-1")">
-                    @(Model.TypePayment == 1 ? "Chưa thanh toán" : "Đã thanh toán")
+                <span class="@(Model.TypePayment == 0 ? "text-danger" : "bg-success text-white pr-1 pl-1")">
+                    @(Model.TypePayment == 0 ? "Chưa thanh toán" : "Đã thanh toán")
                 </span>
 
 

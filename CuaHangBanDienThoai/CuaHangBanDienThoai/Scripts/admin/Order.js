@@ -63,7 +63,7 @@
         });
     });
 
-
+   
     function updateSelectColor(selectElement) {
         var selectedOption = $(selectElement).find("option:selected");
         var selectedClass = selectedOption.attr("class");
@@ -202,6 +202,26 @@ $(document).ready(function () {
 
         window.location.href = "/quan-ly-don-hang";
     });
+    $('#DateOrder').on('change', function () {
+        var ngayxuat = $('#DateOrder').val();  // Đảm bảo lấy giá trị từ input #DateOrder
+        if (ngayxuat) {
+            $.ajax({
+                url: '/Admin/Order/GetOrderByDate',  // Kiểm tra đường dẫn URL của action này
+                type: 'GET',
+                data: { ngayxuat: ngayxuat },
+                beforeSend: function () {
+                    $('#loaddata').html('<div class="text-center"> <img src="/images/gif/loading.gif" /></div>');  // Đảm bảo đường dẫn ảnh là đúng
+                },
+                success: function (data) {
+                    $('#loaddata').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                }
+            });
+        }
+    });
+
     $('#searchBill').on('input', function () {
         var keyword = $(this).val().trim();
         if (keyword.length >= 3) {
@@ -211,7 +231,7 @@ $(document).ready(function () {
                 type: 'GET',
                 data: { search: keyword },
                 beforeSend: function () {
-                    $('#loaddata').html('<div class="text-center"> <img src="~/Content/ckfinder/ckfinder/plugins/gallery/colorbox/images/loading.gif" /></div>');
+                    $('#loaddata').html('<div class="text-center"> <img src="~/images/gif/loading.gif" /></div>');
                 },
                 success: function (response) {
                     $('.loadding').hide();

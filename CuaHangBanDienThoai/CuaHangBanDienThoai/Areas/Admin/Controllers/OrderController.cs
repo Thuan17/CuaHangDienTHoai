@@ -49,7 +49,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         [AuthorizeFunction("Nhân viên kho","Quản lý", "Quản trị viên")]
         public ActionResult OrderNonIsConfirm(int? page)
         {
-            IEnumerable<OrderCustomer> items = db.OrderCustomer.Where(x => x.Confirm == false).OrderByDescending(x => x.OrderId);
+            IEnumerable<OrderCustomer> items = db.OrderCustomer.Where(x => x.Confirm == false && x.OrderStatus == null && x.ReturnDate == null && x.ReturnReason == null).OrderByDescending(x => x.OrderId);
             if (items != null)
             {
                 var pageSize = 10;
@@ -269,10 +269,43 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 return PartialView();
             }
         }
+        public ActionResult GetOrderByDate(DateTime ngayxuat)
+        {
+            try
+            {
+                DateTime selectedDate = ngayxuat;
+
+                DateTime startDate = selectedDate.Date;
+                DateTime endDate = startDate.AddDays(1);
+
+                var orders = db.OrderCustomer
+                    .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                    .ToList();
+
+                if (orders != null && orders.Count > 0)
+                {
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.Count = orders.Count;
+                    ViewBag.Date = ngayxuat;
+                    ViewBag.Content = ngayxuat.ToString("dd/MM/yyyy");
+                    return PartialView(orders);  // Trả về PartialView chứa danh sách đơn hàng
+                }
+                else
+                {
+                    return PartialView();  // Nếu không có đơn hàng nào
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return Json(new { Success = false, Code = -99, msg = "Có lỗi xảy ra!" });
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Admin_EditOrder model)
+        public async Task<ActionResult> Edit(Admin_EditOrder model)
         {
             using (var dbContextTransaction = db.Database.BeginTransaction())
             {
@@ -290,15 +323,36 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         return Json(new { success = false, code = viewModel == null ? -3 : -4 });
                     }
                     AccountEmployee nvSession = (AccountEmployee)Session["user"];
-                    var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
+                    var checkStaff =await db.Employee.FirstOrDefaultAsync(row => row.EmployeeId == nvSession.EmployeeId);
 
-                    var seller = db.OrderCustomer.Find(model.OrderId);
+                    var seller = await db.OrderCustomer.FindAsync(model.OrderId);
+                   
+
+
                     if (seller == null)
                     {
-                        return Json(new { success = false, code = -2, mess = "Lỗi không tìm thấy mã đơn hàng" });
+                        return Json(new { success = false, code = -2, message = "Lỗi không tìm thấy mã đơn hàng" });
                     }
                     decimal totalAmount = viewModel.Items.Sum(detail => detail.Price * detail.Quantity);
-                        seller.OrderId = model.OrderId;
+                    bool isModified =
+                          seller.OrderId != model.OrderId ||
+                          seller.Code != model.Code ||
+                          seller.CreatedBy != model.CreatedBy ||
+                          seller.TypePayment != model.TypePayment ||
+                          seller.Note != model.Note ||
+                          seller.Location != model.Location ||
+                          seller.CustomerName != model.CustomerName ||
+                          seller.Phone != model.Phone ||
+                          seller.TotalAmount != totalAmount;
+
+
+
+                    if (!isModified)
+                    {
+                        return Json(new { success = false, code = -2, message = "Không có thay đổi nào !!!" });
+                    }
+
+                    seller.OrderId = model.OrderId;
                         seller.Code = model.Code;
 
                         seller.TotalAmount = totalAmount;
@@ -323,7 +377,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
                     db.Entry(seller).State = EntityState.Modified;
-                    db.SaveChanges();
+                  await db.SaveChangesAsync();
                     var existingDetails = db.OrderDetail.Where(d => d.OrderId == seller.OrderId).ToList();
                     var newDetails = viewModel.Items;
                     foreach (var detail in existingDetails.ToList())
@@ -342,7 +396,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                             // Kiểm tra và cập nhật số lượng trong kho
                             if (detail.ProductDetailId != null)
                             {
-                                var warehouseDetail = db.ProductDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
+                                var warehouseDetail = await db.ProductDetail.FirstOrDefaultAsync(w => w.ProductDetailId == detail.ProductDetailId);
                                 if (warehouseDetail != null)
                                 {
                                     string Name = warehouseDetail.Products.Title.Trim() + " " + warehouseDetail.Ram.Trim() + "/" + warehouseDetail.Capacity.Trim();
@@ -352,7 +406,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                                         if (warehouseDetail.Quantity < quantityChange)
                                         {
                                             dbContextTransaction.Rollback();
-                                            return Json(new { success = false, code = -8, message = $"Số lượng sản phẩm '{Name}' trong kho không đủ." });
+                                            return Json(new { success = false, code = -2, message = $"Số lượng sản phẩm '{Name}' trong kho không đủ." });
                                         }
 
 
@@ -368,12 +422,12 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                                 }
                                 else
                                 {
-                                    return Json(new { success = false, code = -5, message = $"Không tìm thấy sản phẩm với ProductDetailId = {detail.ProductDetailId} trong kho." });
+                                    return Json(new { success = false, code = -2, message = $"Không tìm thấy sản phẩm với ProductDetailId = {detail.ProductDetailId} trong kho." });
                                 }
                             }
                             else
                             {
-                                return Json(new { success = false, code = -6, message = "Chi tiết hóa đơn không có ProductsId." });
+                                return Json(new { success = false, code = -2, message = "Chi tiết hóa đơn không có ProductsId." });
                             }
                         }
                         else
@@ -381,7 +435,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                             // Xóa chi tiết hóa đơn không có trong viewModel
                             if (detail.ProductDetailId != null)
                             {
-                                var warehouseDetail = db.ProductDetail.FirstOrDefault(w => w.ProductDetailId == detail.ProductDetailId);
+                                var warehouseDetail = await db.ProductDetail.FirstOrDefaultAsync(w => w.ProductDetailId == detail.ProductDetailId);
                                 if (warehouseDetail != null)
                                 {
                                     warehouseDetail.Quantity += detail.Quantity; // Cộng lại số lượng tồn kho
@@ -390,18 +444,18 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                                 }
                                 else
                                 {
-                                    return Json(new { success = false, code = -5, message = $"Không tìm thấy sản phẩm với ProductsId = {detail.ProductDetailId} trong kho." });
+                                    return Json(new { success = false, code = -2, message = $"Không tìm thấy sản phẩm với ProductsId = {detail.ProductDetailId} trong kho." });
                                 }
                             }
                             else
                             {
-                                return Json(new { success = false, code = -6, message = "Chi tiết hóa đơn không có ProductsId." });
+                                return Json(new { success = false, code = -2, message = "Chi tiết hóa đơn không có ProductsId." });
                             }
                         }
                     }
 
                     sessionKey = null;
-                    db.SaveChanges();
+                  await db.SaveChangesAsync();  
                     dbContextTransaction.Commit();
                     return Json(new { success = true, Code = 1, mess = "Cập nhập thành công", orderCode = seller.Code, OrderId = seller.OrderId });
 
@@ -624,7 +678,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
         public JsonResult CountOrderNew()
         {
-            var orderNew = db.OrderCustomer.Where(x => x.Confirm == false).Count();
+            var orderNew = db.OrderCustomer.Where(x => x.Confirm == false && x.OrderStatus==null&& x.ReturnDate == null && x.ReturnReason == null).Count();
             return Json(new { Count = orderNew }, JsonRequestBehavior.AllowGet);
         }
 

@@ -5649,6 +5649,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Order\GetOrderByDate.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -5822,6 +5823,8 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\UpdateProFile.cshtml" />
     <Content Include="Views\Account\ChangePass.cshtml" />
+    <Content Include="Views\Product\SearchProduct.cshtml" />
+    <Content Include="Views\Product\SuggestionsSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

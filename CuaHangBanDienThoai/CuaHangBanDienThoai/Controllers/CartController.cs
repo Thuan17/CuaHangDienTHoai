@@ -395,10 +395,16 @@ namespace CuaHangBanDienThoai.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult CancelOrder(int orderid, string returnReason)
         {
-            if (orderid <= 0 && string.IsNullOrEmpty(returnReason))
+            if (orderid <= 0)
             {
-                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy thông tin " });
+                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy thông tin đơn hàng." });
             }
+
+            if (string.IsNullOrEmpty(returnReason))
+            {
+                return Json(new { Success = false, Code = -2, msg = "Lý do hủy đơn hàng không được để trống." });
+            }
+
             using (var dbContext = db.Database.BeginTransaction())
             {
                 try
@@ -414,7 +420,7 @@ namespace CuaHangBanDienThoai.Controllers
                     db.Entry(order).State = EntityState.Modified;
                     db.SaveChanges();
                     dbContext.Commit();
-                    return Json(new { Success = true, Code = 1, msg = "Đơn hàng đã được huỷ thành công." });
+                    return Json(new { Success = true, Code = 1, msg = "Đơn hàng đã được huỷ thành công." ,Orderid= order .OrderId,OrderCode=order.Code});
                 }
                 catch (Exception ex)
                 {
