@@ -139,3 +139,6 @@ function createToast(type, icon, title, text) {
 
     newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
 }
+
+
+

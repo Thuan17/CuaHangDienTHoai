@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+  
     $('#UpdateForgotPassForm').submit(function (event) {
         event.preventDefault();
         let isValid = validateForm();
@@ -62,6 +62,103 @@
 
     });
 });
+
+$(document).ready(function () {
+    $('#submitButton').on('click', function (event) {
+        event.preventDefault();  // Ngăn trang tự động load lại
+
+
+
+
+        let isValid = validateChangePassForm();
+        if (!isValid) return;
+        let counter = 5;
+
+        const formData = $('#ChangePassForm').serialize();
+        $.ajax({
+            url: '/Account/ChangePass',
+            type: 'POST',
+            data: formData,
+            success: function (res) {
+                if (res.Success) {
+                    if (res.Code = 1) {
+                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 5000);
+                    }
+                } else {
+                    if (res.Code = -2) {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+                        
+                    } else if (res.Code = -3) {
+                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+                        let interval = setInterval(() => {
+                            createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg + `Chuyển trang trong ${counter} giây`);
+                            counter--;
+
+                            if (counter < 0) {
+                                clearInterval(interval);
+                                window.location.href = res.Url;
+                            }
+                        }, 1500);
+                    } else if (res.code == -99) {
+                        createToast('error', 'fa-solid fa-triangle-exclamation', 'Lỗi', res.msg);
+                    }
+
+                }
+            },
+            error: function (xhr) {
+                createToast('error', 'fa-solid fa-triangle-exclamation', 'Lỗi', 'Có lỗi xảy ra khi gửi yêu cầu');
+                console.error(xhr.responseText);
+            }
+        });
+    });
+});
+
+function validateChangePassForm() {
+
+    const passwordfield = $('#password-field').val().trim();
+
+
+    const confirmpasswordfield = $('#confirm-password-field').val().trim();
+    const newmpasswordfield = $('#new-password-field').val().trim();
+
+    const allFields = [
+        'password-field', 'confirm-password-field', 'new-password-field'
+    ];
+
+    const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+    if (isAllEmpty) {
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Vui lòng nhập đầy đủ');
+        return false;
+    }
+
+    let isValid = true;
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!newmpasswordfield || !passwordPattern.test(newmpasswordfield)) {
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ cái, số và ký tự đặc biệt');
+        isValid = false;
+    }
+
+    if (!confirmpasswordfield) {
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Mật khẩu xác nhận không để trống');
+        isValid = false;
+    }
+    if (!newmpasswordfield) {
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Mật khẩu mới không để trống');
+        isValid = false;
+    }
+
+    if (newmpasswordfield !== confirmpasswordfield) {
+        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', 'Mật khẩu mới và mật khẩu xác nhận phải giống nhau');
+        isValid = false;
+    }
+
+    return isValid;
+}
+
 
 
 function validateForm() {

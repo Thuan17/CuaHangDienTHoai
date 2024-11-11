@@ -22,13 +22,13 @@
         textarea:focus + label {
             color: #000000 !important; /* Màu label khi trường được focus */
         }
+
     input[type="text"],
     input[type="email"],
     input[type="password"],
     input[type="datetime-local"] {
         color: #000 !important; /* Màu đen cho nội dung */
     }
-
 </style>
 @if (Model != null)
 {
@@ -36,17 +36,13 @@
         <div class="row p-0 m-0 w-100 justify-content-center">
             <div class="col-12 p-0 m-0 w-100 ">
                 <div class="wrap">
-                   
+
                     <div class="login-wrap">
-                        <div class="d-flex algin-item-center text-center">
-                            <div class="w-100">
-                                <h3 class="mb-4 text-white">Đăng ký tài khoản</h3>
-                            </div>
-                        </div>
-                        <form id="registerForm" enctype="multipart/form-data" class="signin-form">
+                      
+                        <form id="UpdateForm" enctype="multipart/form-data" class="signin-form">
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true)
-                            @Html.HiddenFor(x=>x.CustomerId)
+                            @Html.HiddenFor(x => x.CustomerId)
 
                             <div class="row m-0 p-0 w-100">
                                 <div class="col-lg-6">
@@ -57,7 +53,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group mt-3">
-                                        <input type="text" class="form-control input-field"value="@Model.Email"  name="Email" id="Email" required>
+                                        <input type="text" class="form-control input-field" value="@Model.Email" name="Email" id="Email" required>
                                         <label for="userInput" class="form-control-placeholder">Email</label>
                                     </div>
                                 </div>
@@ -65,7 +61,7 @@
                             <div class="row m-0 p-0 w-100">
                                 <div class="col-lg-12">
                                     <div class="form-group mt-5">
-                                        <input type="text" class="form-control input-field"value="@Model.CustomerName"  name="CustomerName" id="fullName" required>
+                                        <input type="text" class="form-control input-field" value="@Model.CustomerName" name="CustomerName" id="fullName" required>
                                         <label for="fullName" class="form-control-placeholder">Họ và tên</label>
                                     </div>
                                 </div>
@@ -74,12 +70,12 @@
                             <div class="row m-0 p-0 w-100">
                                 <div class="col-12">
                                     <div class="form-group mt-5">
-                                        <input id="password-field" type="password" name="password" class="form-control input-field" required>
+                                        <input id="password-field" type="password" name="PassWord" class="form-control input-field" required>
                                         <label for="password" class="form-control-placeholder">Mật khẩu</label>
                                         <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                     </div>
                                 </div>
-                               
+
                             </div>
                             <div class="row m-0 p-0 w-100">
                                 <div class="col-12">
@@ -100,14 +96,15 @@
 
                             <div class="form-group">
 
-                                <button type="button" class="form-control btn btn-primary rounded submit px-3" onclick="if(validateForm()) $('#registerForm').submit();">  Cập nhập</button>
+                                <button type="button" class="form-control btn btn-primary rounded submit px-3" onclick="if(validateFormUpdate()) $('#UpdateForm').submit();">  Cập nhập</button>
                             </div>
 
                         </form>
-                       
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 }
+<script src="~/Scripts/client/UpdateProfile.js"></script>

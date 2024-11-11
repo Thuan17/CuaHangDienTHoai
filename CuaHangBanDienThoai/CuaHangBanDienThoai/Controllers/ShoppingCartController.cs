@@ -791,15 +791,7 @@ namespace CuaHangBanDienThoai.Controllers
                             model.CustomerName = req.CustomerName.Trim();
                             model.PhoneNumber = req.PhoneNumber.Trim();
                             model.Location = Address?.Trim()?? req.Location?.Trim();
-                            if (Address != null)
-                            {
-                                model.IsDefault = true;
-
-                            }
-                            else
-                            {
-                                model.IsDefault = false;
-                            }
+                            model.IsDefault = false;
 
                             db.AddressCustomer.Add(model);
                             db.SaveChanges();

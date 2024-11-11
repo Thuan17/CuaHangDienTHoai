@@ -1,4 +1,5 @@
-﻿using CuaHangBanDienThoai.Models;
+﻿using CuaHangBanDienThoai.Common;
+using CuaHangBanDienThoai.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using static CuaHangBanDienThoai.Controllers.AccountController;
 
@@ -211,7 +213,7 @@ namespace CuaHangBanDienThoai.Controllers
             return View();
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      
         public async Task<ActionResult> ForgotPassword(string userInput)
         {
             if (userInput == null)
@@ -267,6 +269,7 @@ namespace CuaHangBanDienThoai.Controllers
 
         public ActionResult RessetPass(int id, string email)
         {
+            if(id>0 && email!=null)
             {
                 string decodedEmail = HttpUtility.UrlDecode(email);
 
@@ -288,10 +291,85 @@ namespace CuaHangBanDienThoai.Controllers
             }
             return View();
         }
-      
+
+        public ActionResult ChangePass(int customerid)
+        {
+
+            customerid = 3;
+            if (customerid > 0)
+            {
 
 
-        public JsonResult GetOrderStatistics(int customerId)
+                var customer = db.Customer.FirstOrDefault(s => s.CustomerId == customerid);
+                if (customer != null)
+                {
+
+                    UpdatePass viewModel = new UpdatePass
+                    {
+                        CustomerId = customer.CustomerId,
+                        CustomerName = customer.CustomerName,
+                        Code = null,
+                        Password = null,
+
+                    };
+
+                    return PartialView(viewModel);
+                }
+            }
+            return PartialView();
+        }
+
+       
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePass(UpdatePass req )
+        {
+            if(req.CustomerId <= 0 && req.Password == null)
+            {
+                return Json(new { Success = false, Code = 2, msg = "Vui lòng nhập đầy đủ thông tin !!!" });
+            }
+            using (var dbConText = db.Database.BeginTransaction())
+            {
+                try {
+                    var customer = await db.Customer.FirstOrDefaultAsync(x => x.CustomerId == req.CustomerId);
+                    if (customer == null)
+                    {
+                        return Json(new { Success = false, Code = -3, msg = "Không tìm thấy tài khoản !!!" });
+                    }
+                    var f_password = MaHoaPass(req.Password.Trim());
+                    var f_passwordNew = MaHoaPass(req.PasswordNew.Trim());
+                    if (customer.Password.Trim()!= f_password.Trim())
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Sai mật khẩu !!!" });
+                    }
+                    if (customer.Password.Trim() == f_passwordNew.Trim())
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng để trùng mật khẩu cũ!!!" });
+                    }
+
+                 
+
+
+
+
+                    customer.Password = f_passwordNew.Trim(); 
+                    db.Entry(customer).State = EntityState.Modified;    
+                    await db.SaveChangesAsync();
+                   dbConText.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Cập nhập thành công " });
+                }
+                catch(Exception ex) 
+                {
+                    dbConText.Rollback();   
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng !!!" });
+                }
+            }
+
+
+
+        }
+            public JsonResult GetOrderStatistics(int customerId)
         {
             try
             {
@@ -352,13 +430,14 @@ namespace CuaHangBanDienThoai.Controllers
                 {
                     return View();
                 }
+                ViewBag.Email = customer.Email.Trim();
 
-               
+                ViewBag.MaskedEmail= Helper.MaskEmail(customer.Email.Trim());
                 return View(customer);
             }
             catch
             {
-                // Trường hợp xảy ra lỗi trong quá trình giải mã
+              
                 return View();
             }
         }
@@ -389,6 +468,53 @@ namespace CuaHangBanDienThoai.Controllers
 
 
             return PartialView();
+        }
+
+     
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task <ActionResult> UpdateProFile(Client_UpdateProFile req)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập đầy đủ thông tin" });
+
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    if(req.CustomerId < 0)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập đầy đủ thông tin" });
+                    }
+                    else 
+                    {
+                        var customer=await db.Customer.FindAsync(req.CustomerId);
+                        if (customer == null)
+                        {
+                            return Json(new { Success = false, Code = -2, msg = "Không tìm thấy dữ liệu trên" });
+                        }
+                        var f_password = MaHoaPass(req.PassWord.Trim());
+                         if (customer.Password != f_password)
+                        {
+                            return Json(new { Success = false, Code = -2, msg = "Sai mật khẩu !!!" });
+                        }
+                        customer.Email=req.Email.Trim();
+                        customer.CustomerName=req.CustomerName.Trim();
+                        customer.Birthday = req.Birthday;
+                        db.Entry(customer).State= EntityState.Modified;
+                        await db.SaveChangesAsync();
+                        dbContext.Commit(); 
+                        return Json(new { Success = true, Code = 1, msg = "Cập nhập tài khoản thành công" });
+                    }
+                } 
+                catch(Exception ex)
+                {
+                    dbContext.Rollback   ()   ;
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
+                }
+            }
         }
 
 

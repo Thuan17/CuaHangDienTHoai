@@ -1,0 +1,103 @@
+﻿@model CuaHangBanDienThoai.Models.UpdatePass
+
+<style>
+    .form-control-placeholder {
+        color: #888 !important; /* Thay đổi màu cho label, màu nhạt */
+    }
+
+    /* Đổi màu chữ khi người dùng nhập vào */
+    .input-field {
+        color: #333 !important; /* Màu chữ khi nhập */
+    }
+
+    /* Thêm kiểu ưu tiên cho các trường nhập liệu */
+    input:focus,
+    textarea:focus {
+        border-color: #007bff !important; /* Màu viền khi focus vào trường nhập */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5) !important; /* Thêm hiệu ứng ánh sáng xung quanh */
+    }
+
+        /* Đảm bảo nhãn không bị mờ khi nhập */
+        input:focus + label,
+        textarea:focus + label {
+            color: #000000 !important; /* Màu label khi trường được focus */
+        }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="datetime-local"] {
+        color: #000 !important; /* Màu đen cho nội dung */
+    }
+</style>
+
+<script src="~/Content/css/login/js/main.js"></script>
+<link href="~/Content/css/login/css/style.css" rel="stylesheet" />
+
+@if (Model != null)
+{
+    <div class=" mainLogin  pt-3">
+
+        <div class="row justify-content-center   ">
+            <div class="col-12 ">
+                <div class="wrap ">
+
+                    <div class="login-wrap  p-0 ">
+
+
+                        <form id="ChangePassForm" enctype="multipart/form-data" class="signin-form">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(x => x.CustomerId)
+
+                            <div class="row m-0 p-0 w-100">
+                                <div class="col-12 align-items-center text-left">
+                                    <p class="text-black mb-0"><label>Xin chào </label> @Model.CustomerName.Trim() ,</p>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="form-group mt-5">
+                                        <input id="password-field" type="password" name="password" class="form-control input-field" required>
+                                        <label for="password" class="form-control-placeholder">Mật khẩu</label>
+                                        <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-5">
+                                        <input id="new-password-field" type="password" name="PasswordNew" class="form-control input-field" required>
+                                        <label for="confirmPassword" class="form-control-placeholder">Mật khẩu mới </label>
+                                        <span toggle="#new-password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-5">
+                                        <input id="confirm-password-field" type="password" name="confirmPassword" class="form-control input-field" required>
+                                        <label for="confirmPassword" class="form-control-placeholder">Xác nhận mật khẩu</label>
+                                        <span toggle="#confirm-password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                               
+                                <button type="button" id="submitButton" class="form-control btn btn-primary rounded submit px-3">
+                                    Cập nhập
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+}
+<script>
+
+</script>
+<script src="~/Scripts/ProductClient/js/jquery-3.2.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/client/ForgotPass.js"></script>
+@*<script src="~/Scripts/client/ChangePass.js"></script>*@

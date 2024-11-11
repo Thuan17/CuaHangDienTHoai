@@ -5496,6 +5496,7 @@
     <Content Include="Scripts\CheckOut.js" />
     <Content Include="Scripts\client\ajax-loader.gif" />
     <Content Include="Scripts\client\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\client\ChangePass.js" />
     <Content Include="Scripts\client\DetailProuct.js" />
     <Content Include="Scripts\client\ForgotPass.js" />
     <Content Include="Scripts\client\jquery-1.11.0.min.js" />
@@ -5504,6 +5505,7 @@
     <Content Include="Scripts\client\plugins.js" />
     <Content Include="Scripts\client\Register.js" />
     <Content Include="Scripts\client\script.js" />
+    <Content Include="Scripts\client\UpdateProfile.js" />
     <Content Include="Scripts\CongTac.js" />
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
@@ -5819,6 +5821,7 @@
     <Content Include="Views\Account\RessetPass.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\UpdateProFile.cshtml" />
+    <Content Include="Views\Account\ChangePass.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

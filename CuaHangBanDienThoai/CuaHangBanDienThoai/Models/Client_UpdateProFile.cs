@@ -11,6 +11,7 @@ namespace CuaHangBanDienThoai.Models
         public string CustomerName { get; set; }    
         public string Email{get; set; } 
         public string PhoneNumber { get; set; }
+        public string PassWord { get; set; }
         public DateTime? Birthday { get; set; }
 
 

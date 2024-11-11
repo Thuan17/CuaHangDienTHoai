@@ -10,17 +10,6 @@
         margin: 0 !important;
     }
 
-    .progress-bar .bg-warning {
-        background-color: #ffc107 !important; /* Màu vàng */
-    }
-
-    .progress-bar.bg-success {
-        background-color: #28a745 !important; /* Màu xanh lá */
-    }
-
-    .progress-bar.bg-danger {
-        background-color: #dc3545 !important; /* Màu đỏ */
-    }
 </style>
 
 <div class="bg-sg2" style="display: none ">
@@ -79,8 +68,8 @@
                             @*<p class="text-muted mb-1">Full Stack Developer</p>
                                 <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>*@
                             <div class="d-flex justify-content-center mb-2">
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-warning">Cập nhập</button>
-                                <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary ms-1">Tin nhắn</button>
+                                <button type="button"  class="btn btn-warning btnChangePass">Cập nhập mật khẩu</button>
+                                @*<button type="button"  class="btn btn-primary ms-1">Tin nhắn</button>*@
                             </div>
                         </div>
                     </div>
@@ -101,30 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                        @*<div class="card-body p-0">
-                                <ul class="list-group list-group-flush rounded-3">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <i class="fas fa-globe fa-lg text-warning"></i>
-                                        <p class="mb-0">https://mdbootstrap.com</p>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <i class="fab fa-github fa-lg text-body"></i>
-                                        <p class="mb-0">mdbootstrap</p>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <i class="fab fa-twitter fa-lg" style="color: #55acee;"></i>
-                                        <p class="mb-0"></p>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <i class="fab fa-instagram fa-lg" style="color: #ac2bac;"></i>
-                                        <p class="mb-0">mdbootstrap</p>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                        <i class="fab fa-facebook-f fa-lg" style="color: #3b5998;"></i>
-                                        <p class="mb-0">mdbootstrap</p>
-                                    </li>
-                                </ul>
-                            </div>*@
+                       
                     </div>
                 </div>
                 <div class="col-lg-8">
@@ -152,6 +118,9 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">@Helper.MaskEmail(Model.Email.Trim())</p>
+                                    <input class="hide" value="@Model.Email.Trim()" id="userInputField" />
+                                    <input name="__RequestVerificationToken" type="hidden" class="hide" value="@Model.Email.Trim()">
+
                                 </div>
                             </div>
                             <hr>
@@ -254,15 +223,160 @@
 </section>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script>
+
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+            <div class="toastNotifi ${type}">
+                <i class="${icon}"></i>
+                <div class="content">
+                    <div class="title">${title}</div>
+                    <span>${text}</span>
+                </div>
+                <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+            </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
   $(document).ready(function () {
     var customerId = @Model.CustomerId;
+      const maskedEmail = "@ViewBag.MaskedEmail";
+      var email = "@ViewBag.Email";
+      var userInput = $('#userInputField').val(); 
+      console.log("maskedEmail", maskedEmail);
+      console.log("email", email);
+      console.log("customerId", customerId);
+      
       var bg2 = $(".bg-sg2");
       var popup2 = $("#popupBill2");
       var btnAddAddress = $('.btnAddAddress');
       var btnEditProFile = $('.btnEditProFile');
+   
+      if (email && maskedEmail && customerId) {
+
+          $('.btnChangePass').on('click', function (e) {
+
+              if (!email || !customerId) {
+                  console.warn('Email hoặc Customer ID không hợp lệ');
+                  return;
+              }
+              Swal.fire({
+                  title: "Bạn muốn thay đổi mật khẩu ?",
+                text:"Xác nhận để thay đổi ",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Xác nhận"
+              }).then((result) => {
+                  if (result.isConfirmed) {
+                  
+                      $.ajax({
+                          url: '/Account/ChangePass',
+                          data: { customerid: customerId },
+                          type: 'GET',
+                          success: function (res) {
+                              bg2.show();
+                              popup2.show();
+                              $('#loadDataBillEdit').html(res);
+                          }, error: function (xhr, status, error) {
+                              console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+                          }
+                      });
+
+
+                  }
+              });
+          });
+
+          //$('.btnChangePass').on('click', function (e) {
+           
+          //    if (!email || !customerId) {
+          //        console.warn('Email hoặc Customer ID không hợp lệ');
+          //        return;
+          //    }
+          //    Swal.fire({
+          //        title: "Bạn muốn thay đổi mật khẩu ?",
+          //        text: `Mã bảo mật gửi về Gmail ${maskedEmail}!`,
+          //        icon: "warning",
+          //        showCancelButton: true,
+          //        confirmButtonColor: "#3085d6",
+          //        cancelButtonColor: "#d33",
+          //        confirmButtonText: "Gửi về"
+          //    }).then((result) => {
+          //        if (result.isConfirmed) {
+          //            Swal.fire({
+          //                title: "Yêu cầu đã được gửi",
+          //                text: `Vui lòng kiểm tra mã bảo mật trong Gmail ${maskedEmail}!`,
+          //                icon: "success"
+          //            });
+          //            $(".loader").fadeIn();
+          //            $("#preloder").fadeIn("slow");
+                    
+          //            $.ajax({
+          //                url: '/Account/ForgotPassword',
+          //                type: 'POST',
+          //                data: {
+          //                    userInput: email,
+          //                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+          //                },
+
+                        
+          //                success: function (res) {
+
+          //                    if (res.Success) {
+          //                        if (res.Code == 1) {
+          //                            createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg + 'Đang đổi giao diện');
+          //                            $(".loader").fadeOut();
+          //                            $("#preloder").fadeOut();
+          //                            $.ajax({
+          //                                url: '/Account/UpdatePass',
+          //                                data: { customerid: customerId },
+          //                                type: 'GET',
+          //                                success: function (res) {
+          //                                    bg2.show();
+          //                                    popup2.show();
+          //                                    $('#loadDataBillEdit').html(res);
+          //                                }, error: function (xhr, status, error) {
+          //                                    console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+          //                                }
+          //                            });
+
+          //                        }
+          //                    } else {
+          //                        createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
+          //                    }
+
+                          
+
+
+                         
+          //                }, error: function (xhr, status, error) {
+          //                    console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+          //                } 
+          //            });
+
+
+          //        }
+          //    });
+          //});
+
+      }
+     
+
+
       $('.btnEditProFile').on('click', function (e) {
 
-       
+
 
           e.preventDefault();
           bg2.show();
