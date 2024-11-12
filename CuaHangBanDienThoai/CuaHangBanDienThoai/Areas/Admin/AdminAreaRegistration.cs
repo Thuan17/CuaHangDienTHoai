@@ -14,6 +14,29 @@ namespace CuaHangBanDienThoai.Areas.Admin
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+
+            context.MapRoute(
+name: "Emp_Add",
+url: "tao-ho-so-nhan-vien",
+defaults: new { controller = "Employee", action = "Add", alias = UrlParameter.Optional }
+
+);
+
+            context.MapRoute(
+name: "Emp_Index",
+url: "quan-ly-nhan-vien",
+defaults: new { controller = "Employee", action = "Index", alias = UrlParameter.Optional }
+
+);
+
+
+            context.MapRoute(
+ name: "statistical_Index",
+ url: "thongkedoanhthu",
+ defaults: new { controller = "Statistical", action = "Index", alias = UrlParameter.Optional }
+
+);
+
             context.MapRoute(
  name: "Customer_Index",
  url: "quan-ly-tai-khoan-khach-hang",

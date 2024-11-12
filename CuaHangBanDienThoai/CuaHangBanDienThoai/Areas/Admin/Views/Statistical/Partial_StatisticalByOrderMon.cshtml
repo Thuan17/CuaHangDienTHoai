@@ -1,0 +1,151 @@
+﻿@if (ViewBag.Month != null)
+{
+    <div class="row m-0 p-0 w-100">
+        <div class="col-lg-12  m-0 p-0 w-100">
+            <div class="chart">
+                <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+        </div>
+        <p class="card-title">Thống kê danh thu tháng <span class="text-danger">@ViewBag.Month</span></p>
+        <div class="col-md-12  m-0 p-0 w-100">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tháng</th>
+                        <th>Doanh thu</th>
+                        <th>Đầu tư</th>
+                        <th>Lợi nhuận</th>
+                        <th>Tổng đơn</th>
+                        <th>Đơn hoàn thành</th>
+                        <th>Đơn huỷ trả</th>
+                    </tr>
+                </thead>
+                <tbody id="load_data"></tbody>
+            </table>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+<script>
+
+    function loadMonthlyStatistical() {
+            var month = @ViewBag.Month;
+
+            $.ajax({
+                url: '/Admin/Statistical/GetStatisticalByOrderMonSelect',
+                type: 'GET',
+                data: { month: month },
+                success: function (rs) {
+                    console.log("Response from GetYearlyStatistical:", rs);
+                    if (rs && rs.Data) {
+
+                        updateChartAndTable(rs.Data);
+                    } else {
+                        alert("Không có dữ liệu để hiển thị!");
+                    }
+                },
+                error: function () {
+                    alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                }
+            });
+        }
+
+
+        function updateChartAndTable(data) {
+            var arrDoanhThu = [];
+            var arrLoiNhuan = [];
+            var arrYear = [];
+            var arrTienGoc = [];
+
+            console.log("Data received in updateChartAndTable:", data);
+
+            $.each(data, function (i, item) {
+                arrYear.push(item.Month);
+                arrDoanhThu.push(item.DoanhThu);
+                arrLoiNhuan.push(item.LoiNhuan);
+                arrTienGoc.push(item.TienGoc);
+            });
+
+            console.log("arrDoanhThu:", arrDoanhThu);
+            console.log("arrLoiNhuan:", arrLoiNhuan);
+            var barChartData = {
+                labels: arrYear,
+                datasets: [
+                    {
+                        label: 'Lợi nhuận',
+                        backgroundColor: 'rgba(60,141,188,0.9)',
+                        borderColor: 'rgba(60,141,188,0.8)',
+                        pointRadius: false,
+                        pointColor: '#3b8bba',
+                        pointStrokeColor: 'rgba(60,141,188,1)',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(60,141,188,1)',
+                        data: arrLoiNhuan
+
+                    },
+                    {
+                        label: 'Doanh thu',
+                        backgroundColor: 'rgba(210, 214, 222, 1)',
+                        borderColor: 'rgba(210, 214, 222, 1)',
+                        pointRadius: false,
+                        pointColor: 'rgba(210, 214, 222, 1)',
+                        pointStrokeColor: '#c1c7d1',
+                        pointHighlightFill: '#fff',
+                        pointHighlightStroke: 'rgba(220,220,220,1)',
+                        data: arrDoanhThu
+                    },
+                ]
+            };
+
+            var barChartCanvas = $('#barChart').get(0).getContext('2d');
+            var barChart = new Chart(barChartCanvas, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    datasetFill: false
+                }
+            });
+
+
+            var tableBody = $('#load_data');
+            tableBody.empty();
+            $.each(data, function (i, item) {
+                var row = '<tr>' +
+                    '<td>' + (i + 1) + '</td>' +
+                    '<td>' + item.Month + '</td>' +
+                    '<td>' + formatNumber(item.DoanhThu, 2) + ' đ' + '</td>' +
+                    '<td>' + formatNumber(item.TienGoc, 2) + ' đ' + '</td>' +
+                    '<td>' + formatNumber(item.LoiNhuan, 2) + ' đ' + '</td>' +
+                    '<td>' + formatNumber(item.Count) + ' đơn/tháng' + '</td>' +
+                    '<td>' + formatNumber(item.DonHoanThanh) + ' đơn/tháng' + '</td>' +
+                    '<td>' + formatNumber(item.DonHuy) + ' đơn/tháng' + '</td>' +
+
+                '</tr>';
+                tableBody.append(row);
+
+
+            });
+        }
+        function formatNumber(value, SoSauDauPhay) {
+            var GT = 0;
+            if (!isNaN(value)) {
+                GT = parseFloat(value);
+            }
+            return GT.toLocaleString('vi-VN', { minimumFractionDigits: 0, maximumFractionDigits: SoSauDauPhay });
+        }
+
+        $(document).ready(function () {
+            loadMonthlyStatistical();
+        });
+</script>
+
+
+

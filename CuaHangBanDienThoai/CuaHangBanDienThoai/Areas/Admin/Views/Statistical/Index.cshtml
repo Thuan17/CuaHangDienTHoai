@@ -1,0 +1,259 @@
+﻿
+@{
+    ViewBag.Title = "Thống kê";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="container-fluid mb-5">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+            <p>
+                Thống kê doanh thu
+            </p>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+
+                <li class="breadcrumb-item active">Doanh thu </li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <div class="row">
+
+        <!-- Area Chart -->
+        <div class="col-xl-8 col-lg-7">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Thống kê các tháng năm :@ViewBag.Year</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="chart-area">
+                        @Html.Action("Partial_StatitisYearAll", "Statistical")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pie Chart -->
+        <div class="col-xl-4 col-lg-5">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Top 5 sản phẩm bán chạy</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                             aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Dropdown Header:</div>
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body m-0 p-0 pb-3 pt-3">
+
+                    @*@Html.Action("Partial_ProductRevenue", "Statistical")*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-0 m-0 ">
+        <div class="col-xl-12 col-lg-12 shadow m-0 p-0 ">
+            <div class="card ">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Thống kê các tháng  :   @Html.DropDownList("Chose_month", (SelectList)ViewBag.UniqueMonth, "Tất cả tháng", new { id = "Chose_month", @class = "Chose_month text-center border-2 rounded-1" })
+
+
+                    </h6>
+
+
+
+                </div>
+                <div class="card-body w-100 " style="min-height:450px;">
+                    <div class="loadStatisticalByYear">
+                        <div class="text-center align-items-center">
+                            <img src="~/Content/ckfinder/ckfinder/plugins/gallery/colorbox/images/loading.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row p-0 m-0 mt-4">
+        <div class="col-xl-12 col-lg-12 shadow m-0 p-0 ">
+            <div class="card ">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">Thống kê số lượt truy cập</h6>
+
+
+                </div>
+                <div class="card-body w-100 ">
+                    @*@Html.Action("Partial_Vist", "Statistical")*@
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row p-0 m-0 mt-4">
+        <div class="col-xl-12 col-lg-12 shadow m-0 p-0 ">
+            <div class="card ">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Tỷ lệ đơn ngày của  tháng  :   @Html.DropDownList("Chose_month_day", (SelectList)ViewBag.UniqueMonth, "Tất cả tháng", new { id = "Chose_month_day", @class = "Chose_month text-center border-2 rounded-1" })
+
+
+                    </h6>
+
+                </div>
+                <div class="card-body w-100 " style="min-height:450px;">
+                    <div class="loadStatisticalByMoth">
+                        <div class="text-center align-items-center">
+                            <img src="~/Content/ckfinder/ckfinder/plugins/gallery/colorbox/images/loading.gif" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="~/Scripts/admin/js/demo/chart-area-demo.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            GettatisAllMon();
+            GettatisAllDay();
+
+            $('#Chose_month').change(function () {
+                var month = $(this).val();
+
+                if (month === "") {
+
+                    GettatisAllMon();
+                } else {
+
+                    $.ajax({
+                        url: '/Admin/Statistical/Partial_StatisticalByOrderMon',
+                        type: 'GET',
+                        data: { month: month },
+                        success: function (data) {
+                            $('.loadStatisticalByYear').html(data);
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                        }
+                    });
+                }
+            });
+
+            function GettatisAllMon() {
+                $.ajax({
+                    url: '/Admin/Statistical/Partial_StatisticalOrderAllMon',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.loadStatisticalByYear').html(data);
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                    }
+                });
+            }
+
+
+            function GettatisAllDay() {
+                $.ajax({
+                    url: '/Admin/Statistical/Partail_StatisOrderDay',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.loadStatisticalByMoth').html(data);
+                    },
+                    error: function () {
+                        alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                    }
+                });
+            }
+
+
+
+
+            $('#Chose_month_day').change(function () {
+                var month = $(this).val();
+
+                if (month === "") {
+
+                    GettatisAllMon();
+                } else {
+
+                    $.ajax({
+                        url: '/Admin/Statistical/Partail_StatisOrderDay',
+                        type: 'GET',
+                        data: { month: month },
+                        success: function (data) {
+                            $('.loadStatisticalByMoth').html(data);
+                        },
+                        error: function () {
+                            alert("Đã xảy ra lỗi khi tải dữ liệu!");
+                        }
+                    });
+                }
+            });
+
+
+
+
+
+
+        });
+
+
+    </script>
+
+
+
+}
+
+

@@ -30,25 +30,30 @@ namespace CuaHangBanDienThoai.Models
                 httpContext.Session["AdminRole"] = role;
 
             }
+            else if (role != null && role.Equals("Quản lý"))
+            {
+                httpContext.Session["ManageRole"] = role;
+
+            }
             var userFunctions = GetFunctionsByStaffId(staffId.Value);
             return requiredFunctions.Any(func => userFunctions.Contains(func));
         }
         public string GetTitleFunctionsByStaffId(int staffId)
         {
-            var functions = (from f in db.tb_Function
-                             join r in db.Role on f.FunctionId equals r.FunctionId
-                             where r.EmployeeId == staffId
-                             select f.TitLe.Trim()).FirstOrDefault();
-
+            
+            var functions = (from e in db.Employee
+                         where e.EmployeeId == staffId
+                         select e.tb_Function.TitLe.Trim()).FirstOrDefault();
             return functions;
         }
 
         public List<string> GetFunctionsByStaffId(int staffId)
         {
-            var functions = (from f in db.tb_Function
-                             join r in db.Role on f.FunctionId equals r.FunctionId
-                             where r.EmployeeId == staffId
-                             select f.TitLe.Trim()).ToList();
+            var functions = (from e in db.Employee
+                             where e.EmployeeId == staffId
+                             select e.tb_Function.TitLe.Trim()).ToList();
+
+           
 
             return functions;
         }

@@ -125,6 +125,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 Session["userName"] = null;
                 Session["userimg"] = null;
                 Session["EmployeeId"] = null;
+                Session["AdminRole"] = null;
+                Session["ManageRole"] = null;
+               
             }
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
