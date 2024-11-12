@@ -1,0 +1,364 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.OrderCustomer>
+@using CuaHangBanDienThoai.Common;
+
+
+<link href="~/Content/css/TimeLine.css" rel="stylesheet" />
+@if (Model != null)
+{
+
+    <div class="row p-0 m-0 w-100" style="width:100% !important">
+        <div class="col-12  p-0 m-0 w-100">
+            <nav>
+                <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả đơn</button>
+
+                </div>
+            </nav>
+        </div>
+        <div class="col-12  p-0 m-0 w-100">
+            <div class=" p-0 m-0 w-100" style="max-height:500px; overflow-y:auto;">
+                @foreach (var item in Model)
+                {
+                    var voucher = item.VoucherDetail?.FirstOrDefault(x => x.OrderId == item.OrderId);
+                    var orderDetail = item.OrderDetail?.Where(x => x.OrderId == item.OrderId);
+
+                    decimal total = 0;
+                    if (orderDetail != null && orderDetail.Any())
+                    {
+                        foreach (var order in orderDetail)
+                        {
+                            total += order.Price;
+
+                        }
+                    }
+
+                    <div class="card m-0 mb-2  bg-white card_IndexOrder_@item.OrderId" id="card_IndexOrder_@item.OrderId" style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
+
+                        <div class="card-header p-0 pt-1 mt-1 m-1 bg-white">
+
+                            <div class="steps d-flex flex-wrap flex-sm-nowrap justify-content-between padding-top-2x padding-bottom-1x">
+                                <div class="step mb-2 completed">
+                                    <div class="step-icon-wrap">
+                                        <div class="step-icon"><i class="bi bi-cart-check-fill"></i></div>
+                                    </div>
+                                    <h4 class="step-title">Đặt hàng thành công</h4>
+                                </div>
+                                <div class="step mb-2 @( item.OrderStatus == "Đơn huỷ"||item.OrderStatus == "Từ chối" ? "cancel" :   ((bool)item.Confirm ? "completed" : ""))">
+                                    <div class="step-icon-wrap">
+                                        <div class="step-icon"><i class="@(item.OrderStatus== "Đơn huỷ"? "fa-solid fa-xmark" : (item.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)item.Confirm ? "bi bi-check-all" : "bi bi-check-all")) )"></i>      </div>
+                                    </div>
+                                    <h4 class="step-title">@(item.OrderStatus== "Đơn huỷ"? "Đơn huỷ" : (item.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)item.Confirm ? "Đã xác nhận" : "Xác nhận")) )</h4>
+                                </div>
+
+                                <div class="step mb-2 @(item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
+                                    <div class="step-icon-wrap">
+                                        <div class="step-icon"><i class="bi bi-bank"></i></div>
+                                    </div>
+                                    <h4 class="step-title">Xuất kho</h4>
+                                </div>
+
+                                <div class="step mb-2 @(item.OrderStatus=="Đã xuất kho" ? "completed":"")">
+                                    <div class="step-icon-wrap">
+                                        <div class="step-icon"><i class="bi bi-truck"></i></div>
+                                    </div>
+                                    <h4 class="step-title">Vận chuyển</h4>
+                                </div>
+                                <div class="step mb-2 @(item.Success == true && item.SuccessDate != null && item.OrderStatus == "Đã xuất kho" ? "completed" : "")">
+                                    <div class="step-icon-wrap">
+                                        <div class="step-icon"><i class="bi bi-house-heart-fill"></i></div>
+                                    </div>
+                                    <h4 class="step-title">Thành công</h4>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body p-0 m-3">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                                    <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                                        <h5 class="fs-6 mb-3 details__Text">Thông tin khách hàng</h5>
+                                        <div class="infor__customer">
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="input-data">
+                                                        <b for="">Mã đơn :</b>
+                                                        <sapn>@item.Code </sapn>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-data">
+                                                        <b for="PhoneCustomer">
+                                                            Ngày đặt :
+                                                        </b>
+                                                        <sapn>@item.CreatedDate</sapn>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="input-data">
+                                                        <b for="">Người nhận :</b>
+                                                        <sapn>@item.CustomerName </sapn>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-data">
+                                                        <b for="PhoneCustomer">
+                                                            Số Điện Thoại :
+                                                        </b>
+                                                        <sapn>@item.Phone</sapn>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="input-data">
+                                                        <b for="">Email :</b>
+                                                        <sapn>@item.Email</sapn>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-data ">
+                                                        <b>Vận chuyển:</b>
+                                                        <span class="">
+                                                            @if (item.IsDelivery == true)
+                                                            {
+                                                                <span class="bg-danger text-white">
+                                                                    Hoả tốc
+                                                                </span>
+                                                            }
+
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="input-data">
+                                                        <b>Xác nhận :</b>
+
+                                                        <span class="@((bool)item.Confirm ? "bg-success text-white col-4 text-center" : "col-4 text-center bg-danger text-white")">
+                                                            @((bool)item.Confirm ? "Đã xác nhận" : "Chưa xác nhận")
+                                                        </span>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-data ">
+                                                        <b>Trạng thái :</b>
+                                                        <span class="@(item.OrderStatus == "Chưa giao" ? "bg-warning" :
+                           item.OrderStatus == "Đã xuất kho" ? "bg-success"  :
+                           item.OrderStatus == "Đơn huỷ" ? "bg-danger" :
+                           item.OrderStatus == "Đơn trả" ? "bg-dark" : "") text-white col-6 text-center">
+                                                            @item.OrderStatus
+                                                            @if (item.StatusDate != null && item.OrderStatus != "Chưa giao")
+                                                            {
+                                                                <span>
+                                                                    @String.Format("{0:dd/MM/yyyy }", item.StatusDate)
+                                                                </span>
+
+                                                            }
+
+
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-6">
+                                                    <div class="input-data ">
+                                                        <b>Trạng thái thanh toán :</b>
+                                                        <span class="@(item.TypePayment == 0 ? "text-danger" : "bg-success text-white pr-1 pl-1")">
+                                                            @(item.TypePayment == 0 ? "Chưa thanh toán" : "Đã thanh toán")
+                                                        </span>
+
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="input-data ">
+
+                                                        <b>Địa chỉ :</b>
+                                                        <sapn>@item.Location.Trim()</sapn>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+
+                                            @if (item.Modifiedby != null)
+
+                                            {
+                                                <div class="row">
+                                                    <div class="col-lg-6">
+                                                        <div class="input-data">
+                                                            <b for="">Chỉnh sửa bởi :</b>
+                                                            <sapn>@item.Modifiedby</sapn>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-data ">
+                                                            <b>Chỉnh sửa ngày:</b>
+                                                            <span class="">
+                                                                <span class="">
+                                                                    @String.Format("{0:dd:MM:yyyy HH:mm:ss}", item.ModifiedDate)
+                                                                </span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+
+
+
+                                            <div class="input-dat">
+                                                <b>Tổng tiền:</b>
+                                                <span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span>
+                                            </div>
+                                            <div class="input-data ">
+                                                @if (item.Note != null)
+                                                {<b for="">Ghi chú:</b>
+                                                    <sapn>@item.Note.Trim()</sapn>
+                                                }
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="checkout-item-ordered">
+                                        <h4 class="fs-6 mb-3 text-left">Thứ tự sản phẩm</h4>
+                                        <div class="table-content table-responsive order-table mb-4">
+                                            <table class="table table-bordered align-middle table-hover text-center mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="td__img fw-">
+                                                            Hình
+                                                        </th>
+                                                        <th class="td__product">
+                                                            Sản phẩm
+                                                        </th>
+
+                                                        <th class="td__quantity-price">
+                                                            Số lượng/ Giá
+                                                        </th>
+                                                    </tr>
+
+                                                </thead>
+                                                @Html.Action("Partial_BillDetail", "Order", new { id = item.OrderId })
+                                                <tfoot>
+
+
+
+
+                                                    @if (voucher != null)
+                                                    {
+                                                        <tr>
+                                                            <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                Tổng tiền :
+                                                            </td>
+                                                            <td class="fw-500 last">
+                                                                <b class="text-right"><span class="text-gray-200" style="text-decoration: line-through;">@Common.FormatNumber(@total) đ</span></b>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                Tổng tiền sau khi dùng voucher :
+                                                            </td>
+                                                            <td class="fw-500 last">
+                                                                <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                            </td>
+                                                        </tr>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <tr>
+                                                            <td colspan="2" class="item subtotal text-end fw-bolder">
+                                                                Tổng tiền:
+                                                            </td>
+                                                            <td class="fw-500 last">
+                                                                <b class="text-right"><span class="text-danger">@Common.FormatNumber(item.TotalAmount) đ</span></b>
+                                                            </td>
+                                                        </tr>
+                                                    }
+
+
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="card-footer p-0 m-0 ">
+                            <div class="row m-3">
+                                <div class="col-lg-12 d-flex justify-content-end align-items-center">
+                                    <button class="btn btn-success mt-0 btnSuceess me-2 disabled   @(item.Success == false && item.OrderStatus == "Đã xuất kho" ? "" : "hide")   " data-id="@item.OrderId" style="width: 250px; padding: 8px;">
+                                        Đã nhận được hàng
+                                    </button>
+                                    <button class="btn btn-danger mt-0  disabled   @(item.OrderStatus?.Trim() == "Đơn huỷ"||item.OrderStatus?.Trim() == "Từ chối" ? "" :  "btnCancel")
+                  @(item.OrderStatus?.Trim() == "Đã xuất kho" ? "hide" : "")"
+                                            @(item.OrderStatus?.Trim() == "Đơn huỷ" || item.OrderStatus?.Trim() == "Từ chối" ? "disabled" : "")
+                                            data-id="@item.OrderId" style="width: 250px; padding: 8px;">
+                                        @(item.OrderStatus?.Trim() == "Đơn huỷ" ? "Khách đã huỷ đơn hàng" :(item.OrderStatus?.Trim() == "Từ chối"? "Đơn đã bị từ chối" : "Huỷ đơn hàng"))
+                                    </button>
+
+
+
+
+                                    <button class="btn btn-danger mt-0 btnReturn disabled  @(item.Success == true && item.OrderStatus == "Đã xuất kho" ? "" : "hide")" data-id="@item.OrderId" style="width: 250px; padding: 8px;">
+                                        Trả đơn hàng
+                                    </button>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+                }
+
+            </div>
+        </div>
+
+
+
+    </div>
+
+}
+else
+{
+    <div class="row p-0 m-0 w-100" style="width:100% !important">
+        <div class="col-12  p-0 m-0 w-100">
+            <nav>
+                <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả đơn</button>
+
+                </div>
+            </nav>
+        </div>
+        <div class="col-12  p-0 m-0 w-100">
+            <p class="d-block text-center align-items-center text-danger">Tài khoản chưa có đơn hàng !!!</p>
+        </div>
+        </div>
+    }

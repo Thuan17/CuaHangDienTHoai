@@ -1,0 +1,75 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.OrderDetail>
+@using CuaHangBanDienThoai.Common
+@if (Model != null)
+{
+    var i = 0;
+    var tongtien = decimal.Zero;
+    foreach (var item in Model)
+    {
+        @functions {
+
+            public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+            {
+                if (originalPrice == 0 || salePrice >= originalPrice)
+                {
+                    return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                }
+
+                decimal discount = 1 - (salePrice / originalPrice);
+                return discount * 100;
+            }
+        }
+        var strImg = "";
+        var CheckImage = item.ProductDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+        var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
+
+
+        if (CheckImage != null)
+        {
+            strImg = CheckImage.Image;
+        }
+        else
+        {
+
+            strImg = "~/Content/css/admin/login/images/logoWeb.png";
+        }
+
+        //tongtien += item.TotalPri
+        <tbody>
+            <tr>
+                <td class="td__imgItem p-0">
+                    <a href="/san-pham/@item.ProductDetail.Alias">
+                        @*<img src="~/images/logo/logoWeb.png" class="primary blur-up lazyloaded" />*@
+                        <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
+                    </a>
+
+                </td>
+                <td calss="td__productItem">
+                    <a href="/san-pham/@item.ProductDetail.Alias" class="pro-name">
+
+                        @Name
+
+                        <div class="cart__meta-text">
+                            Danh mục: @item.ProductDetail.Products.ProductCategory.Title.Trim()
+                            <br />
+                            Màu: @item.ProductDetail.Color.Trim()
+
+
+                        </div>
+
+
+                    </a>
+                </td>
+
+                <td class="td__quantity-price__item">
+                    @item.Quantity/  @Common.FormatNumber(item.Price) ₫
+                </td>
+            </tr>
+
+        </tbody>
+
+
+
+    }
+
+}

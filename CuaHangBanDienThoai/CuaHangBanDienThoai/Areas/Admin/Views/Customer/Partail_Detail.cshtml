@@ -1,0 +1,277 @@
+﻿@model CuaHangBanDienThoai.Models.Customer
+@using CuaHangBanDienThoai.Common;
+<style>
+    .card {
+        position: relative;
+    }
+
+    .status-locked-left {
+        position: absolute;
+        top: 10px;
+        left: -30px; /* Di chuyển nhẹ ra ngoài để trông đẹp mắt hơn */
+        background-color: rgba(255, 0, 0, 0.8);
+        color: white;
+        padding: 5px 20px;
+        font-weight: bold;
+        font-size: 14px;
+        text-align: center;
+        transform: rotate(-45deg); /* Tạo góc chéo */
+        z-index: 1;
+        width: 150px;
+        box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+    }
+
+
+</style>
+<div class="card-header d-flex justify-content-between align-items-center">
+    <div class="card-title">
+        <h5 class="mb-0">
+            Thông tin khách hàng
+        </h5>
+    </div>
+    <div class="card-tools">
+        <div class="btn btnCloseEditBill">
+            <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+            </svg>
+        </div>
+    </div>
+</div>
+@if (Model != null)
+{
+    <div class="card-body pt-0 pb-0">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0 pb-3">
+                <div class="shipping-details mb-0 mb-sm-0 clearfix">
+                   <nav>
+                       <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                           <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Thông tin chung</button>
+                           <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Đơn hàng</button>
+                           <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Giỏ hàng</button>
+                       </div>
+                   </nav>
+                   
+                <div class="tab-content  " id="nav-tabContent">
+                    <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                     
+                        <div class="pt-1 p-3 ">
+
+                            @if (Model != null)
+                            {
+                                <div class="row mb-3">
+                                    <div class="col-lg-4">
+                                        <div class="card ">
+                                            <div class="card-body text-center">
+                                                @*<img src="~/images/logo/logoweb.png" />*@
+                                                <img src="@(Model.Image ?? "/images/logo/logoweb.png")" alt="PadaMinStore"
+                                                     class="rounded-circle img-fluid" style="width: 150px;">
+                                                <h5 class="my-3">@Model.CustomerName.Trim()</h5>
+                                                <p class="text-muted mb-1">Full Stack Developer</p>
+                                                <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                                <div class="d-flex justify-content-center mb-2">
+                                                    @*<button type="button" class="btn btn-warning btnChangePass">Cập nhập mật khẩu</button>*@
+                                                    @*<button type="button"  class="btn btn-primary ms-1">Tin nhắn</button>*@
+                                                </div>
+                                            </div>
+                                            @if (Model.IsLock == true)
+                                            {
+                                                <div class="status-locked-left">
+                                                    Đã bị khóa
+                                                </div>
+                                            }
+
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="card m-0 w-100  mb-4" style="min-height:332px;">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div class="card-title">
+                                                    <h5 class="mt-1">
+                                                        Thông tin chung
+                                                    </h5>
+                                                </div>
+                                                <div class="card-tools">
+                                                    <div class="col-sm-12">
+                                                        @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                                        {
+                                                            <button type="button" class="btn btn-warning mt-0 float-end btnEditProFile" data-id="@Model.CustomerId" style="width:120px;">Cập nhập</button>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0">Tên tài khoản :</p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p class="text-muted mb-0">@Model.CustomerName.Trim()</p>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0">Email :</p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p class="text-muted mb-0">@Helper.MaskEmail(Model.Email.Trim())</p>
+                                                        <input class="hide" value="@Model.Email.Trim()" id="userInputField" />
+                                                        <input name="__RequestVerificationToken" type="hidden" class="hide" value="@Model.Email.Trim()">
+
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0">Số điện thoại :</p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p class="text-muted mb-0">@Helper.MaskPhone(Model.PhoneNumber.Trim())</p>
+                                                    </div>
+                                                </div>                            <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <p class="mb-0">Số lần mua </p>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <p class="text-muted mb-0">@Model.NumberofPurchases</p>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-md-12 p-0">
+                                        <div class="card mb-4 mb-md-0 w-100">
+                                            @{
+                                                var address = Model.AddressCustomer?.Where(x => x.CustomerId == Model.CustomerId)
+                                             .OrderByDescending(x => x.IsDefault == true)
+                                             .ToList();
+
+                                            }
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <div class="card-title  align-items-center">
+
+                                                    <p class="mb-2 align-items-center">
+                                                        <span class="text-primary font-italic me-1 float-lg-start">Địa chỉ </span> nhận hàng     @if (address != null)
+                                                        {
+                                                            <span class="float-lg-end">Số lượng :<span class="text-danger">@address.Count()</span></span>
+                                                        }
+
+
+                                                    </p>
+                                                </div>
+                                                <div class="card-tools d-flex justify-content-between align-items-center">
+
+                                                    @if (address != null && ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                                    {
+                                                        <div class="row">
+
+                                                            <div class="col-sm-6">
+                                                                <button type="button" class="btn btn-warning btnAddAddress mt-0 float-end" style="width:120px;">Cập nhập</button>
+                                                            </div> <div class="col-sm-6">
+                                                                <button type="button" class="btn btn-success mt-0 float-end" style="width:120px;">Tạo địa chỉ</button>
+                                                            </div>
+                                                        </div>
+
+
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+
+
+
+                                                @if (address != null)
+                                                {
+                                                    foreach (var item in address)
+                                                    {
+
+                                                        <p class="mb-1" style="font-size: .77rem;">Tên người nhận :@item.CustomerName.Trim()</p>
+                                                        <p class="mb-1" style="font-size: .77rem;">Số điện thoại @Helper.MaskPhone(item.PhoneNumber)</p>
+                                                        <p class="mb-1" style="font-size: .77rem;">Địa chi người nhận :@Helper.MaskAddress(item.Location)</p>
+                                                        <p class="mb-1 text-danger" style="font-size: .77rem;">
+                                                            @((item.IsDefault.HasValue && item.IsDefault.Value) ? "Địa chỉ mặc định" : "")
+                                                        </p>
+
+                                                        <hr class="mb-1" />
+                                                    }
+
+                                                }
+                                                else
+                                                {
+                                                    <div class="row">
+
+                                                        <div class="col-sm-12">
+                                                            <button type="button" class="btn btn-warning mt-0 float-end" style="width:120px;">Tạo địa chỉ</button>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            </div>
+
+
+                                            <div class="card-footer"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="pt-1 p-3">
+                            @Html.Action("Partail_OrderbyIdCustomer", "Customer", new { customerid = Model.CustomerId })
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                        <div class="p-3">
+                            @Html.Action("Partail_CartbyIdCustomer", "Customer", new { customerid = Model.CustomerId })
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+
+
+
+
+
+        </div>
+    </div>
+}
+
+<script>
+
+    $(document).ready(function () {
+
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+
+        bg.on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+    });
+
+
+
+</script>

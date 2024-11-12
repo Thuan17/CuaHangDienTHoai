@@ -26,8 +26,43 @@ foreach (var item in Model)
         strImg = CheckImage.Image;
     }
 
+    <div class="suggestionsItem row m-0 p-0 pt-2 pb-1" style="  height: 110px;">
+        <div class="col-lg-2  m-0 p-0 productImg">
+            <a href="/san-pham/@item.Alias">
+                <img src="@strImg" />
+            </a>
 
-    <div class="suggestionsItem row m-0 p-0 pt-2 pb-1">
+        </div>
+        <div class="col-md-10 m-0 p-0 productInfo pt-0" style="padding-top:0 !important;">
+            <div class="productName">
+                <a href="/san-pham/@item.Alias" class="p-0">
+                    @Name
+                </a>
+
+                <p class="mb-0"> Màu : @item.Color.Trim()</p>
+            </div>
+            <div class="productPrice d-flex">
+                @if (item.PriceSale > 0)
+                {
+                    <p class="priceSale">@Common.FormatNumber(item.PriceSale) đ</p>
+                    <p class="originalPrice">@Common.FormatNumber(item.Price) đ</p>
+                }
+                else
+                { <p class="priceSale">@Common.FormatNumber(item.Price) đ</p>
+            }
+
+            </div>
+            @*<div class="productbuynow">
+
+
+
+            <a href="javascript:void(0);" class=" btnbuynow  btnbuynowSugg  p-0 m-0" style="" data-productid="@item.ProductsId">Mua ngay</a>
+        </div>*@
+
+        </div>
+    </div>
+
+    <!--<div class="suggestionsItem row m-0 p-0 pt-2 pb-1">
         <div class="col-lg-3  m-0 p-0 productImg">
             <a href="/san-pham/@item.Alias">
                 <img src="@strImg" />
@@ -51,7 +86,7 @@ foreach (var item in Model)
                 { <p class="priceSale">@Common.FormatNumber(item.Price) đ</p>
             }
 
-            </div>
+            </div>-->
             @*<div class="productbuynow">
 
 
@@ -59,8 +94,8 @@ foreach (var item in Model)
                     <a href="javascript:void(0);" class=" btnbuynow  btnbuynowSugg  p-0 m-0" style="" data-productid="@item.ProductsId">Mua ngay</a>
                 </div>*@
 
-        </div>
-    </div>
+        <!--</div>
+    </div>-->
 }
 
 }

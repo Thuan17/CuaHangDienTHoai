@@ -159,6 +159,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
     <Compile Include="Areas\Admin\Controllers\BannerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
@@ -5464,6 +5465,7 @@
     <Content Include="Scripts\admin\Banner.js" />
     <Content Include="Scripts\admin\BannerEdit.js" />
     <Content Include="Scripts\admin\Bill.js" />
+    <Content Include="Scripts\admin\CustomerIndex.js" />
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
     <Content Include="Scripts\admin\js\AddProductCategory.js" />
@@ -5650,6 +5652,11 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Order\GetOrderByDate.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Partail_Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Partail_OrderbyIdCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\Partial_BillDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Customer\Partail_CartbyIdCustomer.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

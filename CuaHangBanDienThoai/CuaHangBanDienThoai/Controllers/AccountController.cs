@@ -369,7 +369,7 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         }
-            public JsonResult GetOrderStatistics(int customerId)
+        public JsonResult GetOrderStatistics(int customerId)
         {
             try
             {

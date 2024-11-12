@@ -16,7 +16,7 @@
             </div>
             <div class="step mb-2 @( Model.OrderStatus == "Đơn huỷ"||Model.OrderStatus == "Từ chối" ? "cancel" :   ((bool)Model.Confirm ? "completed" : ""))">
                 <div class="step-icon-wrap">
-                    <div class="step-icon"><i class="bi bi-check-all"></i></div>
+                    <div class="step-icon"><i class="@(Model.OrderStatus== "Đơn huỷ"? "fa-solid fa-xmark" : (Model.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)Model.Confirm ? "bi bi-check-all" : "bi bi-check-all")) )"></i>      </div>
                 </div>
                 <h4 class="step-title">@(Model.OrderStatus== "Đơn huỷ"? "Đơn huỷ" : (Model.OrderStatus == "Từ chối" ? "Từ chối" : ((bool)Model.Confirm ? "Đã xác nhận" : "Xác nhận")) )</h4>
             </div>

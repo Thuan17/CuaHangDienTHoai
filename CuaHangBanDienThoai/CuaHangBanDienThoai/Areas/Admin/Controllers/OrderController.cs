@@ -684,14 +684,26 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
-
-
-
+        public ActionResult Partial_BillDetail(int id)
+        {
+            if (id > 0)
+            {
+                var orderDetail = db.OrderDetail.Where(x => x.OrderId == id).ToList();
+                if (orderDetail != null)
+                {
+                    ViewBag.BillDetail = orderDetail;
+                    return PartialView(orderDetail);
+                }
+            }
+            return View();
+        }
     }
 
 
-
-
-
-
 }
+
+
+
+
+
+

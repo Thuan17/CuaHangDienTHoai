@@ -1779,10 +1779,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 	.productPrice p {
 		margin: 0;
+		
 	}
 
 .priceSale {
-	color: red;
+	color: red !important;
 }
 
 .originalPrice {
@@ -1816,8 +1817,8 @@ input[type="number"]::-webkit-outer-spin-button {
 
 
 .productImg img {
-	width: 100%;
-	height: 100%;
+	width: 90px;
+	height: 90px;
 }
 .searchGr.active {
 	position: relative;
