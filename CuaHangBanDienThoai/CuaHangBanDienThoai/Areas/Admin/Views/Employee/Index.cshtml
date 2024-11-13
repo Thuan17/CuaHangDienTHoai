@@ -152,7 +152,8 @@
                                     <td>
                                         <div class="d-flex px-2 py-1">
                                             <div>
-                                                <img src="@(item.Image ?? "/images/logo/logo2.png")"
+                                                
+                                                <img src="@(item.Image != null ? Url.Content("~/UploadsEmp/Image/" + item.Image) : Url.Content("/images/logo/logo2.png"))"
                                                      class="avatar avatar-sm me-3"
                                                      style="max-width: 100px; max-height: 100px; border-radius: 50%; object-fit: cover;"
                                                      alt="@item.NameEmployee.Trim()" />

@@ -118,7 +118,7 @@
     <Property Name="CreatedBy" Type="nvarchar(max)" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedBy" Type="nvarchar(max)" />
-    <Property Name="ModifiedDate" Type="datetime" Nullable="false" />
+    <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="FunctionId" Type="int" />
     <Property Name="Image" Type="varchar(max)" />
   </EntityType>

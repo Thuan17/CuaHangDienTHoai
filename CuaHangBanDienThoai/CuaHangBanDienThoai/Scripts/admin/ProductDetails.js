@@ -127,7 +127,7 @@ $(document).ready(function () {
             }
             const formData = $('#myFormProductDetail').serialize();
             const token = $('input[name="__RequestVerificationToken"]').val();
-            console.log('Form Data:', formData);
+        
 
             $.ajax({
                 url: '/Admin/ProductDetail/Add',

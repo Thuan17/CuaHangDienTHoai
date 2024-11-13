@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="cc96c75fffc841e3b6d3b21d6aae306f" Name="Diagram1">
+      <Diagram DiagramId="d24746a23e9f4607945f65095b080f6c" Name="Diagram1">
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AccountEmployee" Width="1.5" PointX="8.25" PointY="34.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AddressCustomer" Width="1.5" PointX="8.25" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AddressCustomer" Width="1.5" PointX="8.25" PointY="17.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Banner" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Bill" Width="1.5" PointX="5.25" PointY="21.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.BillDetail" Width="1.5" PointX="7.5" PointY="10.5" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Cart" Width="1.5" PointX="5.25" PointY="18.75" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.CartItem" Width="1.5" PointX="7.5" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Customer" Width="1.5" PointX="6" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Customer" Width="1.5" PointX="6" PointY="2.375" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Districts" Width="1.5" PointX="13" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Employee" Width="1.5" PointX="6" PointY="29.25" IsExpanded="true" />
         <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ImportWarehouse" Width="1.5" PointX="5.25" PointY="35.25" IsExpanded="true" />

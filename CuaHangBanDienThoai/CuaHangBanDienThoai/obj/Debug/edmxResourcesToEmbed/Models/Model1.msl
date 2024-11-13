@@ -89,7 +89,6 @@
     <EntitySetMapping Name="Customer">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Customer">
         <MappingFragment StoreEntitySet="Customer">
-          <ScalarProperty Name="CodeCreatedAt" ColumnName="CodeCreatedAt" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
@@ -100,6 +99,7 @@
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="IsLock" ColumnName="IsLock" />
           <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="CodeCreatedAt" ColumnName="CodeCreatedAt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

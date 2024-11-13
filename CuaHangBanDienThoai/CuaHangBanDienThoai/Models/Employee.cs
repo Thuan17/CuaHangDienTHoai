@@ -34,7 +34,7 @@ namespace CuaHangBanDienThoai.Models
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public string ModifiedBy { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> FunctionId { get; set; }
         public string Image { get; set; }
     

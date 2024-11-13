@@ -103,11 +103,11 @@
     <Property Name="Code" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
     <Property Name="IsLock" Type="Boolean" />
     <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="CodeCreatedAt" Type="DateTime" Precision="3" />
     <NavigationProperty Name="AddressCustomer" Relationship="Self.FK_AddressCusomer_Customer" FromRole="Customer" ToRole="AddressCustomer" />
     <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
     <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
     <NavigationProperty Name="OrderCustomer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="Customer" ToRole="OrderCustomer" />
-    <Property Name="CodeCreatedAt" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="Districts">
     <Key>
@@ -135,7 +135,7 @@
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="ModifiedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="FunctionId" Type="Int32" />
     <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="AccountEmployee" Relationship="Self.FK_AccountEmployee_Employee" FromRole="Employee" ToRole="AccountEmployee" />
