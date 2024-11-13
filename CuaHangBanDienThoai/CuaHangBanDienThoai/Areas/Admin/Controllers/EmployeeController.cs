@@ -189,6 +189,83 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 }
             }
         }
+        [AuthorizeFunction("Quản trị viên")]
+        public ActionResult Patial_Detial(int employeeid)
+        {
+            if (employeeid > 0)
+            {
+                var emp = db.Employee.FirstOrDefault(x => x.EmployeeId == employeeid);
+                if (emp != null)
+                {
+                 bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
+                return PartialView(emp); 
+                }  
+            }
+            return PartialView();   
+        }
+        
+        public ActionResult Partial_Edit(int employeeid)
+        {
+            if (employeeid > 0)
+            {
+                var emp = db.Employee.FirstOrDefault(x => x.EmployeeId == employeeid);
+                if (emp != null)
+                {
+                   
+                    Admin_EditEmployee viewModel = new Admin_EditEmployee
+                    {
+                        EmployeeId=emp.EmployeeId,
+                        PhoneNumber = emp.PhoneNumber,
+                        NameEmployee=emp.NameEmployee.Trim(),
+                        CitizenIdentificationCard = emp.CitizenIdentificationCard.Trim(),
+                        Email = emp.Email.Trim(),
+                        Birthday = emp.Birthday,
+                        Location = emp.Location.Trim(),
+                        Wage = emp.Wage,
+                        Sex = emp.Sex.Trim(),
+                        TitleFuntion = emp.tb_Function.TitLe.Trim(),
+                        Code  = emp.AccountEmployee.Code.Trim(),
+                        Image = emp.Image.Trim(),
+                        CreatedBy = emp.CreatedBy.Trim(),
+                        CreatedDate = (DateTime)emp.CreatedDate,
+                        FunctionId =(int)emp.FunctionId,
+                        IsLock=(bool)emp.AccountEmployee.IsLock,  
+                    };
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.IsManage = isManage;
+
+                    var functions = db.tb_Function.ToList();
+                    if (!isAdmin)
+                    {
+
+                        functions = functions.Where(f => f.TitLe.Trim() != "Quản trị viên" && f.TitLe.Trim() != "Quản lý").ToList();
+                        if (!isManage)
+                        {
+                            functions = functions.Where(f => f.TitLe.Trim() != "Quản lý" && f.TitLe.Trim() != "Quản trị viên").ToList();
+                        }
+                    }
+                    var sexOptions = new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "Nam", Text = "Nam" },
+                                new SelectListItem { Value = "Nữ", Text = "Nữ" },
+                            };
+                    ViewBag.SexOptions = new SelectList(sexOptions, "Value", "Text", emp.Sex.Trim());
+
+
+                    ViewBag.Function = new SelectList(functions, "FunctionId", "Title",emp.FunctionId);
+                    Session["Admin_EditEmp" + emp.EmployeeId] = viewModel;
+                    return PartialView(viewModel);
+                }
+               
+            }
+            return PartialView();
+        }
+
+
+
 
 
         public static string MaHoaPass(string str)

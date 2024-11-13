@@ -199,6 +199,7 @@
     <Compile Include="Models\Admin_AddProductDetail.cs" />
     <Compile Include="Models\Admin_AddVoucher.cs" />
     <Compile Include="Models\Admin_EditBanner.cs" />
+    <Compile Include="Models\Admin_EditEmployee.cs" />
     <Compile Include="Models\Admin_EditOrder.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
     <Compile Include="Models\Admin_EditProductDetail.cs" />
@@ -5472,6 +5473,7 @@
     <Content Include="Scripts\admin\BannerEdit.js" />
     <Content Include="Scripts\admin\Bill.js" />
     <Content Include="Scripts\admin\CustomerIndex.js" />
+    <Content Include="Scripts\admin\Employee_Index.js" />
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
     <Content Include="Scripts\admin\js\AddProductCategory.js" />
@@ -5670,6 +5672,8 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Employee\Patial_Detial.cshtml" />
+    <Content Include="Areas\Admin\Views\Employee\Partial_Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
