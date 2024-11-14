@@ -114,7 +114,7 @@
                         </div>
 
 
-                     
+
                         <div class="input-dat" id="loadPrice">
                             <b>Tổng tiền:</b>
                             <span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span>
@@ -207,7 +207,7 @@
                                     <td class="td__quantity-price__item">
                                         @Common.FormatNumber(item.Price) x<input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Order"
                                                                                  id="@item.ProductDetailId"
-                                                                                  orderdetailid="@item.OrderDetailId"
+                                                                                 orderdetailid="@item.OrderDetailId"
                                                                                  orderid="@Model.OrderId" />
 
 
@@ -314,10 +314,7 @@
             var orderid = input.attr('orderid');
             var newQuantity = input.val().trim();
 
-            console.log("productdetailId:", productdetailId);
-            console.log(" orderdetailid:",  orderdetailid);
-            console.log("orderid:", orderid);
-            console.log("newQuantity:", newQuantity);
+        
             if (!input.data('original-value')) {
                 input.data('original-value', input.val()); 
             }

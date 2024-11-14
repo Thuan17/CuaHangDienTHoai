@@ -63,7 +63,7 @@ $(document).ready(function () {
         console.log('Checkbox changed:', id, isActive, toggleType);
         if (isActive) {
             Swal.fire({
-                title: "Bạn muốn khoá tai khoản ?",
+                title: "Bạn muốn khoá tài khoản ?",
                 text: "Vui lòng xác nhận !",
                 icon: "warning",
                 showCancelButton: true,

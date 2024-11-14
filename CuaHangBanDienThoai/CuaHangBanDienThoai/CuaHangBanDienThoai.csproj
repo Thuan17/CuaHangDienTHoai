@@ -5072,6 +5072,7 @@
     <Content Include="images\gif\rounded2.gif" />
     <Content Include="images\gif\rounded3.gif" />
     <Content Include="images\gif\search.gif" />
+    <Content Include="images\gif\Spinnerloading.gif" />
     <Content Include="images\gif\store.gif" />
     <Content Include="images\gif\user.gif" />
     <Content Include="images\honor-x6b-purple-thumb-600x600.jpg" />
@@ -5473,6 +5474,7 @@
     <Content Include="Scripts\admin\BannerEdit.js" />
     <Content Include="Scripts\admin\Bill.js" />
     <Content Include="Scripts\admin\CustomerIndex.js" />
+    <Content Include="Scripts\admin\Employee_Edit.js" />
     <Content Include="Scripts\admin\Employee_Index.js" />
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
@@ -5674,6 +5676,7 @@
     </Content>
     <Content Include="Areas\Admin\Views\Employee\Patial_Detial.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Partial_Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Employee\Search.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -11,6 +11,8 @@ using System.Text;
 using System.Security.Cryptography;
 using System.Globalization;
 using System.IO;
+using System.Web.Helpers;
+using System.Web.UI;
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
     public class EmployeeController : Controller
@@ -136,7 +138,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     string fileName = Path.GetFileName(newImage.FileName);
                     if (fileName.Length > 20)
                     {
-                        return Json(new { Success = false, Code = -2, msg = "Tên hình ảnh không 20 ky tu!" });
+                        return Json(new { Success = false, Code = -2, msg = "Tên hình ảnh không quá 20 ky tu!" });
                        
                     }
                     string path = Path.Combine(Server.MapPath("~/UploadsEmp/Image"), fileName);
@@ -189,7 +191,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 }
             }
         }
-        [AuthorizeFunction("Quản trị viên")]
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
         public ActionResult Patial_Detial(int employeeid)
         {
             if (employeeid > 0)
@@ -198,13 +200,17 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 if (emp != null)
                 {
                  bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
-                ViewBag.IsAdmin = isAdmin;
-                return PartialView(emp); 
+                    bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.IsManage = isManage;
+                    ViewBag.TargetRole = emp.tb_Function?.TitLe?.Trim(); // Vai trò của người đang xem
+
+                    return PartialView(emp); 
                 }  
             }
             return PartialView();   
         }
-        
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
         public ActionResult Partial_Edit(int employeeid)
         {
             if (employeeid > 0)
@@ -265,8 +271,241 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         }
 
 
+        [AuthorizeFunction("Quản trị viên")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult>Edit(Admin_EditEmployee req , HttpPostedFileBase newImage)
+        {
+            if (!ModelState.IsValid) {
+                return Json(new { Success = false, Code = -2,msg="Vui lòng nhập đầy đủ thông tin !!!" }); 
+            }
+            if (Session["user"] == null)
+            {
+                return Json(new { Success = false, Code = -3, msg = "Phiên đăng nhập hết hạn!!!" });
+            }
+            AccountEmployee nvSession = (AccountEmployee)Session["user"];
+            var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
+
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+
+                try
+                {
+                    var emp = await db.Employee.FirstOrDefaultAsync(x => x.EmployeeId == req.EmployeeId);
+                    if (emp == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy nhân viên !!!" });
+                    }
+                    var accemp = await db.AccountEmployee.FirstOrDefaultAsync(x => x.EmployeeId == req.EmployeeId);
+                    if (accemp == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy nhân viên !!!" });
+                    }
+
+                    if(newImage==null)
+                    {
+                        bool isModified =
+                        emp.NameEmployee.Trim() != req.NameEmployee.Trim() ||
+                        emp.PhoneNumber.Trim() != req.PhoneNumber.Trim() ||
+                        emp.CitizenIdentificationCard.Trim() != req.CitizenIdentificationCard.Trim() ||
+                        emp.Email.Trim() != req.Email.Trim() ||
+                        emp.Location.Trim() != req.Location.Trim() ||
+                        emp.Wage != req.Wage ||
+                        emp.Sex != req.Sex ||
+                        emp.FunctionId != req.FunctionId ||
+                        emp.Birthday != req.Birthday ||
+                        emp.AccountEmployee.IsLock != req.IsLock;
+                        if (!isModified)
+                        {
+                            return Json(new { Success = false, Code = -4, msg = "Không có thay đổi gì !!!" });
+                        }
+
+                    }
+                   
+                  
 
 
+                    if (emp.PhoneNumber.Trim() != req.PhoneNumber.Trim())
+                    {
+                        var isPhoneNumberDuplicate = await db.Employee
+                                              .AnyAsync(x => x.PhoneNumber.Trim() == req.PhoneNumber.Trim());
+                        if (isPhoneNumberDuplicate)
+                        {
+                            return Json(new { Success = false, Code = -2, msg = "Số điện thoại mới trùng !!!" });
+                        }
+                       
+                    }
+                    if (emp.Email.Trim() != req.Email.Trim() || emp.CitizenIdentificationCard.Trim() != req.CitizenIdentificationCard.Trim())
+                    {
+                        var isDuplicate = await db.Employee.AnyAsync(x =>
+                                                                       x.Email == req.Email.Trim() ||
+                                                                       x.CitizenIdentificationCard.Trim() == req.CitizenIdentificationCard.Trim());
+                        if (isDuplicate)
+                        {
+                            if (await db.Employee.AnyAsync(x => x.Email.Trim() == req.Email.Trim()))
+                            {
+                                return Json(new { Success = false, Code = -2, msg = "Email mới đã trùng !!!" });
+                            }
+                            else
+                            {
+                                return Json(new { Success = false, Code = -2, msg = "Số căn cước mới đã trùng !!!" });
+                            }
+                        }
+                    }
+
+
+
+                    emp.EmployeeId = req.EmployeeId;
+                    emp.PhoneNumber = req.PhoneNumber?.Trim();
+                    emp.NameEmployee = req.NameEmployee?.Trim();
+
+                    emp.CitizenIdentificationCard = req.CitizenIdentificationCard?.Trim();
+                    emp.Email = req.Email?.Trim();
+                    emp.Birthday = req.Birthday;
+                    emp.Location = req.Location?.Trim();
+                    emp.Wage = req.Wage;
+                    emp.Sex = req.Sex?.Trim();
+
+
+                    emp.Image = req.Image?.Trim();
+                    emp.CreatedBy = req.CreatedBy?.Trim();
+                    emp.CreatedDate = (DateTime)req.CreatedDate;
+                    emp.FunctionId = (int)req.FunctionId;
+                    emp.ModifiedBy = checkStaff.NameEmployee?.Trim();
+                    emp.ModifiedDate = DateTime.Now;    
+                    emp.FunctionId = (int)req.FunctionId;
+                    accemp.IsLock = (bool)req.IsLock;
+                    if (newImage == null)
+                    {
+                        emp.Image = req.Image?.Trim();
+                    }
+                    else
+                    {
+                        string fileName = Path.GetFileName(newImage.FileName);
+                        if (fileName.Length > 20)
+                        {
+                            return Json(new { Success = false, Code = -2, msg = "Tên hình ảnh không quá 20 ky tu!" });
+
+                        }
+                        string path = Path.Combine(Server.MapPath("~/UploadsEmp/Image"), fileName);
+                        newImage.SaveAs(path);
+                        emp.Image = fileName?.Trim();
+
+                    }
+                    db.Entry(emp).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+
+                    db.Entry(accemp).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    dbContext.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Câp nhập thành công !!!" });
+                }
+                catch (Exception ex) 
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng !!!" });
+                } 
+              
+
+            }
+        }
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Search(string search)
+        {
+            if(search != null)
+            {
+                var keyLower = search.Trim().ToLower();
+                var acc= await db.AccountEmployee.Where(x=>x.Code.Contains(keyLower)).Select(x=>x.EmployeeId). ToListAsync();
+                var query = db.Employee.AsQueryable().Where(x =>
+                                 (acc.Count == 0 || acc.Contains(x.EmployeeId)) || 
+                                 x.NameEmployee.ToLower().Contains(keyLower) ||   
+                                 x.PhoneNumber.Contains(keyLower)
+                                 //||              
+                                 //x.Email.ToLower().Contains(keyLower) ||           
+                                 //x.Location.ToLower().Contains(keyLower)          
+                             );
+                var totalCount = await query.CountAsync();
+                var emp = await query.ToListAsync();
+                ViewBag.Key = search.Trim();
+                ViewBag.Count = totalCount;
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                ViewBag.IsAdmin = isAdmin;
+                ViewBag.IsManage = isManage;
+                return PartialView(emp);
+            }
+            return PartialView();
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> ResetPass(int employeeId)
+        {
+            if (employeeId <= 0)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy nhân viên !!! " });
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var acc = await db.AccountEmployee.FirstOrDefaultAsync(x => x.EmployeeId == employeeId);
+                    if (acc == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy nhân viên !!! " });
+                    }
+                    var f_pass = MaHoaPass("123");
+                    acc.Password = f_pass.Trim();
+                    db.Entry(acc).State = EntityState.Modified;
+                    await db.SaveChangesAsync();
+                    dbContext.Commit();
+                    return Json(new { Success = true, Code = 1, msg = "Đổi mật khẩu mặt định thành công " });
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng !!! " });
+                }
+            }
+
+
+
+        }
+
+
+
+
+
+        [HttpPost]
+        public async Task<ActionResult> IsLock(int id)
+        {
+            try
+            {
+                var item = await db.AccountEmployee.FirstOrDefaultAsync(x=>x.EmployeeId==id);
+
+                if (item != null)
+                {
+                    item.IsLock = !item.IsLock;
+                    db.Entry(item).State = System.Data.Entity.EntityState.Modified;
+                    await db.SaveChangesAsync();
+
+                    return Json(new { success = true, isLock = item.IsLock });
+                }
+
+                return Json(new { success = false, msg = "Không tìm thấy mã sản phẩm" });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, msg = "Lỗi cập nhập tag hiển thị trang chủ" });
+            }
+        }
 
         public static string MaHoaPass(string str)
         {

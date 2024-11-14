@@ -6,6 +6,10 @@
         position: relative;
     }
 
+    .hide {
+        display: none;
+    }
+
     .status-locked-left {
         position: absolute;
         top: 10px;
@@ -21,11 +25,25 @@
         width: 150px;
         box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
     }
+
+
+    .cardheader {
+        position: relative;
+    }
+
+    .position-absolute {
+        z-index: 10;
+    }
+
+    .conlan {
+        max-height: 380px;
+        overflow-y: auto;
+    }
 </style>
 <div class="card-header d-flex justify-content-between align-items-center">
     <div class="card-title">
         <h5 class="mb-0">
-            Thông tin nhân viên 
+            Thông tin nhân viên
         </h5>
     </div>
     <div class="card-tools">
@@ -36,172 +54,202 @@
         </div>
     </div>
 </div>
+
 @if (Model != null)
 {
-    <div class="card-body pt-0 pb-0">
-        <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0 pb-3">
-                <div class="shipping-details mb-0 mb-sm-0 clearfix">
-                    <nav>
-                        <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Thông tin chung</button>
-                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Đơn hàng</button>
-                            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Giỏ hàng</button>
+    <div class="card-body pt-0 pb-0 p-1 m-0 w-100">
+        <div class="card p-0 m-0 w-100">
+            <div class="card p-0 m-0 w-100">
+                <div class="card-header overflow-hidden text-center align-items-center cardheader p-0 m-0 w-100 bg-white position-relative">
+                    <!-- Vùng chứa nút ở góc phải -->
+                    <div class="position-absolute" style="top: 10px; right: 10px;">
+                        <button type="button" class="btn btn-danger btnChangePass btnResetPass
+    @(
+        (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ||
+        (ViewBag.IsManage != null && (bool)ViewBag.IsManage && ViewBag.TargetRole != "Quản trị viên" && ViewBag.TargetRole != "Quản lý")
+        ? "" : "hide"
+    )" data-id="@Model.EmployeeId">
+                            <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 38px; height: auto; display:none" />
+                            <span class="m-0 button-text">Reset pass</span>
+                        </button>
+
+                        <button type="button" class="btn btn-primary ms-1">Tin nhắn</button>
+                    </div>
+
+                    <div class="row pt-2 justify-content-center">
+                        <div class="col-12 text-center">
+                            <img src="@(Model.Image != null ? Url.Content("~/UploadsEmp/Image/" + Model.Image) : Url.Content("/images/logo/logo2.png"))"
+                                 alt="PadaMinStore" class="rounded-circle img-fluid" id="defaultImage" style="width: 150px; cursor: pointer;">
+
+
+
+                            <h5 class="my-3">@Model.NameEmployee.Trim()</h5>
                         </div>
-                    </nav>
 
-                    <div class="tab-content  " id="nav-tabContent">
-                        <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    </div>
 
-                            <div class="pt-1 p-3 ">
-
-                                @if (Model != null)
-                                {
-                                    <div class="row mb-3">
-                                        <div class="col-lg-4">
-                                            <div class="card ">
-                                                <div class="card-body text-center">
-                                                    @*<img src="~/images/logo/logoweb.png" />*@
-                                                   <img src="@(Model.Image != null ? Url.Content("~/UploadsEmp/Image/" + Model.Image) : Url.Content("/images/logo/logo2.png"))" alt="PadaMinStore"
-                                                         class="rounded-circle img-fluid" style="width: 150px;">
-                                                    <h5 class="my-3">@Model.NameEmployee.Trim()</h5>
-                                                    <p class="text-muted mb-1">Mã nhân viên : @Model.AccountEmployee.Code.Trim()</p>
-                                                    <p class="text-muted mb-1">Chức vụ : @Model.tb_Function.TitLe.Trim()</p>
-                                                
-                                              
-                                                    <div class="d-flex justify-content-center mb-2">
-                                                        @*<button type="button" class="btn btn-warning btnChangePass">Cập nhập mật khẩu</button>*@
-                                                        @*<button type="button"  class="btn btn-primary ms-1">Tin nhắn</button>*@
-                                                    </div>
-                                                </div>
-                                                @if (Model.AccountEmployee.IsLock == true)
-                                                {
-                                                    <div class="status-locked-left">
-                                                        Đã bị khóa
-                                                    </div>
-                                                }
-
-                                            </div>
-
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <div class="card m-0 w-100  mb-4" style="min-height:332px;">
-                                                <div class="card-header d-flex justify-content-between align-items-center">
-                                                    <div class="card-title">
-                                                        <h5 class="mt-1">
-                                                            Thông tin chung
-                                                        </h5>
-                                                    </div>
-                                                  
-                                                </div>
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">Tên nhân viên :</p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-                                                            <p class="text-muted mb-0">@Model.NameEmployee.Trim()</p>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">Email :</p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-                                                            <p class="text-muted mb-0">@Model.Email.Trim()</p>
-
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">Số điện thoại :</p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-                                                            <p class="text-muted mb-0">@Model.PhoneNumber.Trim()</p>
-                                                        </div>
-                                                    </div>                            <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">Ngày sinh </p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-
-
-                                                            <p class="text-muted mb-0">  @String.Format("{0:dd/MM/yyyy}", Model.Birthday)</p>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">Giới tính </p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-
-
-                                                            <p class="text-muted mb-0">  @Model.Sex</p>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">   Ngày vào làm  </p>
-                                                        </div>
-                                                        <div class="col-sm-9">
-
-                                                       
-                                                            <p class="text-muted mb-0">    @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <p class="mb-0">Lương </p>
-                                                        </div>
-                                                        @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
-                                                        {
-                                                            <div class="col-sm-9">
-
-
-                                                                <p class="text-muted mb-0">@Common.FormatNumber(Model.Wage) đ</p>
-                                                            </div>
-
-
-                                                        }
-
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-
-                                        <div class="col-md-12 p-0">
-                                           
-                                        </div>
-                                    </div>
-                                }
-
-
-
-
-                            </div>
+                    <div class="row">
+                        <div class="col-lg-6 text-lg-end" style="float:inline-end">
+                            <p class="mb-1">Mã nhân viên: @Model.AccountEmployee.Code.Trim()</p>
+                            <p class="mb-1">Chức vụ hiện tại: @Model.tb_Function.TitLe.Trim()</p>
                         </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                            <div class="pt-1 p-3">
-                              
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                            <div class="p-3">
-                             
-                            </div>
+
+                        <div class="col-md-6 text-md-start">
+                            <p class="mb-1 text-md-start">Ngày vào làm: @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                            <p class="mb-1 text-md-start">Tiếp nhận: @Model.CreatedBy.Trim()</p>
                         </div>
                     </div>
+
+
+                </div>
+                @if (Model.AccountEmployee.IsLock == true)
+                {
+                    <div class="status-locked-left">
+                        Đã bị khóa
+                    </div>
+                }
+            </div>
+
+
+
+            <nav>
+                <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Thông tin chung</button>
+                </div>
+            </nav>
+            <div class="card-body    m-0 p-0 w-100 row text-center align-items-center  conlan" style="overflow-x: hidden;">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12  m-0 p-0 w-100">
+                    <div class="shipping-details m-0 p-0 w-100 clearfix">
+
+
+                        <div class="tab-content p-1 m-1 w-100   " id="nav-tabContent">
+                            <div class="tab-pane fade active show    pt-1 " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                <div class=" row  p-1">
+                                    <div class="col-12 col-sm-12 col-md-12 col-lg-12   ">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Tên nhân viên :</b>
+                                                    <span>@Model.NameEmployee.Trim()</span>
+                                                    <div class="underline"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Email nhân viên :</b>
+                                                    <span>@Model.Email.Trim()</span>
+                                                    <div class="underline"></div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Số căn cước công dân  :</b>
+                                                    <span>@Model.CitizenIdentificationCard.Trim()</span>
+                                                    <div class="underline"></div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Số điện thoại :</b>
+                                                    <span>@Model.PhoneNumber.Trim()</span>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Ngày sinh :</b>
+                                                    <span>@Model.Birthday.ToString("dd/MM/yyyy")</span>
+
+                                                    <div class="underline"></div>
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Giới tính :</b>
+                                                    @Model.Sex.Trim()
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="input-data">
+                                                    <b for="">Địa chỉ :</b>
+                                                    <span>@Model.Location.Trim()</span>
+
+                                                    <div class="underline"></div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <div class="row">
+                                            @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                            {
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Lương :</b>
+                                                        <span>  @Common.FormatNumber(Model.Wage) đ</span>
+
+
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-footer row">
+                <div class="col-8 col-sm-8 col-md-8 col-lg-8 mx-auto d-flex justify-content-center align-items-center">
+                    <button type="button" class="btn btn-success d-flex align-items-center justify-content-center w-100" data-id="@Model.EmployeeId" id="saveEmployee" style="height: 50px;">
+                        <img src="~/images/gif/Spinnerloading.gif" class="loading-image " style="width: 45px; height: 45px; display: none; " />
+
+                        <span class="button-text ">Cập nhật nhân viên @Model.NameEmployee.Trim()</span>
+                    </button>
                 </div>
             </div>
 
@@ -210,5 +258,10 @@
 
 
         </div>
+
     </div>
+
 }
+
+@*<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="~/Scripts/admin/Employee_Index.js"></script>*@

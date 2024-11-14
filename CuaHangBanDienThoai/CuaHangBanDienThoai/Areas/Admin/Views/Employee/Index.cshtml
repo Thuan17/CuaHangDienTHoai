@@ -9,7 +9,22 @@
 <style>
     p {
         color: black !important;
-        white-space: nowrap !important; /* Không cho chữ xuống dòng */
+        white-space: nowrap !important; 
+    }
+
+    .hide {
+        display: none;
+    }
+    .loading-image {
+       align-items:center;
+       justify-items:center;
+
+
+
+    }
+
+    .button-text {
+        display: inline-block;
     }
 </style>
 <div class="bg-sg" style="display: none ">
@@ -69,8 +84,15 @@
 
                     <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm nhân viên..."
-                                   aria-label="Search" aria-describedby="basic-addon2" id="searchinput" action="@Url.Action("SearchProduct", "Product")" method="get">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm nhân viên Tên , Mã nhân viên ..."
+                                   aria-label="Search" aria-describedby="basic-addon2" id="searchinput" method="get">
+                            <div class="input-group-append">
+                                <button class="btn bg-light" type="button" id="clearInputBill">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </button>
+                            </div>
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="button" id="searchbtn">
                                     <i class="fas fa-search fa-sm"></i>
@@ -108,16 +130,16 @@
                             <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
 
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Thông tin nhân viên </th>
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Tài khoản </th>
+                            <th class=" @(ViewBag.IsAdmin!=null && (bool)ViewBag.IsAdmin ?"text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2   ":"hide")">Tài khoản </th>
 
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 100px;"></th>
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 150px;"></th>
 
 
                             @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
                             <th class="text-secondary opacity-7" style="max-width:75px;"></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody >
                         @if (Model != null && Model.Any())
                         {
 
@@ -161,36 +183,52 @@
 
 
                                     </td>
-                                    <td class="align-middle  justify-content-center align-items-center" style="height: 100px;">
-
-                                        <div class="toggle d-flex justify-content-center align-items-center" style="width:100%;height: 100%;">
-                                            <label class="toggle" for="toggleIsLock_@item.EmployeeId" style="display: flex; align-items: center;">
-                                                <span class="text-center" style="white-space: nowrap;">
-                                                    <input class="toggle__input check_IsLock" type="checkbox" id="toggleIsLock_@item.EmployeeId" @(item.AccountEmployee.IsLock.GetValueOrDefault() ? "checked" : "")>
-                                                    <div class="toggle__fill"></div>
-                                                </span>
-                                            </label>
+                                    <td class="  @(ViewBag.IsAdmin!=null && (bool)ViewBag.IsAdmin ?"align-middle  justify-content-center align-items-center   ":"hide")" style="height: 100px;">
+                                        <div class="d-flex w-100  justify-content-center align-items-center">
+                                            <span class="mr-2">
+                                                Mở
+                                            </span>
+                                            <div class="toggle d-flex justify-content-center align-items-center mt-2" >
+                                                <label class="toggle" for="toggleIsLock_@item.EmployeeId" style="display: flex; align-items: center;">
+                                                    <span class="text-center" style="white-space: nowrap;">
+                                                        <input class="toggle__input check_IsLock" type="checkbox" id="toggleIsLock_@item.EmployeeId" @(item.AccountEmployee.IsLock.GetValueOrDefault() ? "checked" : "")>
+                                                        <div class="toggle__fill"></div>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <span class="ml-2">
+                                                Khoá
+                                            </span>
                                         </div>
+                                      
                                     </td>
 
                                     <td class="align-middle p-0 m-0 d-flex justify-content-center align-items-center"
-                                        style="max-width: 100px; width: 100px;">
+                                        style="max-width: 150px; width: 150px;">
 
                                         <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
                                             <button type="button"
-                                                    class="btn btn-primary btn-s mt-3 mb-2 text-white btnDetail" data-id="@item.EmployeeId"
-                                                    style="min-width: 60px;">
+                                                    class="btn btn-primary btn-s mt-1 mb-2 text-white btnDetail" data-id="@item.EmployeeId"
+                                                    style="min-width: 110px;">
                                                 Xem
                                             </button>
-
                                             @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                             {
                                                 <button type="button"
-                                                        class='btn btn-warning btn-s text-white btnEdit' data-id="@item.EmployeeId"
-                                                        style="min-width: 60px;">
-                                                    Sửa
+                                                        class='btn btn-warning btn-s mb-2 text-white btnEdit' data-id="@item.EmployeeId"
+                                                        style="min-width: 110px;">
+                                                    Cập nhập
                                                 </button>
+                                                <button type="button"
+                                                        class="btn btn-danger btn-s text-white btnResetPass d-flex justify-content-center align-items-center p-0"
+                                                        data-id="@item.EmployeeId"
+                                                        style="min-width: 110px;">
+                                                    <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 38px; height: auto; display:none" />
+                                                    <span class="m-1 button-text">Reset pass</span>
+                                                </button>
+
                                             }
+
                                         </div>
 
                                     </td>
@@ -210,10 +248,6 @@
                                 </td>
                             </tr>
                         }
-
-
-
-
                     </tbody>
                 </table>
 

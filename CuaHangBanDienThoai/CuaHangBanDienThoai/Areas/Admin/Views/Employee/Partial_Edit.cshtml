@@ -1,27 +1,109 @@
 ﻿@model CuaHangBanDienThoai.Models.Admin_EditEmployee
 @using CuaHangBanDienThoai.Common;
-
+<link href="~/Content/css/CongTac.css" rel="stylesheet" />
 
 <style>
     .card {
         position: relative;
     }
 
+    .hide {
+        display: none !important;
+    }
+
+    #saveOrder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .loading-image {
+        margin-right: 8px; 
+    }
+
+    .button-text {
+        display: inline-block;
+    }
+
     .status-locked-left {
         position: absolute;
         top: 10px;
-        left: -30px; /* Di chuyển nhẹ ra ngoài để trông đẹp mắt hơn */
+        left: -45px; 
         background-color: rgba(255, 0, 0, 0.8);
         color: white;
         padding: 5px 20px;
         font-weight: bold;
         font-size: 14px;
         text-align: center;
-        transform: rotate(-45deg); /* Tạo góc chéo */
+        transform: rotate(-45deg); 
         z-index: 1;
         width: 150px;
         box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
     }
+
+    .cardheader {
+        position: relative;
+    }
+
+    .position-absolute {
+        z-index: 10;
+    }
+
+    .conlan {
+        max-height: 380px;
+        overflow-y: auto;
+    }
+
+
+    /* Basic toggle setup */
+    .toggle {
+        --width: 50px;
+        --height: calc(var(--width) / 2);
+        --border-radius: calc(var(--height) / 2);
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    /* Hide the checkbox */
+    #toggleIsLock {
+        display: none;
+    }
+
+    /* Style for the fill (the colored background part) */
+    .toggle__fill {
+        position: relative;
+        width: var(--width);
+        height: var(--height);
+        border-radius: var(--border-radius);
+        background: #FF0000;
+        transition: background 0.2s;
+    }
+
+    /* Change background when checkbox is checked */
+    #toggleIsLock:checked ~ .toggle__fill {
+        background: #009578;
+    }
+
+    /* Move the toggle knob when checked */
+    .toggle__fill::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: var(--height);
+        width: var(--height);
+        background: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+        border-radius: var(--border-radius);
+        transition: transform 0.2s;
+    }
+
+    /* Move the knob when checkbox is checked */
+    #toggleIsLock:checked ~ .toggle__fill::after {
+        transform: translateX(var(--height));
+    }
+
+
 </style>
 <div class="card-header d-flex justify-content-between align-items-center">
     <div class="card-title">
@@ -39,210 +121,257 @@
 </div>
 @if (Model != null)
 {
-    <div class="card-body pt-0 pb-0">
+    <div class="card-body pt-0 pb-0 p-1 m-0 w-100">
         <form id="EditEmployee" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.EmployeeId)
             @Html.HiddenFor(model => model.CreatedBy)
             @Html.HiddenFor(model => model.CreatedDate)
-            <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0 pb-3">
-                    <div class="shipping-details mb-0 mb-sm-0 clearfix">
-                        <nav>
-                            <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Thông tin chung</button>
-                              </div>
-                        </nav>
-
-                        <div class="tab-content  " id="nav-tabContent">
-                            <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
-                                <div class="pt-1 p-3 ">
-
-                                    @if (Model != null)
-                                    {
-                                        <div class="row mb-3">
-                                            <div class="col-lg-4">
-                                                <div class="card ">
-                                                    <div class="card-body text-center">
-                                                        @*<img src="~/images/logo/logoweb.png" />*@
-                                                        <img src="@(Model.Image != null ? Url.Content("~/UploadsEmp/Image/" + Model.Image) : Url.Content("/images/logo/logo2.png"))" alt="PadaMinStore"
-                                                             class="rounded-circle img-fluid" style="width: 150px;">
-                                                        <h5 class="my-3">@Model.NameEmployee.Trim()</h5>
-                                                        <p class="text-muted mb-1">Mã nhân viên : @Model.Code.Trim()</p>
-                                                        <p class="text-muted mb-1">Chức vụ hiện tại : @Model.TitleFuntion.Trim()</p>
-                                                        <p class="text-muted mb-1">Ngày vào làm : @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
-                                                        <p class="text-muted mb-1">Tiếp nhận : @Model.CreatedBy.Trim()</p>
-                                                        <div class="d-flex justify-content-center mb-2">
-                                                            <button type="button" class="btn btn-warning btnChangePass">Cập nhập mật khẩu</button>
-                                                            <button type="button"  class="btn btn-primary ms-1">Tin nhắn</button>
-                                                        </div>
-                                                    </div>
-                                                    @if (Model.IsLock == true)
-                                                    {
-                                                        <div class="status-locked-left">
-                                                            Đã bị khóa
-                                                        </div>
-                                                    }
-
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-8">
-                                                <div class="card m-0 w-100  mb-4" style="min-height:332px;">
-                                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                                        <div class="card-title">
-                                                            <h5 class="mt-1">
-                                                                Thông tin chung
-                                                            </h5>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="input-data">
-                                                                    <b for="">Tên nhân viên :</b>
-                                                                    <input type="text" name="NameEmployee" id="NameEmployee" value="@Model.NameEmployee.Trim()" required>
-                                                                    <div class="underline"></div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="input-data">
-                                                                    <b for="">Chức vụ  :</b>
-                                                                    @Html.DropDownListFor(x => x.FunctionId, ViewBag.Function as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", @placeholder = "Chức Năng Nhân Viên" })
-                                                                    @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
-                                                                    <div class="underline"></div>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-                                                        <div class="row">
-                                                            <div class="col-sm-12">
-                                                                <div class="input-data">
-                                                                    <b for="">Email nhân viên :</b>
-                                                                    <input type="text" name="Email" id="Email" value="@Model.Email.Trim()" required>
-                                                                    <div class="underline"></div>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-                                                        <hr>
-                                                        <div class="row">
-
-                                                            <div class="col-sm-12">
-                                                                <div class="input-data">
-                                                                    <b for="">Số điện thoại :</b>
-                                                                    <input type="number" name="PhoneNumber" id="PhoneNumber" value="@Model.PhoneNumber.Trim()" required>
-                                                                    <div class="underline"></div>
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>                            <hr>
-                                                        <div class="row">
-
-                                                            <div class="col-sm-12">
-                                                                <div class="input-data">
-                                                                    <b for="">Ngày sinh :</b>
-
-                                                                    <input type="date" name="Birthday" id="birthdayInput" class="form-control bg-light border-0 small" value="@String.Format("{0:yyyy-MM-dd}", Model.Birthday)"
-                                                                           aria-label="Search" aria-describedby="basic-addon2" onchange="updateHiddenBirthday()" required>
-                                                                    <div class="underline"></div>
-                                                                </div>
-
-                                                            </div>
-
-
-                                                        </div>
-                                                        <hr>
-                                                        <div class="row">
-
-                                                            <div class="col-sm-12">
-                                                                <div class="input-data">
-                                                                    <b for="">Giới tính :</b>
-                                                                    @if (ViewBag.SexOptions != null)
-                                                                    {
-                                                                        @Html.DropDownListFor(
-                                                                        x => x.Sex,
-                                                                        ViewBag.SexOptions as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
-                                                                        "-Giới tính nhân viên-",
-                                                                        new { @class = "form-control", id = "Ram" })
-                                                                        @Html.ValidationMessageFor(x => x.Sex, "", new { @class = "text-danger" })
-                                                                    }
-                                                                 
-                                                                </div>
-
-                                                            </div>
-
-
-                                                        </div>
-
-
-                                                        <hr>
-                                                        <div class="row">
-                                                            @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
-                                                            {
-                                                                <div class="col-sm-12">
-                                                                    <div class="input-data">
-                                                                        <b for="">Lương :</b>
-                                                                        <input type="text" name="Wage" id="Wage"
-                                                                               value="@Model.Wage"
-                                                                               class="form-control auto"
-                                                                               data-a-dec="," data-a-sep=".">
-                                                                        @Html.HiddenFor(x => x.Wage, new { @placeholder = "Giá" })
-                                                                        @Html.ValidationMessageFor(x => x.Wage, null, new { @class = "text-danger" })
-
-
-
-
-                                                                        <div class="underline"></div>
-                                                                    </div>
-
-                                                                </div>
-
-
-                                                            }
-
-                                                        </div>
-                                                    </div>
-
-
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="col-md-12 p-0">
-
-                                            </div>
-                                        </div>
-                                    }
-
-                                </div>
+            @Html.HiddenFor(model => model.Image)
+            <input type="hidden"name="IsLock" id="IsLock" value="@(Model.IsLock ? "true" : "false")">
+            <div class="card p-0 m-0 w-100">
+                <div class="card p-0 m-0 w-100">
+                    <div class="card-header overflow-hidden text-center align-items-center cardheader p-0 m-0 w-100 bg-white position-relative">
+                        <!-- Vùng chứa nút ở góc phải -->
+                        <div class="position-absolute d-flex  align-items-center" style="top: 10px; right: 10px;">
+                        <span class="mr-1"> Khoá tài khoản :</span>
+                            <div class=" ml-2  mr-2 mt-2 toggle d-flex align-items-center" onclick="toggleCheckbox(event)">
+                                <label class="toggle" for="toggleIsLock" style="display: flex; align-items: center; cursor: pointer;">
+                                    <span class="text-center" style="white-space: nowrap;">
+                                        <!-- Checkbox is hidden but linked to the toggle -->
+                                        <input id="toggleIsLock" type="checkbox" @(Model.IsLock ? "checked" : "") style="display: none;">
+                                        <div class="toggle__fill"></div>
+                                    </span>
+                                </label>
                             </div>
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                <div class="pt-1 p-3">
+                            <button type="button" class=" ml-2  mr-2 btn btn-warning btnChangePass">Mật khẩu mặc định</button>
+                            <button type="button" class="ml-2  mr-2  btn btn-primary ms-1">Tin nhắn</button>
+                        </div>
 
-                                </div>
+                        <div class="row pt-2 justify-content-center">
+                            <div class="col-12 text-center">
+                                <img src="@(Model.Image != null ? Url.Content("~/UploadsEmp/Image/" + Model.Image) : Url.Content("/images/logo/logo2.png"))"
+                                     alt="PadaMinStore" class="rounded-circle img-fluid" id="defaultImage" style="width: 150px; cursor: pointer;" onclick="document.getElementById('newImage').click()">
+                          
+
+                                <img id="newImagePreview" name="Image" src="#" alt="New Image Preview"
+                                     style="width: 150px; height: 150px; margin: auto; display: none; border-radius: 50%; object-fit: cover;" />
+                                <input type="file" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif"
+                                       style="display: none;" onchange="NewImage(event)" />
+                                <h5 class="my-3">@Model.NameEmployee.Trim()</h5>
                             </div>
-                            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                <div class="p-3">
 
-                                </div>
+                        </div>
+                      
+                        <div class="row">
+                            <div class="col-lg-6 text-lg-end" style="float:inline-end">
+                                <p class="mb-1">Mã nhân viên: @Model.Code.Trim()</p>
+                                <p class="mb-1">Chức vụ hiện tại: @Model.TitleFuntion.Trim()</p>
+                            </div>
+
+                            <div class="col-md-6 text-md-start">
+                                <p class="mb-1 text-md-start">Ngày vào làm: @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+                                <p class="mb-1 text-md-start">Tiếp nhận: @Model.CreatedBy.Trim()</p>
                             </div>
                         </div>
+
+
+                    </div>
+                    @if (Model.IsLock == true)
+                    {
+                        <div class="status-locked-left">
+                            Đã bị khóa
+                        </div>
+                    }
+                </div>
+
+
+             
+                <nav>
+                    <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Thông tin chung</button>
+                    </div>
+                </nav>
+                <div class="card-body    m-0 p-0 w-100 row text-center align-items-center  conlan" style="overflow-x: hidden;">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12  m-0 p-0 w-100">
+                        <div class="shipping-details m-0 p-0 w-100 clearfix">
+
+
+                            <div class="tab-content p-1 m-1 w-100   " id="nav-tabContent">
+                                <div class="tab-pane fade active show    pt-1 " id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                                    <div class=" row  p-1">
+                                        <div class="col-12 col-sm-12 col-md-12 col-lg-12   ">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Tên nhân viên :</b>
+                                                        <input type="text" name="NameEmployee" id="NameEmployee" value="@Model.NameEmployee.Trim()" required>
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Chức vụ  :</b>
+                                                        @Html.DropDownListFor(x => x.FunctionId, ViewBag.Function as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", @placeholder = "Chức Năng Nhân Viên" })
+                                                        @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Email nhân viên :</b>
+                                                        <input type="text" name="Email" id="Email" value="@Model.Email.Trim()" required>
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Số căn cước công dân  :</b>
+                                                        <input type="number" name="CitizenIdentificationCard" id="CCCD" value="@Model.CitizenIdentificationCard.Trim()" required>
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Số điện thoại :</b>
+                                                        <input type="number" name="PhoneNumber" id="PhoneNumber" value="@Model.PhoneNumber.Trim()" required>
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Ngày sinh :</b>
+
+                                                        <input type="date" name="Birthday" id="birthdayInput" class="form-control bg-light border-0 small" value="@String.Format("{0:yyyy-MM-dd}", Model.Birthday)"
+                                                               aria-label="Search" aria-describedby="basic-addon2" onchange="updateHiddenBirthday()" required>
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Giới tính :</b>
+                                                        @if (ViewBag.SexOptions != null)
+                                                        {
+                                                            @Html.DropDownListFor(
+                                                            x => x.Sex,
+                                                            ViewBag.SexOptions as SelectList ?? new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                            "-Giới tính nhân viên-",
+                                                            new { @class = "form-control", id = "Sex" })
+                                                            @Html.ValidationMessageFor(x => x.Sex, "", new { @class = "text-danger" })
+                                                        }
+
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="input-data">
+                                                        <b for="">Địa chỉ :</b>
+                                                        <input type="text" name="Location" id="Location" required class="form-control" value="@Model.Location.Trim()" autocomplete="off" placeholder="Địa Chỉ" />
+
+                                                        <div class="underline"></div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <hr>
+                                            <div class="row">
+                                                @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                                {
+                                                    <div class="col-sm-12">
+                                                        <div class="input-data">
+                                                            <b for="">Lương :</b>
+                                                            <input type="text" name="demoWage" id="demoWage"
+                                                                   value="@Model.Wage"
+                                                                   class="form-control auto"
+                                                                   data-a-dec="," data-a-sep=".">
+                                                            @Html.HiddenFor(x => x.Wage, new { @placeholder = "Giá" })
+                                                            @Html.ValidationMessageFor(x => x.Wage, null, new { @class = "text-danger" })
+
+
+
+
+                                                            <div class="underline"></div>
+                                                        </div>
+
+                                                    </div>
+
+
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+                <div class="card-footer row">
+                    <div class="col-8 col-sm-8 col-md-8 col-lg-8 mx-auto d-flex justify-content-center align-items-center">
+                        <button type="button" class="btn btn-success d-flex align-items-center justify-content-center w-100" data-id="@Model.EmployeeId" id="saveEmployee" style="height: 50px;">
+                            <img src="~/images/gif/Spinnerloading.gif" class="loading-image " style="width: 45px; height: 45px; display: none; " />
+
+                            <span class="button-text ">Cập nhật nhân viên @Model.NameEmployee.Trim()</span>
+                        </button>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
+
+
+
+
         </form>
 
     </div>
+
 }
+
+
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script src="~/Scripts/admin/Employee_Edit.js"></script>
