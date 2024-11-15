@@ -121,6 +121,7 @@
     <Property Name="ModifiedDate" Type="datetime" />
     <Property Name="FunctionId" Type="int" />
     <Property Name="Image" Type="varchar(max)" />
+    <Property Name="ManagerId" Type="int" />
   </EntityType>
   <EntityType Name="ImportWarehouse">
     <Key>
@@ -531,6 +532,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Employee_Manager">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeId" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="ManagerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_ImportWarehouse_Employee">
     <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
     <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="*" />
@@ -825,6 +838,10 @@
     <AssociationSet Name="FK_CartItem_ProductDetail" Association="Self.FK_CartItem_ProductDetail">
       <End Role="ProductDetail" EntitySet="ProductDetail" />
       <End Role="CartItem" EntitySet="CartItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Employee_Manager" Association="Self.FK_Employee_Manager">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
     </AssociationSet>
     <AssociationSet Name="FK_ImportWarehouse_Employee" Association="Self.FK_ImportWarehouse_Employee">
       <End Role="Employee" EntitySet="Employee" />

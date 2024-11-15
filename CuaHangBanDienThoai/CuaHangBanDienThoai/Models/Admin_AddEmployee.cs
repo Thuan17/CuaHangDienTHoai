@@ -19,6 +19,7 @@ namespace CuaHangBanDienThoai.Models
         public string Sex { get;set; }
         public string Image { get;set; }
         public int FunctionId { get;set; }
+        public int? ManagerId { get;set; }
 
     }
 }

@@ -143,6 +143,9 @@
     <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
     <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
     <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
+    <Property Name="ManagerId" Type="Int32" />
+    <NavigationProperty Name="Employee1" Relationship="CUAHANGDIENTHOAIModel.FK_Employee_Manager" FromRole="Employee" ToRole="Employee1" />
+    <NavigationProperty Name="Employee2" Relationship="CUAHANGDIENTHOAIModel.FK_Employee_Manager" FromRole="Employee1" ToRole="Employee" />
   </EntityType>
   <EntityType Name="ImportWarehouse">
     <Key>
@@ -958,5 +961,21 @@
       <End Role="Voucher" EntitySet="Voucher" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
+    <AssociationSet Name="FK_Employee_Manager" Association="CUAHANGDIENTHOAIModel.FK_Employee_Manager">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_Employee_Manager">
+    <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeId" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="ManagerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

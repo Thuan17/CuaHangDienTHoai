@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -126,6 +126,7 @@
           <Property Name="ModifiedDate" Type="datetime" />
           <Property Name="FunctionId" Type="int" />
           <Property Name="Image" Type="varchar(max)" />
+          <Property Name="ManagerId" Type="int" />
         </EntityType>
         <EntityType Name="ImportWarehouse">
           <Key>
@@ -536,6 +537,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Employee_Manager">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Employee1">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ImportWarehouse_Employee">
           <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="ImportWarehouse" Type="Self.ImportWarehouse" Multiplicity="*" />
@@ -831,6 +844,10 @@
             <End Role="ProductDetail" EntitySet="ProductDetail" />
             <End Role="CartItem" EntitySet="CartItem" />
           </AssociationSet>
+          <AssociationSet Name="FK_Employee_Manager" Association="Self.FK_Employee_Manager">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Employee1" EntitySet="Employee" />
+          </AssociationSet>
           <AssociationSet Name="FK_ImportWarehouse_Employee" Association="Self.FK_ImportWarehouse_Employee">
             <End Role="Employee" EntitySet="Employee" />
             <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
@@ -904,8 +921,7 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -1052,6 +1068,9 @@
           <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
+          <Property Name="ManagerId" Type="Int32" />
+          <NavigationProperty Name="Employee1" Relationship="CUAHANGDIENTHOAIModel.FK_Employee_Manager" FromRole="Employee" ToRole="Employee1" />
+          <NavigationProperty Name="Employee2" Relationship="CUAHANGDIENTHOAIModel.FK_Employee_Manager" FromRole="Employee1" ToRole="Employee" />
         </EntityType>
         <EntityType Name="ImportWarehouse">
           <Key>
@@ -1867,7 +1886,23 @@
             <End Role="Voucher" EntitySet="Voucher" />
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
+          <AssociationSet Name="FK_Employee_Manager" Association="CUAHANGDIENTHOAIModel.FK_Employee_Manager">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Employee1" EntitySet="Employee" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Employee_Manager">
+          <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Employee1">
+              <PropertyRef Name="ManagerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1988,6 +2023,7 @@
           <EntitySetMapping Name="Employee">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Employee">
               <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="NameEmployee" ColumnName="NameEmployee" />

@@ -1,20 +1,22 @@
 ﻿@model IEnumerable<CuaHangBanDienThoai.Models.Employee>
-@using CuaHangBanDienThoai.Common
+@using CuaHangBanDienThoai.Common;
+
+
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 <script src="~/Scripts/admin/Employee_Index.js"></script>
 
 
 <div class="card-header bg-white py-3">
     <div class="row">
-        <div class="col-4">
+        <div class="col-2">
             <h6 class="m-0 font-weight-bold text-primary">
                 Quản lý nhân viên
 
             </h6>
-            <span class="text-danger "> <label class="text-dark">Tổng số nhân viên:</label> @ViewBag.Count </span><label class="text-dark pr-1"> tìm theo </label>@ViewBag.Key
+            <span class="text-danger "> <label class="text-dark">Tổng số nhân viên:</label> @ViewBag.Count</span><label class="text-dark pr-1"> tìm theo </label>@ViewBag.Key
         </div>
 
-        <div class="col-8 w-100 d-flex justify-content-end align-items-center">
+        <div class="col-10 w-100 d-flex justify-content-end align-items-center">
             <div class="p-0 m-0 w-100 d-flex justify-content-end align-items-center">
                 <div class="form-group app-label d-flex m-0 pr-2">
 
@@ -37,7 +39,7 @@
                         <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm nhân viên Tên , Mã nhân viên ..."
                                aria-label="search" aria-describedby="basic-addon2" id="searchEmp" name="search">
                         <div class="input-group-append">
-                            <button class="btn bg-light" type="button" id="clearInputBill">
+                            <button class="btn bg-light" type="button" id="clearsearchEmp">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
                                 </svg>
@@ -60,12 +62,11 @@
             </div>
 
         </div>
-
     </div>
 
 
 </div>
-<div class="card-body " id="loaddata">
+<div class="card-body ">
     <div class="table-responsive">
         <table class="table align-items-center mb-0">
             <thead>
@@ -190,7 +191,7 @@
 
                     <tr class="text-center text-danger">
                         <td colspan="5">
-                            <p>Không tồn tại bảng ghi nào <span class="text-danger">@ViewBag.Key</span> !!! </p>
+                            <p>Không tồn tại bảng ghi nào !!!</p>
                         </td>
                     </tr>
                 }
@@ -211,7 +212,3 @@
 
 
 </div>
-
-
-
-

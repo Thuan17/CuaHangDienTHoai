@@ -129,6 +129,7 @@
             @Html.HiddenFor(model => model.CreatedDate)
             @Html.HiddenFor(model => model.Image)
             <input type="hidden"name="IsLock" id="IsLock" value="@(Model.IsLock ? "true" : "false")">
+            <input type="hidden"name="ManagerId" id="ManagerId" value="@(Model.ManagerId.HasValue )">
             <div class="card p-0 m-0 w-100">
                 <div class="card p-0 m-0 w-100">
                     <div class="card-header overflow-hidden text-center align-items-center cardheader p-0 m-0 w-100 bg-white position-relative">
@@ -214,16 +215,25 @@
                                             </div>
                                             <hr>
                                             <div class="row">
-                                                <div class="col-sm-12">
+                                                <div class="col-sm-6" id="GrFunction">
                                                     <div class="input-data">
-                                                        <b for="">Chức vụ  :</b>
-                                                        @Html.DropDownListFor(x => x.FunctionId, ViewBag.Function as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", @placeholder = "Chức Năng Nhân Viên" })
+                                                        <b for="">Chức vụ :</b>
+                                                        @Html.DropDownListFor(x => x.FunctionId, ViewBag.Function as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", @id = "functionChose", @placeholder = "Chức Năng Nhân Viên" })
                                                         @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
                                                         <div class="underline"></div>
                                                     </div>
+                                                </div>
 
+                                                <div class="col-md-6" id="manager">
+                                                    <div class="input-data">
+                                                        <b for="">Người quản lý :</b>
+                                                        @Html.DropDownListFor(x => x.ManagerId, ViewBag.Manager as SelectList, "-Chọn người quản lý-", new { @class = "form-control", @id = "managerField", @placeholder = "Quản lý nhân viên " })
+                                                        @Html.ValidationMessageFor(x => x.ManagerId, null, new { @class = "text-danger" })
+                                                        <div class="underline"></div>
+                                                    </div>
                                                 </div>
                                             </div>
+
                                             <hr>
                                             <div class="row">
                                                 <div class="col-sm-12">

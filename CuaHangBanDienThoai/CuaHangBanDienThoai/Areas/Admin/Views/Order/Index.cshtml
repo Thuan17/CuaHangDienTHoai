@@ -52,6 +52,7 @@
 <div class="container-fluid">
     <!-- Page Heading -->
 
+
     <div class="row">
         <div class="col-6">
             <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
@@ -82,7 +83,7 @@
                 </div>
 
                 <div class="col-10 text-right">
-                  
+
 
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
@@ -95,7 +96,7 @@
                                     </svg>
                                 </button>
                             </div>
-                           
+
                         </div>
                     </form>
 
@@ -118,8 +119,8 @@
                         </div>
                     </form>
                     @*<a href="/len-don" class="btn btn-success">
-          Lên dơn
-        </a>*@
+                          Lên dơn
+                        </a>*@
                 </div>
             </div>
 
@@ -244,9 +245,8 @@
 
                                     </tr>
                                     <tr>
-                                       <td>
-
-                                       </td>
+                                        <td>
+                                        </td>
                                         <td>
                                             <div class="d-flex align-items-center justify-content-center IsConfirmGr_@item.OrderId ">
                                                 <span>Xác nhận :   <a href='#' data-id="@item.OrderId" class="btnIsConfirm">@Html.Raw(strCheckIsConfirm)</a></span>
@@ -256,7 +256,7 @@
                                         <td colspan="3">
                                             <div class="d-flex flex-row align-items-stretch row m-0 p-0 ">
                                                 <div class="col-lg-6">
-                                                    <select class="custom-select Trangthai btn col-12 w-100 mx-1"data-id="@item.OrderId" id="typeBill_@item.OrderId" name="Trangthai"
+                                                    <select class="custom-select Trangthai btn col-12 w-100 mx-1" data-id="@item.OrderId" id="typeBill_@item.OrderId" name="Trangthai"
                                                             @(item.Success == true || (item.OrderStatus?.Trim() == "Đơn trả" || item.OrderStatus?.Trim() == "Đơn huỷ") ? "disabled" : "")>
                                                         @if (item.Success == true && item.OrderStatus?.Trim() == "Đã xuất kho")
                                                         {

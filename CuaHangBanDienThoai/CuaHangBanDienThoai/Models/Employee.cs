@@ -20,6 +20,7 @@ namespace CuaHangBanDienThoai.Models
             this.ImportWarehouse = new HashSet<ImportWarehouse>();
             this.Invoice = new HashSet<Invoice>();
             this.Role = new HashSet<Role>();
+            this.Employee1 = new HashSet<Employee>();
         }
     
         public int EmployeeId { get; set; }
@@ -37,6 +38,7 @@ namespace CuaHangBanDienThoai.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> FunctionId { get; set; }
         public string Image { get; set; }
+        public Nullable<int> ManagerId { get; set; }
     
         public virtual AccountEmployee AccountEmployee { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -46,5 +48,8 @@ namespace CuaHangBanDienThoai.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }
         public virtual tb_Function tb_Function { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Employee> Employee1 { get; set; }
+        public virtual Employee Employee2 { get; set; }
     }
 }

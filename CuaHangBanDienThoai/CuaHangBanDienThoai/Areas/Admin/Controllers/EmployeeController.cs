@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Web.Helpers;
 using System.Web.UI;
+using System.Web.Razor.Tokenizer.Symbols;
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
     public class EmployeeController : Controller
@@ -39,6 +40,12 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 ViewBag.Count = emp.Count;
                 ViewBag.PageSize = pageSize;
                 ViewBag.Page = page;
+
+                var functions = db.tb_Function.ToList();
+               
+                ViewBag.Function = new SelectList(functions, "FunctionId", "Title");
+               
+
                 return View(items.ToPagedList(pageNumber, pageSize));
 
             }
@@ -58,25 +65,30 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             ViewBag.IsManage = isManage;
 
             var functions = db.tb_Function.ToList();
+            var manager =db.Employee.ToList();      
             if (!isAdmin)
             {
                
                 functions = functions.Where(f => f.TitLe.Trim() != "Quản trị viên"&& f.TitLe.Trim() != "Quản lý").ToList();
+                manager = manager.Where(f => f.tb_Function.TitLe?.Trim() == "Quản lý" && f.tb_Function.TitLe?.Trim() == "Quản lý").ToList();
                 if (!isManage)
                 {
                     functions = functions.Where(f => f.TitLe.Trim() != "Quản lý"&& f.TitLe.Trim() != "Quản trị viên").ToList();
+                    manager = manager.Where(f => f.tb_Function.TitLe?.Trim() == "Quản lý" ).ToList();
                 }
             }
             ViewBag.Function = new SelectList(functions, "FunctionId", "Title");
+            ViewBag.Manager = new SelectList(manager, "EmployeeId", "NameEmployee");
+          
             return View();
         }
-
+    
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult>Add(Admin_AddEmployee req , Employee emp , AccountEmployee acc, HttpPostedFileBase newImage)
         {
-            if (newImage == null && newImage.ContentLength < 0)
+            if (newImage == null)
             {
                 return Json(new { Success = false, Code = -2, msg = "Vui lòng chọn ảnh nhân viên !!!" });
             }
@@ -152,9 +164,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     emp.CreatedDate = DateTime.Now;
                     emp.CreatedBy = checkStaff.NameEmployee?.Trim();
                     emp.FunctionId = req.FunctionId;
-                 
+                    emp.ManagerId = req.ManagerId == 0 ? null : (int?)req.ManagerId;
                     //emp.Image = req.Image?.Trim()?? "/images/logo/logo2.png";
-                     db.Employee.Add(emp);
+                    db.Employee.Add(emp);
                     await db.SaveChangesAsync();
 
 
@@ -204,7 +216,11 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     ViewBag.IsAdmin = isAdmin;
                     ViewBag.IsManage = isManage;
                     ViewBag.TargetRole = emp.tb_Function?.TitLe?.Trim(); // Vai trò của người đang xem
-
+                    if (emp.ManagerId != null)
+                    {
+                      var Manager= db.Employee.FirstOrDefault(x => x.EmployeeId == emp.ManagerId);
+                        ViewBag.Manager = Manager.NameEmployee?.Trim();  
+                    }
                     return PartialView(emp); 
                 }  
             }
@@ -232,11 +248,13 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         Sex = emp.Sex.Trim(),
                         TitleFuntion = emp.tb_Function.TitLe.Trim(),
                         Code  = emp.AccountEmployee.Code.Trim(),
-                        Image = emp.Image.Trim(),
+                        Image = emp.Image??"",
                         CreatedBy = emp.CreatedBy.Trim(),
                         CreatedDate = (DateTime)emp.CreatedDate,
                         FunctionId =(int)emp.FunctionId,
-                        IsLock=(bool)emp.AccountEmployee.IsLock,  
+                        ManagerId = emp.ManagerId.HasValue ? (int?)emp.ManagerId : null,
+
+                        IsLock = (bool)emp.AccountEmployee.IsLock,  
                     };
                     bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
                     bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
@@ -244,15 +262,19 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     ViewBag.IsManage = isManage;
 
                     var functions = db.tb_Function.ToList();
+                    var manager = db.Employee.ToList();
                     if (!isAdmin)
                     {
 
                         functions = functions.Where(f => f.TitLe.Trim() != "Quản trị viên" && f.TitLe.Trim() != "Quản lý").ToList();
+                        manager = manager.Where(f => f.tb_Function.TitLe?.Trim() == "Quản lý" && f.tb_Function.TitLe?.Trim() == "Quản lý").ToList();
                         if (!isManage)
                         {
                             functions = functions.Where(f => f.TitLe.Trim() != "Quản lý" && f.TitLe.Trim() != "Quản trị viên").ToList();
+                            manager = manager.Where(f => f.tb_Function.TitLe?.Trim() == "Quản lý").ToList();
                         }
                     }
+
                     var sexOptions = new List<SelectListItem>
                             {
                                 new SelectListItem { Value = "Nam", Text = "Nam" },
@@ -262,6 +284,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
                     ViewBag.Function = new SelectList(functions, "FunctionId", "Title",emp.FunctionId);
+                    ViewBag.Manager = new SelectList(manager, "EmployeeId", "NameEmployee", emp.ManagerId ?? 0); 
+
+
                     Session["Admin_EditEmp" + emp.EmployeeId] = viewModel;
                     return PartialView(viewModel);
                 }
@@ -313,6 +338,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         emp.Wage != req.Wage ||
                         emp.Sex != req.Sex ||
                         emp.FunctionId != req.FunctionId ||
+                         emp.ManagerId != req.ManagerId ||
                         emp.Birthday != req.Birthday ||
                         emp.AccountEmployee.IsLock != req.IsLock;
                         if (!isModified)
@@ -321,8 +347,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         }
 
                     }
-                   
-                  
+   
+
+
 
 
                     if (emp.PhoneNumber.Trim() != req.PhoneNumber.Trim())
@@ -338,8 +365,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     if (emp.Email.Trim() != req.Email.Trim() || emp.CitizenIdentificationCard.Trim() != req.CitizenIdentificationCard.Trim())
                     {
                         var isDuplicate = await db.Employee.AnyAsync(x =>
-                                                                       x.Email == req.Email.Trim() ||
-                                                                       x.CitizenIdentificationCard.Trim() == req.CitizenIdentificationCard.Trim());
+                                                                     (x.Email == req.Email.Trim() || x.CitizenIdentificationCard.Trim() == req.CitizenIdentificationCard.Trim())
+                                                                     && x.EmployeeId != req.EmployeeId);
                         if (isDuplicate)
                         {
                             if (await db.Employee.AnyAsync(x => x.Email.Trim() == req.Email.Trim()))
@@ -352,6 +379,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                             }
                         }
                     }
+
 
 
 
@@ -374,7 +402,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     emp.ModifiedBy = checkStaff.NameEmployee?.Trim();
                     emp.ModifiedDate = DateTime.Now;    
                     emp.FunctionId = (int)req.FunctionId;
+                    emp.ManagerId = req.ManagerId == 0 ? null : (int?)req.ManagerId;
+
                     accemp.IsLock = (bool)req.IsLock;
+                  
                     if (newImage == null)
                     {
                         emp.Image = req.Image?.Trim();
@@ -410,37 +441,72 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
             }
         }
+        [HttpGet]
+        public ActionResult EmployeeById(int? functionChoseid)
+        {
+            if (functionChoseid > 0)
+            {
+                var fun = db.tb_Function.Find(functionChoseid);
+                if (fun != null) 
+                {
+                    var emp = db.Employee.Where(x => x.FunctionId == functionChoseid).OrderByDescending(x => x.FunctionId).ToList();
+                    if (emp != null)
+                    {
+                        ViewBag.Key = fun.TitLe.Trim();
+                        ViewBag.Count = emp.Count();
 
+                        var functions = db.tb_Function.ToList();
 
+                        ViewBag.Function = new SelectList(functions, "FunctionId", "Title", fun.FunctionId);
+                        bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                        bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                        ViewBag.IsAdmin = isAdmin;
+                        ViewBag.IsManage = isManage;
+
+                        return PartialView(emp);
+                    }
+                }  
+            }
+            return PartialView();
+        }
 
 
         [HttpGet]
         public async Task<ActionResult> Search(string search)
         {
-            if(search != null)
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                var keyLower = search.Trim().ToLower();
-                var acc= await db.AccountEmployee.Where(x=>x.Code.Contains(keyLower)).Select(x=>x.EmployeeId). ToListAsync();
-                var query = db.Employee.AsQueryable().Where(x =>
-                                 (acc.Count == 0 || acc.Contains(x.EmployeeId)) || 
-                                 x.NameEmployee.ToLower().Contains(keyLower) ||   
-                                 x.PhoneNumber.Contains(keyLower)
-                                 //||              
-                                 //x.Email.ToLower().Contains(keyLower) ||           
-                                 //x.Location.ToLower().Contains(keyLower)          
-                             );
-                var totalCount = await query.CountAsync();
-                var emp = await query.ToListAsync();
+               
+                var keyword = search.Trim().ToLower();
+                var alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(keyword);   
+                var employees = await (from acc in db.AccountEmployee
+                                       join emp in db.Employee on acc.EmployeeId equals emp.EmployeeId
+                                       where acc.Code.ToLower().Contains(keyword) ||
+                                             emp.NameEmployee.ToLower().Contains(keyword) || 
+                                             emp.PhoneNumber.Contains(keyword) 
+                                       select emp)
+                                       .OrderBy(x => x.NameEmployee) 
+                                       .ToListAsync();
+
+          
+                var totalCount = employees.Count;
+
+              
                 ViewBag.Key = search.Trim();
                 ViewBag.Count = totalCount;
                 bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
                 bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
                 ViewBag.IsAdmin = isAdmin;
                 ViewBag.IsManage = isManage;
-                return PartialView(emp);
+
+                var functions = db.tb_Function.ToList();
+
+                ViewBag.Function = new SelectList(functions, "FunctionId", "Title");
+                return PartialView(employees); 
             }
-            return PartialView();
+            return PartialView(new List<Employee>());
         }
+
 
 
 
@@ -480,7 +546,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
-
+   
 
         [HttpPost]
         public async Task<ActionResult> IsLock(int id)

@@ -115,6 +115,7 @@
     <EntitySetMapping Name="Employee">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Employee">
         <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="NameEmployee" ColumnName="NameEmployee" />

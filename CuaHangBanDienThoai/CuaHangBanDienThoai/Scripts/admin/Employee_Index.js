@@ -144,34 +144,56 @@
     });
 });
 $(document).ready(function () {
-    $('#clearInputBill').click(function () {
-        $("#searchinput").val("");
-
-        window.location.href = "/quan-ly-don-hang";
+    $('#clearsearchEmp').click(function () {
+        alert("thuận"); // Kiểm tra xem sự kiện click có hoạt động
+        $("#searchEmp").val(""); // Đảm bảo đúng ID input
+        window.location.reload(); // Tải lại trang
     });
-    $('#searchinput').on('input', function () {
+
+    $('#searchEmp').on('input', function () {
         var keyword = $(this).val().trim();
-        if (keyword.length >= 3) {
+        if (keyword.length > 4) {
             $('.loadding').show();
+            $('.body').hide(); 
             $.ajax({
                 url: '/Admin/Employee/Search',
                 type: 'GET',
                 data: { search: keyword },
-                //beforeSend: function () {
-                //    $('#loaddata').html('<div class="text-center"> <img  src="~/images/gif/loading.gif" /></div>');
-                //},
+              
                 success: function (response) {
-                    $('.loadding').hide();
+                    $('.loading').hide(); 
+                    $('.body').show(); 
                     $('#loaddata').html(response);
                 },
                 error: function () {
-                    // Xử lý lỗi nếu có
+                    $('.loading').hide(); 
                     console.log('Đã xảy ra lỗi khi tải dữ liệu.');
                 }
             });
+        }
+    });
+
+
+    $('#functionChose').change(function () {
+     
+        var functionChoseid = $(this).val();
+        $('.loadding').show();
+        $('.body').hide(); 
+        if (functionChoseid) {
+            $.ajax({
+                url: '/Admin/Employee/EmployeeById',
+                type: 'GET',
+                data: { functionChoseid: functionChoseid },
+                success: function (res) {
+                    $('.loading').hide(); 
+                    $("#loaddata").html(res);
+                    $('.body').show(); 
+                }, error: function (res) {
+                    alert("Có lỗi load dữ liệu")
+                }
+            });
         } else {
-            $('.loadding').hide();
-            window.Location.href = "/quan-ly-don-hang";
+            window.location.reload();
         }
     });
 });

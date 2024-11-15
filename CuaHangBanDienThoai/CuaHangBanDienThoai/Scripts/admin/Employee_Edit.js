@@ -23,15 +23,32 @@ function toggleCheckbox(event) {
     hiddenInput.value = checkbox.checked ? "true" : "false";
 }
 
-
+function checkFunction() {
+    var functionId = $('#functionChose option:selected').text().trim();
+    if (functionId === "Quản trị viên" || functionId === "Quản lý") {
+        $('#manager').hide();  
+        $('#GrFunction').removeClass('col-sm-6').addClass('col-12'); 
+        $('#ManagerId').val(null); 
+        var selectedManagerId = $('#ManagerId').val();
+        $('#ManagerId').val(selectedManagerId);
+    } else {
+        $('#manager').show();  
+        $('#GrFunction').removeClass('col-12').addClass('col-sm-6'); 
+    }
+}
 
 $(document).ready(function () {
 
 
- 
-
-
-
+    checkFunction();
+    $('#managerField').change(function () {
+        var selectedManagerId = $(this).val();
+        $('#ManagerId').val(selectedManagerId);
+        console.log("selectedManagerId", selectedManagerId);
+    });
+    $('#functionChose').change(function () {
+        checkFunction();  
+    });
 
     $('.auto').autoNumeric('init');
     $('#demoWage').bind('blur focusout keypress keyup', function () {
@@ -44,7 +61,24 @@ $(document).ready(function () {
         e.preventDefault();
         var originalText = $(this).html();
         let isValid = validateForm();
+        let manager = true;
         var employeeid = $(this).data('id');
+        var NameEmployee = $('#NameEmployee').val().trim();
+        var funId = $('#functionChose ');
+        console.log("funId", funId);
+        var functionId = $('#functionChose option:selected').text().trim();
+        if (functionId !== "Quản trị viên" && functionId !== "Quản lý") {
+            var managerId = $('#managerField').val();
+            if (!managerId || managerId === "-Chọn người quản lý-") {
+                showError('managerField', "Vui lòng chọn người quản lý  " + NameEmployee.trim());
+                $('#managerField').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#managerField').removeClass('error-border');
+            }
+        }
+
+
         if (isValid) {
             var $button = $(this); // Gán nút vào biến để dùng trong các callback
             $button.prop('disabled', true);
@@ -121,7 +155,7 @@ function validateForm() {
     var Sex = $('#Sex').val().trim();
     var birthdayDate = new Date(birthdayInput);
     const Wage = parseInt($('#demoWage').val().replace(/\D/g, ''), 10);
-    var functionId = $('#FunctionId').val();
+    var functionId = $('#functionChose').val();
     var startDateStr = $('#birthdayInput').val().trim();
     var currentDate = new Date().getFullYear();
 

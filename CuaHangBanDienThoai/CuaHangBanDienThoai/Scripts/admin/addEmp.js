@@ -1,15 +1,65 @@
-﻿$(document).ready(function () {
+﻿
+
+
+
+$(document).ready(function () {
     $('.auto').autoNumeric('init');
     $('#demoWage').bind('blur focusout keypress keyup', function () {
         var demoGet = $('#demoWage').autoNumeric('get');
         $('#Wage').val(demoGet);
         $('#Wage').autoNumeric('set', demoGet);
     });
+    function checkFunction() {
+        var functionId = $('#functionChose option:selected').text().trim();
+
+        // Ghi log giá trị functionId để kiểm tra
+        console.log('Selected functionId:', functionId);
+
+        if (functionId === "Quản trị viên" || functionId === "Quản lý") {
+            console.log('Hiding manager field and expanding Function field');
+            $('#managerField').parent().hide();
+            $('#manager').removeClass('col-md-6');
+            $('#GrFunction').removeClass('col-lg-6').addClass('col-12');
+        } else {
+            console.log('Showing manager field and resizing Function field');
+            $('#GrFunction').removeClass('col-12').addClass('col-lg-6');
+            $('#managerField').parent().show();
+            $('#manager').addClass('col-md-6');
+        }
+    }
+
+    // Gọi checkFunction() ngay khi trang tải
+    checkFunction();
+
+    // Thêm sự kiện change để xử lý khi chọn mới
+    $('#functionChose').change(function () {
+        console.log('Dropdown value changed');
+        checkFunction();
+    });
    
+
     $('#myFormAddEmp').submit(function (e) {
         e.preventDefault();
+
+
         let isValid = validateForm();
-        if (isValid) {
+        let manager = true;
+        var NameEmployee = $('#NameEmployee').val().trim();
+        var functionId = $('#functionChose option:selected').text().trim();
+        if (functionId !== "Quản trị viên" && functionId !== "Quản lý") {
+            var managerId = $('#managerField').val();
+            if (!managerId || managerId === "-Chọn người quản lý-") {
+                showError('managerField', "Vui lòng chọn người quản lý  " + NameEmployee.trim());
+                $('#managerField').addClass('error-border');
+                isValid = false;
+            } else {
+                $('#managerField').removeClass('error-border');
+            }
+        }
+
+       
+
+        if (isValid && manager) {
             //for (var instance in CKEDITOR.instances) {
             //    CKEDITOR.instances[instance].updateElement();
             //}
@@ -19,7 +69,7 @@
 
             var form = document.getElementById('myFormAddEmp');
             var formData = new FormData(form);
-           
+          
             if (formData) {
                 $.ajax({
                     url: '/Admin/Employee/Add',
@@ -125,12 +175,14 @@ function validateForm() {
   
     var Email = $('#Email').val().trim();
     var diachi = $('#Location').val().trim();
+   
     var Sex = $('#Sex').val().trim();
     var birthdayDate = new Date(birthdayInput);
     const Wage = parseInt($('#demoWage').val().replace(/\D/g, ''), 10);
 
 
-    var functionId = $('#FunctionId').val();
+ /*   var functionId = $('#FunctionId').val();*/
+    var functionId = $('#functionChose').val();
     var startDateStr = $('#birthdayInput').val().trim();
   
     var currentDate = new Date().getFullYear();
@@ -139,9 +191,7 @@ function validateForm() {
 
     let isValid = true;
 
-
-
-
+  
 
     const allFields = ['NameEmployee', 'PhoneNumber', 'CCCD', 'birthdayInput', 'Email', 'Location', 'Sex','demoWage'];
     const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
@@ -238,6 +288,8 @@ function validateForm() {
     } else {
         $('#FunctionId').removeClass('error-border');
     }
+   
+ 
 
 
     if (!Sex) {

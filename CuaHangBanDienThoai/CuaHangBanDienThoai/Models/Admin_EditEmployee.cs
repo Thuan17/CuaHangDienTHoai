@@ -20,6 +20,8 @@ namespace CuaHangBanDienThoai.Models
         public string CreatedBy { get; set; }
         public DateTime CreatedDate { get; set; }
         public int FunctionId { get; set; }
+        public int? ManagerId { get; set; }
+
         public string Image { get; set; }
         public string Code { get; set; }
         public string TitleFuntion { get; set; }

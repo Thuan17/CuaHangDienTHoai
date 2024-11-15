@@ -96,7 +96,11 @@
 
                         <div class="col-md-6 text-md-start">
                             <p class="mb-1 text-md-start">Ngày vào làm: @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
-                            <p class="mb-1 text-md-start">Tiếp nhận: @Model.CreatedBy.Trim()</p>
+                            <p class="mb-1 text-md-start">Quản lý bởi :<span class="text-danger"> @(ViewBag.Manager??"")</span>
+                            
+                          
+                            
+                            </p>
                         </div>
                     </div>
 

@@ -65,6 +65,7 @@
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_ProductImage_ProductDetail" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_Review_Products" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_VoucherDetail_Voucher" ManuallyRouted="false" />
+        <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_Employee_Manager" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -48,7 +48,7 @@
 </div>
 
 
-<div class="container-fluid">
+<div class="container-fluid" >
     <!-- Page Heading -->
     <div class="row">
         <div class="col-6">
@@ -70,56 +70,76 @@
     </div>
 
     <!-- DataTales Example -->
-    <div class="card shadow mb-4">
+    <div class="card shadow mb-4" id="loaddata">
+
         <div class="card-header bg-white py-3">
             <div class="row">
                 <div class="col-2">
                     <h6 class="m-0 font-weight-bold text-primary">
                         Quản lý nhân viên
-                        <span class="text-danger "> <label class="text-dark">Tổng số nhân viên:</label> @ViewBag.Count</span>
+
                     </h6>
+                    <span class="text-danger "> <label class="text-dark">Tổng số nhân viên:</label> @ViewBag.Count</span>
                 </div>
 
-                <div class="col-10 text-right">
+                <div class="col-10 w-100 d-flex justify-content-end align-items-center">
+                    <div class="p-0 m-0 w-100 d-flex justify-content-end align-items-center">
+                        <div class="form-group app-label d-flex m-0 pr-2">
 
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm nhân viên Tên , Mã nhân viên ..."
-                                   aria-label="Search" aria-describedby="basic-addon2" id="searchinput" method="get">
-                            <div class="input-group-append">
-                                <button class="btn bg-light" type="button" id="clearInputBill">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                    </svg>
-                                </button>
+                            <div class="input-group me-2 align-items-center">
+                                <b class="pr-2"> Danh sách chức vụ</b>
+                                @Html.DropDownList("FunctionId", (SelectList)ViewBag.Function, "Tất cả",
+                                    new { @class = "form-select  bg-light  border-0  p-2", @id = "functionChose" })
+                                <div class="input-group-append">
+                                    <button class="btn bg-light" type="button" id="clearInputBill">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                            <path d="M1 1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-.293.707L9 7v6a1 1 0 0 1-.553.894l-2 1a1 1 0 0 1-.894 0l-2-1A1 1 0 0 1 7 13V7L2.293 3.707A1 1 0 0 1 2 3V2a1 1 0 0 1 1-1z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form class="d-flex align-items-center pr-2">
+                            <div class="input-group me-2 align-items-center">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm nhân viên Tên , Mã nhân viên ..."
+                                       aria-label="search" aria-describedby="basic-addon2" id="searchEmp" name="search">
+                                <div class="input-group-append">
+                                    <button class="btn bg-light" type="button" id="clearInputBill">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                    </button>
+                                </div>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" id="searchbtn">
+                                <button class="btn btn-primary" type="button" id="searchbtn" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
-                        </div>
+                        </form>
+
+                        @if (ViewBag.IsAdmin || ViewBag.IsManage)
+                        {
+                            <a href="/tao-ho-so-nhan-vien" class="btn btn-success ms-3">
+                                Tạo hồ sơ nhân viên
+                            </a>
+                        }
                     </div>
-                    @{
-                        bool isAdmin = ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin;
-                        bool isManage = ViewBag.IsManage != null && (bool)ViewBag.IsManage;
-                    }
-                    @if (isAdmin || isManage)
-                    {
-                        <a href="/tao-ho-so-nhan-vien" class="btn btn-success">
-                            Tạo hồ sơ nhân viên
-                        </a>
-
-                    }
-
-
 
                 </div>
+
             </div>
 
 
         </div>
-        <div class="card-body " id="loaddata">
+        <div class=" algin-item-center text-center hide loadding">
+            <img src="~/images/gif/loading.gif" />
+            <span>Tải dữ liệu </span>
+        </div>
+        <div class="card-body  body" >
+
+
             <div class="table-responsive">
                 <table class="table align-items-center mb-0">
                     <thead>
@@ -139,7 +159,7 @@
                             <th class="text-secondary opacity-7" style="max-width:75px;"></th>
                         </tr>
                     </thead>
-                    <tbody >
+                    <tbody>
                         @if (Model != null && Model.Any())
                         {
 
@@ -188,7 +208,7 @@
                                             <span class="mr-2">
                                                 Mở
                                             </span>
-                                            <div class="toggle d-flex justify-content-center align-items-center mt-2" >
+                                            <div class="toggle d-flex justify-content-center align-items-center mt-2">
                                                 <label class="toggle" for="toggleIsLock_@item.EmployeeId" style="display: flex; align-items: center;">
                                                     <span class="text-center" style="white-space: nowrap;">
                                                         <input class="toggle__input check_IsLock" type="checkbox" id="toggleIsLock_@item.EmployeeId" @(item.AccountEmployee.IsLock.GetValueOrDefault() ? "checked" : "")>
@@ -200,7 +220,7 @@
                                                 Khoá
                                             </span>
                                         </div>
-                                      
+
                                     </td>
 
                                     <td class="align-middle p-0 m-0 d-flex justify-content-center align-items-center"

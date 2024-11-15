@@ -43,7 +43,7 @@
 
                         @Html.AntiForgeryToken()
                         @Html.ValidationSummary(true)
-                      
+
                         <div class="card">
                             <div class="card-header p-2">
                                 <ul class="nav nav-pills">
@@ -70,7 +70,7 @@
                                                         @Html.HiddenFor(x => x.Image)
                                                     </div>
                                                 </div>
-                                          
+
                                                 <div class="form-group text-center bg-gray">
                                                     <input type="file" class=" text-center align-items-center" name="newImage" id="newImage" accept="image/jpeg, image/png, image/gif" onchange="previewImage(event)" />
                                                 </div>
@@ -128,18 +128,28 @@
                                                 </div>
                                             </div>
 
-
-
-
-
-                                            <div class="col-md-4">
+                                            <div class="col-lg-6"id="GrFunction">
                                                 <div class="form-group app-label">
                                                     <label for="General" class="text-muted">Chức vụ</label>
+                                                   
+                                                    @Html.DropDownListFor(x => x.FunctionId, ViewBag.Function as SelectList, "-Chọn danh mục chức vụ-", new { @class = "form-control",@id= "functionChose", @placeholder = "Chức Năng Nhân Viên" })
+                                                    @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
+
+
+
+                                                </div>
+                                            </div>
+
+
+
+                                            <div class="col-md-6"id="manager">
+                                                <div class="form-group app-label">
+                                                    <label for="General" class="text-muted">Người quản lý</label>
                                                     @*@Html.Action("Partival_IdChucNang", "Staff")*@
 
                                                     @*@Html.ValidationMessageFor(x => x.ProductCategoryId, null, new { @class = "text-danger" })*@
-                                                    @Html.DropDownListFor(x => x.FunctionId, ViewBag.Function as SelectList, "-Chọn danh mục chức năng-", new { @class = "form-control", @placeholder = "Chức Năng Nhân Viên" })
-                                                    @Html.ValidationMessageFor(x => x.FunctionId, null, new { @class = "text-danger" })
+                                                    @Html.DropDownListFor(x => x.ManagerId, ViewBag.Manager as SelectList, "-Chọn người quản lý-", new { @class = "form-control",@id= "managerField", @placeholder = "Quản lý nhân viên " })
+                                                    @Html.ValidationMessageFor(x => x.ManagerId, null, new { @class = "text-danger" })
 
 
 
@@ -171,36 +181,36 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-
-
-                                            <div class="col-md-10">
+                                            <div class="col-md-4">
                                                 <div class="form-group app-label">
-                                                   
+                                                    <label>Giới tính</label>
+                                                    <select class="form-control" id="Sex" name="Sex">
+                                                        <option value="" id="Sex">Chọn giới tính nhân viên viên</option>
+                                                        <option value="Nam" id="Sex">Nam</option>
+                                                        <option value="Nữ" id="Sex">Nữ</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                                            <label for="General" class="text-muted">Địa Chỉ</label>
-                                                            <input type="text" name="Location" id="Location" required class="form-control" autocomplete="off" placeholder="Địa Chỉ" />
-                                                            @*@Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })*@
-                                                            @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+
+                                            <div class="col-lg-12">
+                                                <div class="form-group app-label">
 
 
-                                                            @*<textarea id="address" rows="4" class="form-control resume" placeholder=""></textarea>*@
-                                                        
+                                                    <label for="General" class="text-muted">Địa Chỉ</label>
+                                                    <input type="text" name="Location" id="Location" required class="form-control" autocomplete="off" placeholder="Địa Chỉ" />
+                                                    @*@Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                    @Html.ValidationMessageFor(model => model.Location, "", new { @class = "text-danger" })
+
+
+                                                    @*<textarea id="address" rows="4" class="form-control resume" placeholder=""></textarea>*@
+
                                                 </div>
                                             </div>
 
 
 
-                                            <div class="col-md-2">
-                                                <div class="form-group app-label">
-                                                            <label>Giới tính</label>
-                                                            <select class="form-control" id="Sex" name="Sex">
-                                                                <option value="" id="Sex">Chọn giới tính nhân viên viên</option>
-                                                                <option value="Nam" id="Sex">Nam</option>
-                                                                <option value="Nữ" id="Sex">Nữ</option>
-                                                            </select>
-                                                </div>
-                                            </div>
+
                                         </div>
 
 
@@ -213,7 +223,7 @@
                                 <div class="row">
                                     <div class="col-12 text-center">
                                         <button type="button" onclick="if(validateForm()) $('#myFormAddEmp').submit();" class="btn btn-success col-8">Đăng ký nhân viên mới</button>
-                                        
+                                       
                                     </div>
 
                                 </div>
