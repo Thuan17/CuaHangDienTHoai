@@ -205,26 +205,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return PartialView();
         }
 
-        //[AuthorizeFunction("Quản lý", "Quản trị viên")]
-        //public async Task<ActionResult> Partail_ProDetailById(int? id)
-        //{
-        //    if (!id.HasValue || id <= 0)
-        //    {
-        //        return PartialView();
-        //    }
-
-        //    var item = await db.ProductDetail
-        //        .Where(x => x.ProductsId == id)
-        //        .OrderByDescending(x => x.ProductDetailId)
-        //        .ToListAsync();
-
-        //    if (item.Any())
-        //    {
-        //        return PartialView(item);
-        //    }
-
-        //    return PartialView();
-        //}
+       
 
 
 
@@ -434,24 +415,19 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
                 var keyLower = key.Trim().ToLower();
 
-                var productCategoryid = await db.ProductCategory
-                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
-                    .Select(x => x.ProductCategoryId)
-                    .ToListAsync();
+                var query = from p in db.Products
+                            join pc in db.ProductCategory on p.ProductCategoryId equals pc.ProductCategoryId into pcJoin
+                            from pc in pcJoin.DefaultIfEmpty()
+                            join pcx in db.ProductCompany on p.ProductCompanyId equals pcx.ProductCompanyId into pcxJoin
+                            from pcx in pcJoin.DefaultIfEmpty()
+                            where
+                              p.Title.ToLower().Trim().Contains(keyLower) || p.Alias.ToLower().Trim().Contains(alias.Trim()) ||
+                              pc.Title.ToLower().Trim().Contains(keyLower) || pc.Alias.ToLower().Trim().Contains(alias.Trim()) ||
+                              pcx.Title.ToLower().Trim().Contains(keyLower) || pcx.Alias.ToLower().Trim().Contains(alias.Trim())
+                            select p;
 
-                var productCompanyid = await db.ProductCompany
-                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
-                    .Select(x => x.ProductCompanyId)
-                    .ToListAsync();
 
-               
-                var query = db.Products.AsQueryable()
-                    .Where(x =>
-                        (!productCategoryid.Any() || productCategoryid.Contains((int)x.ProductCategoryId)) ||
-                        (!productCompanyid.Any() || productCompanyid.Contains((int)x.ProductCompanyId))||
-                        x.Title.Contains(keyLower));
 
-               
                 var totalCount = await query.CountAsync();
 
                 
@@ -463,14 +439,15 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     .Skip((pageNumber - 1) * pageSize) 
                     .Take(pageSize)
                     .ToListAsync();
-
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
                 ViewBag.Key = key.Trim();
                 ViewBag.Count = totalCount; 
 
-                return View(products.ToPagedList(pageNumber, pageSize)); 
+                return PartialView(products.ToPagedList(pageNumber, pageSize)); 
             }
 
-            return View();
+            return PartialView();
         }
 
 

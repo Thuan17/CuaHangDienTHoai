@@ -10,7 +10,7 @@ foreach (var item in Model)
         {
             if (originalPrice == 0 || salePrice >= originalPrice)
             {
-                return 0; // Trả về 0 nếu giá gốc bằng 0 hoặc giá bán lớn hơn hoặc bằng giá gốc
+                return 0; 
             }
 
             decimal discount = 1 - (salePrice / originalPrice);
@@ -42,14 +42,17 @@ foreach (var item in Model)
                 <p class="mb-0"> Màu : @item.Color.Trim()</p>
             </div>
             <div class="productPrice d-flex">
-                @if (item.PriceSale > 0)
-                {
-                    <p class="priceSale">@Common.FormatNumber(item.PriceSale) đ</p>
-                    <p class="originalPrice">@Common.FormatNumber(item.Price) đ</p>
+
+
+                @{
+                    decimal originalPrice = Convert.ToDecimal(item.Price);
+                    decimal salePrice = Convert.ToDecimal(item.PriceSale);
+                    decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
                 }
-                else
-                { <p class="priceSale">@Common.FormatNumber(item.Price) đ</p>
-            }
+                <p class="priceSale @(item.PriceSale > 0 ? "":"hide")">@Common.FormatNumber(item.PriceSale) đ</p>
+                <p class=" @(item.PriceSale > 0 ? "originalPrice":"priceSale")">@Common.FormatNumber(item.Price) đ</p>
+                <p class="CalculateDiscountPercentage ml-2 @(item.PriceSale > 0&&discountPercentage > 0 ? "":"hide")">@discountPercentage.ToString("0")%</p>
+
 
             </div>
             @*<div class="productbuynow">
@@ -61,47 +64,11 @@ foreach (var item in Model)
 
         </div>
     </div>
-
-    <!--<div class="suggestionsItem row m-0 p-0 pt-2 pb-1">
-        <div class="col-lg-3  m-0 p-0 productImg">
-            <a href="/san-pham/@item.Alias">
-                <img src="@strImg" />
-            </a>
-
-        </div>
-        <div class="col-md-9 m-0 p-0 productInfo">
-            <div class="productName">
-                <a href="/san-pham/@item.Alias" class="p-0">
-                    @Name
-                </a>
-
-            </div>
-            <div class="productPrice d-flex">
-                @if (item.PriceSale > 0)
-                {
-                    <p class="priceSale">@Common.FormatNumber(item.PriceSale) đ</p>
-                    <p class="originalPrice">@Common.FormatNumber(item.Price) đ</p>
-                }
-                else
-                { <p class="priceSale">@Common.FormatNumber(item.Price) đ</p>
-            }
-
-            </div>-->
-            @*<div class="productbuynow">
-
-
-
-                    <a href="javascript:void(0);" class=" btnbuynow  btnbuynowSugg  p-0 m-0" style="" data-productid="@item.ProductsId">Mua ngay</a>
-                </div>*@
-
-        <!--</div>
-    </div>-->
 }
 
 }
 else
 {
-
 <div class="suggestionsItem row m-0 p-0">
     <div class="d-flex flex-column align-items-center text-center">
         <img src="~/images/logo/CartNull.png" width="100" height="100" alt="Không có sản phẩm nào trong giỏ hàng của bạn" />

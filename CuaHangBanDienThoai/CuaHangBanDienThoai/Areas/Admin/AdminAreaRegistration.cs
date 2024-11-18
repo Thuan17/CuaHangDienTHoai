@@ -16,6 +16,14 @@ namespace CuaHangBanDienThoai.Areas.Admin
         {
 
             context.MapRoute(
+name: "Seller_index",
+url: "ban-hang",
+defaults: new { controller = "Seller", action = "Index", alias = UrlParameter.Optional }
+
+);
+
+
+            context.MapRoute(
 name: "Emp_Add",
 url: "tao-ho-so-nhan-vien",
 defaults: new { controller = "Employee", action = "Add", alias = UrlParameter.Optional }

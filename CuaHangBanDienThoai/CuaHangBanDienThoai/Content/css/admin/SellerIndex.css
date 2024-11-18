@@ -1,0 +1,188 @@
+﻿p {
+    color: black !important;
+    white-space: nowrap !important; /* Không cho chữ xuống dòng */
+}
+
+
+.img {
+    position: relative; /* Để chứa nút tuyệt đối */
+}
+
+.btn-top-right {
+    position: absolute;
+    top: 10px; /* Khoảng cách từ đỉnh */
+    right: 10px; /* Khoảng cách từ phải */
+    z-index: 10; /* Đảm bảo nút luôn nằm trên cùng */
+    padding: 5px 10px; /* Tùy chỉnh padding cho nút */
+    border-radius: 50%; /* Làm nút tròn (tùy chọn) */
+}
+
+.container-quantity-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90px; /* Tự động điều chỉnh cho vừa đủ */
+    height: 35px; /* Chiều cao đồng nhất */
+    border: 2px solid #e8e8e8;
+    border-radius: 30px;
+    overflow: hidden; /* Đảm bảo không có phần tử nào tràn ra ngoài */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.btnquantity {
+    background-color: #f5f5f5; /* Màu nền nhẹ */
+    border: none;
+    font-size: 18px; /* Điều chỉnh kích thước font */
+    font-weight: bold;
+    cursor: pointer;
+    width: 40px;
+    height: 100%;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+    .btnquantity:hover {
+        background-color: #ebebeb; /* Hiệu ứng hover */
+    }
+
+.inputQuantity {
+    width: 50px; /* Cân đối với container */
+    height: 100%;
+    border: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #EB5B00;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* Loại bỏ mũi tên tăng giảm */
+}
+
+input:focus {
+    outline: none; /* Loại bỏ viền mặc định khi focus */
+}
+
+.card-footer {
+    background-color: #f8f9fa; /* Nhẹ nhàng, dễ nhìn */
+    border-top: 1px solid #dee2e6;
+}
+
+.customer-input {
+    width: 60%; /* Chiếm 60% chiều rộng */
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.customer-details {
+    background-color: #e9ecef; /* Nền nổi bật */
+    border: 1px solid #ced4da;
+    margin-top: 10px;
+}
+
+.customer-name, .customer-phone {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+    .customer-name strong, .customer-phone strong {
+        color: #343a40; /* Làm nổi bật tiêu đề */
+    }
+
+.text-danger {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.custom-fieldset {
+    border: 1px solid #ced4da; /* Viền tương tự fieldset */
+    border-radius: 5px; /* Góc bo tròn */
+    padding: 15px; /* Khoảng cách bên trong */
+    position: relative; /* Để căn chỉnh legend */
+    background-color: #fff; /* Nền nhạt */
+    margin-top: 10px;
+    width: 100%;
+}
+
+.custom-legend {
+    font-size: 16px; /* Kích thước chữ */
+    font-weight: bold; /* Bôi đậm */
+    color: #495057; /* Màu chữ tối */
+    background-color: #fff; /* Nền trắng để nổi bật */
+    padding: 0 10px; /* Khoảng cách hai bên chữ */
+    position: absolute; /* Đặt cố định trên viền */
+    top: -10px; /* Căn chỉnh lên trên */
+    left: 15px; /* Căn chỉnh cách viền trái */
+}
+
+.customer-details {
+    background-color: #e9ecef; /* Nền nhạt cho phần nội dung */
+    border: 1px solid #ced4da;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.customer-name, .customer-phone {
+    font-size: 14px;
+    color: #495057;
+    margin-bottom: 5px;
+}
+
+    .customer-name strong, .customer-phone strong {
+        color: #343a40; /* Làm nổi bật tiêu đề */
+    }
+.app-label {
+    height: 100%; /* Bảo đảm chiếm chiều cao tối đa của container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.label-title {
+    position: absolute;
+    top: -10px; /* Điều chỉnh vị trí để nhãn nằm gọn trên */
+    left: 10px;
+    background-color: white;
+    padding: 0 5px;
+    font-size: 12px;
+    z-index: 2; /* Đảm bảo nằm trên phần tử khác */
+}
+
+.SelectList {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    z-index: 1; /* Đảm bảo select không bị che */
+    height: 38px; /* Điều chỉnh chiều cao để đồng bộ */
+    padding: 0 10px; /* Thêm khoảng cách bên trong */
+    outline: none;
+}
+
+.navbar-search .form-control {
+    height: 38px; /* Đồng bộ chiều cao với select */
+    border-radius: 5px;
+}
+ border-radius: 5px; /* Bo góc */
+}
+.SelectList {
+    border: none !important; /* Loại bỏ đường viền mặc định */
+    outline: none !important; /* Loại bỏ viền focus mặc định */
+    box-shadow: none !important; /* Loại bỏ hiệu ứng shadow khi focus */
+}
+
+    .SelectList:focus {
+        outline: none !important; /* Không hiển thị outline khi focus */
+        box-shadow: none !important; /* Không hiển thị shadow khi focus */
+    }

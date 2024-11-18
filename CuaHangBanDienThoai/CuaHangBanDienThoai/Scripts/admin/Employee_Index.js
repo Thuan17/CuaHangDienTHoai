@@ -145,7 +145,6 @@
 });
 $(document).ready(function () {
     $('#clearsearchEmp').click(function () {
-        alert("thuận"); // Kiểm tra xem sự kiện click có hoạt động
         $("#searchEmp").val(""); // Đảm bảo đúng ID input
         window.location.reload(); // Tải lại trang
     });

@@ -56,6 +56,12 @@
     opacity: 0.5;
     z-index: 2500;
 }
+.hide{
+    display:none !important;
+}
+p {
+    color: black !important;
+}
 html {
   font-family: sans-serif;
   line-height: 1.15;

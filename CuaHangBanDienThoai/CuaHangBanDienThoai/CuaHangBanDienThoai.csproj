@@ -167,6 +167,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SellerController.cs" />
     <Compile Include="Areas\Admin\Controllers\StatisticalController.cs" />
     <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
     <Compile Include="Common\Common.cs" />
@@ -299,6 +300,7 @@
     <Compile Include="Models\Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SellerCart.cs" />
     <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\Supplier.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -3301,6 +3303,7 @@
     <Content Include="Content\css\admin\login\js\popper.js" />
     <Content Include="Content\css\admin\News.css" />
     <Content Include="Content\css\admin\NotificationAdmin.css" />
+    <Content Include="Content\css\admin\SellerIndex.css" />
     <Content Include="Content\css\admin\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\css\admin\vendor\bootstrap\js\bootstrap.bundle.min.js" />
     <Content Include="Content\css\admin\vendor\bootstrap\js\bootstrap.js" />
@@ -5494,6 +5497,7 @@
     <Content Include="Scripts\admin\Product.js" />
     <Content Include="Scripts\admin\ProductDetailEdit.js" />
     <Content Include="Scripts\admin\ProductDetails.js" />
+    <Content Include="Scripts\admin\Seller_Index.js" />
     <Content Include="Scripts\autoNumeric-1.9.45.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -5678,6 +5682,13 @@
     <Content Include="Areas\Admin\Views\Employee\Partial_Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\Search.cshtml" />
     <Content Include="Areas\Admin\Views\Employee\EmployeeById.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutSeller.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_PartiaSideBarSeller.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_Product.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\_ProductTEst.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_ProductById.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partial_ListProductBill.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

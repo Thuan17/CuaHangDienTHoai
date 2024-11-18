@@ -99,7 +99,7 @@ $(document).ready(function () {
                     success: function (res) {
                         if (res.Success) {
                             if (res.Code = 1) {
-                                createToast('', 'fa-solid fa-circle-check', 'Thành công', res.msg)
+                                createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg)
 
                                 function SetTime() {
                                     setTimeout(function () {

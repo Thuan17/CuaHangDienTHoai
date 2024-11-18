@@ -370,7 +370,7 @@
 
                                loadListItem(orderid);
                                updateTotalPrice(orderid);
-                               createToast('', 'fa-solid fa-circle-check', 'Thành công', response.message)
+                               createToast('success', 'fa-solid fa-circle-check', 'Thành công', response.message)
                            } else {
 
                                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);

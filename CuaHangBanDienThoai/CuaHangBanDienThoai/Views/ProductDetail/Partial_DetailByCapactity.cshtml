@@ -41,10 +41,8 @@
                         decimal salePrice = Convert.ToDecimal(Model.PriceSale);
                         decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
                     }
-                    @if (discountPercentage > 0)
-                    {
-                        <span>@discountPercentage.ToString("0")%</span>
-                    }
+
+                    <span @(discountPercentage > 0 ? "" : "hide")>- @discountPercentage.ToString("0")%</span>
                 </div>
             }
 
@@ -70,12 +68,12 @@
                     <strong class="price">@($"{Common.FormatNumber(Model.PriceSale)}đ")</strong>
                     <div class="box-p">
                         <p class="price-old black">@($"{Common.FormatNumber(Model.Price)}đ")</p>
-                        <span class="percent">
+                        @*<span class="percent">
                             @{
                                 decimal discountPercentage = CalculateDiscountPercentage((decimal)Model.Price, (decimal)Model.PriceSale);
                                 <span class="w-100 p-0 m-0">@($" {discountPercentage}%")</span>
                             }
-                        </span>
+                        </span>*@
                     </div>
                 </div>
 

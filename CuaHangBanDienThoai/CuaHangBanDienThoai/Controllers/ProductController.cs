@@ -148,88 +148,27 @@ namespace CuaHangBanDienThoai.Controllers
             if (!string.IsNullOrEmpty(key))
             {
                 string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
-                var keyLower = key.Trim().ToLower();
+                string keyLower = key.Trim().ToLower();
 
-                var productCategoryid = await db.ProductCategory
-                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
-                    .Select(x => x.ProductCategoryId)
-                    .ToListAsync();
+                var query = from pd in db.ProductDetail
+                            join p in db.Products on pd.ProductsId equals p.ProductsId
+                            join pc in db.ProductCategory on p.ProductCategoryId equals pc.ProductCategoryId into pcJoin
+                            from pc in pcJoin.DefaultIfEmpty()
+                            join pcx in db.ProductCompany on p.ProductCompanyId equals pcx.ProductCompanyId into pcxJoin
+                            from pcx in pcxJoin.DefaultIfEmpty()
+                            where
+                                pd.IsActive == true && 
+                                (
+                                    (pc.Title.Trim().Contains(keyLower.Trim()) || pc.Alias.Trim().Contains(alias.Trim())) ||
+                                    (pcx.Title.Trim().Contains(keyLower.Trim()) || pcx.Alias.Trim().Contains(alias.Trim())) ||
+                                    p.Title.Trim().Contains(keyLower.Trim()) ||
+                                    pd.Color.Trim().Contains(keyLower.Trim()) ||
+                                    pd.Capacity.Contains(keyLower)
+                                )
+                            select pd;
+                int totalCount = await query.CountAsync();
 
-                var productCompanyid = await db.ProductCompany
-                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
-                    .Select(x => x.ProductCompanyId)
-                    .ToListAsync();
-
-
-            
-                var products = await db.Products
-                    .Where(x =>
-                        (!productCategoryid.Any() || productCategoryid.Contains((int)x.ProductCategoryId)) ||
-                        (!productCompanyid.Any() || productCompanyid.Contains((int)x.ProductCompanyId)) ||
-                        x.Title.Contains(keyLower)).Select(x => x.ProductsId)
-                         .ToListAsync();
-
-                var query = db.ProductDetail.AsQueryable()
-             .Where(x =>
-                 (products.Any() && products.Contains((int)x.ProductsId)) || 
-                 x.Color.Contains(keyLower) ||
-                 x.Capacity.Contains(keyLower));
-
-                var totalCount = await query.CountAsync();
-
-
-
-                var productdetail = await query
-                    .OrderByDescending(pd => pd.IsHot==true)
-                 
-                    .ToListAsync();
-
-                ViewBag.Key = key.Trim();
-                ViewBag.Count = totalCount;
-
-                return View(products);
-            }
-
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> SuggestionsSearch(string key)
-        {
-            if (!string.IsNullOrEmpty(key))
-            {
-                string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
-                var keyLower = key.Trim().ToLower();
-
-                var productCategoryid = await db.ProductCategory
-                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
-                    .Select(x => x.ProductCategoryId)
-                    .ToListAsync();
-
-                var productCompanyid = await db.ProductCompany
-                    .Where(x => x.Title.Contains(keyLower) || x.Alias.Contains(alias))
-                    .Select(x => x.ProductCompanyId)
-                    .ToListAsync();
-
-
-
-                var products = await db.Products
-                    .Where(x =>
-                        (!productCategoryid.Any() || productCategoryid.Contains((int)x.ProductCategoryId)) ||
-                        (!productCompanyid.Any() || productCompanyid.Contains((int)x.ProductCompanyId)) ||
-                        x.Title.Contains(keyLower)).Select(x => x.ProductsId)
-                         .ToListAsync();
-
-                var query = db.ProductDetail.AsQueryable()
-             .Where(x =>
-                 (products.Any() && products.Contains((int)x.ProductsId)) ||
-                 x.Color.Contains(keyLower) ||
-                 x.Capacity.Contains(keyLower));
-
-                var totalCount = await query.CountAsync();
-
-
-
+              
                 var productdetail = await query
                     .OrderByDescending(pd => pd.IsHot == true)
 
@@ -238,6 +177,47 @@ namespace CuaHangBanDienThoai.Controllers
                 ViewBag.Key = key.Trim();
                 ViewBag.Count = totalCount;
 
+                return View(productdetail);
+            }
+
+
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> SuggestionsSearch(string key)
+       {
+           
+            if (!string.IsNullOrEmpty(key))
+            {
+                string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
+                string keyLower = key.Trim().ToLower();
+
+                var query = from pd in db.ProductDetail
+                            join p in db.Products on pd.ProductsId equals p.ProductsId
+                            join pc in db.ProductCategory on p.ProductCategoryId equals pc.ProductCategoryId into pcJoin
+                            from pc in pcJoin.DefaultIfEmpty()
+                            join pcx in db.ProductCompany on p.ProductCompanyId equals pcx.ProductCompanyId into pcxJoin
+                            from pcx in pcxJoin.DefaultIfEmpty()
+                            where
+                                pd.IsActive == true &&
+                                (
+                                    (pc.Title.Trim().Contains(keyLower.Trim()) || pc.Alias.Trim().Contains(alias.Trim())) ||
+                                    (pcx.Title.Trim().Contains(keyLower.Trim()) || pcx.Alias.Trim().Contains(alias.Trim())) ||
+                                    p.Title.Trim().Contains(keyLower.Trim()) ||
+                                    pd.Color.Trim().Contains(keyLower.Trim()) ||
+                                    pd.Capacity.Contains(keyLower)
+                                )
+                            select pd;
+                int totalCount = await query.CountAsync();
+
+
+                var productdetail = await query
+                    .OrderByDescending(pd => pd.IsHot == true)
+
+                    .ToListAsync();
+                ViewBag.Key = key.Trim();
+                ViewBag.Count = totalCount;
                 return PartialView(productdetail);
             }
 

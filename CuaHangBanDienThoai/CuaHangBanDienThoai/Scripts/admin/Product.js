@@ -31,76 +31,146 @@ $(document).ready(function () {
         }
     });
 });
-$(document).ready(function () {
+//$(document).ready(function () {
    
-    var searchInput = document.getElementById("searchinput");
-    var searchbtn = document.getElementById("searchbtn");
-    var searchSuggestions = document.getElementById("searchSuggestions");
+//    var searchInput = document.getElementById("searchinput");
+//    var searchbtn = document.getElementById("searchbtn");
+//    var searchSuggestions = document.getElementById("searchSuggestions");
 
-    searchInput.addEventListener("input", function () {
-        var inputValue = searchInput.value.trim();
-        if (inputValue.length >= 3) {
-            searchSuggestions.style.display = "block";
-        } else {
-            searchSuggestions.style.display = "none";
-        }
-    });
-
-
-    searchInput.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            var inputValue = searchInput.value.trim();
-            if (inputValue.length >= 3) {
-
-                window.location.href = "/Admin/Product/SearchProduct?key=" + encodeURIComponent(inputValue) + "&page=1";
-            }
-        }
-    });
-
-    $("#searchbtn").on("click", function () {
-        var inputValue = searchInput.value.trim();
-        if (inputValue.length >= 3) {
-
-            window.location.href = "/Admin/Product/SearchProduct?key=" + encodeURIComponent(inputValue) + "&page=1";
-        }
-    });
+//    searchInput.addEventListener("input", function () {
+//        var inputValue = searchInput.value.trim();
+//        if (inputValue.length >= 3) {
+//            searchSuggestions.style.display = "block";
+//        } else {
+//            searchSuggestions.style.display = "none";
+//        }
+//    });
 
 
-    // Hàm xử lý submit form
-    $('#myFormProduct').submit(function (event) {
-        event.preventDefault();
+//    searchInput.addEventListener("keydown", function (event) {
+//        if (event.key === "Enter") {
+//            event.preventDefault();
+//            var inputValue = searchInput.value.trim();
+//            if (inputValue.length >= 3) {
 
-        console.log('Form Data myFormProduct submit:', formData);
-       /* let isValid = validateForm();*/
+//                window.location.href = "/Admin/Product/SearchProduct?key=" + encodeURIComponent(inputValue) + "&page=1";
+//            }
+//        }
+//    });
+
+//    $("#searchbtn").on("click", function () {
+//        var inputValue = searchInput.value.trim();
+//        if (inputValue.length >= 3) {
+
+//            window.location.href = "/Admin/Product/SearchProduct?key=" + encodeURIComponent(inputValue) + "&page=1";
+//        }
+//    });
+
+
+//    // Hàm xử lý submit form
+//    $('#myFormProduct').submit(function (event) {
+//        event.preventDefault();
+
+       
+//       /* let isValid = validateForm();*/
        
 
-        // Gửi dữ liệu form nếu hợp lệ
-        //for (var instance in CKEDITOR.instances) {
-        //    CKEDITOR.instances[instance].updateElement();
-        //}
-        //const formData = $('#myFormProduct').serialize();
-        //const token = $('input[name="__RequestVerificationToken"]').val();
-        //console.log('Form Data:', formData);
+//        // Gửi dữ liệu form nếu hợp lệ
+//        //for (var instance in CKEDITOR.instances) {
+//        //    CKEDITOR.instances[instance].updateElement();
+//        //}
+//        //const formData = $('#myFormProduct').serialize();
+//        //const token = $('input[name="__RequestVerificationToken"]').val();
+//        //console.log('Form Data:', formData);
 
-        //$.ajax({
-        //    url: '/Admin/Product/Add',
-        //    type: 'POST',
-        //    data: formData,
-        //    success: function (res) {
-        //        OnSuccessCO(res);
-        //    },
-        //    error: function (xhr) {
-        //        Swal.fire({
-        //            icon: "error",
-        //            title: "Lỗi",
-        //            text: "Hệ thống gặp lỗi thêm sản phẩm.",
-        //        });
-        //        console.error(xhr.responseText);
-        //    }
-        //});
+//        //$.ajax({
+//        //    url: '/Admin/Product/Add',
+//        //    type: 'POST',
+//        //    data: formData,
+//        //    success: function (res) {
+//        //        OnSuccessCO(res);
+//        //    },
+//        //    error: function (xhr) {
+//        //        Swal.fire({
+//        //            icon: "error",
+//        //            title: "Lỗi",
+//        //            text: "Hệ thống gặp lỗi thêm sản phẩm.",
+//        //        });
+//        //        console.error(xhr.responseText);
+//        //    }
+//        //});
+//    });
+//});
+$(document).ready(function () {
+    var searchbtn = document.getElementById("searchbtn");
+    var searchInput = document.getElementById("searchinput");
+    $('#searchPro').on('input', function () {
+        var key = $(this).val().trim();
+        console.log("searchPro", searchPro);
+        if (key.length > 3) {
+            Search(key.trim());
+        }
     });
+
+
+    $('#searchbtn').on('click', function (e) {
+        e.preventDefault();
+        console.lo("searchbtn", searchbtn)
+        if (key.length > 3) {
+            Search(key.trim());
+        }
+    });
+    searchInput.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                var inputValue = searchInput.value.trim();
+                if (inputValue.length >= 3) {
+
+                    Search(key.trim());
+                }
+            }
+        });
+
 });
+
+
+function Search(key){
+  
+    if (key.length > 3) {
+        $('.loadding').show();
+        $('.body').hide();
+        $.ajax({
+            url: '/Admin/Product/SearchProduct',
+            type: 'GET',
+            data: {
+                key: key, page: 1
+            },
+            success: function (response) {
+                $('.loading').hide();
+                $('.body').show();
+                $('#loaddata').html(response);
+                const totalCount = ('#totalCount').data('totalcount') || 0;
+
+              
+                $('#countKey').html(
+                    `<label class="text-dark">Tổng số sản phẩm:</label> ${totalCount} <span> tìm theo </span>${key}`
+                );
+            
+
+            }, error: function () {
+                $('.loading').hide();
+                $('.body').show();
+                alert("Có lỗi khi gọi action tim kiếm");
+            }
+        });
+    }
+}
+
+
+
+
+
+
 
 
 //End add products

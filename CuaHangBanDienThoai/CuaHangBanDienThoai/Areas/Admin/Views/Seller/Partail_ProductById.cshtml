@@ -1,0 +1,78 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.ProductDetail>
+@using CuaHangBanDienThoai.Common;
+
+
+<script src="~/Scripts/admin/Seller_Index.js"></script>
+<div class="p-0 m-0 w-100" style="max-height: 800px; overflow-y: auto ">
+
+    @if (Model != null && Model.Any())
+    {
+        foreach (var item in Model)
+        {
+
+            @functions {
+
+                public decimal CalculateDiscountPercentage(decimal originalPrice, decimal salePrice)
+                {
+                    if (originalPrice == 0 || salePrice >= originalPrice)
+                    {
+                        return 0;
+                    }
+
+                    decimal discount = 1 - (salePrice / originalPrice);
+                    return (int)(discount * 100);
+                }
+            }
+
+            var strImg = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true).Image ?? "~/images/logo/logoweb.png";
+            var Name = (item.Products.Title.Trim() + " " + item.Ram.Trim() + "/" + item.Capacity.Trim()) ?? "PadaMiniStore";
+            var Detail = item.Ram.Trim() + "   " + item.Capacity.Trim();
+
+
+
+            <div class="itemPro row m-2 p-1 border-1 rounded-1 mb-2 mt-1 bg-gray-300 overflow-hidden" style="border-radius:15px;">
+                <div class="col-12 img d-flex position-relative">
+                    <img src="@strImg" width="100" height="100" />
+                    <div class="infoPro align-items-center">
+                        <p class="mb-0"> @Name</p>
+                        <div class="Price d-flex">
+                            <h5 class=" @(item.PriceSale>0 ?"text-danger mb-0":"hide")">@Common.FormatNumber(item.PriceSale) đ </h5>
+                            <p class="  @(item.PriceSale>0 ?"text-decoration-line-through text-gray pl-3 mb-0 ":"text-danger mb-0")" style="@(item.PriceSale>0?"text-decoration:line-through;":"")">@Common.FormatNumber(item.Price) đ </p>
+                        </div>
+                        <div class="Quantity">
+                            <p class="mb-0">Kho hiện tại  : @item.Quantity</p>
+                            <p class="mb-0"><label>Mã :</label><span>@item.Alias.Trim()</span></p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success text-center align-items-center btn-top-right btnAddBill" data-productId="@item.ProductDetailId">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        <div class="itemPro row m-2 p-1 border-1 rounded-1 mb-2 mt-1 bg-gray-300 overflow-hidden" style="border-radius:15px;">
+            <div class="col-12 img d-flex position-relative">
+                <img src="~/Uploads/images/iphone-16-pro-max-titan-trang-thumb-600x600.png" width="100" height="100" />
+                <div class="infoPro align-items-center">
+                    <p class="mb-0"> Điện thoại iPhone 16 Pro</p>
+                    <div class="Price d-flex">
+                        <h5 class="text-danger mb-0">18.000.000 đ </h5>
+                        <p class="text-decoration-line-through text-gray pl-3 mb-0" style="text-decoration:line-through;">21.000.000 đ </p>
+                    </div>
+                    <div class="Quantity">
+                        <p class="mb-0">Kho hiện tại  : 100</p>
+                        <p class="mb-0"><label>Mã :</label><span>dien-thoai-apple-iphone-16-pro-titan-tu-nhien-8gb-128gb</span></p>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success text-center align-items-center btn-top-right">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    }
+</div>
+

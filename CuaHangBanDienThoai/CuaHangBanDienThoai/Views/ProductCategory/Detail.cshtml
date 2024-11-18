@@ -96,10 +96,7 @@
                                                             decimal salePrice = Convert.ToDecimal(item.PriceSale);
                                                             decimal discountPercentage = CalculateDiscountPercentage(originalPrice, salePrice);
                                                         }
-                                                        @if (discountPercentage > 0)
-                                                        {
-                                                            <span>@discountPercentage.ToString("0")%</span>
-                                                        }
+                                                        <span @(discountPercentage > 0 ? "" : "hide")>- @discountPercentage.ToString("0")%</span>
                                                     </div>
                                                 }
 
@@ -125,12 +122,7 @@
                                                             <strong class="price">@($"{Common.FormatNumber(item.PriceSale)}đ")</strong>
                                                             <div class="box-p">
                                                                 <p class="price-old black">@($"{Common.FormatNumber(item.Price)}đ")</p>
-                                                                <span class="percent">
-                                                                    @{
-                                                                        decimal discountPercentage = CalculateDiscountPercentage((decimal)item.Price, (decimal)item.PriceSale);
-                                                                        <span class="w-100 p-0 m-0">@($" {discountPercentage}%")</span>
-                                                                    }
-                                                                </span>
+                                                              
                                                             </div>
                                                         </div>
 
