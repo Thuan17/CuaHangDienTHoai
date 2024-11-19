@@ -69,7 +69,7 @@
                             }
 
                             var strImg = "";
-                            var CheckImage = item.ProductDetail.Products.Image.Trim();
+                            var CheckImage = item.ProductDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
                             var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
 
                             if (CheckImage != null)

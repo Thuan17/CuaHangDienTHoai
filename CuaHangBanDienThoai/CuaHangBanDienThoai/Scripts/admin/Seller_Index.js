@@ -120,7 +120,7 @@
 
     $(document).on('input', '#searchinput', function () {
         var input = $(this).val().trim();
-        if (input && input.length > 4) {
+        if (input && input.length >= 3) {
             $.ajax({
                 url: '/Admin/Seller/FindCustomer',
                 type: 'POST',
