@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
@@ -66,11 +67,16 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
+
+
+
         public ActionResult Partial_ListProductBill()
         {
             SellerCart cart = (SellerCart)Session["SellerCart"];
             if (cart != null && cart.Items.Any())
             {
+
+                
                 return PartialView(cart.Items);
             }
             return PartialView();
@@ -91,6 +97,84 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return Json(new { TotalPrice = "0 đ" }, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public async Task<ActionResult>UpdateQuantity(int productid,int quantity)
+        {
+            if(productid <=0 && quantity<=0 )
+            {
+                return Json(new { Success = false, Code = -2, msg = "Không tìm thấy sản phầm" });
+            }
+            try {
+                SellerCart cart = (SellerCart)Session["SellerCart"];
+                if (cart != null && cart.Items.Any())
+                {
+                    SellerCartItem existingItem = cart.Items.FirstOrDefault(x => x.ProductDetailId == productid);
+                    if (existingItem != null)
+                    {
+                        cart.UpSoLuong(productid, quantity);
+
+                        return Json(new { Success = true, Code = 1, msg = "Cập nhập số lượng thành công" });
+                    }    
+                }
+                return Json(new { Success = false, Code = -2, msg = "Không có sản phầm trong hóa đơn" });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> FindCustomer(string input)
+        {
+
+            if (!String.IsNullOrEmpty(input))
+            {
+                var customer = await db.Customer.FirstOrDefaultAsync(x => x.PhoneNumber.ToLower().Trim() == input.ToLower().Trim());
+                  if(customer != null)
+                {
+                    ViewBag.txt = input.Trim();
+                    return PartialView(customer);
+                }
+            }
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult>DeleteItemCart(int productid)
+        {
+            try
+            {
+                if (productid <= 0)
+                {
+                    return Json(new { Success = false, Code = -2, msg = "Không tìm thấy sản phầm" });
+                }
+                SellerCart cart = (SellerCart)Session["SellerCart"];
+                if (cart != null && cart.Items.Any())
+                {
+                    SellerCartItem existingItem = cart.Items.FirstOrDefault(x => x.ProductDetailId == productid);
+                    if (existingItem != null)
+                    {
+                        var Name = (existingItem.ProductDetail.Products.Title.Trim() + " " + existingItem.ProductDetail.Capacity.Trim()) ?? "PadaMiniStore";
+                        if (existingItem.SoLuong == 10)
+                        {
+                            return Json(new { Code = -2, Success = false, msg = "Số lượng " + Name + " tới giới hạn" });
+                        }
+                        cart.Remove(productid);
+                        int count = cart.Items.Count();
+                        return Json(new { Success = true, Code = 1, msg = "Xóa thành công", Count = count });
+
+                    }
+                
+                }
+                return Json(new { Success = false, Code = -2, msg = "Không có sản phầm trong hóa đơn" });
+            }
+              
+            catch(Exception ex)
+            {
+                return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
+            }
+        }
 
         [HttpPost]
         public async Task<ActionResult>AddBill(int productid, int quantity)
@@ -117,14 +201,14 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     SellerCartItem existingItem = cart.Items.FirstOrDefault(x => x.ProductDetailId == productid);
                     if (existingItem != null)
                     {
-                       
+                        if ( existingItem.SoLuong == 10)
+                        {
+                            return Json(new { Code = -2, Success = false, msg = "Số lượng " + Name+" tới giới hạn" });
+                        }
                         existingItem.SoLuong += quantity;
                         existingItem.PriceTotal = existingItem.SoLuong * existingItem.Price;
                     }
-                    else if(existingItem.SoLuong == 10)
-                    {
-                        return Json(new { Code = -2, Success = false, msg = "Số lượng sản phẩm tới giới hạn" + Name });
-                    }
+                   
                     else
                     {
                         SellerCartItem item = new SellerCartItem
@@ -153,8 +237,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         cart.AddToCart(item, quantity);
                     }
 
+                    int count = cart.Items.Count();
                     Session["SellerCart"] = cart;
-                    return Json(new { Code = 1, Success=true, msg = "Thêm vào hoá đơn thành công" });
+                    return Json(new { Code = 1, Success=true, msg = "Thêm vào hoá đơn thành công" ,Count=count});
                 }
                 else
                 {

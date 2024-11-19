@@ -5689,6 +5689,7 @@
     <Content Include="Areas\Admin\Views\Seller\_ProductTEst.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partail_ProductById.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partial_ListProductBill.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\FindCustomer.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

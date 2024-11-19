@@ -125,33 +125,7 @@
                                 </div>
                                 <div class="col-md-6   p-0 m-0 pl-2">
                                     <div class="card  p-0 m-0 ">
-                                        <div class="card-header  ">
-                                            <div class="row">
-                                                <div class="col-2">
-                                                    <h6 class="m-0 font-weight-bold text-primary">
-                                                        Hoá đơn
-
-                                                    </h6>
-                                                </div>
-
-                                                <div class="col-10 text-right">
-                                                    <h6 class="m-0 font-weight-bold text-dark">
-                                                        Số sản phẩm <span class="text-danger">10</span>
-
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body  p-0 m-0 "id="listProductItem" style="max-height:500px; overflow-y:auto">
-                                          
-
-
-
-
-
-
-
-
+                                        <div class="p-0 m-0 w-100"id="listProductItem">
 
                                         </div>
                                         <div class="card-footer bg-white" style="min-height: 100px;">
@@ -167,7 +141,14 @@
                                                     <div class="d-none d-sm-inline-block form-inline mr-auto my-2 my-md-0 mw-100 navbar-search" style="width:100%!important">
                                                         <div class="input-group mw-100">
                                                             <input type="text" class="form-control mw-100 border-2 small" placeholder="Thông tin khách hàng..."
-                                                                   aria-label="Search" aria-describedby="basic-addon2" id="searchinput" action="@Url.Action("SearchProduct", "Product")" method="get">
+                                                                   aria-label="Search" aria-describedby="basic-addon2" id="searchinput">
+                                                            <div class="input-group-append">
+                                                                <button class="btn bg-white" type="button" id="clearInputBill">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
                                                             <div class="input-group-append">
                                                                 <button class="btn btn-primary" type="button" id="searchbtn">
                                                                     <i class="fas fa-search fa-sm"></i>
@@ -176,15 +157,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-12 m-0 p-0"id="loadCustomer">
 
-                                                <div class="custom-fieldset">
-                                                    <div class="custom-legend">Thông tin khách hàng</div>
-                                                    <div class="col-12 customer-details p-3 rounded">
-                                                        <p class="m-0 customer-name"><strong>Tên:</strong> Huỳnh Thuận</p>
-                                                        <p class="m-0 customer-phone"><strong>SĐT:</strong> 0329867711</p>
-                                                    </div>
-                                                    <button type="button" class="btn btn-success align-items-center text-center mt-2  w-100">Bán hàng</button>
                                                 </div>
+
 
                                             </div>
                                         </div>
@@ -214,19 +190,19 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="~/Scripts/admin/Seller_Index.js"></script>
     <script>
-        function stepper(button) {
-            const input = document.getElementById("quantity_value"); // Lấy input cần điều chỉnh
-            let currentValue = parseInt(input.value); // Lấy giá trị hiện tại (chuyển sang số nguyên)
-            const min = parseInt(input.getAttribute("min")) || 1; // Giá trị tối thiểu (mặc định 1)
-            const max = parseInt(input.getAttribute("max")) || 10; // Giá trị tối đa (mặc định 10)
-            const step = parseInt(input.getAttribute("step")) || 1; // Bước nhảy (mặc định 1)
+        //function stepper(button) {
+        //    const input = document.getElementById("quantity_value"); // Lấy input cần điều chỉnh
+        //    let currentValue = parseInt(input.value); // Lấy giá trị hiện tại (chuyển sang số nguyên)
+        //    const min = parseInt(input.getAttribute("min")) || 1; // Giá trị tối thiểu (mặc định 1)
+        //    const max = parseInt(input.getAttribute("max")) || 10; // Giá trị tối đa (mặc định 10)
+        //    const step = parseInt(input.getAttribute("step")) || 1; // Bước nhảy (mặc định 1)
 
-            if (button.id === "increment" && currentValue < max) {
-                input.value = currentValue + step; // Tăng giá trị
-            } else if (button.id === "decrement" && currentValue > min) {
-                input.value = currentValue - step; // Giảm giá trị
-            }
-        }
+        //    if (button.id === "increment" && currentValue < max) {
+        //        input.value = currentValue + step; // Tăng giá trị
+        //    } else if (button.id === "decrement" && currentValue > min) {
+        //        input.value = currentValue - step; // Giảm giá trị
+        //    }
+        //}
 
     </script>
 }
