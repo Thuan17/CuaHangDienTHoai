@@ -91,7 +91,7 @@
                                                         Thông tin chung
                                                     </h5>
                                                 </div>
-                                                <div class="card-tools">
+                                                @*<div class="card-tools">
                                                     <div class="col-sm-12">
                                                         @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                                         {
@@ -99,7 +99,7 @@
                                                         }
 
                                                     </div>
-                                                </div>
+                                                </div>*@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
@@ -116,9 +116,11 @@
                                                         <p class="mb-0">Email :</p>
                                                     </div>
                                                     <div class="col-sm-9">
-                                                        <p class="text-muted mb-0">@Helper.MaskEmail(Model.Email.Trim())</p>
-                                                        <input class="hide" value="@Model.Email.Trim()" id="userInputField" />
-                                                        <input name="__RequestVerificationToken" type="hidden" class="hide" value="@Model.Email.Trim()">
+                                                        <p class="text-muted mb-0">
+                                                        @(Model.Email != null ? @Helper.MaskEmail(Model.Email?.Trim()):"")
+                                                     </p>
+                                                        <input class="hide" value="@(Model.Email != null ?Model.Email:"")" id="userInputField" />
+                                                        <input name="__RequestVerificationToken" type="hidden" class="hide" value="@(Model.Email != null ?Model.Email:"")">
 
                                                     </div>
                                                 </div>
@@ -173,14 +175,14 @@
 
                                                     @if (address != null && ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                                     {
-                                                        <div class="row">
+                                                        @*<div class="row">
 
                                                             <div class="col-sm-6">
                                                                 <button type="button" class="btn btn-warning btnAddAddress mt-0 float-end" style="width:120px;">Cập nhập</button>
                                                             </div> <div class="col-sm-6">
                                                                 <button type="button" class="btn btn-success mt-0 float-end" style="width:120px;">Tạo địa chỉ</button>
                                                             </div>
-                                                        </div>
+                                                        </div>*@
 
 
                                                     }

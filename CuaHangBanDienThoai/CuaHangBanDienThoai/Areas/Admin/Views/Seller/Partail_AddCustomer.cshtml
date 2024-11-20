@@ -1,0 +1,51 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_AddCustomer
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-title">
+            <h5>
+              Thông tin đăng ký khách hàng
+            </h5>
+        </div>
+        <div class="card-tools">
+            <div class="btn btnCloseEditBill">
+                <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                    <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div class="card-body pt-0">
+        <form id="myFormAddCustomer" class="mt-3" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="text-center">
+                <img src="~/images/Logo/LogoWeb.png" class="rounded-circle" width="100" />
+                <h4 class="mb-0">Tạo khách hàng mới</h4>
+                <span class="text-muted d-block mb-2">Hệ thống bán hàng <span class="text-danger">Pada<span style="color: black; font-family: Poppins-Regular; ">MiniStore</span></span></span>
+            </div>
+            <div class="form-row ">
+                <div class="input-data mt-5">
+                    <input type="text" name="PhoneNumber" id="PhoneNumber" required>
+                    <div class="underline"></div>
+                    <label for="">Số điện thoại khách hàng</label>
+                </div>
+                <div class="input-data mt-5">
+                    <input type="text" name="CustomerName" id="CustomerName" required>
+                    <div class="underline"></div>
+                    <label for="">Tên khách hàng</label>
+                </div>
+            </div>
+            <div class="row mt-3 justify-content-center">
+                <div class="col-6 text-center">
+                    <button type="button" class="btn btn-success btnRegister w-100" onclick="if(validateForm()) $('#myFormAddCustomer').submit();"  >Đăng ký khách hàng mới</button>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+</div>
+
+

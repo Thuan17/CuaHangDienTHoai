@@ -28,6 +28,7 @@ namespace CuaHangBanDienThoai.Models
             if (role != null && role.Equals("Quản trị viên"))
             {
                 httpContext.Session["AdminRole"] = role;
+           
 
             }
             else if (role != null && role.Equals("Quản lý"))

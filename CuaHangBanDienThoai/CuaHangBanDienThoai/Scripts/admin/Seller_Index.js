@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    var bg = $(".bg-sg");
+    var popup = $("#popupBill");
     var btnAddBill = $(".btnAddBill");
     LoadListProduct();
 
@@ -24,7 +26,7 @@
         }
     });
 
-    // Event delegation to prevent multiple bindings
+   
     $(document).on('click', '.btnAddBill', function (event) {
         event.preventDefault();
         var productid = $(this).data('productid');
@@ -66,7 +68,7 @@
                         LoadListProduct();
                         $('#CountProduct').html(res.Count);
                         createToast('success', 'fa-solid fa-circle-check', 'Thành công', res.msg);
-                       
+
                     } else {
                         var type = res.Code === -99 ? 'error' : 'warning';
                         createToast(type, 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
@@ -78,8 +80,8 @@
             });
         }
     });
-    $(document).on('click', '.btnquantity', function (event) {  
- 
+    $(document).on('click', '.btnquantity', function (event) {
+
         let action = $(this).data('action');
         let productId = $(this).data('productid');
         let inputField = $(`input[data-productid='${productId}']`);
@@ -117,8 +119,8 @@
 
 
     $(document).on('click', '#searchbtn', function () {
-        var input = $('#searchinput').val().trim(); 
-        alert("searchbtn value: " + input);
+        var input = $('#searchinput').val().trim();
+    
 
         if (input && input.length >= 3) {
             $.ajax({
@@ -126,14 +128,14 @@
                 type: 'POST',
                 data: { input: input },
                 success: function (res) {
-                    $('#loadCustomer').html(res); 
+                    $('#loadCustomer').html(res);
                 },
                 error: function () {
                     createToast('error', 'fa-solid fa-circle-exclamation', 'Lỗi', 'Có lỗi xảy ra khi cập nhật số lượng.');
                 }
             });
         } else {
-            alert("Vui lòng nhập ít nhất 3 ký tự để tìm kiếm!"); 
+            alert("Vui lòng nhập ít nhất 3 ký tự để tìm kiếm!");
         }
     });
 
@@ -152,19 +154,22 @@
                 }
             });
         } else {
-            $('#loadCustomer').html(''); 
+            $('#loadCustomer').html('');
         }
     });
-    document.getElementById('clearInputBill').addEventListener('click', function () {
-        document.getElementById('searchinput').value = '';
+    $('#clearInputBill').on('click', function () {
+        document.getElementById('searchinput').value = ''; // DOM API
+        $('#searchinput').val(''); // jQuery
         $('#loadCustomer').html('');
     });
 
+
+
     $(document).on('click', '.btnAddCusstomer', function (event) {
         event.preventDefault();
-        var bg = $(".bg-sg");
-        var popup = $("#popupBill");
 
+        bg.show();
+        popup.show();
         bg.on('click', function () {
             bg.hide();
             popup.hide();
@@ -202,9 +207,9 @@
                                     document.getElementById('searchinput').value = '';
                                     $('#loadCustomer').html('');
                                     $button.prop('disabled', false);
-                                   $button.find('.loading-image').hide();
+                                    $button.find('.loading-image').hide();
                                     $button.find('.button-text').show();
-                                   
+
                                 }
                             });
                         }
@@ -213,16 +218,226 @@
                         $button.find('.loading-image').hide();
                         $button.find('.button-text').show();
                         var type = res.Code === -99 ? 'error' : 'warning';
-                        createToast(type, 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
+                        createToast(type, 'fa-solid fa-circle-exclamation', 'Chú ý', res.msg);
                     }
 
-                }, error:function(res) {
+                }, error: function (res) {
                     createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
                 },
             });
         }
     });
+
+
+
+
+
+    $('#myFormAddCustomer').on('submit', function (event) {
+        event.preventDefault();
+        let isValid = validateForm();
+
+        if (isValid) {
+            var $button = $(this);
+            $button.prop('disabled', true);
+            $button.find('.loading-image').show();
+            $button.find('.button-text').hide();
+ 
+
+
+            var form = document.getElementById('myFormAddCustomer');
+            var formData = new FormData(form);
+            $.ajax({
+                url: '/Admin/Seller/AddCustomer',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (res) {
+                    if (res.Success) {
+                        if (res.Code == 1 && res.PhoneNumber) {
+                          
+                            $('#searchinput').val(res.PhoneNumber.trim());
+                            $.ajax({
+                                url: '/Admin/Seller/FindCustomer',
+                                type: 'POST',
+                                data: { input: res.PhoneNumber.trim() },
+                                success: function (res) {
+                                    $('#loadCustomer').html(res);
+                                },
+                                error: function () {
+                                    createToast('error', 'fa-solid fa-circle-exclamation', 'Lỗi', 'Có lỗi xảy ra khi cập nhật số lượng.');
+                                }
+                            });
+                            document.getElementById("myFormAddCustomer").reset();
+
+                            bg.hide();
+                            popup.hide();
+                        }
+                    } else {
+                        $button.prop('disabled', false);
+                        $button.find('.loading-image').hide();
+                        $button.find('.button-text').show();
+                        var type = res.Code === -99 ? 'error' : 'warning';
+                        createToast(type, 'fa-solid fa-circle-exclamation', 'Chú ý', res.msg);
+                    }
+                }, error: function (res) {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
+                }
+            });
+        }
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //start tab hoá đơn
+    $(document).on('change', '#DateBill', function () {
+        var ngayxuat = $('#DateBill').val();  
+        if (ngayxuat) {
+
+            $.ajax({
+                url: '/Admin/Seller/GetBillByDate', 
+                type: 'GET',
+                data: { ngayxuat: ngayxuat },
+                beforeSend: function () {
+                   
+                    $('#dataTableBody').hide();
+                    $('.loadding img').show();
+                },
+                success: function (data) {
+                    $('#loadbill').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                    $('#dataTableBody').show();
+                    $('.loadding img').hide();
+                }
+            });
+        }
+    });
+    $(document).on('click', '.btnclearSBill', function (event) {
+        event.preventDefault();
+
+        var employeeid = $(this).data('employeeid');
+        console.log("btnclearSBill", employeeid);
+        if (employeeid) {
+            $.ajax({
+                url: '/Admin/Seller/Partial_BillByEmployee',
+                type: 'GET',
+                data: { employeeid: employeeid },
+
+                success: function (data) {
+                    $('#nav-profile').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                    $('#dataTableBody').show();
+                    $('.loadding img').hide();
+                }
+            });
+        }
+        
+
+    });
+
+    $(document).on('input', '#searchBill', function () {
+        var search = $(this).val().trim();
+        if (search && search.length > 2) {
+            $.ajax({
+                url: '/Admin/Seller/SearchBill',
+                type: 'GET',
+                data: { search: search },
+                beforeSend: function () {
+
+                    $('#dataTableBody').hide();
+                    $('.loadding img').show();
+                },
+                success: function (data) {
+                    $('#loadbill').html(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log('Đã xảy ra lỗi khi gửi yêu cầu:', error);
+                    $('#dataTableBody').show();
+                    $('.loadding img').hide();
+                }
+            });
+        } else {
+           
+        }
+
+    });
+
+
+
+
+    //end tab hoá đơn 
+
 });
+
+function validateForm() {
+    var phone = $('#PhoneNumber').val().trim();
+    var customer = $('#CustomerName').val().trim();
+    let isValid = true;
+
+
+
+
+
+    const allFields = ['CustomerName', 'PhoneNumber'];
+    const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+    if (isAllEmpty) {
+
+        allFields.forEach(id => {
+            $(`#${id}`).addClass('error-border');
+        });
+        showError(allFields, "Vui lòng điền đầy đủ thông tin ");
+        return false;
+    }
+
+
+
+    const phoneNumberRegex = /^0\d{9}$/;
+    if (!phone) {
+        showError('PhoneNumber', 'Số điện thoại không để trống.');
+        isValid = false;
+    } else if (phone.length > 11) {
+        showError('PhoneNumber', 'Định dạng số điện thoại không đúng.');
+        isValid = false;
+    } else if (!phoneNumberRegex.test(phone)) {
+        showError('PhoneNumber', 'Định dạng số điện thoại không đúng.');
+        isValid = false;
+    } else {
+        removeError('PhoneNumber');
+    }
+    if (!customer) {
+        showError('CustomerName', 'Vui lòng điền tên.');
+        isValid = false;
+     
+    } else {
+        removeError('CustomerName');
+    }
+
+
+
+    return isValid;
+
+
+
+}
+
+
+
 
 function LoadListProduct() {
     $.ajax({
@@ -278,7 +493,7 @@ function Partial_Product() {
     $('.loadding').show();
     $.ajax({
         url: '/Admin/Seller/Partail_Product',
-     
+
         type: 'GET',
         success: function (res) {
             $('.loading').hide();
@@ -288,4 +503,19 @@ function Partial_Product() {
 
         }
     });
+}
+
+function removeError(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.classList.remove('error-border');
+    }
+}
+
+function showError(elementId, errorMessage) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.classList.add('error-border');
+    }
+    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
 }

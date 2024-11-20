@@ -213,6 +213,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin_AddBanner.cs" />
+    <Compile Include="Models\Admin_AddCustomer.cs" />
     <Compile Include="Models\Admin_AddEmployee.cs" />
     <Compile Include="Models\Admin_AddProduct.cs" />
     <Compile Include="Models\Admin_AddProductCompany.cs" />
@@ -5711,6 +5712,11 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Seller\Partail_AddCustomer.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partial_BillByEmployee.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_BillDetail.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\GetBillByDate.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\SearchBill.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

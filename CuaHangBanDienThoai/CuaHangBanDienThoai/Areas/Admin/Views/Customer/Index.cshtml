@@ -153,7 +153,7 @@
                                         @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                         {
                                             <p><label>Số điện thoại:</label><span class="text-gray-700">@item.PhoneNumber</span></p>
-                                            <p><label>Gmail :</label><span class="text-gray-700">@item.Email.Trim()</span></p>
+                                            <p><label>Gmail :</label><span class="text-gray-700">@(item.Email?.Trim())</span></p>
                                         }
                                     </td>
 
@@ -193,14 +193,14 @@
                                                 Xem
                                             </button>
 
-                                            @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                            @*@if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                             {
                                                 <button type="button" data-id="@item.CustomerId"
                                                         class='btn btn-warning btn-s text-white btnEdit'
                                                         style="min-width: 60px;">
                                                     Sửa
                                                 </button>
-                                            }
+                                            }*@
                                         </div>
 
                                     </td>

@@ -43,10 +43,6 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
             var product = db.Products.ToList();
             ViewBag.Product = new SelectList(product, "ProductsId", "Title");
-
-
-
-
             ViewBag.Date=DateTime.Now.Date;
             return View();
         }
@@ -65,6 +61,125 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return PartialView();
 
         }
+        public ActionResult GetBillByDate(DateTime ngayxuat)
+        {
+            try
+            {
+                DateTime selectedDate = ngayxuat;
+
+                DateTime startDate = selectedDate.Date;
+                DateTime endDate = startDate.AddDays(1);
+
+                var orders = db.Bill
+                    .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                    .ToList();
+
+                if (orders != null && orders.Count > 0)
+                {
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.Count = orders.Count;
+                    ViewBag.Date = ngayxuat.ToString("dd/MM/yyyy");
+                    ViewBag.Content = ngayxuat.ToString("dd/MM/yyyy");
+                    return PartialView(orders);  
+                }
+                else
+                {
+                    ViewBag.Count = 0;
+                    ViewBag.Date = ngayxuat.ToString("dd/MM/yyyy"); 
+                    return PartialView(); 
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return Json(new { Success = false, Code = -99, msg = "Có lỗi xảy ra!" });
+            }
+        }
+
+
+
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> SearchBill(string search)
+        {
+            if (!String.IsNullOrEmpty(search))
+            {
+
+                var keyword = search.Trim().ToLower();
+                var alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(keyword);
+
+
+                var querry=await (from customer in db.Customer
+                                  join bill in db.Bill on customer.CustomerId equals bill.CustomerId  
+                                  where customer.PhoneNumber.ToLower().Trim().Contains(keyword)||
+                                       bill.Code.ToLower().Trim().Contains(keyword)  
+                                       select bill  ).OrderByDescending(x=>x.CreatedDate).ToListAsync();
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                ViewBag.IsAdmin = isAdmin;
+                ViewBag.IsManage = isManage;
+                if (querry.Count > 0)
+                {
+                    var totalCount = querry.Count;
+                    ViewBag.Key = search.Trim();
+                    ViewBag.Count = totalCount;
+                 
+                    return PartialView(querry);
+
+                }  
+               
+            }
+            ViewBag.Key = search.Trim();
+            return PartialView();
+        }
+
+
+
+
+
+
+
+
+        public ActionResult Partial_BillByEmployee(int? employeeid)
+        {
+
+            if (Session["user"] != null&& employeeid ==null)
+            {
+                AccountEmployee nvSession = (AccountEmployee)Session["user"];
+                employeeid=(int)nvSession.EmployeeId;   
+
+            }
+
+
+            if(employeeid>0)
+            {
+                var bill=db.Bill.Where(x=>x.EmployeeId==employeeid).OrderByDescending(x=>x.CreatedDate).ToList();   
+                if(bill != null)
+                {
+                    ViewBag.EmployeeId = employeeid;    
+                    ViewBag.Count=bill.Count(); 
+                    return PartialView(bill);   
+                }   
+            }
+            return PartialView();
+        }
+        public ActionResult Partail_BillDetail(int billid)
+        {
+            if (billid > 0)
+            {
+                var billdetail=db.BillDetail.Where(x=>x.BillId==billid).ToList();
+                if (billdetail != null)
+                {
+                    return  PartialView(billdetail);        
+                }
+            }
+            return PartialView();
+        }
+
 
         public ActionResult Partail_Product()
         {
@@ -80,15 +195,6 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return PartialView();   
 
         }
-
-
-
-
-
-
-
-
-
         public ActionResult Partial_ListProductBill()
         {
             SellerCart cart = (SellerCart)Session["SellerCart"];
@@ -219,7 +325,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         Price = x.Price
                     }));
             
-                    customer.NumberofPurchases += 1;
+                    customer.NumberofPurchases=(customer.NumberofPurchases==null)? 1 : customer.NumberofPurchases+=1;
                     db.Entry(customer).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
 
@@ -507,6 +613,48 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 wordDocument.MainDocumentPart.Document.Save();
             }
         }
+
+
+        public ActionResult Partail_AddCustomer()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult>AddCustomer(Customer model , Admin_AddCustomer req)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Vui lòng điền đầy đủ thông tin" });
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var customer = await db.Customer.FirstOrDefaultAsync(x => x.PhoneNumber.Trim() == req.PhoneNumber.Trim());
+                    if (customer != null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Số điện thoại đã tồn tại !!!"});
+                    }
+                    model.PhoneNumber = req.PhoneNumber.Trim();
+                    model.CustomerName = req.CustomerName.Trim();
+                    db.Customer.Add(model);
+                    await db.SaveChangesAsync();    
+                    dbContext.Commit(); 
+                    return Json(new { Success = true,Code=1 , msg="Đăng ký thành công",PhoneNumber=req.PhoneNumber.Trim()});
+                }
+                catch (Exception ex) 
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
+                }   
+            }
+        }
+
+
+
+
 
         [HttpPost]
         public async Task<ActionResult> FindCustomer(string input)

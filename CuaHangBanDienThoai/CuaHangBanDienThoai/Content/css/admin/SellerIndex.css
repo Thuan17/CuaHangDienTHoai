@@ -174,8 +174,7 @@ input:focus {
     height: 38px; /* Đồng bộ chiều cao với select */
     border-radius: 5px;
 }
- border-radius: 5px; /* Bo góc */
-}
+
 .SelectList {
     border: none !important; /* Loại bỏ đường viền mặc định */
     outline: none !important; /* Loại bỏ viền focus mặc định */
@@ -186,3 +185,331 @@ input:focus {
         outline: none !important; /* Không hiển thị outline khi focus */
         box-shadow: none !important; /* Không hiển thị shadow khi focus */
     }
+
+.bg-sg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.5;
+    z-index: 2500;
+}
+
+#popupBill {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    /*   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+    z-index: 2700;
+    max-width: 80%;
+    min-width: 80%;
+    height: 850px;
+    overflow: hidden;
+}
+
+
+
+
+
+
+/*.input-data {
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+    .input-data b {
+        margin-right: 8px;
+        white-space: nowrap;
+    }
+
+    .input-data input {
+        flex: 1;
+        width: 100%;
+        border: none;
+        position: relative;
+        z-index: 2;
+        background-color: transparent;
+        border-bottom: 2px solid transparent;*/ /* Default state, no underline */
+    /*}*/
+
+.error-border {
+    border-bottom: 2px solid #f44336 !important;
+}
+
+
+
+/*.input-data .underline {
+        position: absolute;
+        bottom: 0;
+        height: 2px;
+        width: 100%;*/ /* Đảm bảo underline chiếm hết chiều rộng của input */
+/*}
+
+        .input-data .underline:before {
+            position: absolute;
+            content: "";
+            height: 2px;
+            width: 100%;*/ /* Đảm bảo gradient underline chiếm hết chiều rộng */
+/*background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+            transform: scaleX(0);
+            transform-origin: center;
+            transition: transform 0.3s ease;
+        }*/
+
+/*   strart Partial_billedit*/
+.td__img {
+    width: 20%;
+}
+
+.td__product {
+    width: 45%; /* Điều chỉnh độ rộng cho cột "Sản phẩm" */
+}
+
+.td__quantity-price {
+    width: 25%; /* Điều chỉnh độ rộng cho cột "Số lượng/ Giá" */
+}
+
+.td__imgItem {
+    width: 28%;
+    padding: 0 !important; /* Sử dụng !important để ghi đè */
+    overflow: hidden;
+    height: 50%;
+}
+
+.td__quantity-price__item {
+    text-align: center;
+    align-items: center;
+    padding: 0 !important; /* Sử dụng !important để ghi đè */
+    overflow: hidden;
+}
+
+    .td__quantity-price__item input {
+        max-width: 40px;
+        border: none;
+        background-color: transparent;
+    }
+
+.td__imgItem img {
+    width: 100px;
+    display: block;
+    border: 0;
+    vertical-align: middle;
+    height: 100px;
+    align-items: center;
+    text-align: center;
+}
+
+.td__imgItem a {
+    padding: 0;
+}
+
+.td__productItem {
+    padding: 0 !important; /* Sử dụng !important để ghi đè */
+    overflow: hidden;
+}
+
+.td__thaotac__item {
+    padding: 0;
+}
+
+.blur-up.lazyloaded {
+    -webkit-filter: blur(0);
+    filter: blur(0);
+}
+
+.blur-up {
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+    transition: filter 400ms, -webkit-filter 400ms;
+    -webkit-transition: filter 400ms, -webkit-filter 400ms;
+}
+
+
+
+.corner-banner {
+    position: absolute;
+    top: 20%;
+    right: 25%;
+    left: -4%; /* Điều chỉnh vị trí nếu cần */
+    background-color: red;
+    color: white;
+    padding: 5px 15px;
+    font-size: 12px;
+    font-weight: bold;
+    transform: rotate(-35deg); /* Xoay góc để tạo hiệu ứng xéo */
+    transform-origin: top left;
+    z-index: 10;
+    width: 140px; /* Điều chỉnh chiều rộng phù hợp với nhu cầu */
+    text-align: center;
+}
+
+
+.custom-input {
+    border: 2px solid #ccc; /* Đường viền giống fieldset */
+    border-radius: 4px; /* Bo góc giống fieldset */
+    padding: 10px 12px; /* Khoảng cách bên trong */
+    background-color: #f9f9f9; /* Màu nền nhẹ */
+    font-size: 14px; /* Cỡ chữ */
+    width: 100%; /* Độ rộng đầy đủ */
+    box-sizing: border-box; /* Tính toán viền và padding trong kích thước */
+}
+
+    .custom-input:focus {
+        border-color: #007bff; /* Đổi màu viền khi focus */
+        outline: none; /* Loại bỏ viền mặc định */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Hiệu ứng bóng khi focus */
+    }
+
+
+
+
+.container .text {
+    text-align: center;
+    font-size: 41px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.container form {
+    padding: 30px 0 0 0;
+}
+
+    .container form .form-row {
+        display: flex;
+        margin: 32px 0;
+    }
+
+form .form-row .input-data {
+    width: 100%;
+    height: 40px;
+    margin: 0 20px;
+    position: relative;
+}
+
+form .form-row .textarea {
+    height: 70px;
+}
+
+.input-data input,
+.textarea textarea {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: none;
+    font-size: 17px;
+    border-bottom: 2px solid rgba(0,0,0, 0.12);
+}
+
+    .input-data input:focus ~ label, .textarea textarea:focus ~ label,
+    .input-data input:valid ~ label, .textarea textarea:valid ~ label {
+        transform: translateY(-20px);
+        font-size: 14px;
+        color: #3498db;
+    }
+
+.textarea textarea {
+    resize: none;
+    padding-top: 10px;
+}
+
+.input-data label {
+    position: absolute;
+    pointer-events: none;
+    bottom: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.textarea label {
+    width: 100%;
+    bottom: 40px;
+    background: #fff;
+}
+
+.input-data .underline {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    width: 100%;
+}
+
+    .input-data .underline:before {
+        position: absolute;
+        content: "";
+        height: 2px;
+        width: 100%;
+        background: #3498db;
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform 0.3s ease;
+    }
+
+.input-data input:focus ~ .underline:before,
+.input-data input:valid ~ .underline:before,
+.textarea textarea:focus ~ .underline:before,
+.textarea textarea:valid ~ .underline:before {
+    transform: scale(1);
+}
+
+.submit-btn .input-data {
+    overflow: hidden;
+    height: 45px !important;
+    width: 25% !important;
+}
+
+    .submit-btn .input-data .inner {
+        height: 100%;
+        width: 300%;
+        position: absolute;
+        left: -100%;
+        background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+        transition: all 0.4s;
+    }
+
+    .submit-btn .input-data:hover .inner {
+        left: 0;
+    }
+
+    .submit-btn .input-data input {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 17px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        position: relative;
+        z-index: 2;
+    }
+
+@media (max-width: 700px) {
+    .container .text {
+        font-size: 30px;
+    }
+
+    .container form {
+        padding: 10px 0 0 0;
+    }
+
+        .container form .form-row {
+            display: block;
+        }
+
+    form .form-row .input-data {
+        margin: 35px 0 !important;
+    }
+
+    .submit-btn .input-data {
+        width: 40% !important;
+    }
+}
