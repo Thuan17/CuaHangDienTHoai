@@ -10,8 +10,23 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using ZXing;
+using ZXing.QrCode;
+using A = DocumentFormat.OpenXml.Drawing;
+using DW = DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using PIC = DocumentFormat.OpenXml.Drawing.Pictures;
 
 
+
+using ImageProcessor.Processors;
+using System.Text.RegularExpressions;
+using DocumentFormat.OpenXml.Drawing.Wordprocessing;
+using ZXing.QrCode.Internal;
+using System.Drawing.Imaging;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml;
 
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
@@ -145,9 +160,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 {
                     if (Session["user"] == null)
                     {
-                        return Json(new { success = false, code = -3,msg="Phiên đăng nhập của bạn đa hết hạn" });
+                        return Json(new { Success = false, code = -3,msg="Phiên đăng nhập của bạn đa hết hạn" });
                     }
-                    Employee nvSession = (Employee)Session["user"];
+                    AccountEmployee nvSession = (AccountEmployee)Session["user"];
+                    var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
                     var customer = await db.Customer.FirstOrDefaultAsync(x => x.CustomerId == customerid);
                     if (customer == null)
                     {
@@ -175,24 +191,26 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                             else
                             {
                                 var Name = (checkQuantityPro.Products.Title.Trim() + " " + checkQuantityPro.Ram.Trim() + "/" + checkQuantityPro.Capacity.Trim()) ?? "PadaMiniStore";
-                                return Json(new { success = false, Code = -2,msg="Khong không đủ số lượng  " +Name }); // Kho không đủ số lượng
+                                return Json(new { Success = false, Code = -2,msg="Khong không đủ số lượng  " +Name }); // Kho không đủ số lượng
                             }
                         }
                         else
                         {
                             var Name = (checkQuantityPro.Products.Title.Trim() + " " + checkQuantityPro.Ram.Trim() + "/" + checkQuantityPro.Capacity.Trim()) ?? "PadaMiniStore";
-                            return Json(new { success = false, Code = -2, msg = "Khong không đủ số lượng  " + Name }); // Kho không đủ số lượng
+                            return Json(new { Success = false, Code = -2, msg = "Khong không đủ số lượng  " + Name }); // Kho không đủ số lượng
                         }
                     }
+                    string code = new Random().Next(0, 99999).ToString("D4");
                     Bill bill = new Bill
                     {
                         CustomerId = customer.CustomerId,
                         //Phone = customer.PhoneNumber,
-                        //StaffId = nvSession.StaffId,
-                        TypePayment = 0,
+                        EmployeeId= checkStaff.EmployeeId,
+
+
                         CreatedDate = DateTime.Now,
-                        CreatedBy = nvSession.NameEmployee?.Trim(),
-                        Code = "HD" + new Random().Next(0, 99999).ToString("D4")
+                        CreatedBy = checkStaff.NameEmployee?.Trim(),
+                        Code = code.Trim(), 
                     };
                     cart.Items.ForEach(x => bill.BillDetail.Add(new BillDetail
                     {
@@ -214,8 +232,12 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     string invoicePath = ExportInvoice(bill.BillId);
                     if (!string.IsNullOrEmpty(invoicePath))
                     {
-                        dbContextTransaction.Commit();
-                        return Json(new { success = true, code = 1, filePath = invoicePath });
+                        dbContext.Commit();
+                        return Json(new { Success = true, Code = 1, filePath = invoicePath });
+                    }else 
+                    {
+                      
+                        return Json(new { Success = false, Code = -2, filePath = invoicePath });
                     }
                 }
                 catch (Exception ex) 
@@ -232,7 +254,48 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
         }
 
+        public ActionResult DownloadWord(string filePath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(filePath) && System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    string fileName = Path.GetFileName(filePath);
+                    return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content("Lỗi khi tải hóa đơn: " + ex.Message);
+            }
+        }
 
+
+        public ActionResult DownloadInvoice(string filePath)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(filePath) && System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    string fileName = Path.GetFileName(filePath);
+                    return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", fileName);
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content("Lỗi khi tải hóa đơn: " + ex.Message);
+            }
+        }
 
 
         public string ExportInvoice(int sellerId)
@@ -251,11 +314,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 {
                     return null;
                 }
-                var staff = db.Employee.Find(seller.Employee);
-                if (staff == null)
-                {
-                    return null;
-                }
+              
                 try
                 {
                     string templatePath = Server.MapPath("~/Content/templates/HoaDon.html");
@@ -265,8 +324,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     htmlContent = htmlContent.Replace("#{{Code}}", seller.Code);
                     htmlContent = htmlContent.Replace("#{{CreatedDate}}", seller.CreatedDate.ToString("dd/MM/yyyy"));
                     htmlContent = htmlContent.Replace("#{{CustomerName}}", customer.CustomerName);
-                    //htmlContent = htmlContent.Replace("#{{Phone}}", seller.Phone);
-                    htmlContent = htmlContent.Replace("#{{CreatedBy}}", staff.NameEmployee.Trim());
+                    htmlContent = htmlContent.Replace("#{{Phone}}", customer.PhoneNumber.Trim());
+                    htmlContent = htmlContent.Replace("#{{CreatedBy}}", seller.CreatedBy.Trim());
                     // Lấy chi tiết đơn hàng
                     var sellerDetail = db.BillDetail
                         .Where(od => od.BillId == seller.BillId)
@@ -278,7 +337,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     foreach (var detail in sellerDetail)
                     {
                         var Name = (detail.ProductDetail.Products.ProductCategory.Title.Trim() + " " + detail.ProductDetail.Products.Title.Trim()) ?? "PadaMiniStore";
-                        var GetCapacity = (detail.ProductDetail.Ram.Trim() + "/" + detail.ProductDetail.Capacity.Trim()) ?? "PadaMiniStore";
+                        var GetCapacity = (detail.ProductDetail.Capacity.Trim() + "/" + detail.ProductDetail.Color.Trim()) ?? "PadaMiniStore";
+                      
                         string productRow = $@"
                     <tr>
                         <td>{index}</td>
@@ -309,7 +369,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     string filePath = Path.Combine(folderPath, fileName);
 
                    
-                    string logoPath = Server.MapPath("~/images/logo/logoweb.png");
+                    string logoPath = Server.MapPath("~/images/logo/logo80.png");
 
                     ConvertHTMLToWord(htmlContent, filePath, logoPath, seller.Code);
 

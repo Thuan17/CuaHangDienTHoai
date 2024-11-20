@@ -116,7 +116,26 @@
 
 
 
+    $(document).on('click', '#searchbtn', function () {
+        var input = $('#searchinput').val().trim(); 
+        alert("searchbtn value: " + input);
 
+        if (input && input.length >= 3) {
+            $.ajax({
+                url: '/Admin/Seller/FindCustomer',
+                type: 'POST',
+                data: { input: input },
+                success: function (res) {
+                    $('#loadCustomer').html(res); 
+                },
+                error: function () {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Lỗi', 'Có lỗi xảy ra khi cập nhật số lượng.');
+                }
+            });
+        } else {
+            alert("Vui lòng nhập ít nhất 3 ký tự để tìm kiếm!"); 
+        }
+    });
 
     $(document).on('input', '#searchinput', function () {
         var input = $(this).val().trim();
@@ -131,6 +150,75 @@
                 error: function () {
                     createToast('error', 'fa-solid fa-circle-exclamation', 'Lỗi', 'Có lỗi xảy ra khi cập nhật số lượng.');
                 }
+            });
+        } else {
+            $('#loadCustomer').html(''); 
+        }
+    });
+    document.getElementById('clearInputBill').addEventListener('click', function () {
+        document.getElementById('searchinput').value = '';
+        $('#loadCustomer').html('');
+    });
+
+    $(document).on('click', '.btnAddCusstomer', function (event) {
+        event.preventDefault();
+        var bg = $(".bg-sg");
+        var popup = $("#popupBill");
+
+        bg.on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+
+        $('.btnCloseEditBill').on('click', function () {
+            bg.hide();
+            popup.hide();
+        });
+    });
+    $(document).on('click', '.checkOut', function (event) {
+        event.preventDefault();
+        var customerid = $(this).data('customerid');
+        if (customerid) {
+            var $button = $(this); // Gán nút vào biến để dùng trong các callback
+            $button.prop('disabled', true);
+            $button.find('.loading-image').show();
+            $button.find('.button-text').hide();
+            $.ajax({
+                url: '/Admin/Seller/CheckOut',
+                data: { customerid: customerid },
+                type: 'POST',
+                success: function (res) {
+                    if (res.Success) {
+                        if (res.Code == 1) {
+                            window.location.href = '/Admin/Seller/DownloadWord?filePath=' + encodeURIComponent(res.filePath);
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Xuất hóa đơn thành công',
+                                text: 'Hóa đơn đã có trên hệ thống'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    LoadListProduct();
+                                    document.getElementById('searchinput').value = '';
+                                    $('#loadCustomer').html('');
+                                    $button.prop('disabled', false);
+                                   $button.find('.loading-image').hide();
+                                    $button.find('.button-text').show();
+                                   
+                                }
+                            });
+                        }
+                    } else {
+                        $button.prop('disabled', false);
+                        $button.find('.loading-image').hide();
+                        $button.find('.button-text').show();
+                        var type = res.Code === -99 ? 'error' : 'warning';
+                        createToast(type, 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
+                    }
+
+                }, error:function(res) {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
+                },
             });
         }
     });

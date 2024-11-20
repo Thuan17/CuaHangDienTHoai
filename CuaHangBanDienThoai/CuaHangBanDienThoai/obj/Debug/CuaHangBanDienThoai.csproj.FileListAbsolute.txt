@@ -156,3 +156,15 @@ D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoa
 D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\obj\Debug\CuaHangBanDienThoai.csproj.CopyComplete
 D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\obj\Debug\CuaHangBanDienThoai.dll
 D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\obj\Debug\CuaHangBanDienThoai.pdb
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\DocumentFormat.OpenXml.dll
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\ImageProcessor.dll
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.Drawing.Common.dll
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.ValueTuple.dll
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.dll
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.presentation.dll
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\DocumentFormat.OpenXml.xml
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\ImageProcessor.xml
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.Drawing.Common.xml
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.ValueTuple.xml
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.xml
+D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.presentation.xml

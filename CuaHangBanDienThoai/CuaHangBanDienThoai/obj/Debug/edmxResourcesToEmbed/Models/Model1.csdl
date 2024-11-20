@@ -41,18 +41,14 @@
     <Property Name="BillId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="Quantity" Type="Int32" Nullable="false" />
     <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ModifiedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="TypePayment" Type="Int32" Nullable="false" />
     <Property Name="Confirm" Type="Boolean" />
-    <Property Name="TypeReturn" Type="Boolean" />
-    <Property Name="Success" Type="Boolean" />
-    <Property Name="SuccessDate" Type="DateTime" Precision="3" />
     <Property Name="Note" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-    <Property Name="CustomerId" Type="Int32" />
+    <Property Name="CustomerId" Type="Int32" Nullable="false" />
+    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
     <NavigationProperty Name="VoucherDetail" Relationship="Self.FK__VoucherDe__BillI__7E02B4CC" FromRole="Bill" ToRole="VoucherDetail" />
     <NavigationProperty Name="Customer" Relationship="Self.FK_Bill_Customer" FromRole="Bill" ToRole="Customer" />
     <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_Bill" FromRole="Bill" ToRole="BillDetail" />
@@ -138,14 +134,14 @@
     <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
     <Property Name="FunctionId" Type="Int32" />
     <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="ManagerId" Type="Int32" />
     <NavigationProperty Name="AccountEmployee" Relationship="Self.FK_AccountEmployee_Employee" FromRole="Employee" ToRole="AccountEmployee" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Employee_Manager" FromRole="Employee" ToRole="Employee1" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK_Employee_Manager" FromRole="Employee1" ToRole="Employee" />
     <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="Employee" ToRole="ImportWarehouse" />
     <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
     <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
     <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
-    <Property Name="ManagerId" Type="Int32" />
-    <NavigationProperty Name="Employee1" Relationship="CUAHANGDIENTHOAIModel.FK_Employee_Manager" FromRole="Employee" ToRole="Employee1" />
-    <NavigationProperty Name="Employee2" Relationship="CUAHANGDIENTHOAIModel.FK_Employee_Manager" FromRole="Employee1" ToRole="Employee" />
   </EntityType>
   <EntityType Name="ImportWarehouse">
     <Key>
@@ -487,7 +483,7 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_Bill_Customer">
-    <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
     <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Customer">
@@ -591,6 +587,18 @@
       </Principal>
       <Dependent Role="Wards">
         <PropertyRef Name="idDistricts" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Employee_Manager">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Employee1" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeId" />
+      </Principal>
+      <Dependent Role="Employee1">
+        <PropertyRef Name="ManagerId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -889,6 +897,10 @@
       <End Role="Districts" EntitySet="Districts" />
       <End Role="Wards" EntitySet="Wards" />
     </AssociationSet>
+    <AssociationSet Name="FK_Employee_Manager" Association="Self.FK_Employee_Manager">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Employee1" EntitySet="Employee" />
+    </AssociationSet>
     <AssociationSet Name="FK_ImportWarehouse_Employee" Association="Self.FK_ImportWarehouse_Employee">
       <End Role="Employee" EntitySet="Employee" />
       <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
@@ -961,21 +973,5 @@
       <End Role="Voucher" EntitySet="Voucher" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
-    <AssociationSet Name="FK_Employee_Manager" Association="CUAHANGDIENTHOAIModel.FK_Employee_Manager">
-      <End Role="Employee" EntitySet="Employee" />
-      <End Role="Employee1" EntitySet="Employee" />
-    </AssociationSet>
   </EntityContainer>
-  <Association Name="FK_Employee_Manager">
-    <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee1" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="EmployeeId" />
-      </Principal>
-      <Dependent Role="Employee1">
-        <PropertyRef Name="ManagerId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

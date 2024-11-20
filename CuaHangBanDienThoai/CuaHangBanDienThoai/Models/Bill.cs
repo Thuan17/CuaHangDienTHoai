@@ -24,18 +24,14 @@ namespace CuaHangBanDienThoai.Models
         public int BillId { get; set; }
         public string Code { get; set; }
         public decimal TotalAmount { get; set; }
-        public int Quantity { get; set; }
         public string CreatedBy { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public System.DateTime ModifiedDate { get; set; }
+        public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifiedby { get; set; }
-        public int TypePayment { get; set; }
         public Nullable<bool> Confirm { get; set; }
-        public Nullable<bool> TypeReturn { get; set; }
-        public Nullable<bool> Success { get; set; }
-        public Nullable<System.DateTime> SuccessDate { get; set; }
         public string Note { get; set; }
-        public Nullable<int> CustomerId { get; set; }
+        public int CustomerId { get; set; }
+        public int EmployeeId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VoucherDetail> VoucherDetail { get; set; }

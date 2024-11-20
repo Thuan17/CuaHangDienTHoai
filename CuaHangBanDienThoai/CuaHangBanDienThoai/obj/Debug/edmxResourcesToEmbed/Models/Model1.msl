@@ -42,18 +42,14 @@
           <ScalarProperty Name="BillId" ColumnName="BillId" />
           <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
-          <ScalarProperty Name="TypePayment" ColumnName="TypePayment" />
           <ScalarProperty Name="Confirm" ColumnName="Confirm" />
-          <ScalarProperty Name="TypeReturn" ColumnName="TypeReturn" />
-          <ScalarProperty Name="Success" ColumnName="Success" />
-          <ScalarProperty Name="SuccessDate" ColumnName="SuccessDate" />
           <ScalarProperty Name="Note" ColumnName="Note" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -115,7 +111,6 @@
     <EntitySetMapping Name="Employee">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Employee">
         <MappingFragment StoreEntitySet="Employee">
-          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
           <ScalarProperty Name="NameEmployee" ColumnName="NameEmployee" />
@@ -131,6 +126,7 @@
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="FunctionId" ColumnName="FunctionId" />
           <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
