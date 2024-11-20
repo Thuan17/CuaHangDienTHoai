@@ -2,32 +2,32 @@
 @using CuaHangBanDienThoai.Common;
 <style>
     .table-scroll {
-        max-height: 680px; /* Chiều cao tối đa cho bảng cuộn */
-        overflow-y: auto; /* Kích hoạt thanh cuộn dọc */
+        max-height: 680px; 
+        overflow-y: auto;
     }
 
     thead th,
     tbody td {
-        text-align: center; /* Canh giữa văn bản */
+        text-align: center; 
     }
 
     table {
-        table-layout: fixed; /* Bố cục bảng cố định để đảm bảo các cột đều nhau */
-        width: 100%; /* Chiều rộng 100% */
+        table-layout: fixed; 
+        width: 100%; 
     }
 
     thead th {
-        position: sticky; /* Giữ cố định phần tiêu đề */
+        position: sticky; 
         top: 0;
-        background-color: #f8f9fa; /* Màu nền cho phần tiêu đề */
-        z-index: 2; /* Ưu tiên cao hơn tbody */
+        background-color: #f8f9fa; 
+        z-index: 2; 
     }
     .table-scroll::-webkit-scrollbar {
-        width: 0px; /* Ẩn thanh cuộn trên Chrome, Edge và Safari */
+        width: 0px; 
     }
 
     .table-scroll {
-        scrollbar-width: none; /* Ẩn thanh cuộn trên Firefox */
+        scrollbar-width: none;
     }
 </style>
 <div class="row p-0 ml-1 mr-1 pb-4 mt-3 w-100" >
@@ -89,7 +89,7 @@
                         <th style="width: 30%;">Khách hàng</th>
                         <th style="width: 30%;">Sản phẩm</th>
                         <th style="width: 20%;">Tổng tiền</th>
-                        <th style="width: 10%;">Tổng tiền</th>
+                        <th style="width: 10%;"></th>
                     </tr>
                 </thead>
             </table>
@@ -102,6 +102,8 @@
                         {
                             foreach (var item in Model)
                             {
+
+                              
                                 <tr class="row_content tr_IndexBill_@item.BillId" id="tr_IndexBill_@item.BillId">
                                     <td class="code-container" style="width: 10%;">
                                         <span class="code-text">@item.Code.Trim()</span>
@@ -116,13 +118,27 @@
                                         <div class="row">
                                             <b><i class="fa fa-phone-square" aria-hidden="true"></i> :</b> @item.Customer.PhoneNumber.Trim()
                                         </div>
+                                       
                                         <div class="row">
                                             <b><i class="fa fa-calendar" aria-hidden="true"></i>:</b> @String.Format("{0:dd/MM/yyyy HH:mm:ss}", item.CreatedDate)
+
+                                        </div>
+                                        <div class="row">
+                                            <b>
+                                                Nhân viên bán hàng :
+                                            </b> @item.Employee.NameEmployee.Trim()
                                         </div>
                                     </td>
                                     <td style="width: 30%;">@Html.Action("Partail_BillDetail", "Seller", new { billid = item.BillId })</td>
                                     <td style="width: 20%;">@($"{Common.FormatNumber(item.TotalAmount)}đ")</td>
-                                    <td style="width: 10%;">@($"{Common.FormatNumber(item.TotalAmount)}đ")</td>
+                                    <td class=" align-items-center" style="width: 10%;">
+                                        <button type="button" class="btn btn-warning d-flex align-items-center justify-content-center w-100 btnupdatebill"
+                                                data-billid="@item.BillId" style="height: 40px;">
+                                            <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                                            <span class="button-text">Cập nhật</span>
+                                        </button>
+                                    </td>
+
                                 </tr>
                             }
                         }

@@ -1,0 +1,34 @@
+﻿@model CuaHangBanDienThoai.Models.Bill
+@using CuaHangBanDienThoai.Common;
+@if (Model != null)
+{
+    <tr class="row_content tr_IndexBill_@Model.BillId" id="tr_IndexBill_@Model.BillId">
+        <td class="code-container" style="width: 10%;">
+            <span class="code-text">@Model.Code.Trim()</span>
+        </td>
+        <td style="width: 30%;">
+            <div class="row">
+                <b>
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    :
+                </b> @Model.Customer.CustomerName.Trim()
+            </div>
+            <div class="row">
+                <b><i class="fa fa-phone-square" aria-hidden="true"></i> :</b> @Model.Customer.PhoneNumber.Trim()
+            </div>
+            <div class="row">
+                <b><i class="fa fa-calendar" aria-hidden="true"></i>:</b> @String.Format("{0:dd/MM/yyyy HH:mm:ss}", Model.CreatedDate)
+            </div>
+        </td>
+        <td style="width: 30%;">@Html.Action("Partail_BillDetail", "Seller", new { billid = Model.BillId })</td>
+        <td style="width: 20%;">@($"{Common.FormatNumber(Model.TotalAmount)}đ")</td>
+        <td class=" align-Models-center" style="width: 10%;">
+            <button type="button" class="btn btn-warning d-flex align-Models-center justify-content-center w-100 btnupdatebill"
+                    data-billid="@Model.BillId" style="height: 40px;">
+                <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                <span class="button-text">Cập nhật</span>
+            </button>
+        </td>
+
+    </tr>
+}

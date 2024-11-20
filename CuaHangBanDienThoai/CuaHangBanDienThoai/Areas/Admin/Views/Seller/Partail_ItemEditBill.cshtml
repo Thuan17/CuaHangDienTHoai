@@ -1,0 +1,74 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditBill
+@using CuaHangBanDienThoai.Common;
+<b class="fs-6 mb-3 text-left">
+    Danh sách sản phẩm <span class="text-danger">@Model.Items.Count()</span>
+</b>
+<div class="table-content table-responsive order-table">
+    <table class="table table-hover mb-0" style="table-layout: fixed; width: 100%;">
+        <thead>
+            <tr>
+                <th class="float-lg-start" style="width: 20%;">Hình</th>
+                <th class="float-lg-start" style="width: 50%;">Sản phẩm</th>
+                <th class="td__quantity-price" style="width: 30%;">Giá/Số lượng</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div style="max-height: 320px; overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+    <style>
+
+        div[style*="overflow-y"]::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                string strImg = "";
+                var image = item.productDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                if (image != null)
+                {
+                    strImg = image.Image;
+                }
+                else
+                {
+                    strImg = "~/Content/css/admin/login/images/logoWeb.png";
+                }
+                var Name = item.productDetail.Products.Title.Trim() + " " + item.productDetail.Ram.Trim() + "/" + item.productDetail.Capacity.Trim();
+                <tr>
+                    <td class="td__imgItem p-0" style="width: 20%;">
+                        <a href="/san-pham/@item.productDetail.Alias" target="_blank">
+                            <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
+                        </a>
+                        <button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemOrder" data-billid="@Model.BillId" data-billdetailid="@item.BillDetailId">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                            </svg>
+                            Xoá
+                        </button>
+                    </td>
+                    <td class="text-left" style="width: 50%;">
+                        <a href="/san-pham/@item.productDetail.Alias" target="_blank">
+                            @Name
+                        </a>
+                        <div class="Describe pt-0">
+                            <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
+                            <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
+                            <p class="text-dark mb-0"><label>Hãng:</label> @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+                            <p class="text-dark mb-0"><label>Mã:</label> @item.productDetail.Alias.Trim()</p>
+                        </div>
+                    </td>
+                    <td class="td__quantity-price__item" style="width: 30%;">
+                        @Common.FormatNumber(item.Price) x
+                        <input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Order"
+                               id="@item.ProductDetailId"
+                               billdetailid="@item.BillDetailId"
+                               billid="@Model.BillId" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

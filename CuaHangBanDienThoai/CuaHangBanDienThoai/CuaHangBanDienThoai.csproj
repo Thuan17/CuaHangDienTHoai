@@ -220,6 +220,7 @@
     <Compile Include="Models\Admin_AddProductDetail.cs" />
     <Compile Include="Models\Admin_AddVoucher.cs" />
     <Compile Include="Models\Admin_EditBanner.cs" />
+    <Compile Include="Models\Admin_EditBill.cs" />
     <Compile Include="Models\Admin_EditEmployee.cs" />
     <Compile Include="Models\Admin_EditOrder.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
@@ -5717,6 +5718,10 @@
     <Content Include="Areas\Admin\Views\Seller\Partail_BillDetail.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\GetBillByDate.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\SearchBill.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_EditBill.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_ItemEditBill.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\GetUpdatedOrderRow.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\GetUpdatedBillRow.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

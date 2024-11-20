@@ -27,6 +27,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
@@ -76,8 +77,19 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
                 if (orders != null && orders.Count > 0)
                 {
+
+
+
                     bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                    int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+
+                    // Truyền thông tin qua ViewBag
                     ViewBag.IsAdmin = isAdmin;
+
+                    ViewBag.CurrentEmployeeId = employeeId;
+
+                    ViewBag.IsManage = isManage;
                     ViewBag.Count = orders.Count;
                     ViewBag.Date = ngayxuat.ToString("dd/MM/yyyy");
                     ViewBag.Content = ngayxuat.ToString("dd/MM/yyyy");
@@ -106,6 +118,13 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         [HttpGet]
         public async Task<ActionResult> SearchBill(string search)
         {
+
+            if (Session["user"] == null)
+            {
+                return RedirectToAction("Account", "Login");
+
+            }
+
             if (!String.IsNullOrEmpty(search))
             {
 
@@ -120,10 +139,20 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                                        select bill  ).OrderByDescending(x=>x.CreatedDate).ToListAsync();
                 bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
                 bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+
+                // Truyền thông tin qua ViewBag
                 ViewBag.IsAdmin = isAdmin;
+              
+                ViewBag.CurrentEmployeeId = employeeId;
+               
                 ViewBag.IsManage = isManage;
                 if (querry.Count > 0)
                 {
+                    AccountEmployee nvSession = (AccountEmployee)Session["user"];
+
+
+                    ViewBag.CurrentEmployeeId = employeeId;
                     var totalCount = querry.Count;
                     ViewBag.Key = search.Trim();
                     ViewBag.Count = totalCount;
@@ -139,7 +168,16 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
 
+        public ActionResult GetUpdatedBillRow(int billid)
+        {
 
+            var bill = db.Bill.FirstOrDefault(b => b.BillId == billid);
+            if (bill != null)
+            {
+                return PartialView(bill);
+            }
+            return HttpNotFound();
+        }
 
 
 
@@ -619,6 +657,314 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         {
             return PartialView();
         }
+
+
+
+        [HttpPost]
+        public ActionResult DeleteItem(int billid, int billdetailid)
+        {
+            try
+            {
+                if (Session["Admin_EditBill_" + billid] != null)
+                {
+                    Admin_EditBill viewModel = (Admin_EditBill)Session["Admin_EditBill_" + billid];
+                    if (viewModel != null)
+                    {
+                        if (viewModel.Items.Count > 1)
+                        {
+                            viewModel.Items.RemoveAll(x => x.BillDetailId == billdetailid);
+
+                            Session["Admin_EditBill_" + billid] = viewModel;
+
+                            return Json(new { success = true, code = 1, message = "Xóa thành công" });
+                        }
+                        else { return Json(new { success = false, message = "Bắt buộc 1 sản phẩm" }); }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Không tìm thấy hóa đơn trong session" });
+                    }
+                }
+                else
+                {
+
+                    return Json(new { success = false, message = "Không tìm thấy hóa đơn trong session" });
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, message = "Đã xảy ra lỗi khi xóa sản phẩm: " + ex.Message });
+            }
+        }
+        [HttpPost]
+        public ActionResult UpdateQuantityForEditNew(int productdetailId, int billid, int billdetailid, int newQuantity)
+        {
+            try
+            {
+                if (Session["user"] == null)
+                {
+                    return RedirectToAction("DangNhap", "Account");
+                }
+                if (Session["Admin_EditBill_" + billid] == null)
+                {
+                    return Json(new { Success = false, msg = "Không tìm thấy sản phẩm để cập nhật số lượng." });
+
+                }
+                Admin_EditBill viewModel = (Admin_EditBill)Session["Admin_EditBill_" + billid];
+                if (viewModel == null)
+                {
+                    return Json(new { Success = false, msg = "Không tìm thấy sản phẩm để cập nhật số lượng." });
+                }
+                var itemToUpdate = viewModel.Items.FirstOrDefault(item =>
+                    item.ProductDetailId == productdetailId &&
+                    item.BillId == billid && item.BillDetailId == billdetailid);
+
+                if (itemToUpdate != null)
+                {
+                    int oldQuantity = itemToUpdate.Quantity;
+                    itemToUpdate.Quantity = newQuantity;
+                    Session["Admin_EditBill_" + billid] = viewModel;
+                    return Json(new { Success = true });
+
+                }
+                return Json(new { Success = false, msg = "Không tìm thấy sản phẩm để cập nhật số lượng." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, msg = ex });
+            }
+        }
+
+
+        public ActionResult Partail_ItemEditBill(int billid)
+        {
+            Admin_EditBill order = (Admin_EditBill)Session["Admin_EditBill_" + billid];
+            if (order != null && order.Items.Any())
+            {
+                int count = order.Items.Count;
+                ViewBag.Count = count;
+                return PartialView(order);
+            }
+            return PartialView();
+        }
+        public ActionResult GetTotalPriceItem(int billid)
+        {
+            try
+            {
+                if (Session["Admin_EditBill_" + billid] != null)
+                {
+                    var viewModel = (Admin_EditBill)Session["Admin_EditBill_" + billid];
+                    if (viewModel != null)
+                    {
+                        return Json(CuaHangBanDienThoai.Common.Common.FormatNumber(viewModel.GetPriceTotal(), 0) + " đ", JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json("0 đ", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json("0 đ", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        public ActionResult Partail_EditBill(int? billid)
+        {
+            if(billid!=null&& billid> 0)
+            {
+                var bill = db.Bill.FirstOrDefault(x=>x.BillId== billid);
+                if(bill != null) 
+                {
+                    Admin_EditBill viewModel = new Admin_EditBill {
+                        BillId = bill.BillId,
+                        Code = bill.Code,
+                        TotalAmount = bill.TotalAmount,
+                        CreatedBy = bill.CreatedBy,
+                        CreatedDate = bill.CreatedDate,
+                        ModifiedDate = bill.ModifiedDate ?? DateTime.MinValue,
+                        Modifiedby = bill.Modifiedby ?? "",
+                        CustomerId = bill.CustomerId,
+                        EmployeeId = bill.EmployeeId,
+                        customer = db.Customer.FirstOrDefault(x => x.CustomerId == bill.CustomerId),
+                    };
+                    var billDetail = db.BillDetail.Where(x => x.BillId == billid)
+                        .Select(detail => new Admin_EditBillItem
+                            {
+                            BillDetailId= detail.BillDetailId,
+                            Quantity=detail.Quantity,
+                            Price=detail.Price,
+                            BillId= (int)detail.BillId,
+                            ProductDetailId=(int)detail.ProductDetailId,
+                            productDetail = db.ProductDetail.FirstOrDefault(x => x.ProductDetailId == detail.ProductDetailId),
+
+                        }).ToList();
+                    viewModel.Items = billDetail;
+
+
+                    Session["Admin_EditBill_" + billid] = viewModel;
+
+                    ViewBag.Count = viewModel.Items.Count;
+                    return PartialView(viewModel);
+                }
+            }
+            return PartialView();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult>Edit(Admin_EditBill model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập đầy đủ " });
+            }
+            using (var dbConText = db.Database.BeginTransaction())
+            {
+                try 
+                {
+                   if(Session["Admin_EditBill_" + model.BillId] == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng nhập đầy đủ " });
+                    }
+
+                    if (Session["user"] == null)
+                    {
+                        return Json(new { Success = false, Code = -3, msg = "Phiên đăng nhập của bạn đã hết hạn" });
+                    }
+                    var sessionKey = "Admin_EditBill_" + model.BillId;
+                    var viewModel = Session[sessionKey] as Admin_EditBill;
+                    if (viewModel == null || viewModel.Items.Count < 1)
+                    {
+                        return Json(new { Success = false, Code = viewModel == null ? -3 : -4 });
+                    }
+
+
+
+
+
+
+                    AccountEmployee nvSession = (AccountEmployee)Session["user"];
+                    var checkStaff =await db.Employee.FirstOrDefaultAsync(row => row.EmployeeId == nvSession.EmployeeId);
+                    var bill = await db.Bill.FirstOrDefaultAsync(x => x.BillId == model.BillId);
+                    if(bill == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Không tìm thấy đơn hàng " });
+                    }
+                    decimal totalAmount = viewModel.Items.Sum(detail => detail.Price * detail.Quantity);
+                    bill.Modifiedby = checkStaff.NameEmployee.Trim();
+                    bill.ModifiedDate=DateTime.Now;
+                    bill.TotalAmount= totalAmount;  
+                    db.Entry(bill).State = EntityState.Modified; 
+                    
+
+
+
+
+
+
+
+                    await db.SaveChangesAsync();
+                    var existingDetails = db.BillDetail.Where(d => d.BillId == bill.BillId).ToList();
+                    var newDetails = viewModel.Items;
+                    foreach (var detail in existingDetails.ToList())
+                    {
+                        var viewModelDetail = viewModel.Items.FirstOrDefault(x => x.BillDetailId == detail.BillDetailId);
+                        if (viewModelDetail != null)
+                        {
+                            int oldQuantity = detail.Quantity;
+                            int newQuantity = viewModelDetail.Quantity;
+                            int quantityChange = newQuantity - oldQuantity;
+
+                            // Cập nhật số lượng trong chi tiết hóa đơn bán hàng
+                            detail.Quantity = newQuantity;
+                            db.Entry(detail).State = EntityState.Modified;
+
+                            // Kiểm tra và cập nhật số lượng trong kho
+                            if (detail.ProductDetailId != null)
+                            {
+                                var warehouseDetail = await db.ProductDetail.FirstOrDefaultAsync(w => w.ProductDetailId == detail.ProductDetailId);
+                                if (warehouseDetail != null)
+                                {
+                                    string Name = warehouseDetail.Products.Title.Trim() + " " + warehouseDetail.Ram.Trim() + "/" + warehouseDetail.Capacity.Trim();
+                                    if (quantityChange > 0) // Nếu tăng số lượng
+                                    {
+                                        // Kiểm tra kho đủ số lượng không
+                                        if (warehouseDetail.Quantity < quantityChange)
+                                        {
+                                            dbConText.Rollback();
+                                            return Json(new { success = false, code = -2, msg = $"Số lượng sản phẩm '{Name}' trong kho không đủ." });
+                                        }
+
+
+                                        warehouseDetail.Quantity -= quantityChange;
+                                    }
+                                    else if (quantityChange < 0) // Nếu giảm số lượng
+                                    {
+
+                                        warehouseDetail.Quantity += -quantityChange;
+                                    }
+
+                                    db.Entry(warehouseDetail).State = EntityState.Modified;
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, code = -2, msg = $"Không tìm thấy sản phẩm với ProductDetailId = {detail.ProductDetailId} trong kho." });
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { success = false, code = -2, msg = "Chi tiết hóa đơn không có ProductsId." });
+                            }
+                        }
+                        else
+                        {
+                            // Xóa chi tiết hóa đơn không có trong viewModel
+                            if (detail.ProductDetailId != null)
+                            {
+                                var warehouseDetail = await db.ProductDetail.FirstOrDefaultAsync(w => w.ProductDetailId == detail.ProductDetailId);
+                                if (warehouseDetail != null)
+                                {
+                                    warehouseDetail.Quantity += detail.Quantity; // Cộng lại số lượng tồn kho
+                                    db.Entry(warehouseDetail).State = EntityState.Modified;
+                                    db.BillDetail.Remove(detail);
+                                }
+                                else
+                                {
+                                    return Json(new { success = false, code = -2, msg = $"Không tìm thấy sản phẩm với ProductsId = {detail.ProductDetailId} trong kho." });
+                                }
+                            }
+                            else
+                            {
+                                return Json(new { success = false, code = -2, msg = "Chi tiết hóa đơn không có ProductsId." });
+                            }
+                        }
+                    }
+                    await db.SaveChangesAsync();
+                    string invoicePath = ExportInvoice(bill.BillId);
+                    if (!string.IsNullOrEmpty(invoicePath))
+                    {
+                        sessionKey = null;
+                        dbConText.Commit();
+                        return Json(new { Success = true, Code = 1, msg = "Cập nhập thành công", filePath = invoicePath, billCode = bill.Code, BillId = bill.BillId });
+                    }
+                    else
+                    {
+
+                        return Json(new { Success = false, Code = -2, msg="Lỗi không thể in hoá đơn"});
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    dbConText.Rollback();   
+                    return Json(new { Success = false, Code = -99, msg = "Hê thống tạm ngưng "+ ex });
+                }
+            }
+        }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

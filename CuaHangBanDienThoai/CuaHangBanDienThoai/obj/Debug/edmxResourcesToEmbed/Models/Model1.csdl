@@ -52,6 +52,7 @@
     <NavigationProperty Name="VoucherDetail" Relationship="Self.FK__VoucherDe__BillI__7E02B4CC" FromRole="Bill" ToRole="VoucherDetail" />
     <NavigationProperty Name="Customer" Relationship="Self.FK_Bill_Customer" FromRole="Bill" ToRole="Customer" />
     <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_Bill" FromRole="Bill" ToRole="BillDetail" />
+    <NavigationProperty Name="Employee" Relationship="CUAHANGDIENTHOAIModel.FK_Bill_Employee" FromRole="Bill" ToRole="Employee" />
   </EntityType>
   <EntityType Name="BillDetail">
     <Key>
@@ -142,6 +143,7 @@
     <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
     <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
     <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
+    <NavigationProperty Name="Bill" Relationship="CUAHANGDIENTHOAIModel.FK_Bill_Employee" FromRole="Employee" ToRole="Bill" />
   </EntityType>
   <EntityType Name="ImportWarehouse">
     <Key>
@@ -973,5 +975,21 @@
       <End Role="Voucher" EntitySet="Voucher" />
       <End Role="VoucherDetail" EntitySet="VoucherDetail" />
     </AssociationSet>
+    <AssociationSet Name="FK_Bill_Employee" Association="CUAHANGDIENTHOAIModel.FK_Bill_Employee">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Bill" EntitySet="Bill" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_Bill_Employee">
+    <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee" Multiplicity="1" />
+    <End Type="CUAHANGDIENTHOAIModel.Bill" Role="Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="EmployeeId" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="EmployeeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>
