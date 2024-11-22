@@ -1,56 +1,56 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
-    function initializeSelectBox() {
-        var selectedDiv = document.getElementById('select-selected');
-        var items = document.querySelector('.select-items');
-        var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
-        selectedDiv.addEventListener('click', function () {
-            items.style.display = items.style.display === 'block' ? 'none' : 'block';
-        });
-        checkboxes.forEach(function (checkbox) {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    var caseTitle = this.closest('.select-option').querySelector('.select-option-title').textContent;
-                    selectedDiv.textContent = caseTitle;
-                    checkboxes.forEach(function (box) {
-                        if (box !== checkbox) {
-                            box.checked = false;
-                        }
-                    });
+﻿//document.addEventListener('DOMContentLoaded', function () {
+//    function initializeSelectBox() {
+//        var selectedDiv = document.getElementById('select-selected');
+//        var items = document.querySelector('.select-items');
+//        var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
+//        selectedDiv.addEventListener('click', function () {
+//            items.style.display = items.style.display === 'block' ? 'none' : 'block';
+//        });
+//        checkboxes.forEach(function (checkbox) {
+//            checkbox.addEventListener('change', function () {
+//                if (this.checked) {
+//                    var caseTitle = this.closest('.select-option').querySelector('.select-option-title').textContent;
+//                    selectedDiv.textContent = caseTitle;
+//                    checkboxes.forEach(function (box) {
+//                        if (box !== checkbox) {
+//                            box.checked = false;
+//                        }
+//                    });
 
-                    items.style.display = 'none'; 
-                }
-            });
-        });
+//                    items.style.display = 'none'; 
+//                }
+//            });
+//        });
 
-        items.addEventListener('click', function (event) {
-            var target = event.target;
+//        items.addEventListener('click', function (event) {
+//            var target = event.target;
 
-            if (target.classList.contains('select-option-title') || target.tagName === 'img') {
-                var selectOption = target.closest('.select-option');
-                var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
+//            if (target.classList.contains('select-option-title') || target.tagName === 'img') {
+//                var selectOption = target.closest('.select-option');
+//                var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
 
-                if (checkbox) {
-                    checkbox.checked = true;
-                    checkboxes.forEach(function (box) {
-                        if (box !== checkbox) {
-                            box.checked = false;
-                        }
-                    });
-                    var caseTitle = selectOption.querySelector('.select-option-title').textContent;
-                    selectedDiv.textContent = caseTitle;
-                    items.style.display = 'none';
-                }
-            }
-        });
+//                if (checkbox) {
+//                    checkbox.checked = true;
+//                    checkboxes.forEach(function (box) {
+//                        if (box !== checkbox) {
+//                            box.checked = false;
+//                        }
+//                    });
+//                    var caseTitle = selectOption.querySelector('.select-option-title').textContent;
+//                    selectedDiv.textContent = caseTitle;
+//                    items.style.display = 'none';
+//                }
+//            }
+//        });
 
-        document.addEventListener('click', function (event) {
-            if (!event.target.closest('.custom-select')) {
-                items.style.display = 'none';
-            }
-        });
-    }
-    initializeSelectBox();
-});
+//        document.addEventListener('click', function (event) {
+//            if (!event.target.closest('.custom-select')) {
+//                items.style.display = 'none';
+//            }
+//        });
+//    }
+//    initializeSelectBox();
+//});
 
 
 //$(document).ready(function () {
@@ -112,8 +112,72 @@ $(document).ready(function () {
             container.css('max-height', container[0].scrollHeight + 'px');
         }
     });
-});
+    var bg = $(".bg-sgCommet");
+    var popup = $("#popupCommmet");
+    $(document).on('click', '.btnRating', function (evnet) {
+        evnet.preventDefault();
+        var productid = $(this).data('productid');
+        var name = $('#namepro').val().trim();
 
+
+
+
+        if (productid && name) {
+            bg.show();
+            popup.show();
+            console.log("productid", productid);
+            console.log("namepro", name);
+            $.ajax({
+                url: '/Review/Partial_AddReview',
+                data: {
+                    productid: productid,
+                    name: name
+                },
+                type:'GET',
+                success: function (res) {
+                    ('#popupCommmet').html(res);   
+                }, error: function () {
+                    alert("Có lỗi khi load đánh giá sản phảmr")
+                }
+            });
+        }
+    });
+    $(document).on('click', '.close-rate', function (evnet) {
+        evnet.preventDefault();
+        bg.hide();
+        popup.hide();
+    });
+    $(bg).on('click', function () {
+        bg.hide();
+        popup.hide();
+    });
+
+
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".rating-topzonecr-star li");
+        const rateInput = document.getElementById("rate");
+
+        stars.forEach((star) => {
+            star.addEventListener("click", function () {
+              
+                const ratingValue = this.getAttribute("data-val");
+
+             
+                rateInput.value = ratingValue;
+
+                stars.forEach((s) => s.classList.remove("active"));
+
+              
+                for (let i = 0; i < ratingValue; i++) {
+                    stars[i].classList.add("active");
+                }
+            });
+        });
+    });
+
+
+});
 
 
 //$(document).ready(function () {

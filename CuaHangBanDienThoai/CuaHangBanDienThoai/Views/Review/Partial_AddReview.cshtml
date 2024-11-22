@@ -1,0 +1,91 @@
+﻿@model CuaHangBanDienThoai.Models.Client_AddReview
+
+<div class="popup-rating-topzone" style="display:block">
+    <div class="close-rate"></div>
+    <p class="txt">Đánh giá sản phẩm</p>
+    @if (Model != null)
+    {
+        <div class="bproduct">
+            <div class="img">
+                <img src="https://cdn.tgdd.vn/Products/Images/42/329143/iphone-16-pro-titan-trang.png"
+                     alt="Điện thoại iPhone 16 Pro 128GB" />
+            </div>
+
+            <h3>Điện thoại iPhone 16 Pro 128GB</h3>
+        </div>
+        <ul class="rating-topzonecr-star pl-0">
+            <li data-val="1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" color="yellow" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="1">Rất tệ</p>
+            </li>
+            <li data-val="2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" color="yellow" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="2">Tệ</p>
+            </li>
+            <li data-val="3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" color="yellow" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="3">Tạm ổn</p>
+            </li>
+            <li data-val="4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" color="yellow" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="4" class="">Tốt</p>
+            </li>
+            <li data-val="5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" color="yellow" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="5" class="active-slt">Rất tốt</p>
+            </li>
+        </ul>
+        <form action="" class="form-rate" style="">
+
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ProductsId)
+            <div class="inputrating__group">
+                <textarea class="fRContent"
+                          name="fRContent"
+                          placeholder="Mời bạn chia sẻ thêm cảm nhận..."></textarea>
+                <div class="txtcount__box">
+                    <span class="ct" style="display: none">0 chữ</span>
+                </div>
+            </div>
+
+
+            <button type="button"
+                    id="submitrt"
+                    class="submit send-rate disabled"
+                    style="display: none">
+                Gửi đánh giá
+            </button>
+            <div class="dcap">
+                <button type="button" id="submitrt" class="submit send-rate disabled">
+                    Gửi đánh giá
+                </button>
+            </div>
+
+            <p class="intro-txt">
+                <a target='"_blank"' href="/huong-dan-dang-binh-luan">Quy định đánh giá</a><a href="/tos">Chính sách bảo mật thông tin</a>
+            </p>
+
+            <div>
+                <input 
+                       id="rate"
+                       name="rate"
+                       type="hidden" />
+
+            </div>
+        </form>
+    }
+
+</div>
+
+

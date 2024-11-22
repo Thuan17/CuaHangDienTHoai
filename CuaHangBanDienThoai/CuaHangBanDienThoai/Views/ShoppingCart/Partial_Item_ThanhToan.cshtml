@@ -23,14 +23,10 @@
                 }
             }
 
-            var strImg = "";
-            var CheckImage = item.ProductDetail.Products.Image.Trim();
+         
+            var strImg = item.ProductDetail.ProductDetailImage.FirstOrDefault(x=>x.IsDefault==true).Image?? "/images/logo/logoweb.png";
             var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
 
-            if (CheckImage != null)
-            {
-                strImg = CheckImage;
-            }
 
 
             price = ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);

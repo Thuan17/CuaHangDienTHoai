@@ -201,6 +201,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
     <Compile Include="Controllers\ProvincesVNController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -247,6 +248,7 @@
     </Compile>
     <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CLient_AddressCustomer.cs" />
+    <Compile Include="Models\Client_AddReview.cs" />
     <Compile Include="Models\CLient_Register.cs" />
     <Compile Include="Models\Client_UpdateProFile.cs" />
     <Compile Include="Models\Common\Filter.cs" />
@@ -5897,6 +5899,7 @@
     <Content Include="Views\Account\ChangePass.cshtml" />
     <Content Include="Views\Product\SearchProduct.cshtml" />
     <Content Include="Views\Product\SuggestionsSearch.cshtml" />
+    <Content Include="Views\Review\Partial_AddReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

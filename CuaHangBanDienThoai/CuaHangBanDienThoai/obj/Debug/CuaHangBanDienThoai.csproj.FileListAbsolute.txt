@@ -168,3 +168,15 @@ D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBan
 D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.ValueTuple.xml
 D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.xml
 D:\Lap Trinh Web\#Lan2\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.presentation.xml
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\DocumentFormat.OpenXml.dll
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\ImageProcessor.dll
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.Drawing.Common.dll
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.ValueTuple.dll
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.dll
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.presentation.dll
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\DocumentFormat.OpenXml.xml
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\ImageProcessor.xml
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.Drawing.Common.xml
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\System.ValueTuple.xml
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.xml
+D:\LapTrinhWeb\#DoAn\Web\CuaHangDienTHoai\CuaHangBanDienThoai\CuaHangBanDienThoai\bin\zxing.presentation.xml

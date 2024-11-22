@@ -139,10 +139,21 @@ namespace CuaHangBanDienThoai.Controllers
 
                         var f_password = MaHoaPass(req.password);
 
+
+                        var checkEmail = await db.Customer.SingleOrDefaultAsync(x => x.Email == req.Email.Trim());
+                        if (checkEmail != null)
+                        {
+                            return Json(new { success = false, code = -2, msg = "Email đã có trên hệ thống !!!" });
+                        }
+
+
+
+
+
                         var checkPhone = await db.Customer.FirstOrDefaultAsync(x => x.PhoneNumber == req.phone.Trim() && x.Email == null);
                         if (checkPhone != null)
                         {
-
+                         
                             checkPhone.Email = req.Email.Trim();
                             checkPhone.PhoneNumber = req.phone.Trim();
                             checkPhone.Password = f_password.Trim();

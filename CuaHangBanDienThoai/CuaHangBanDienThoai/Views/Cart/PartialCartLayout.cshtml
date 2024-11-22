@@ -25,12 +25,12 @@
                 }
             }
             var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
-
+            var strImg = item.ProductDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true).Image ?? "/images/logo/logoweb.png";
 
             <li>
                 <div class="product_itemcart">
                     <div class="product_imagecart">
-                        <img src="@item.ProductDetail.Products.Image.Trim()" alt="Tên sản phẩm" />
+                        <img src="@strImg" alt="@Name" />
                     </div>
                     <div class="product_namecart">
                         <p>@Name.Trim()</p>
