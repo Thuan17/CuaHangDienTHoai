@@ -14,16 +14,16 @@ namespace CuaHangBanDienThoai.Models
     
     public partial class Review
     {
-        public int ReviewDetailId { get; set; }
-        public string CreatedBy { get; set; }
+        public int ReviewId { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public string Modifiedby { get; set; }
         public string Content { get; set; }
-        public Nullable<int> ReviewId { get; set; }
-        public Nullable<int> ProductId { get; set; }
-        public Nullable<int> CustomerId { get; set; }
+        public int ProductId { get; set; }
+        public int CustomerId { get; set; }
+        public int Ratingscore { get; set; }
     
+        public virtual Customer Customer { get; set; }
         public virtual Products Products { get; set; }
     }
 }

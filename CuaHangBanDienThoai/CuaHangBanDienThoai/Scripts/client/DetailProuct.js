@@ -1,82 +1,4 @@
-﻿//document.addEventListener('DOMContentLoaded', function () {
-//    function initializeSelectBox() {
-//        var selectedDiv = document.getElementById('select-selected');
-//        var items = document.querySelector('.select-items');
-//        var checkboxes = document.querySelectorAll('.select-option-checkbox input[type="checkbox"]');
-//        selectedDiv.addEventListener('click', function () {
-//            items.style.display = items.style.display === 'block' ? 'none' : 'block';
-//        });
-//        checkboxes.forEach(function (checkbox) {
-//            checkbox.addEventListener('change', function () {
-//                if (this.checked) {
-//                    var caseTitle = this.closest('.select-option').querySelector('.select-option-title').textContent;
-//                    selectedDiv.textContent = caseTitle;
-//                    checkboxes.forEach(function (box) {
-//                        if (box !== checkbox) {
-//                            box.checked = false;
-//                        }
-//                    });
-
-//                    items.style.display = 'none'; 
-//                }
-//            });
-//        });
-
-//        items.addEventListener('click', function (event) {
-//            var target = event.target;
-
-//            if (target.classList.contains('select-option-title') || target.tagName === 'img') {
-//                var selectOption = target.closest('.select-option');
-//                var checkbox = selectOption.querySelector('.select-option-checkbox input[type="checkbox"]');
-
-//                if (checkbox) {
-//                    checkbox.checked = true;
-//                    checkboxes.forEach(function (box) {
-//                        if (box !== checkbox) {
-//                            box.checked = false;
-//                        }
-//                    });
-//                    var caseTitle = selectOption.querySelector('.select-option-title').textContent;
-//                    selectedDiv.textContent = caseTitle;
-//                    items.style.display = 'none';
-//                }
-//            }
-//        });
-
-//        document.addEventListener('click', function (event) {
-//            if (!event.target.closest('.custom-select')) {
-//                items.style.display = 'none';
-//            }
-//        });
-//    }
-//    initializeSelectBox();
-//});
-
-
-//$(document).ready(function () {
-//    // Xử lý sự kiện nhấn vào tiêu đề
-//    $('.titleDescription').click(function () {
-//        const container = $('.containerDescription');
-//        const isExpanded = container.hasClass('expanded');
-
-//        if (isExpanded) {
-//            container.removeClass('expanded').addClass('collapsed');
-//            $('.titleDescription i').removeClass('bi-chevron-double-down').addClass('bi-chevron-double-right').removeClass('rotate');
-//            $('.XemThem').show();
-//        } else {
-//            container.removeClass('collapsed').addClass('expanded');
-//            $('.titleDescription i').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-down').addClass('rotate');
-//            $('.XemThem').hide();
-//        }
-//    });
-
-//    $('.XemThem').click(function () {
-//        const container = $('.containerDescription');
-//        container.removeClass('collapsed').addClass('expanded');
-//        $('.titleDescription i').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-down').addClass('rotate');
-//        $(this).hide();
-//    });
-//});
+﻿
 $(document).ready(function () {
     // Xử lý sự kiện nhấn vào tiêu đề
     $('.titleDescription').click(function () {
@@ -114,34 +36,41 @@ $(document).ready(function () {
     });
     var bg = $(".bg-sgCommet");
     var popup = $("#popupCommmet");
-    $(document).on('click', '.btnRating', function (evnet) {
-        evnet.preventDefault();
+    $(document).on('click', '.btnRating', function (event) {
+        event.preventDefault();
         var productid = $(this).data('productid');
         var name = $('#namepro').val().trim();
-
-
-
+        var image = $('#imagepro').val().trim();
 
         if (productid && name) {
             bg.show();
             popup.show();
             console.log("productid", productid);
             console.log("namepro", name);
+
             $.ajax({
                 url: '/Review/Partial_AddReview',
                 data: {
                     productid: productid,
-                    name: name
+                    name: name,
+                    image: image,
                 },
-                type:'GET',
+                type: 'GET',
                 success: function (res) {
-                    ('#popupCommmet').html(res);   
-                }, error: function () {
-                    alert("Có lỗi khi load đánh giá sản phảmr")
+                    $("#popupCommmet").html(res); 
+
+                   
+                    initRatingEvents(); 
+                },
+                error: function () {
+                    alert("Có lỗi khi load đánh giá sản phẩm");
                 }
             });
         }
     });
+
+ 
+
     $(document).on('click', '.close-rate', function (evnet) {
         evnet.preventDefault();
         bg.hide();
@@ -154,59 +83,129 @@ $(document).ready(function () {
 
 
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const stars = document.querySelectorAll(".rating-topzonecr-star li");
-        const rateInput = document.getElementById("rate");
 
-        stars.forEach((star) => {
-            star.addEventListener("click", function () {
-              
-                const ratingValue = this.getAttribute("data-val");
-
-             
-                rateInput.value = ratingValue;
-
-                stars.forEach((s) => s.classList.remove("active"));
-
-              
-                for (let i = 0; i < ratingValue; i++) {
-                    stars[i].classList.add("active");
-                }
-            });
-        });
-    });
+   
 
 
 });
 
+// Khởi tạo các sự kiện cho rating
+function initRatingEvents() {
+    const stars = $(".rating-topzonecr-star li");
+    const rateInput = $("#rate")[0];
+    const submitrt = $("#submitrt")[0];
+    var textarea = $(".fRContent")[0];
+    const charCountSpan = $(".ct")[0];
+    let selectedRating = 0;
 
-//$(document).ready(function () {
-//    // Xử lý sự kiện nhấn vào tiêu đề
-//    $('.titleDescription').click(function () {
-//        const container = $('.containerDescription');
-//        const isExpanded = container.hasClass('expanded');
+    $(textarea).on("input", function () {
+        const charCount = textarea.value.length;
+        $(charCountSpan).text(`${charCount} chữ`);
+        if (charCount > 0) {
+            $(submitrt).removeClass("disabled").prop("disabled", false);
+            $(charCountSpan).show();
+        } else {
+            $(charCountSpan).hide();
+        }
+    });
 
-//        if (isExpanded) {
-//            container.removeClass('expanded').addClass('collapsed');
-//            $('.titleDescription i').removeClass('bi-chevron-double-down').addClass('bi-chevron-double-right');
-//            $('.XemThem').show(); 
-//        } else {
-//            container.removeClass('collapsed').addClass('expanded');
-//            $('.titleDescription i').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-down');
-//            $('.XemThem').hide();
-//        }
-//    });
+    $(".rating-topzonecr-star li").off("mouseover").on("mouseover", function () {
+        updateStars($(this).index() + 1);
+    });
+
+    $(".rating-topzonecr-star li").off("mouseout").on("mouseout", function () {
+        updateStars(selectedRating);
+    });
+
+    $(".rating-topzonecr-star li").off("click").on("click", function () {
+        selectedRating = $(this).index() + 1;
+        rateInput.value = selectedRating;
+        console.log(`Bạn đã chọn ${selectedRating} sao`);
+        if (selectedRating > 0) {
+            $(submitrt).removeClass("disabled").prop("disabled", false);
+        }
+    });
+
+   
+    function updateStars(rating) {
+        $(stars).each(function (i) {
+            const svg = $(this).find("svg")[0];
+            const text = $(this).find("p")[0];
+
+            if (i < rating) {
+                $(svg).css("color", "#FF8C00");
+                $(text).show();
+            } else {
+                $(svg).css("color", "gray");
+                $(text).hide();
+            }
+        });
+    }
+   
+
+    $(document).on('click', '#submitrt', function (event) {
+        event.preventDefault();
+        var isValid = true;
+        var $button = $(this); 
+        $button.prop('disabled', true);
+        $button.find('.loading-image').show();
+        $button.find('.button-text').hide();
+        var productid = $(this).data('productid');
+
+    
+        var content = $('#Content').val().trim();
+        if (!content) {
+            showError('Content', 'Vui lòng hãy điền nội dung.');
+            isValid = false;
+        } else {
+            removeError('CustomerName');
+        }
+        if (selectedRating <=0) {
+            showError('rate', 'Vui lòng hãy điền nội dung.');
+            isValid = false;
+        } else {
+            removeError('rate');
+        }
 
 
-//    $('.XemThem').click(function () {
-//        const container = $('.containerDescription');
-//        container.removeClass('collapsed').addClass('expanded');
-//        $('.titleDescription i').removeClass('bi-chevron-double-right').addClass('bi-chevron-double-down');
-//        $(this).hide();
-//    });
-//});
+        if (isValid && productid && selectedRating >= 1) {
+            var form = $('#fromrate')[0];
+            var formData = new FormData(form);
+            $.ajax({
+                url: '/Review/Comment',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success: function (res) {
+                    if (res.Success&&res.Code==1) {
+                        
+                    }else {
 
+                    }
+                }, error: function () {
+                    alert("Lỗi Hệ thống đánh giá ");
+                }
+            });
+        }
+    });
 
+}
+
+function removeError(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+       /* element.classList.remove('error-border');*/
+    }
+}
+
+function showError(elementId, errorMessage) {
+    const element = document.getElementById(elementId);
+    if (element) {
+      /*  element.classList.add('error-border');*/
+    }
+    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
+}
 
 
 
@@ -261,3 +260,28 @@ var swiper = new Swiper('.swiper-container-item', {
         swiper: swiperSmall
     },
 });
+
+
+function createToast(type, icon, title, text) {
+
+    const notifications = document.querySelector('.notifications');
+    if (!notifications) {
+        console.warn('Không tìm thấy phần tử notifications trong DOM');
+        return;
+    }
+
+    let newToast = document.createElement('div');
+    newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+    notifications.appendChild(newToast);
+
+
+    newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+}

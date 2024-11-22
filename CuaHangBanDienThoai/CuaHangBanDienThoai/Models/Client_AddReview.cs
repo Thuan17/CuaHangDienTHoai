@@ -8,8 +8,10 @@ namespace CuaHangBanDienThoai.Models
     public class Client_AddReview
     {
         public int ProductsId { get; set; }
+        public int Ratingscore { get; set; }
         public string Content { get; set; }
         public string Name { get;set; }
+        public string Image { get;set; }
 
     }
 }

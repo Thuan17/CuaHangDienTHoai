@@ -21,6 +21,7 @@ namespace CuaHangBanDienThoai.Models
             this.Bill = new HashSet<Bill>();
             this.Cart = new HashSet<Cart>();
             this.OrderCustomer = new HashSet<OrderCustomer>();
+            this.Review = new HashSet<Review>();
         }
     
         public int CustomerId { get; set; }
@@ -43,5 +44,7 @@ namespace CuaHangBanDienThoai.Models
         public virtual ICollection<Cart> Cart { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderCustomer> OrderCustomer { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Review { get; set; }
     }
 }

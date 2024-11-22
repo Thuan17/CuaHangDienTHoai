@@ -588,7 +588,11 @@
 
 
                         <div class="be-comment-footer m-0 p-0 w-100 text-right">
-                            <input class="hide"value="@(Name?.Trim())"id="namepro" />
+                            @{ 
+                                var str = Model.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == Model.ProductDetailId && x.IsDefault == true).Image?? "/images/logo/logoweb.png";
+                            }
+                            <input class="hide" value="@(Name?.Trim())" id="namepro" />
+                            <input class="hide" value="@(str?.Trim())" id="imagepro" />
                             <button class="c-btn-rate btn-write mt-3 mb-2 col-6 btnRating" data-productid="@Model.ProductsId" type="button">Viết đánh giá</button>
                         </div>
 
@@ -671,6 +675,7 @@ else
 
 
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
 <script src="~/Scripts/client/DetailProuct.js"></script>
 
 

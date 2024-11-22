@@ -1605,11 +1605,34 @@ be-comment-block {
     border: 1px solid #0071e3;
     cursor: pointer;
     color: #fff;
-    display: block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 20px;
     padding: 15px;
-    transition: 0.3s;
+    position: relative;
     width: 100%;
+    height: 50px;
+}
+
+.send-rate .loading-image {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+}
+
+.send-rate.loading .loading-image {
+    display: block;
+}
+
+.send-rate .button-text {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.send-rate.loading .button-text {
+    display: none;
 }
 
 .form-rate .disabled {
@@ -1632,14 +1655,63 @@ be-comment-block {
         color: #0071e3;
     }
 
+/*sao danh gia san pham*/
+
 .rating-topzonecr-star li {
     display: inline-block;
     cursor: pointer;
-    opacity: 0.6; /* Làm nhạt các ngôi sao mặc định */
-    transition: opacity 0.3s;
+    opacity: 0.4; /* Ban đầu tất cả sao mờ */
+    transition: opacity 0.3s ease;
+    position: relative;
 }
 
-    .rating-topzonecr-star li.active {
-        opacity: 1; /* Làm sáng các ngôi sao được chọn */
-        color: orange; /* Thay đổi màu khi được chọn */
+    .rating-topzonecr-star li svg {
+        pointer-events: none;
     }
+
+    .rating-topzonecr-star li p {
+        display: none; /* Ẩn nội dung ban đầu */
+        position: absolute;
+        top: 30px; /* Đưa xuống dưới icon sao */
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        color: #333;
+    }
+
+    .rating-topzonecr-star li.active p,
+    .rating-topzonecr-star li:hover p {
+        display: block; /* Hiện nội dung khi active hoặc hover */
+    }
+
+    .rating-topzonecr-star li.active svg,
+    .rating-topzonecr-star li:hover svg {
+        opacity: 1;
+        color: #FF4500;
+    }
+
+    .rating-topzonecr-star li:hover ~ li svg {
+        opacity: 0.4; /* Tất cả sao bên phải bị mờ khi hover */
+    }
+    .rating-topzonecr-star li svg {
+        transition: color 0.2s ease;
+    }
+.inputrating__group {
+    position: relative;
+    width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng của container */
+}
+
+.txtcount__box {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 14px;
+    color: #666;
+    margin:0 5px 5px 0; 
+}
+
+.ct {
+    display: block;
+}
+
+

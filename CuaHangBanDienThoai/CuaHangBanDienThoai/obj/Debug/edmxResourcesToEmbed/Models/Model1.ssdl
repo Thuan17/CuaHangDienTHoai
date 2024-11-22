@@ -302,17 +302,16 @@
   </EntityType>
   <EntityType Name="Review">
     <Key>
-      <PropertyRef Name="ReviewDetailId" />
+      <PropertyRef Name="ReviewId" />
     </Key>
-    <Property Name="ReviewDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CreatedBy" Type="nvarchar(max)" />
+    <Property Name="ReviewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifiedby" Type="nvarchar(max)" />
-    <Property Name="Content" Type="nvarchar" MaxLength="350" />
-    <Property Name="ReviewId" Type="int" />
-    <Property Name="ProductId" Type="int" />
-    <Property Name="CustomerId" Type="int" />
+    <Property Name="Modifiedby" Type="nvarchar" MaxLength="1" />
+    <Property Name="Content" Type="nvarchar" MaxLength="350" Nullable="false" />
+    <Property Name="ProductId" Type="int" Nullable="false" />
+    <Property Name="CustomerId" Type="int" Nullable="false" />
+    <Property Name="Ratingscore" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Role">
     <Key>
@@ -720,8 +719,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Review_Customer">
+    <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+    <End Role="Review" Type="Self.Review" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customer">
+        <PropertyRef Name="CustomerId" />
+      </Principal>
+      <Dependent Role="Review">
+        <PropertyRef Name="CustomerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Review_Products">
-    <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+    <End Role="Products" Type="Self.Products" Multiplicity="1" />
     <End Role="Review" Type="Self.Review" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Products">
@@ -910,6 +921,10 @@
     <AssociationSet Name="FK_Products_ProductCategory" Association="Self.FK_Products_ProductCategory">
       <End Role="ProductCategory" EntitySet="ProductCategory" />
       <End Role="Products" EntitySet="Products" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Review_Customer" Association="Self.FK_Review_Customer">
+      <End Role="Customer" EntitySet="Customer" />
+      <End Role="Review" EntitySet="Review" />
     </AssociationSet>
     <AssociationSet Name="FK_Review_Products" Association="Self.FK_Review_Products">
       <End Role="Products" EntitySet="Products" />

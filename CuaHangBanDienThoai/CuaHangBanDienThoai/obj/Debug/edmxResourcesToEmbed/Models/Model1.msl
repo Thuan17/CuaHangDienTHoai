@@ -326,15 +326,14 @@
     <EntitySetMapping Name="Review">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Review">
         <MappingFragment StoreEntitySet="Review">
-          <ScalarProperty Name="ReviewDetailId" ColumnName="ReviewDetailId" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
           <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="Content" ColumnName="Content" />
-          <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
           <ScalarProperty Name="ProductId" ColumnName="ProductId" />
           <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+          <ScalarProperty Name="Ratingscore" ColumnName="Ratingscore" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

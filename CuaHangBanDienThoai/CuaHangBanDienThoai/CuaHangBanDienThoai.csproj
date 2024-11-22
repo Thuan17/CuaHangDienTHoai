@@ -5708,13 +5708,6 @@
     <Content Include="Areas\Admin\Views\Seller\Partail_ProductById.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partial_ListProductBill.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\FindCustomer.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Seller\Partail_AddCustomer.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partial_BillByEmployee.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partail_BillDetail.cshtml" />
@@ -5724,6 +5717,13 @@
     <Content Include="Areas\Admin\Views\Seller\Partail_ItemEditBill.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\GetUpdatedOrderRow.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\GetUpdatedBillRow.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

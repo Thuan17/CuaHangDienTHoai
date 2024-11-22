@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="CUAHANGDIENTHOAIModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccountEmployee">
           <Key>
             <PropertyRef Name="EmployeeId" />
@@ -307,17 +307,16 @@
         </EntityType>
         <EntityType Name="Review">
           <Key>
-            <PropertyRef Name="ReviewDetailId" />
+            <PropertyRef Name="ReviewId" />
           </Key>
-          <Property Name="ReviewDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="CreatedBy" Type="nvarchar(max)" />
+          <Property Name="ReviewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="ModifiedDate" Type="datetime" />
-          <Property Name="Modifiedby" Type="nvarchar(max)" />
-          <Property Name="Content" Type="nvarchar" MaxLength="350" />
-          <Property Name="ReviewId" Type="int" />
-          <Property Name="ProductId" Type="int" />
-          <Property Name="CustomerId" Type="int" />
+          <Property Name="Modifiedby" Type="nvarchar" MaxLength="1" />
+          <Property Name="Content" Type="nvarchar" MaxLength="350" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="Ratingscore" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
@@ -725,8 +724,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Review_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Review_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -916,6 +927,10 @@
             <End Role="ProductCategory" EntitySet="ProductCategory" />
             <End Role="Products" EntitySet="Products" />
           </AssociationSet>
+          <AssociationSet Name="FK_Review_Customer" Association="Self.FK_Review_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
           <AssociationSet Name="FK_Review_Products" Association="Self.FK_Review_Products">
             <End Role="Products" EntitySet="Products" />
             <End Role="Review" EntitySet="Review" />
@@ -933,7 +948,8 @@
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CUAHANGDIENTHOAIModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -988,8 +1004,8 @@
           <Property Name="EmployeeId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="VoucherDetail" Relationship="Self.FK__VoucherDe__BillI__7E02B4CC" FromRole="Bill" ToRole="VoucherDetail" />
           <NavigationProperty Name="Customer" Relationship="Self.FK_Bill_Customer" FromRole="Bill" ToRole="Customer" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Bill_Employee" FromRole="Bill" ToRole="Employee" />
           <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_Bill" FromRole="Bill" ToRole="BillDetail" />
-          <NavigationProperty Name="Employee" Relationship="CUAHANGDIENTHOAIModel.FK_Bill_Employee" FromRole="Bill" ToRole="Employee" />
         </EntityType>
         <EntityType Name="BillDetail">
           <Key>
@@ -1042,6 +1058,7 @@
           <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Customer" FromRole="Customer" ToRole="Bill" />
           <NavigationProperty Name="Cart" Relationship="Self.FK_Cart_Customer" FromRole="Customer" ToRole="Cart" />
           <NavigationProperty Name="OrderCustomer" Relationship="Self.FK_OrderCustomer_Customer" FromRole="Customer" ToRole="OrderCustomer" />
+          <NavigationProperty Name="Review" Relationship="Self.FK_Review_Customer" FromRole="Customer" ToRole="Review" />
         </EntityType>
         <EntityType Name="Districts">
           <Key>
@@ -1074,13 +1091,13 @@
           <Property Name="Image" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="ManagerId" Type="Int32" />
           <NavigationProperty Name="AccountEmployee" Relationship="Self.FK_AccountEmployee_Employee" FromRole="Employee" ToRole="AccountEmployee" />
+          <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Employee" FromRole="Employee" ToRole="Bill" />
           <NavigationProperty Name="Employee1" Relationship="Self.FK_Employee_Manager" FromRole="Employee" ToRole="Employee1" />
           <NavigationProperty Name="Employee2" Relationship="Self.FK_Employee_Manager" FromRole="Employee1" ToRole="Employee" />
           <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="Employee" ToRole="ImportWarehouse" />
           <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
           <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
           <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
-          <NavigationProperty Name="Bill" Relationship="CUAHANGDIENTHOAIModel.FK_Bill_Employee" FromRole="Employee" ToRole="Bill" />
         </EntityType>
         <EntityType Name="ImportWarehouse">
           <Key>
@@ -1294,17 +1311,17 @@
         </EntityType>
         <EntityType Name="Review">
           <Key>
-            <PropertyRef Name="ReviewDetailId" />
+            <PropertyRef Name="ReviewId" />
           </Key>
-          <Property Name="ReviewDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReviewId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-          <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Content" Type="String" MaxLength="350" FixedLength="false" Unicode="true" />
-          <Property Name="ReviewId" Type="Int32" />
-          <Property Name="ProductId" Type="Int32" />
-          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="Modifiedby" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="350" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="Ratingscore" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Review_Customer" FromRole="Review" ToRole="Customer" />
           <NavigationProperty Name="Products" Relationship="Self.FK_Review_Products" FromRole="Review" ToRole="Products" />
         </EntityType>
         <EntityType Name="Role">
@@ -1433,6 +1450,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Bill_Employee">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_BillDetail_Bill">
           <End Role="Bill" Type="Self.Bill" Multiplicity="0..1" />
           <End Role="BillDetail" Type="Self.BillDetail" Multiplicity="*" />
@@ -1501,6 +1530,18 @@
               <PropertyRef Name="CustomerId" />
             </Principal>
             <Dependent Role="OrderCustomer">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerId" />
+            </Principal>
+            <Dependent Role="Review">
               <PropertyRef Name="CustomerId" />
             </Dependent>
           </ReferentialConstraint>
@@ -1734,7 +1775,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Review_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
@@ -1804,6 +1845,10 @@
             <End Role="Customer" EntitySet="Customer" />
             <End Role="Bill" EntitySet="Bill" />
           </AssociationSet>
+          <AssociationSet Name="FK_Bill_Employee" Association="Self.FK_Bill_Employee">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
           <AssociationSet Name="FK_BillDetail_Bill" Association="Self.FK_BillDetail_Bill">
             <End Role="Bill" EntitySet="Bill" />
             <End Role="BillDetail" EntitySet="BillDetail" />
@@ -1827,6 +1872,10 @@
           <AssociationSet Name="FK_OrderCustomer_Customer" Association="Self.FK_OrderCustomer_Customer">
             <End Role="Customer" EntitySet="Customer" />
             <End Role="OrderCustomer" EntitySet="OrderCustomer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Customer" Association="Self.FK_Review_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Review" EntitySet="Review" />
           </AssociationSet>
           <AssociationSet Name="FK__Districts__idPro__3B75D760" Association="Self.FK__Districts__idPro__3B75D760">
             <End Role="Provinces" EntitySet="Provinces" />
@@ -1912,23 +1961,7 @@
             <End Role="Voucher" EntitySet="Voucher" />
             <End Role="VoucherDetail" EntitySet="VoucherDetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_Bill_Employee" Association="CUAHANGDIENTHOAIModel.FK_Bill_Employee">
-            <End Role="Employee" EntitySet="Employee" />
-            <End Role="Bill" EntitySet="Bill" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Bill_Employee">
-          <End Type="CUAHANGDIENTHOAIModel.Employee" Role="Employee" Multiplicity="1" />
-          <End Type="CUAHANGDIENTHOAIModel.Bill" Role="Bill" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employee">
-              <PropertyRef Name="EmployeeId" />
-            </Principal>
-            <Dependent Role="Bill">
-              <PropertyRef Name="EmployeeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2260,15 +2293,14 @@
           <EntitySetMapping Name="Review">
             <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Review">
               <MappingFragment StoreEntitySet="Review">
-                <ScalarProperty Name="ReviewDetailId" ColumnName="ReviewDetailId" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
                 <ScalarProperty Name="Content" ColumnName="Content" />
-                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
                 <ScalarProperty Name="ProductId" ColumnName="ProductId" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="Ratingscore" ColumnName="Ratingscore" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
