@@ -186,6 +186,7 @@
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductDetailController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\SellerController.cs" />
     <Compile Include="Areas\Admin\Controllers\StatisticalController.cs" />
     <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
@@ -3327,6 +3328,7 @@
     <Content Include="Content\css\admin\login\js\popper.js" />
     <Content Include="Content\css\admin\News.css" />
     <Content Include="Content\css\admin\NotificationAdmin.css" />
+    <Content Include="Content\css\admin\ProductDetailPage.css" />
     <Content Include="Content\css\admin\SellerIndex.css" />
     <Content Include="Content\css\admin\vendor\bootstrap\js\bootstrap.bundle.js" />
     <Content Include="Content\css\admin\vendor\bootstrap\js\bootstrap.bundle.min.js" />
@@ -5523,6 +5525,7 @@
     <Content Include="Scripts\admin\Product.js" />
     <Content Include="Scripts\admin\ProductDetailEdit.js" />
     <Content Include="Scripts\admin\ProductDetails.js" />
+    <Content Include="Scripts\admin\Product_PageDetail.js" />
     <Content Include="Scripts\admin\Seller_Index.js" />
     <Content Include="Scripts\autoNumeric-1.9.45.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
@@ -5725,6 +5728,7 @@
     <Content Include="Models\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Admin\Views\Review\Partail_ReviewByProductId.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

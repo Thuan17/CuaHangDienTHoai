@@ -3,13 +3,16 @@
     ViewBag.Title = "Chi tiết " + (ViewBag.Name ?? "");
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-<style>
-    .tab-pane {
-        min-height: 440px;
-    }
-</style>
+<link href="~/Content/css/admin/ProductDetailPage.css" rel="stylesheet" />
+
+<div class="bg-sgCommet" style="display: none ">
+
+</div>
 
 
+<div id="popupCommmet" style="display: none">
+
+</div>
 <div class="container-fluid">
     @if (Model != null)
     {
@@ -61,7 +64,7 @@
                                     @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                     {
                                         <div class="col-md-4 text-right">
-                                            <a href="/chinh-sua-danh-muc/p@(Model.ProductCategoryId)" class="btn btn-warning text-white">
+                                            <a href="/sua-sanpham/@Model.Alias" class="btn btn-warning text-white">
                                                 Chỉnh sửa
                                             </a>
 
@@ -77,6 +80,7 @@
                                 <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Thông số</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#description" data-toggle="tab">Mô tả</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#review" data-toggle="tab">Đánh giá </a></li>
 
 
                             </ul>
@@ -147,17 +151,6 @@
                                                             <a href="https://www.thegioididong.com/hoi-dap/tim-hieu-chip-xu-ly-apple-a14-bionic-hieu-nang-manh-den-1302095" class="tzLink" target="_blank">@Model.GPU.Trim()</a>
                                                         </aside>
                                                     </li>
-
-
-
-                                                    @*<li>
-                                                            <aside>
-                                                                <strong>Danh bạ:</strong>
-                                                            </aside>
-                                                            <aside>
-                                                                <span class="">Không giới hạn</span>
-                                                            </aside>
-                                                        </li>*@
                                                 </ul>
                                             </div>
                                         </div>
@@ -181,55 +174,7 @@
                                                 </ul>
                                             </div>
                                         </div>
-                                        @*<div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
 
-                                                <div class="box-specifi">
-                                                    <a href="javascript:;" class=""><h3>Thiết kế &amp; Chất liệu</h3></a>
-
-                                                    <ul class="text-specifi ">
-                                                        <li>
-                                                            <aside>
-                                                                <strong>Thiết kế:</strong>
-                                                            </aside>
-                                                            <aside>
-                                                                <a href="/#" class="tzLink" target="_blank">Nguyên khối</a>
-                                                            </aside>
-                                                        </li>
-                                                        <li>
-                                                            <aside>
-                                                                <strong>Chất liệu:</strong>
-                                                            </aside>
-                                                            <aside>
-                                                                <span class="">Khung Titan &amp; Mặt lưng kính cường lực</span>
-                                                            </aside>
-                                                        </li>
-                                                        <li>
-                                                            <aside>
-                                                                <strong>Kích thước, khối lượng:</strong>
-                                                            </aside>
-                                                            <aside>
-                                                                <span class="">Dài 163 mm - Ngang 77.6 mm - Dày 8.25 mm - Nặng 227 g</span>
-                                                            </aside>
-                                                        </li>
-                                                        <li>
-                                                            <aside>
-                                                                <strong>Thời điểm ra mắt:</strong>
-                                                            </aside>
-                                                            <aside>
-                                                                <span class="">09/2024</span>
-                                                            </aside>
-                                                        </li>
-                                                        <li>
-                                                            <aside>
-                                                                <strong>Hãng:</strong>
-                                                            </aside>
-                                                            <aside>
-                                                                <span class="">iPhone (Apple). <span class="parameter__manu">Xem thông tin hãng</span></span>
-                                                            </aside>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>*@
                                         <div class="col-lg-12  pt-2  p-0 m-0 border-1 border-bottom-2">
                                             <div class="box-specifi">
                                                 <a href="javascript:;" class="" data-group-id="2122" data-index="3"><h3>Pin &amp; Sạc</h3></a>
@@ -340,6 +285,12 @@
                                         <p class="text-danger text-center align-items-center">Không có nội dung mô tả sản phẩm !!!</p>
                                     }
                                 </div>
+                                <div class="tab-pane " id="review">
+                                    <div class="be-comment-block mt-4">
+                                        @Html.Action("Partail_ReviewByProductId", "Review", new { productid = Model.ProductsId })
+                                    </div>
+
+                                </div>
 
                             </div>
 
@@ -410,7 +361,7 @@
                     <div class="col-lg-12">
                         <h6 class="m-0 font-weight-bold text-primary">
                             <p>  Danh sách sản phẩm thuộc: <span class="text-danger ">@Name</span></p>
-                                <span class="text-danger "> <label class="text-dark">Tổng số dòng sản phẩm:</label> @(Count )</span>
+                            <span class="text-danger "> <label class="text-dark">Tổng số dòng sản phẩm:</label> @(Count )</span>
                         </h6>
                     </div>
                 </div>
@@ -423,13 +374,14 @@
 
 </div>
 @section scripts{
+    <script src="~/Scripts/admin/Product_PageDetail.js"></script>
     <script>
         document.querySelectorAll('.box-specifi > a').forEach(function (item) {
             item.addEventListener('click', function () {
-                this.classList.toggle('active'); // Thay đổi lớp để hiện thị mũi tên
+                this.classList.toggle('active');
                 const textSpecifi = this.nextElementSibling;
                 if (textSpecifi) {
-                    textSpecifi.classList.toggle('active'); // Hiện hoặc ẩn danh sách thông tin
+                    textSpecifi.classList.toggle('active');
                 }
             });
         });

@@ -1,0 +1,136 @@
+﻿.tab-pane {
+    min-height: 440px;
+}
+
+.be-comment-body {
+    max-height: 400px;
+    overflow-y: auto;
+    /* Ẩn scrollbar trên các trình duyệt khác nhau */
+    scrollbar-width: none; /* Firefox */
+}
+
+    .be-comment-body::-webkit-scrollbar {
+        display: none; /* Chrome, Safari và Edge */
+    }
+
+
+
+be-comment-block {
+    margin-bottom: 50px !important;
+    border: 1px solid #edeff2;
+    border-radius: 2px;
+    padding: 50px 70px;
+    border: 1px solid #ffffff;
+}
+
+.comments-title {
+    font-size: 24px;
+    color: #262626;
+    margin-bottom: 15px;
+    font-family: 'Conv_helveticaneuecyr-bold';
+}
+
+.be-img-comment {
+    width: 60px;
+    height: 60px;
+    float: left;
+    margin-bottom: 15px;
+}
+
+.be-ava-comment {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.be-comment-header {
+    display: flex;
+    justify-content: space-between; /* Đưa 2 phần tử ra 2 đầu */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.be-comment-time {
+    font-size: 11px;
+    color: #b4b7c1;
+    text-align: right;
+    white-space: nowrap; /* Đảm bảo không xuống dòng */
+}
+
+.be-comment-content {
+    margin-left: 80px;
+}
+
+    .be-comment-content span {
+        display: inline-block;
+        width: 49%;
+        margin-bottom: 15px;
+    }
+
+
+.be-comment-name {
+    font-size: 16px;
+    font-family: 'Conv_helveticaneuecyr-bold';
+}
+
+    .be-comment-name ul {
+        padding-left: 10px !important;
+    }
+
+.be-comment-content a {
+    color: #383b43;
+}
+
+
+.be-comment-time {
+    text-align: right;
+}
+
+.be-comment-time {
+    font-size: 11px;
+    color: #b4b7c1;
+}
+
+.be-comment-text {
+    font-size: 13px;
+    line-height: 18px;
+    color: #7a8192;
+    display: block;
+    background: #f6f6f7;
+    border: 1px solid #edeff2;
+    padding: 15px 20px 20px 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.stat li {
+    list-style: none !important;
+}
+
+
+.bg-sgCommet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000;
+    opacity: 0.5;
+    z-index: 2500;
+}
+
+#popupCommmet {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    /*   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);*/
+    z-index: 2700;
+    max-width: 80%;
+    min-width: 80%;
+    height: 850px;
+    overflow: hidden;
+}

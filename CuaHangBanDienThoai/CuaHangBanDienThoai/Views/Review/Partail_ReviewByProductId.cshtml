@@ -23,7 +23,8 @@
                                 <a href="/#">@item.Customer.CustomerName.Trim()</a>
 
                                 <button class="btn border-0 mt-0 p-0
-                                    @(ViewBag.CustomerId != null && (int)ViewBag.CustomerId == item.CustomerId ? "btnEditReview" : "hide") " 
+                                         @(ViewBag.CustomerId != null && (int)ViewBag.CustomerId == item.CustomerId ? "btnEditReview" : "hide") 
+                                    " 
                                         data-customerid="@item.CustomerId"
                                         data-reivewid="@item.ReviewId"
                                         style="width:17px">
@@ -94,7 +95,7 @@
                 </span>
 
                 <p class="be-comment-text">
-                    Hãy là người đầu tiên để lại đánh giá cho sản phẩm
+                  Hãy là người đầu tiên đánh giá sản phẩm
                 </p>
             </div>
         </div>
