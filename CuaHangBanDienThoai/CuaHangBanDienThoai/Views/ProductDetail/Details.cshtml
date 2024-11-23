@@ -42,7 +42,7 @@
     var Name = Model.Products.ProductCategory.Title.Trim() + "   " + Model.Products.Title.Trim();
     var PriceSale = Model.PriceSale;
     var Price = Model.Price;
-
+    string name = Model.Products.ProductCategory.Title.Trim() + "   " + Model.Products.Title.Trim();
 
     <div class="container container_Index">
         <ul class="breadcrumbs mb-1 pl-0 pt-2 d-flex align-items-center ">
@@ -303,12 +303,6 @@
 
 
                             @Html.Action("Capacity", "ProductDetail", new { productid = Model.ProductsId, DungLuong = Model.Capacity.Trim() })
-
-
-                            @*<a href="/dtdd/iphone-16-pro" data-index="0" class="box03__item item act">128GB</a>
-                                <a href="/dtdd/iphone-16-pro-256gb" data-index="1" class="box03__item item ">256GB</a>
-                                <a href="/dtdd/iphone-16-pro-512gb" data-index="2" class="box03__item item ">512GB</a>
-                                <a href="/dtdd/iphone-16-pro-1tb" data-index="3" class="box03__item item ">1TB</a>*@
                         </div>
                     </div>
                     <div class="scrolling_inner">
@@ -329,9 +323,6 @@
                                     @($"{Common.FormatNumber(Model.Price)}đ")
                                 </h5>
 
-
-
-
                                 {
                                     decimal discountPercentage = CalculateDiscountPercentage((decimal)Model.Price, (decimal)Model.PriceSale);
                                     <span class="DiscountPercentage">
@@ -342,21 +333,13 @@
                             }
 
                             else
-                            {
-
-
-
-                                <h5 class="mb-0 PriceSale">
+                            { <h5 class="mb-0 PriceSale">
                                     @($"{Common.FormatNumber(Model.Price)}đ")
                                 </h5>
                             }
                         </div>
 
                     </div>
-
-
-
-
                     <div class="scrolling_inner mt-3">
                         <div class="block__promo">
                             <div class="pr-top">
@@ -422,8 +405,6 @@
 
                         </div>
                         <div class="scrolling_inner">
-
-
                             <div class="container__chinhSach__wrapper">
                                 <div class="container__chinhSach__Group">
                                     <div class="container__chinhSach__header">
@@ -542,47 +523,12 @@
                         </div>
 
                     </div>
-
-
-
-
-
-
-
                 </div>
 
                 <div class="w-100 row mt-2 pb-2 p-0 m-0 GrImage  border-1 rounded-3 bg-white">
                     <div class="be-comment-block mt-4">
-                        <h4 class="comments-title">Đánh giá @Name (3)</h4>
-                        <div class="be-comment-body p-0 m-0 w-100" id="loadComment">
-                            @for (int i = 1; i <= 20; i++)
-                            {
-
-                                <div class="be-comment">
-                                    <div class="be-img-comment">
-                                        <a href="blog-detail-2.html">
-                                            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="" class="be-ava-comment">
-                                        </a>
-                                    </div>
-                                    <div class="be-comment-content">
-
-                                        <span class="be-comment-name">
-                                            <a href="blog-detail-2.html">Ravi Sah</a>
-                                        </span>
-                                        <span class="be-comment-time">
-                                            <i class="fa fa-clock-o"></i>
-                                            May 27, 2015 at 3:14am
-                                        </span>
-
-                                        <p class="be-comment-text">
-                                            Pellentesque gravida tristique ultrices.
-                                            Sed blandit varius mauris, vel volutpat urna hendrerit id.
-                                            Curabitur rutrum dolor gravida turpis tristique efficitur.
-                                        </p>
-                                    </div>
-                                </div>
-
-                            }
+                        <div class=" p-0 m-0 w-100" id="loadComment">
+                          @Html.Action("Partail_ReviewByProductId", "Review", new { productid = Model.ProductsId})
                         </div>
 
 
@@ -610,12 +556,7 @@
 
             </div>
 
-            @*<div>
-                    @if (Model.Description != null)
-                    {
-                        <p>  Mô tả : @Model.Description.Trim()</p>
-                    }
-                </div>*@
+     
             <div class="row GrDescription p-0">
                 <div class="col-12 p-0">
                     <div class="titleDescription">

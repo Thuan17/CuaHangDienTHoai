@@ -249,6 +249,7 @@
     <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CLient_AddressCustomer.cs" />
     <Compile Include="Models\Client_AddReview.cs" />
+    <Compile Include="Models\Client_EditReview.cs" />
     <Compile Include="Models\CLient_Register.cs" />
     <Compile Include="Models\Client_UpdateProFile.cs" />
     <Compile Include="Models\Common\Filter.cs" />
@@ -5900,6 +5901,9 @@
     <Content Include="Views\Product\SearchProduct.cshtml" />
     <Content Include="Views\Product\SuggestionsSearch.cshtml" />
     <Content Include="Views\Review\Partial_AddReview.cshtml" />
+    <Content Include="Views\Review\Partail_ReviewByProductId.cshtml" />
+    <Content Include="Views\Review\_ReviewByProductId.cshtml" />
+    <Content Include="Views\Review\Partial_EditReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

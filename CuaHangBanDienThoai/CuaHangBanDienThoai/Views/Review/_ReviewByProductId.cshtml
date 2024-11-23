@@ -1,0 +1,56 @@
+﻿@model List<CuaHangBanDienThoai.Models.Review>
+<h4 class="comments-title">Đánh giá @(ViewBag.Name?.Trim()) @(ViewBag.Count>0?"0")</h4>
+@if (Model != null&&Model.Any())
+{
+    foreach (var item in Model)
+    {
+
+        <div class="be-comment">
+            <div class="be-img-comment">
+                <a href="blog-detail-2.html">
+                    <img src="@(item.Customer.Image ?? "/images/logo/logoweb.png")" alt="" class="be-ava-comment">
+                </a>
+            </div>
+            <div class="be-comment-content">
+
+                <span class="be-comment-name">
+                    <a href="blog-detail-2.html">@item.Customer.CustomerName.Trim()</a>
+                </span>
+                <span class="be-comment-time">
+                    <i class="fa fa-clock-o"></i>
+                    @item.CreatedDate.ToString("dd/MM/yyyy")
+                </span>
+
+                <p class="be-comment-text">
+                    @item.Content.Trim()
+                </p>
+            </div>
+        </div>
+
+    }
+}
+else
+{
+
+    <div class="be-comment">
+        <div class="be-img-comment">
+            <a href="blog-detail-2.html">
+                <img src="~/images/logo/logoweb.png" alt="" class="be-ava-comment">
+            </a>
+        </div>
+        <div class="be-comment-content">
+
+            <span class="be-comment-name">
+                <a href="/trang-chu" class="d-flex"><span style="all: unset !important; color: red !important; font-size: 16px; font-family: 'Conv_helveticaneuecyr-bold';" class="text-danger p-0 m-0">Pada</span>MiniStore</a>
+            </span>
+            <span class="be-comment-time">
+                <i class="fa fa-clock-o"></i>
+                @String.Format("{0:dd/MM/yyyy}", ViewBag.Date)
+            </span>
+
+            <p class="be-comment-text">
+                Hãy là người đầu tiên để lại đánh giá cho sản phẩm
+            </p>
+        </div>
+    </div>
+}

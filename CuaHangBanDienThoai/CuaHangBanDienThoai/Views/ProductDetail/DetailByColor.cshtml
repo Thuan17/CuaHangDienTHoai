@@ -8,6 +8,17 @@
 <link href="~/Content/css/ProductDetail.css" rel="stylesheet" />
 
 <link href="~/Content/css/client/boxChip.css" rel="stylesheet" />
+
+
+<div class="bg-sgCommet" style="display: none ">
+
+</div>
+
+
+<div id="popupCommmet" style="display: none">
+
+</div>
+
 @if (Model != null)
 {
 
@@ -291,9 +302,6 @@
 
 
                             @Html.Action("Capacity", "ProductDetail", new { productid = Model.ProductsId, DungLuong = Model.Capacity.Trim() })
-
-
-
                         </div>
                     </div>
                     <div class="scrolling_inner">
@@ -303,10 +311,7 @@
                         </div>
                     </div>
                     <div class="scrolling_inner">
-                        <div class="pt-1  d-flex align-items-center ProducPrice">
-
-
-
+                        <div class="  d-flex align-items-center ProducPrice">
                             @if (Model.PriceSale > 0)
                             {
                                 <h5 class="mb-0 text-danger PriceSale mt-0">
@@ -327,21 +332,13 @@
                             }
 
                             else
-                            {
-
-                                <h5 class="mb-0 text-danger PriceSale mt-0">
+                            { <h5 class="mb-0 PriceSale">
                                     @($"{Common.FormatNumber(Model.Price)}đ")
                                 </h5>
-
-                               
                             }
                         </div>
 
                     </div>
-
-
-
-
                     <div class="scrolling_inner mt-3">
                         <div class="block__promo">
                             <div class="pr-top">
@@ -359,13 +356,13 @@
                                     <div class="divb t2 " data-promotion="2972468" data-group="WebNote" data-discount="0" data-productcode="" data-tovalue="9000">
                                         <span class="nb">2</span>
                                         <div class="divb-right">
-                                            <p>Thu cũ Đổi mới: Giảm thêm đến 2,000,000Đ (Áp dụng tuỳ model máy cũ, Không kèm ưu đãi thanh toán qua cổng, mua kèm) <a href="https://www.thegioididong.com/thu-cu-doi-moi"> Xem chi tiết</a></p>
+                                            <p>Thu cũ Đổi mới: Giảm thêm đến 2,000,000Đ (Áp dụng tuỳ model máy cũ, Không kèm ưu đãi thanh toán qua cổng, mua kèm) <a href="/#"> Xem chi tiết</a></p>
                                         </div>
                                     </div>
                                     <div class="divb t2 " data-promotion="2972784" data-group="WebNote" data-discount="0" data-productcode="" data-tovalue="0">
                                         <span class="nb">3</span>
                                         <div class="divb-right">
-                                            <p>Nhập mã VNPAYTGDD4 giảm từ 50,000đ đến 100,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua VNPAY-QR. <a href="https://www.thegioididong.com/tin-tuc/tang-them-den-100k-khi-thanh-toan-qua-vnpay-1570077" target="_blank"> (Xem chi tiết tại đây)</a></p>
+                                            <p>Nhập mã  giảm từ 50,000đ đến 100,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua VNPAY-QR. <a href="/#" target="_blank"> (Xem chi tiết tại đây)</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -407,8 +404,6 @@
 
                         </div>
                         <div class="scrolling_inner">
-
-
                             <div class="container__chinhSach__wrapper">
                                 <div class="container__chinhSach__Group">
                                     <div class="container__chinhSach__header">
@@ -527,16 +522,27 @@
                         </div>
 
                     </div>
-
-
-
-
-
-
-
                 </div>
 
+                <div class="w-100 row mt-2 pb-2 p-0 m-0 GrImage  border-1 rounded-3 bg-white">
+                    <div class="be-comment-block mt-4">
+                        <div class="be-comment-body p-0 m-0 w-100" id="loadComment">
+                            @Html.Action("Partail_ReviewByProductId", "Review", new { productid = Model.ProductsId })
+                        </div>
 
+
+
+                        <div class="be-comment-footer m-0 p-0 w-100 text-right">
+                            @{
+                                var str = Model.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == Model.ProductDetailId && x.IsDefault == true).Image ?? "/images/logo/logoweb.png";
+                            }
+                            <input class="hide" value="@(Name?.Trim())" id="namepro" />
+                            <input class="hide" value="@(str?.Trim())" id="imagepro" />
+                            <button class="c-btn-rate btn-write mt-3 mb-2 col-6 btnRating" data-productid="@Model.ProductsId" type="button">Viết đánh giá</button>
+                        </div>
+
+                    </div>
+                </div>
 
 
 
@@ -612,8 +618,8 @@ else
     </div>
 }
 
-
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script src="~/Scripts/jquery-3.7.1.min.js"></script>
 <script src="~/Scripts/client/DetailProuct.js"></script>
 
 

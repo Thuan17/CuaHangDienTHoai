@@ -1,0 +1,93 @@
+﻿@model CuaHangBanDienThoai.Models.Client_EditReview
+  
+<div class="popup-rating-topzone" style="display:block">
+    <div class="close-rate"></div>
+    <p class="txt">Đánh giá sản phẩm</p>
+    @if (Model != null)
+    {
+        <div class="bproduct">
+            <div class="img">
+                <img src="@Model.Image"
+                     alt="@Model.Name" />
+            </div>
+
+            <h3>@Model.Name</h3>
+        </div>
+        <ul class="rating-topzonecr-star pl-0">
+            <li data-val="1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="1">Rất tệ</p>
+            </li>
+            <li data-val="2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="2">Tệ</p>
+            </li>
+            <li data-val="3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="3">Tạm ổn</p>
+            </li>
+            <li data-val="4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="4">Tốt</p>
+            </li>
+            <li data-val="5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
+                </svg>
+                <p data-val="5">Rất tốt</p>
+            </li>
+        </ul>
+        <form id="fromrateedit" class="form-rate" style="">
+
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ReviewId)
+            @Html.HiddenFor(x => x.CustomerId)
+            @Html.HiddenFor(x => x.ProductsId)
+            <div class="inputrating__group">
+                <textarea class="fRContent"
+                          name="Content"
+                          placeholder="Mời bạn chia sẻ thêm cảm nhận..."
+                          maxlength="250"
+                          id="Content">@Model.Content</textarea>
+
+                <div class="txtcount__box">
+                    <span class="ct" style="display: none">0 chữ</span>
+                </div>
+            </div>
+
+
+
+            <div class="dcap">
+                <button type="button" id="submitrtEdit" data-reviewid="@Model.ReviewId" data-productid="@Model.ProductsId" data-customerid="@Model.CustomerId" class="submit send-rate disabled">
+                    <img src="~/images/gif/Spinnerloading.gif" class="loading-image " style="width: 30px; height: 30px;padding:0; display: none; " />
+
+                    <span class="button-text ">Cập nhập đánh giá</span>
+                </button>
+            </div>
+
+            <p class="intro-txt">
+                <a target='"_blank"' href="/huong-dan-dang-binh-luan">Quy định đánh giá</a><a href="/tos">Chính sách bảo mật thông tin</a>
+            </p>
+
+            <div>
+                <input id="Ratingscore"
+                       name="Ratingscore"
+                       type="hidden"
+                       value="@Model.Ratingscore"/>
+
+            </div>
+        </form>
+    }
+
+</div>
+
+

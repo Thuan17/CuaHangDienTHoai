@@ -1230,9 +1230,16 @@ a {
 }
 
 .be-comment-body {
-    max-height: 400px; 
+    max-height: 400px;
     overflow-y: auto;
+    /* Ẩn scrollbar trên các trình duyệt khác nhau */
+    scrollbar-width: none; /* Firefox */
 }
+
+    .be-comment-body::-webkit-scrollbar {
+        display: none; /* Chrome, Safari và Edge */
+    }
+
 
 
 be-comment-block {
@@ -1263,30 +1270,41 @@ be-comment-block {
     border-radius: 50%;
 }
 
+.be-comment-header {
+    display: flex;
+    justify-content: space-between; /* Đưa 2 phần tử ra 2 đầu */
+    align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.be-comment-time {
+    font-size: 11px;
+    color: #b4b7c1;
+    text-align: right;
+    white-space: nowrap; /* Đảm bảo không xuống dòng */
+}
+
 .be-comment-content {
     margin-left: 80px;
 }
 
-    .be-comment-content span {
+    .be-comment-content span  {
         display: inline-block;
         width: 49%;
         margin-bottom: 15px;
     }
 
+
 .be-comment-name {
-    font-size: 13px;
+    font-size: 16px;
     font-family: 'Conv_helveticaneuecyr-bold';
 }
+    .be-comment-name ul {
+        padding-left:10px !important;
+    }
+    .be-comment-content a {
+        color: #383b43;
+    }
 
-.be-comment-content a {
-    color: #383b43;
-}
-
-.be-comment-content span {
-    display: inline-block;
-    width: 49%;
-    margin-bottom: 15px;
-}
 
 .be-comment-time {
     text-align: right;
@@ -1670,13 +1688,18 @@ be-comment-block {
     }
 
     .rating-topzonecr-star li p {
-        display: none; /* Ẩn nội dung ban đầu */
+        display: none;
         position: absolute;
-        top: 30px; /* Đưa xuống dưới icon sao */
+        top: 30px; /* Khoảng cách từ biểu tượng sao xuống text */
         left: 50%;
         transform: translateX(-50%);
         margin: 0;
         color: #333;
+        white-space: nowrap; /* Không cho text xuống dòng */
+        background: #fff; /* Màu nền nếu cần để text rõ hơn */
+        padding: 2px 5px; /* Thêm khoảng cách trong text */
+        border-radius: 3px; /* Bo góc nền nếu muốn */
+        z-index: 10; /* Hiển thị rõ hơn nếu bị che */
     }
 
     .rating-topzonecr-star li.active p,
