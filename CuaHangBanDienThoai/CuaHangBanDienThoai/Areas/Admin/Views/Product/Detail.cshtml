@@ -264,13 +264,10 @@
                                                             <a href="https://www.thegioididong.com/hoi-dap/usb-typec-chuan-muc-cong-ket-noi-moi-723760" class="tzLink" target="_blank">@Model.Connector.Trim()</a>
                                                         </aside>
                                                     </li>
-
-
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                                 <div class="tab-pane " id="description">
                                     @if (Model.Description != null)
@@ -286,36 +283,18 @@
                                     }
                                 </div>
                                 <div class="tab-pane " id="review">
-                                    <div class="be-comment-block mt-4">
+                                    <div class="be-comment-block mt-4" id="load-review">
                                         @Html.Action("Partail_ReviewByProductId", "Review", new { productid = Model.ProductsId })
                                     </div>
 
                                 </div>
 
                             </div>
-
-
-
-
                         </div>
-
-
                     </div>
                 </div>
-
             </div>
         </div>
-
-
-        @*<div class="col-12">
-                @Html.Action("Pratail_ProductForCategory", "ProductCategory", new { categoryId = Model.ProductCategoryId })
-            </div>*@
-
-
-
-
-
-
     }
     else
     {
@@ -385,6 +364,82 @@
                 }
             });
         });
+        $(document).ready(function () {
+            $(document).on('click', '.btnDeleteReview', function (event) {
+                event.preventDefault();
+                var productid = $(this).data('productid');
+                var reviewid = $(this).data('reviewid');
+               
+                if (reviewid && productid) {
+                    Swal.fire({
+                        title: "Bạn có muốn xoá đánh giá này ? ",
+
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Xoá"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                url: '/Admin/Review/Delete',
+                                type: 'POST',
+                                data: {
+                                    productid: productid,
+                                    reviewid: reviewid
+                                },
+                                success: function (res) {
+                                    if (res.Success && res.Code == 1) {
+                                        loadReview(productid);
+                                        Swal.fire({
+                                            icon: "success",
+                                            title: "Xoá đánh giá thành công",
+                                            toast: true,
+                                            position: "top-end",
+                                            showConfirmButton: false,
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                        });
+                                    } else {
+                                        if (res.Code == -99) {
+                                            Swal.fire({
+                                                icon: "warning",
+                                                title: "Lỗi",
+                                                text: res.msg,
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: "warning",
+                                                title: "Chú ý",
+                                                text: res.msg,
+                                            });
+                                        }
+                                    }
+                                }, error: function () {
+                                    alert("btnDeleteReview click");
+                                }
+                            });
+                       
+                        }
+                    });
+                   
+                }
+            });
+        });
+        function loadReview(productid) {
+            if (productid) {
+                $.ajax({
+                    url: '/Admin/Review/Partail_ReviewByProductId',
+                    type: 'GET',
+                    data: { productid: productid },
+                    success: function (res) {
+                        $('#load-review').html(res);
+                    }, error: function () {
+                        alert("Có lỗi load đánh giá sản phẩm");
+                    }
+                });
+            }
+        }
 
 
     </script>

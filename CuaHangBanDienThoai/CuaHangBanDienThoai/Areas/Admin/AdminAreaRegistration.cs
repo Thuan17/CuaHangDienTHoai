@@ -16,6 +16,13 @@ namespace CuaHangBanDienThoai.Areas.Admin
         {
 
             context.MapRoute(
+name: "Seller_ALL",
+url: "tat-ca-hoa-don",
+defaults: new { controller = "Seller", action = "AllBill", alias = UrlParameter.Optional }
+
+);
+
+            context.MapRoute(
 name: "Seller_index",
 url: "ban-hang",
 defaults: new { controller = "Seller", action = "Index", alias = UrlParameter.Optional }

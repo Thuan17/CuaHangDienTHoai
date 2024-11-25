@@ -47,7 +47,15 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             ViewBag.Date=DateTime.Now.Date;
             return View();
         }
+        [AuthorizeFunction("Nhân viên bán hàng", "Quản lý", "Quản trị viên")]
+        public ActionResult IndexEmployye()
+        {
 
+            var product = db.Products.ToList();
+            ViewBag.Product = new SelectList(product, "ProductsId", "Title");
+            ViewBag.Date = DateTime.Now.Date;
+            return View();
+        }
         public async Task<ActionResult> Partail_ProductById(int productId)
         {
             if (productId>0&&db.ProductDetail.Any())
@@ -62,6 +70,59 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return PartialView();
 
         }
+        [AuthorizeFunction( "Quản lý", "Quản trị viên")]
+        public ActionResult AllBill()
+        {
+            DateTime selectedDate = DateTime.Now.Date;
+            var bill =db.Bill.ToList();
+            if (bill != null)
+            {
+
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+
+                ViewBag.Date = DateTime.Now.Date;
+                ViewBag.IsAdmin = isAdmin;
+
+                ViewBag.CurrentEmployeeId = employeeId;
+                ViewBag.Today = selectedDate.Date;
+                ViewBag.IsManage = isManage;
+                ViewBag.Count=bill.Count;
+                return View(bill);
+            }
+            return View();
+        }
+        public ActionResult Partail_BillToday()
+        {
+            DateTime selectedDate = DateTime.Now.Date;
+
+
+
+            var bill = db.Bill
+                         .Where(x => DbFunctions.TruncateTime(x.CreatedDate) == selectedDate)
+                         .ToList();
+            if (bill != null &bill.Count > 0)
+            {
+
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+
+               
+                ViewBag.IsAdmin = isAdmin;
+
+                ViewBag.CurrentEmployeeId = employeeId;
+
+                ViewBag.IsManage = isManage;
+                ViewBag.Count = bill.Count;
+                ViewBag.Today = selectedDate.Date;
+                return PartialView(bill);
+            }
+            return PartialView();
+        }
+
+
         public ActionResult GetBillByDate(DateTime ngayxuat)
         {
             try
@@ -191,8 +252,6 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 employeeid=(int)nvSession.EmployeeId;   
 
             }
-
-
             if(employeeid>0)
             {
                 var bill=db.Bill.Where(x=>x.EmployeeId==employeeid).OrderByDescending(x=>x.CreatedDate).ToList();   

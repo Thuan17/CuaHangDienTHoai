@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using CuaHangBanDienThoai.Models;
@@ -54,7 +56,40 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             ViewBag.Name = name;
             return PartialView();
         }
-
-
+        [HttpPost]
+        public async Task<ActionResult> Delete(int reviewid, int productid)
+        {
+            if(reviewid <=0 && productid <= 0)
+            {
+                return Json(new { Success = false, msg = "Không tìm thấy mã ", Code = -2 });
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var review = await db.Review.FirstOrDefaultAsync(x => x.ReviewId == reviewid && x.ProductId == productid);
+                    if (review == null)
+                    {
+                        return Json(new { Success = false, msg = "Không tìm thấy đánh giá này ", Code = -2 });
+                    }
+                    db.Review.Remove(review);
+                    await db.SaveChangesAsync();
+dbContext.Commit();
+                    return Json(new { Success = true, msg = "Xoá thành công đánh giá", Code = 1 });
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, msg = "Hệ thống tạm ngưng ", Code = -99 });
+                }
+             
+            }
+           
+        }
     }
+
+   
+
+
+
 }

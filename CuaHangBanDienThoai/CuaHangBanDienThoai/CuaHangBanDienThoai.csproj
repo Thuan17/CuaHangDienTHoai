@@ -204,6 +204,7 @@
     <Compile Include="Controllers\ProvincesVNController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\VoucherController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -5025,6 +5026,7 @@
     <Content Include="Content\css\client\ProductIndex.css" />
     <Content Include="Content\css\client\style.css" />
     <Content Include="Content\css\client\vendor.css" />
+    <Content Include="Content\css\client\Voucher.css" />
     <Content Include="Content\css\CongTac.css" />
     <Content Include="Content\css\Error.css" />
     <Content Include="Content\css\login.css" />
@@ -5090,6 +5092,7 @@
     <Content Include="images\gif\cart.gif" />
     <Content Include="images\gif\cart2.gif" />
     <Content Include="images\gif\delivery2.gif" />
+    <Content Include="images\gif\DMXBannerFlashsale.gif" />
     <Content Include="images\gif\heart.gif" />
     <Content Include="images\gif\home.gif" />
     <Content Include="images\gif\home2.gif" />
@@ -5104,6 +5107,8 @@
     <Content Include="images\gif\Spinnerloading.gif" />
     <Content Include="images\gif\store.gif" />
     <Content Include="images\gif\user.gif" />
+    <Content Include="images\gif\voucher.gif" />
+    <Content Include="images\gif\voucher.png" />
     <Content Include="images\honor-x6b-purple-thumb-600x600.jpg" />
     <Content Include="images\icon\advise.png" />
     <Content Include="images\icon\box.png" />
@@ -5116,6 +5121,7 @@
     <Content Include="images\icon\excel.png" />
     <Content Include="images\icon\facebook.png" />
     <Content Include="images\icon\fastdelivery.png" />
+    <Content Include="images\icon\flashSale.png" />
     <Content Include="images\icon\guarantee.png" />
     <Content Include="images\icon\instagram.png" />
     <Content Include="images\icon\LogoGHTK.png" />
@@ -5134,6 +5140,7 @@
     <Content Include="images\icon\shoppingcart.png" />
     <Content Include="images\icon\shoppingcart2.png" />
     <Content Include="images\icon\user.png" />
+    <Content Include="images\icon\voucher2.png" />
     <Content Include="images\insta-item1.jpg" />
     <Content Include="images\login.jpg" />
     <Content Include="images\logo.png" />
@@ -5729,6 +5736,10 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Admin\Views\Review\Partail_ReviewByProductId.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\NoRole.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\IndexEmployye.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\AllBill.cshtml" />
+    <Content Include="Areas\Admin\Views\Seller\Partail_BillToday.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -5908,6 +5919,8 @@
     <Content Include="Views\Review\Partail_ReviewByProductId.cshtml" />
     <Content Include="Views\Review\_ReviewByProductId.cshtml" />
     <Content Include="Views\Review\Partial_EditReview.cshtml" />
+    <Content Include="Views\Voucher\Index.cshtml" />
+    <Content Include="Views\Voucher\Partial_VoucherDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

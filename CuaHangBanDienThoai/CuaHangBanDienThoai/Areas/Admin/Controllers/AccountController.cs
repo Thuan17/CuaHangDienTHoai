@@ -139,11 +139,12 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         {
             if (roleEmployeeId == 3)
             {
-                return Url.Action("StaffIndex", "WareHouseImport");
+              
+                return Url.Action("IndexEmployye", "Seller");
             }
             else if (roleEmployeeId == 4)
             {
-                return Url.Action("Index", "Seller");
+                return Url.Action("StaffIndex", "WareHouseImport");
             }
             else if (roleEmployeeId == 1 || roleEmployeeId == 2 || functionTitle.Contains("Quản trị viên") || functionTitle.Contains("Quản Lý"))
             {

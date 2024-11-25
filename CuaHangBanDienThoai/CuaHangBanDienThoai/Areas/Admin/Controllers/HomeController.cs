@@ -15,5 +15,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public ActionResult NoRole()
+        {
+            return View();
+        }
     }
 }

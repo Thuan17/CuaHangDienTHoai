@@ -1,0 +1,157 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.Voucher>
+
+    @{
+        ViewBag.Title = "Săn deal giá hời";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+<link href="~/Content/css/client/Voucher.css" rel="stylesheet" />
+   
+    @if (Model != null)
+    {
+
+        <div class="container pt-5"style="min-height:500px;">
+            <div class="border-1 nen" style=" ">
+                <div class="row ">
+                    <!-- Phần hình ảnh -->
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <img src="~/images/gif/DMXBannerFlashsale.gif" class="w-100 rounded-top" style="width:auto;height:auto;" />
+                    </div>
+
+                    <!-- Phần nội dung -->
+
+                </div>
+                <br />
+                <div class="">
+                    @foreach (var item in Model)
+                    {
+                        <div class="row" style="margin-bottom:15px;">
+                            <div class="col-md-12 p-0 bg-gray  pb-0">
+                                <div class=" p-3 pr-0" style="background-color: rgba(254,113,44,255);padding-right:0px !important;">
+                                    <div class="row align-items-center">
+                                        <!-- Icon bên trái -->
+                                        <div class="col-md-3 d-flex justify-content-center">
+                                            <img src="~/images/icon/flashSale.png" alt="Flash Sale" class="img-fluid">
+                                        </div>
+
+                                        <!-- Nội dung bên phải -->
+                                        <div class="col-md-9  ms-auto"style="padding-right: 0px !important;">
+                                          <div class="p-3 border " style="background-color: rgba(255,227,215,255); border-top-left-radius: 16px; border-bottom-left-radius: 16px; border-top-right-radius: 0px; border-bottom-right-radius: 0px; ">
+
+                                              <ul class="list-unstyled mb-0">
+                                                  <li class="d-flex align-items-center mb-3">
+                                                      <img src="~/images/icon/voucher2.png" alt="Voucher" class="me-2" >
+                                                      <h5 class=" m-0 mb-3">Bạn có Voucher lên đến @item.PercentPriceReduction% / Hóa đơn</h5>
+                                                  </li>
+
+                                                  <!-- Countdown -->
+                                                  <li>
+                                                      <div class="d-flex justify-content-center align-items-center">
+                                                          <div id="countdown-@item.VoucherId" class="d-flex align-items-center pt-2">
+                                                              <div class="d-flex flex-column align-items-center">
+                                                                  <div class="timer_num day">00</div>
+                                                                  <small>Ngày</small>
+                                                              </div>
+                                                              <div class="mx-1">:</div>
+                                                              <div class="d-flex flex-column align-items-center">
+                                                                  <div class="timer_num hour">00</div>
+                                                                  <small>Giờ</small>
+                                                              </div>
+                                                              <div class="mx-1">:</div>
+                                                              <div class="d-flex flex-column align-items-center">
+                                                                  <div class="timer_num minute">00</div>
+                                                                  <small>Phút</small>
+                                                              </div>
+                                                              <div class="mx-1">:</div>
+                                                              <div class="d-flex flex-column align-items-center">
+                                                                  <div class="timer_num second">00</div>
+                                                                  <small>Giây</small>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                @Html.Action("Partial_VoucherDetail", "Voucher", new { id = item.VoucherId })
+                            </div>
+                        </div>
+
+                    }
+
+
+
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>Không có bảng ghi nào</p>
+    }
+    <script>
+    function initializeCountdown(voucherId, endDate) {
+        const countdownElement = document.getElementById('countdown-' + voucherId);
+
+        const interval = setInterval(function() {
+            const now = new Date().getTime(); // Thời gian hiện tại
+            const distance = endDate.getTime() - now; // Khoảng cách giữa ngày kết thúc và ngày hiện tại
+
+            // Tính toán ngày, giờ, phút và giây còn lại
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Hiển thị kết quả trong phần tử countdown
+            countdownElement.querySelector('.timer_num.day').innerHTML = days;
+            countdownElement.querySelector('.timer_num.hour').innerHTML = hours;
+            countdownElement.querySelector('.timer_num.minute').innerHTML = minutes;
+            countdownElement.querySelector('.timer_num.second').innerHTML = seconds;
+
+            // Nếu đếm ngược kết thúc
+            if (distance < 0) {
+                clearInterval(interval); // Dừng cập nhật
+                countdownElement.querySelector('.timer_num.day').innerHTML = "00";
+                countdownElement.querySelector('.timer_num.hour').innerHTML = "00";
+                countdownElement.querySelector('.timer_num.minute').innerHTML = "00";
+                countdownElement.querySelector('.timer_num.second').innerHTML = "00";
+                countdownElement.querySelector('.timer_unit').innerHTML = "Expired";
+            }
+        }, 1000);
+    }
+
+    // Khởi tạo countdown cho tất cả các voucher
+    @foreach (var item in Model)
+    {
+        var endDate = item.EndDate.HasValue ? item.EndDate.Value.ToString("yyyy-MM-ddTHH:mm:ss") : "2024-12-31T23:59:59";
+        <text>
+            initializeCountdown(@item.VoucherId, new Date('@endDate'));
+        </text>
+    }
+
+    function copyToClipboard(text) {
+        var tempTextarea = document.createElement("textarea");
+        tempTextarea.value = text;
+        document.body.appendChild(tempTextarea);
+        tempTextarea.select();
+        tempTextarea.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+        document.body.removeChild(tempTextarea);
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Lấy mã thành công",
+            showConfirmButton: false,
+            timer: 1100,
+            customClass: {
+                container: 'swal2-container-custom',
+                popup: 'swal2-popup-custom'
+            }
+        });
+    }
+    </script>
+
+

@@ -66,7 +66,7 @@ namespace CuaHangBanDienThoai.Models
             }
             else
             {
-                filterContext.Result = new RedirectResult("~/Home/NoRole");
+                filterContext.Result = new RedirectResult("~/Admin/Home/NoRole");
             }
         }
 

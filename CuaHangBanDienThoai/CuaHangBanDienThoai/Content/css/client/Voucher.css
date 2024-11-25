@@ -1,0 +1,92 @@
+﻿.text-free-ship {
+    margin: 10px;
+    font-family: 'Arial', sans-serif;
+    font-style: italic;
+    text-align: center;
+    font-size: 22px;
+}
+
+.discount-text {
+    font-size: 20px;
+}
+
+.min-order-text {
+    font-size: 15px;
+}
+
+.save-button {
+    color: rgba(38,170,153,255);
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 2px solid rgba(38,170,153,255);
+    border-radius: 10px;
+}
+.freeship-text {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.discount-text {
+    font-size: 20px;
+}
+
+.min-order-text {
+    font-size: 15px;
+}
+
+.save-button {
+    color: rgba(38,170,153,255); /* Màu chữ */
+    padding: 5px 10px;
+    cursor: pointer;
+    border: 2px solid rgba(38,170,153,255);
+    border-radius: 10px;
+}
+
+.text-free-ship {
+    margin: 10zpx;
+    font-family: 'Arial', sans-serif; /* Thay thế bằng font chữ bạn muốn */
+    font-style: italic;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center; /* Căn giữa văn bản */
+    font-size: 22px;
+}
+
+.countdown-item {
+    border: 1px solid #ccc;
+    border-radius: 0.75rem; /* 12px */
+
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer_num {
+    font-size: 1.5rem; /* 24px */
+    font-weight: bold;
+}
+
+.timer_unit {
+    font-size: 1rem; /* 16px */
+}
+
+.clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.digit {
+    width: 65px;
+    height: 65px;
+    background-color: whitesmoke;
+    color: black;
+    text-align: center;
+    line-height: 65px; /* Ensure this matches the height */
+    margin: 0 5px;
+    border-radius: 10px;
+}

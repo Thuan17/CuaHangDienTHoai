@@ -1,7 +1,7 @@
 ﻿
 @{
-    ViewBag.Title = "Bán hàng " + ViewBag.Date;
-    Layout = "~/Areas/Admin/Views/Shared/_LayoutSeller.cshtml";
+    ViewBag.Title = "Bán hàng " +String.Format("{0:dd/MM/yyyy}",ViewBag.Date) ;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <link href="~/Content/css/admin/SellerIndex.css" rel="stylesheet" />
@@ -27,7 +27,7 @@
             <ol class="breadcrumb float-sm-right">
                 <li class="breadcrumb-item"><a href="/hethongquanly">Trang chủ </a></li>
 
-                <li class="breadcrumb-item active">Bán hàng @(ViewBag.Date ??"") </li>
+                <li class="breadcrumb-item active">Bán hàng @String.Format("{0:dd/MM/yyyy}",ViewBag.Date ?? "") </li>
 
             </ol>
 
