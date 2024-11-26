@@ -1,7 +1,9 @@
 ﻿
 @{
     ViewBag.Title = "Bán hàng " +String.Format("{0:dd/MM/yyyy}",ViewBag.Date) ;
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var layout = (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? "~/Areas/Admin/Views/Shared/_Layout.cshtml" : "~/Areas/Admin/Views/Shared/_LayoutSeller.cshtml";
+    Layout = layout;
+    
 }
 
 <link href="~/Content/css/admin/SellerIndex.css" rel="stylesheet" />

@@ -31,12 +31,7 @@
         </div>
 
     </div>
-
-
 }
-
-
-
 
 @if (Model != null && !string.IsNullOrEmpty(Model.NameCustomer))
 {
@@ -155,15 +150,24 @@
                     <div class="form-group" id="load_form_payment" style="display:none;">
                         <h4> <label>Chọn phương thức thanh toán:</label><br /></h4>
                         <h5>Cách 1: Chuyển hướng sang VNPAY chọn phương thức thanh toán</h5>
-                        <label>
-
-                            <input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="0" checked /><img src="~/images/Logo/Logo-VNPAY-QR-1.png" style=" width:80px;height:15px" /> Cổng thanh toán VNPAYQR
-
+                        <label class="d-flex align-items-center gap-2">
+                            <input type="checkbox" class="form-check-input form-check-input-sm m-0" name="TypePaymentVN" value="0" checked />
+                            @*<img src="~/images/Logo/Logo-VNPAY-QR-1.png" class="img-fluid" style="width:80px; height:15px;" alt="Logo VNPAY" />*@
+                            <span>Cổng thanh toán VNPAYQR</span>
                         </label>
-                        <h5>Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
-                        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR </label><br />
-                        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa </label><br />
-                        <label><input type="checkbox" class="TypePaymentVN" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế </label><br />
+
+                        <h5 class="mt-1">Cách 2: Tách phương thức thanh toán tại site của Merchant</h5>
+                       
+                        <label class="d-flex align-items-center gap-2">
+                        <input type="checkbox" class="TypePaymentVN form-check-input form-check-input-sm m-0" name="TypePaymentVN" value="1" /> Thanh toán qua ứng dụng hỗ trợ VNPAYQR 
+                           
+                         </label><br />
+                        <label  class="d-flex align-items-center gap-2">
+                        <input type="checkbox" class="TypePaymentVN form-check-input form-check-input-sm m-0" name="TypePaymentVN" value="2" /> ATM-Tài khoản ngân hàng nội địa 
+                        </label><br />
+                        <label class="d-flex align-items-center gap-2">
+                        <input type="checkbox" class="TypePaymentVN TypePaymentVN form-check-input form-check-input-sm m-0" name="TypePaymentVN" value="3" /> Thanh toán qua thẻ quốc tế
+                            </label><br />
                     </div>
 
                 </div>

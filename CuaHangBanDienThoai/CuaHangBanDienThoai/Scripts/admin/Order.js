@@ -88,10 +88,29 @@
             },
             success: function (response) {
                 if (response.success) {
+                    $.ajax({
+                        url: '/Admin/Order/GetUpdatedOrderRow',
+                        type: 'GET',
+                        data: { OrderId: orderid },
+                        success: function (res) {
+                            $('.tr_IndexBill_' + orderid).replaceWith(res);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Lỗi AJAX:", xhr.responseText);
+                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
+                            window.location.reload();
+                        }
+                    });
+
+
                     if (response.Confirm) {
-                        if (selectedStatus.trim() !== "Chưa giao" ) {
-                            btnCapNhatBill.addClass('hide');
-                        } 
+                        
+
+                        //if (selectedStatus.trim() !== "Chưa giao" ) {
+                        //    btnCapNhatBill.addClass('hide');
+                        //} else if (selectedStatus.trim() === "Chưa giao") {
+                        //    btnCapNhatBill.addClass('show');
+                        //} 
                         btn.html("<i class='fa fa-check text-success'></i>");
                     } else {
                         btn.html("<i class='fas fa-times text-danger'></i>");
@@ -119,7 +138,26 @@
         updateSelectColor(this);
     });
 
-    // Cập nhật màu mặc định cho mỗi select khi tải trang
+    function updateRow(orderId) {
+        $.ajax({
+            url: '/Admin/Order/GetUpdatedOrderRow',
+            type: 'GET',
+            data: { OrderId: orderId },
+            success: function (res) {
+                $('.tr_IndexBill_' + orderId).replaceWith(res);
+
+
+
+            },
+            error: function (xhr, status, error) {
+                console.error("Lỗi AJAX:", xhr.responseText);
+                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
+                window.location.reload();
+            }
+        });
+    }
+
+
     $("select[name='Trangthai']").each(function () {
         updateSelectColor(this);
     });
@@ -181,8 +219,6 @@
         //});
     });
 });
-
-
 
 
 

@@ -34,6 +34,36 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 items = items.ToPagedList(pageIndex, pageSize);
                 var OrderCustomer = db.OrderCustomer.ToList();
                 bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                ViewBag.IsAdmin = isAdmin;
+                ViewBag.IsManage = isManage;
+
+                ViewBag.Count = OrderCustomer.Count;
+                ViewBag.PageSize = pageSize;
+                ViewBag.Page = page;
+                return View(items);
+            }
+            else
+            {
+                ViewBag.txt = "Không tồn tại sản phẩm";
+                return PartialView();
+            }
+        }
+        [AuthorizeFunction("Nhân viên kho", "Quản lý", "Quản trị viên")]
+        public async Task<ActionResult> EmployeeIndex(int? page)
+        {
+            IEnumerable<OrderCustomer> items = db.OrderCustomer.OrderByDescending(x => x.OrderId);
+            if (items != null)
+            {
+                var pageSize = 10;
+                if (page == null)
+                {
+                    page = 1;
+                }
+                var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+                items = items.ToPagedList(pageIndex, pageSize);
+                var OrderCustomer = db.OrderCustomer.ToList();
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
                 ViewBag.IsAdmin = isAdmin;
                 ViewBag.Count = OrderCustomer.Count;
                 ViewBag.PageSize = pageSize;
@@ -49,6 +79,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         [AuthorizeFunction("Nhân viên kho","Quản lý", "Quản trị viên")]
         public ActionResult OrderNonIsConfirm(int? page)
         {
+
+            bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+            ViewBag.IsAdmin = isAdmin;
+
             IEnumerable<OrderCustomer> items = db.OrderCustomer.Where(x => x.Confirm == false && x.OrderStatus == null && x.ReturnDate == null && x.ReturnReason == null).OrderByDescending(x => x.OrderId);
             if (items != null)
             {
@@ -60,8 +94,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
                 items = items.ToPagedList(pageIndex, pageSize);
                 var order = db.OrderCustomer.Where(x => x.Success == false).Count();
-                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
-                ViewBag.IsAdmin = isAdmin;
+               
                 ViewBag.Count = order>0?order   : 0;
                 ViewBag.PageSize = pageSize;
                 ViewBag.Page = page;
@@ -234,7 +267,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
         public ActionResult GetUpdatedOrderRow(int OrderId)
         {
-            
+            bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+            bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+            ViewBag.IsAdmin = isAdmin;
+            ViewBag.IsManage = isManage;
             var Order = db.OrderCustomer.FirstOrDefault(b => b.OrderId == OrderId);
             if (Order != null)
             {

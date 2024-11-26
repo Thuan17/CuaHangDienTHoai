@@ -3,7 +3,8 @@
 @using CuaHangBanDienThoai.Common
 @{
     ViewBag.Title = "Đơn chưa xác nhận";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var layout = (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? "~/Areas/Admin/Views/Shared/_Layout.cshtml" : "~/Areas/Admin/Views/Shared/_LayoutWareHouse.cshtml";
+    Layout = layout;
 }
 
 <link href="~/Content/css/admin/Bill.css" rel="stylesheet" />

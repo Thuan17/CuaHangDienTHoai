@@ -5746,6 +5746,9 @@
     <Content Include="Areas\Admin\Views\ProductCompany\Partail_ProDetailByCompany.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\ProductCategory\Partail_ProDetailByCategory.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_LayoutWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_PartiaSideBarWareHouse.cshtml" />
+    <Content Include="Areas\Admin\Views\Order\EmployeeIndex.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

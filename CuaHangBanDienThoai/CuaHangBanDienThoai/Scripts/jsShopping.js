@@ -201,9 +201,9 @@ $(document).ready(function () {
     }
  
     function registerEvents() {
-        document.querySelectorAll('.btnquantityCartS').forEach(button => {
-            button.removeEventListener('click', handleClick);
-            button.addEventListener('click', handleClick);
+        document.querySelectorAll('.btnquantityCartSmall').forEach(button => {
+            button.removeEventListener('click', handleClickSmall);
+            button.addEventListener('click', handleClickSmall);
         });
 
         document.querySelectorAll('.btnMinus').forEach(function (btn) {
@@ -499,6 +499,33 @@ $(document).ready(function () {
         }
     }
 
+
+
+    function handleClickSmall(event) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        stepperSmall(this, this.dataset.productdetailid);
+    }
+
+    function stepperSmall(btn, productdetailid) {
+        let input = $(`.QuantityCartSmallNew[data-productdetailid="${productdetailid}"]`);
+        if (input.length === 0) return;
+
+        let min = parseInt(input.attr("min"), 10);
+        let max = parseInt(input.attr("max"), 10);
+        let step = parseInt(input.attr("step"), 10);
+        let currentVal = parseInt(input.val(), 10);
+        let calcStep = $(btn).hasClass("btn-increment") ? step : -step;
+        let newValue = currentVal + calcStep;
+
+        newValue = Math.max(min, Math.min(newValue, max));
+
+        if (newValue !== currentVal) {
+            input.val(newValue).trigger('change');
+        }
+    }
+
     function handleMinusClick(event) {
         event.preventDefault();
         let input = this.nextElementSibling;
@@ -642,6 +669,24 @@ $(document).ready(function () {
         }
         isSyncingQuantity = false;
     });
+    $('body').on('change', '.QuantityCartSmallNew', function () {
+        if (isSyncingQuantity || isDeletingItem) return;
+        isSyncingQuantity = true;
+
+        var productdetailid = $(this).data('productdetailid');
+        var cartitemid = $(this).data('cartitemid');
+
+        var quantity = $(this).val();
+      
+        if (cartitemid && productdetailid && quantity) {
+            
+            UpdateQuantity(cartitemid, productdetailid, quantity);
+         
+            $('.QuantityCheckOut[data-cartitemid="' + cartitemid + '"]').val(quantity);
+            isSyncingQuantity = false;
+        }
+        isSyncingQuantity = false;
+    });
     function UpdateQuantityCheckOut(productdetailid, quantity) {
         console.log("UpdateQuantityCheckOut", productdetailid, quantity)
         if (productdetailid && quantity) {
@@ -692,7 +737,7 @@ $(document).ready(function () {
                 if (rs.Success) {
                     if (rs.Code === 1) {
                         loadTotalPrice(cartitemid);
-                        /*loadTotalQuantitySession();*/
+                      
                     } else {
                         createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', rs.msg);
                     }
@@ -761,7 +806,7 @@ function loadTotalPriceSession() {
         url: '/shoppingcart/GetPrice',
         type: 'GET',
         success: function (data) {
-            console.log("loadTotalPriceSession", data.TotalPrice);
+        
             $('.priceCheckOut').html(data.TotalPrice + ' đ');
         },
         error: function (xhr, status, error) {
@@ -778,6 +823,7 @@ function loadTotalPrice(cartitemid ) {
         data: { cartitemid: cartitemid },
         success: function (data) {
             $('.right__price').html(data.TotalPrice + ' đ');
+     
             $('.priceCheckOut').html(data.TotalPrice + ' đ');
         },
         error: function (xhr, status, error) {

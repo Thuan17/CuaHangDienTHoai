@@ -3,7 +3,8 @@
 @using CuaHangBanDienThoai.Common
 @{
     ViewBag.Title = "Quản lý đơn hàng";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var layout = (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? "~/Areas/Admin/Views/Shared/_Layout.cshtml" : "~/Areas/Admin/Views/Shared/_LayoutWareHouse.cshtml";
+    Layout = layout;
 }
 
 <link href="~/Content/css/admin/Bill.css" rel="stylesheet" />
@@ -244,7 +245,7 @@
 
 
                                     </tr>
-                                    <tr>
+                                    <tr >
                                         <td>
                                         </td>
                                         <td>
@@ -257,7 +258,10 @@
                                             <div class="d-flex flex-row align-items-stretch row m-0 p-0 ">
                                                 <div class="col-lg-6">
                                                     <select class="custom-select Trangthai btn col-12 w-100 mx-1" data-id="@item.OrderId" id="typeBill_@item.OrderId" name="Trangthai"
-                                                            @(item.Success == true || (item.OrderStatus?.Trim() == "Đơn trả" || item.OrderStatus?.Trim() == "Đơn huỷ") ? "disabled" : "")>
+                                                       @( ((ViewBag.IsAdmin!=null &&(bool)ViewBag.IsAdmin)||(ViewBag.IsManage!=null &&(bool)ViewBag.IsManage))?"":
+                                                            (item.Success == true || (item.OrderStatus?.Trim() == "Đơn trả" || item.OrderStatus?.Trim() == "Đơn huỷ") ? "disabled" : "") 
+                                                        
+                                                       )>
                                                         @if (item.Success == true && item.OrderStatus?.Trim() == "Đã xuất kho")
                                                         {
                                                             <option value="Đã xuất kho" class="text-white bg-success" selected>Đã xuất kho</option>
@@ -270,6 +274,7 @@
                                                         {
                                                             <option value="Đơn huỷ" class="text-white bg-danger" selected>Đơn huỷ</option>
                                                         }
+                                                      
                                                         else
                                                         {
                                                             <option value="Chưa giao" class="text-white bg-warning" @(item.OrderStatus?.Trim() == "Chưa giao" ? "selected" : "")>Chưa giao</option>
@@ -289,14 +294,18 @@
 
                                                             Xem
                                                         </button>
-                                                        @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
-                                                        {
-                                                            <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnCapNhatBill @( (item.Success == true || item.OrderStatus == "Đơn huỷ" || item.OrderStatus == "Đơn trả") ? "hide" : "")" data-id="@item.OrderId">
-                                                                Cập nhật
-                                                            </button>
-                                                        }
+                                                        <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnCapNhatBill
+                                                              @(
+                                                                        (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? ""
+                                                                        : (ViewBag.IsManage != null && (bool)ViewBag.IsManage)?
+                                                                        ((item.Success==true || item.OrderStatus == "Đơn huỷ" || item.OrderStatus == "Đơn trả") ? "hide" : "")
+                                                                        : "hide"
+                                                                )"
+                                                                data-id="@item.OrderId">
+                                                            Cập nhật
+                                                        </button>
 
-
+                                                       
                                                     </div>
                                                 </div>
 

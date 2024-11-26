@@ -30,15 +30,15 @@
                         return discount * 100;
                     }
                 }
-               
+
                 var strImg = item.ProductDetail.ProductDetailImage.FirstOrDefault(x=>x.IsDefault==true).Image?? "/images/logo/logoweb.png";
                 var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
 
-               
 
 
-                tongtien += ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
-                price=((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price);
+
+                tongtien += ((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price) * item.Quantity;
+                price=((decimal)item.ProductDetail.PriceSale > 0 ? (decimal)item.ProductDetail.PriceSale : (decimal)item.ProductDetail.Price)*item.Quantity;
                 <li class="menu_item_cart  cart_list">
 
                     <div class="group__cart">
@@ -77,9 +77,9 @@
                             <div class="QuanPrice ml-1">
                                 <div class="quantityGroup">
                                     <div class="container-quantity">
-                                        <button id="decrementCartS_@item.ProductDetailId" data-productdetailid="@item.ProductDetailId" class="btnquantityCartS mt-0 btn-decrement">-</button>
-                                        <input type="number" class="QuantityCartSmall" id="cart_small_@item.ProductDetailId    " data-productdetailid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
-                                        <button id="incrementCartS_@item.ProductDetailId" data-productdetailid="@item.ProductDetailId" class="btnquantityCartS mt-0  btn-increment">+</button>
+                                        <button id="decrementCartS_@item.ProductDetailId" data-productdetailid="@item.ProductDetailId" class="btnquantityCartSmall mt-0 btn-decrement">-</button>
+                                        <input type="number" class="QuantityCartSmallNew" id="cart_small_@item.ProductDetailId"data-cartitemid="@item.CartItemId" data-productdetailid="@item.ProductDetailId" min="1" max="10" step="1" value="@item.Quantity">
+                                        <button id="incrementCartS_@item.ProductDetailId" data-productdetailid="@item.ProductDetailId" class="btnquantityCartSmall mt-0  btn-increment">+</button>
                                     </div>
                                 </div>
 
@@ -99,19 +99,19 @@
             <div class="left__price">
                 <b>Tổng tiền tạm tính <span class="   text-danger">(@Model.Count()) </span> sản phẩm :</b>
             </div>
-            <div class="right__price">
+            <div class="right__price"id="priceSmall">
                 @CuaHangBanDienThoai.Common.Common.FormatNumber(tongtien) đ
             </div>
         </div>
         <div class="Group__buy__cart">
-            <div class="left__bynow   left__bynowCart">
+            <div class="left__bynow   left__bynowCart hide">
                 <div class="block-button twoprice left__bynow__Group">
                     <a href="/thanh-toan" class="btn-buynow  btn-buynowCart red jsBuy twoprice ">
                         <span class="text-uppercase">MUA NGAY</span>
                     </a>
                 </div>
             </div>
-            <div class="right__addcart">
+            <div class="right__addcart text-right"style="float:right;">
                 <div class="block-button twoprice">
                     <a href="/gio-hang" class="twoprice  btn-AddtoCart " @*data-productid="@Model.ProductsId"*@>
                         <img src="~/images/icon/shoppingcart2.png" class="btn-AddtoCart-img" />

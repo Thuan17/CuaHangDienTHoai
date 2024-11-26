@@ -847,3 +847,13 @@ form .form-row .textarea {
     height: 50px;
 }
 
+/*#load_form_payment label {
+    display: flex;
+    align-items: center;*/ /* Căn giữa nội dung theo chiều dọc */
+    /*gap: 10px;*/ /* Khoảng cách giữa checkbox và nội dung */
+    /*margin-bottom: 10px;*/ /* Khoảng cách giữa các label */
+/*}
+
+#load_form_payment img {
+    margin-left: 10px;*/ /* Khoảng cách giữa checkbox và hình ảnh */
+/*}*/

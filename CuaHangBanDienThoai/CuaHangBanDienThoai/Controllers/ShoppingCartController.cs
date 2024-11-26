@@ -22,12 +22,6 @@ namespace CuaHangBanDienThoai.Controllers
 
 
         private CUAHANGDIENTHOAIEntities db = new CUAHANGDIENTHOAIEntities();
-
-
-
-
-
-
         public ActionResult Index()
         {
             return View();
