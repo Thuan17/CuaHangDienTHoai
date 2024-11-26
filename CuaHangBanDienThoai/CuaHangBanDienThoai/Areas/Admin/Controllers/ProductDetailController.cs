@@ -37,7 +37,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 var products = db.ProductDetail.ToList();
                 bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
                 ViewBag.IsAdmin = isAdmin;
-                ViewBag.Count = products.Count;
+              
                 ViewBag.PageSize = pageSize;
                 ViewBag.Page = page;
                 return View(items.ToPagedList(pageNumber, pageSize));
@@ -231,7 +231,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     {
                         ProductsId = pro.ProductsId,
                         Image = pro.Image,
-                        Title = pro.ProductCategory.Title.Trim() + " " + pro.Title.Trim(),
+                        Title = pro.ProductCategory.Title.Trim() + " " + pro.Title.Trim()+" Hãng "+ pro.ProductCompany.Title.Trim(),
                         IsCheck = proDetails.ProductsId.HasValue && proDetails.ProductsId > 0 && proDetails.ProductsId == pro.ProductsId
                     })
                     .ToList();

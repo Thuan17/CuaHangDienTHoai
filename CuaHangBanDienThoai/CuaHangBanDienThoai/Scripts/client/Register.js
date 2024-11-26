@@ -7,9 +7,12 @@
         const formData = $('#registerForm').serialize();
         const token = $('input[name="__RequestVerificationToken"]').val();
 
-        console.log("registerForm", formData)
+     
         if (isValid) {
-          
+            var $button = $('.btnregister'); 
+            $button.prop('disabled', true);
+            $button.find('.loading-image').show();
+            $button.find('.button-text').hide();
             $.ajax({
                 url: '/Account/Register',
                 type: 'POST',
@@ -27,9 +30,12 @@
                         } 
 
                     } else {
+                        $button.prop('disabled', false);
+                        $button.find('.loading-image').hide();
+                        $button.find('.button-text').show();
                         if (res.code == -2) {
                             createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
-                        } else if (res.code == -99) {
+                        } else if (res.code == -100) {
                             createToast('error', 'fa-solid fa-triangle-exclamation', 'Lỗi', res.msg);
                         }
                     }
@@ -37,6 +43,9 @@
 
                 },
                 error: function (xhr) {
+                    $button.prop('disabled', false);
+                    $button.find('.loading-image').hide();
+                    $button.find('.button-text').show();
                     createToast('warning', 'fa-solid fa-triangle-exclamation', 'Chú ý', res.msg);
                     console.error(xhr.responseText);
                 }

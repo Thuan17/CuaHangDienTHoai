@@ -7,7 +7,25 @@
 
 <script src="~/Content/css/login/js/main.js"></script>
 <link href="~/Content/css/login/css/style.css" rel="stylesheet" />
+<style>
+    .btnregister {
+        display: flex;
+        align-items: center !important; 
+        justify-content: center !important; 
+        position: relative;
+        height:70px;
+    }
 
+    .loading-image {
+        align-items: center; 
+        justify-content: center;
+        object-fit: contain;
+    }
+
+    .button-text {
+        display: inline-block;
+    }
+</style>
 
 <div style="background-image: url('/images/bg.png');">
     <div class="container mainLogin pt-3">
@@ -67,6 +85,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="row m-0 p-0 w-100">
                                 <div class="col-lg-6">
                                     <div class="form-group">
@@ -80,7 +99,11 @@
 
                             <div class="form-group">
 
-                                <button type="button" class="form-control btn btn-primary rounded submit px-3" onclick="if(validateForm()) $('#registerForm').submit();">  Đăng ký</button>
+                                <button type="button" class="btn btn-primary btnregister" onclick="if(validateForm()) $('#registerForm').submit();">
+                                    <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                                    <span class="button-text ">Đăng ký</span>
+                                </button>
+
                             </div>
 
                         </form>

@@ -77,7 +77,7 @@ namespace CuaHangBanDienThoai.Controllers
                         var fullName = account.CustomerName.Trim();
                         var lastName = fullName.Split(' ').Last();
                         Session["customer"] = account;
-                        Session["userImage"] = account.Image ?? "/images/logo/logoweb.png";
+                        Session["userImage"] = account.Image ?? "/images/icon/privacy.png";
                         Session["lastName"] = lastName.Trim();
                         Session["customerName"] = account.CustomerName.Trim();
                         Session["CustomerId"] = account.CustomerId;
@@ -140,16 +140,11 @@ namespace CuaHangBanDienThoai.Controllers
                         var f_password = MaHoaPass(req.password);
 
 
-                        var checkEmail = await db.Customer.SingleOrDefaultAsync(x => x.Email == req.Email.Trim());
+                        var checkEmail = await db.Customer.FirstOrDefaultAsync(x => x.Email == req.Email.Trim());
                         if (checkEmail != null)
                         {
                             return Json(new { success = false, code = -2, msg = "Email đã có trên hệ thống !!!" });
                         }
-
-
-
-
-
                         var checkPhone = await db.Customer.FirstOrDefaultAsync(x => x.PhoneNumber == req.phone.Trim() && x.Email == null);
                         if (checkPhone != null)
                         {

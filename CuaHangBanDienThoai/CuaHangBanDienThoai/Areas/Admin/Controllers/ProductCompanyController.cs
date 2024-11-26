@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
@@ -26,6 +27,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             {
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
+           
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
 
                 var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
 
@@ -105,8 +109,12 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         }
 
         [AuthorizeFunction("Quản lý", "Quản trị viên")]
-        public async Task<ActionResult>Detail(string alias )
+        public async Task<ActionResult> Detail(string alias)
         {
+            if (alias == null)
+            {
+                return View();
+            }
             var item = await db.ProductCompany.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
             if (item != null)
             {
@@ -114,9 +122,27 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 return View(item);
             }
             return View();
-
         }
-
+        public ActionResult Partail_ProDetailByCompany(int? companyid)
+        {
+            if(companyid!=null && companyid > 0)
+            {
+                var product = from pd in db.ProductDetail
+                              join p in db.Products on pd.ProductsId equals p.ProductsId 
+                              join pcny in db.ProductCompany on p.ProductCompanyId equals pcny.ProductCompanyId    
+                              where pcny.ProductCompanyId == companyid  
+                              select pd;
+                var title = db.ProductCompany.Find(companyid);
+                if (title!=null && product != null)
+                {
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.Title= title.Title.Trim();
+                    return PartialView(product);
+                }
+            }
+            return PartialView();   
+        }
 
 
         [AuthorizeFunction( "Quản trị viên")]
@@ -196,9 +222,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 }
             }
         }
-
-
-
+       
 
     }
 }

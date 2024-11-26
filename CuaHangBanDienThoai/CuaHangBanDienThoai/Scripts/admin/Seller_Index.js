@@ -179,8 +179,6 @@
 
         bg.show();
         popup.show();
-
-
         $.ajax({
             url: '/Admin/Seller/Partail_AddCustomer',
             type: 'get',
@@ -208,7 +206,7 @@
                 type: 'POST',
                 success: function (res) {
                     if (res.Success) {
-                        if (res.Code == 1) {
+                        if (res.Code == 1 && res.employeeid) {
                             window.location.href = '/Admin/Seller/DownloadWord?filePath=' + encodeURIComponent(res.filePath);
 
                             Swal.fire({
@@ -226,6 +224,7 @@
 
                                 }
                             });
+                            loadBillEmployee(res.employeeid);
                         }
                     } else {
                         $button.prop('disabled', false);
@@ -243,21 +242,18 @@
     });
 
 
+   
 
-
-
-    $('#myFormAddCustomer').on('submit', function (event) {
+    $(document).on('submit','#myFormAddCustomer', function (event) {
         event.preventDefault();
         let isValid = validateForm();
-
+        //console.log("myFormAddCustomer click");
+        //alert("myFormAddCustomer");
         if (isValid) {
             var $button = $(this);
             $button.prop('disabled', true);
             $button.find('.loading-image').show();
             $button.find('.button-text').hide();
-
-
-
             var form = document.getElementById('myFormAddCustomer');
             var formData = new FormData(form);
             $.ajax({
@@ -300,18 +296,6 @@
             });
         }
     });
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //start tab hoá đơn
@@ -543,6 +527,22 @@
     //end tab hoá đơn 
 
 });
+
+function loadBillEmployee(employeeid) {
+    console.log("loadBillEmployee", employeeid)
+    if (employeeid) {
+        $.ajax({
+            url: '/Admin/Seller/Partial_BillByEmployee',
+            data: { employeeid: employeeid },
+            type: 'GET',
+            success: function (res) {
+                $('.loadAllBill').html(res);
+            }, error: function () {
+                alert("Có lỗi khi load hoá đơn!!!");
+            }
+        });
+    }
+}
 
 function LoadRowBill(billid) {
     if (billid) {

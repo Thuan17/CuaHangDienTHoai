@@ -100,7 +100,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
 
             var bill = db.Bill
-                         .Where(x => DbFunctions.TruncateTime(x.CreatedDate) == selectedDate)
+                         .Where(x => DbFunctions.TruncateTime(x.CreatedDate) == selectedDate).OrderBy(x => x.BillId)
                          .ToList();
             if (bill != null &bill.Count > 0)
             {
@@ -436,7 +436,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     if (!string.IsNullOrEmpty(invoicePath))
                     {
                         dbContext.Commit();
-                        return Json(new { Success = true, Code = 1, filePath = invoicePath });
+                        return Json(new { Success = true, Code = 1, filePath = invoicePath ,employeeid=bill.EmployeeId});
                     }else 
                     {
                       

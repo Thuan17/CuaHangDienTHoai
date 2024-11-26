@@ -61,7 +61,25 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-/* Định dạng cho input */
+.btnregister {
+    display: flex;
+    align-items: center !important; /* Căn giữa các phần tử con theo chiều dọc */
+    justify-content: center !important; /* Căn giữa các phần tử con theo chiều ngang */
+    position: relative; /* Để có thể dễ dàng căn chỉnh các phần tử bên trong */
+    max-height: 50px; 
+}
+
+.loading-image {
+    align-items: center; /* Căn giữa các phần tử con theo chiều dọc */
+    justify-content: center;
+    object-fit: contain; /* Đảm bảo hình ảnh không bị méo */
+   /* margin-right: 10px;
+    margin-bottom:5px;*/
+}
+
+.button-text {
+    display: inline-block;
+}
 .form-control {
     background-color: transparent !important;
     border: none;
@@ -8415,3 +8433,12 @@ h1, h2, h3, h4, h5,
         border: 1px solid transparent;
         background: #01d28e;
         color: #fff; }
+/* Thay đổi màu biểu tượng mắt thành màu trắng */
+.field-icon.toggle-password {
+    color: white !important; /* Đặt màu trắng cho biểu tượng */
+}
+
+    /* Nếu muốn đổi màu khi hover (di chuột lên icon) */
+    .field-icon.toggle-password:hover {
+        color: #f0f0f0 !important; /* Chọn màu sáng hơn khi hover */
+    }

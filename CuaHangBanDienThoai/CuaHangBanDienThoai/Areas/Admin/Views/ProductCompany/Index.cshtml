@@ -34,7 +34,7 @@
                 <div class="col-2">
                     <h6 class="m-0 font-weight-bold text-primary">
                         Quản lý hãng sản phẩm
-                        <span class="text-danger ">            <label class="text-dark">Tổng số hãng sản phẩm:</label> @ViewBag.Count</span>
+                        <span class="text-danger ">  <label class="text-dark">Tổng số hãng sản phẩm:</label> @(Model?.Count()??0)</span>
                     </h6>
                 </div>
 
@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </div>
-                    <a href="/them-hang-san-pham" class="btn btn-success">
+                    <a href="/them-hang-san-pham" class="btn btn-success  @((ViewBag.IsAdmin!=null && (bool)ViewBag.IsAdmin)?"":"hide")">
                         Tạo mới
                     </a>
 
@@ -100,9 +100,10 @@
                                     int maxLength = 7;
                                     alias = item.Alias;
                                 }
-                                var count = item.Products.Where(x => x.ProductCompanyId == item.ProductCompanyId).Count();
+                              
                                 var strImg = "";
-
+                          
+                                                     
 
                                 if (item.Icon != null)
                                 {
@@ -142,7 +143,7 @@
                                         </p>
                                         <p>@(!string.IsNullOrEmpty(item.Modifiedby) ? $"Chỉnh sửa bởi: {item.Modifiedby}" : "")</p>
 
-                                        <p>Số lượng sản phẩm: @(count > 0 ? count.ToString() : "0")</p>
+                                        @*<p>Số lượng sản phẩm: @(count > 0 ? count.ToString() : "0")</p>*@
 
                                     </td>
 
@@ -152,7 +153,8 @@
                                             Xem
                                         </a>
 
-                                        <a href="/chinh-sua-hang/@item.Alias.Trim()" class="btn btn-warning btn-s text-white" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
+                                        <a href="/chinh-sua-hang/@item.Alias.Trim()"
+                                           class="btn btn-warning btn-s text-white  @((ViewBag.IsAdmin!=null && (bool)ViewBag.IsAdmin)?"":"hide")" data-toggle="tooltip" data-original-title="Edit user " style="min-width:60px;">
                                             Sửa
                                         </a>
 

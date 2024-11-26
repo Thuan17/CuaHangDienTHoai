@@ -226,14 +226,7 @@
                                                     <img src="~/images/gif/search.gif" class="searchgif" />
                                                 </button>
                                             </form>
-
-
                                             <div class="search-suggestions">
-                                              
-
-
-                                                @*<img src="~/images/gif/rounded3.gif" width="80" height="100" class="rounded pt-3" />*@
-
                                             </div>
                                         </div>
 
@@ -241,9 +234,8 @@
                                             <a class="linkGritem pt-2" href="/tracuudonhang">
                                                 <div class="icon-box-left  ">
                                                     <div class="icon-box-img">
-
-                                                        <img src="~/images/gif/bill.gif" width="40" height="40" class="m-0" />
-
+                                                      
+                                                        <img src="~/images/icon/order.png"width="50" height="50" class="m-0" />
                                                     </div>
                                                     <div class="icon-box-text-item ">
                                                         <p class="m-0 text-uppercase">Đơn hàng</p>
@@ -269,7 +261,7 @@
                                                 <a class="linkGritem pt-2 toggler__cart__btn  ps-0  " href="#">
                                                     <div class="icon-box-left ">
                                                         <div class="icon-box-img">
-                                                            <img src="~/images/gif/cart.gif" />
+                                                            <img src="~/images/icon/shoppingcart3.png" width="50" height="50" />
 
 
                                                         </div>
@@ -291,8 +283,8 @@
                                                     <a class="linkGritem pt-2 toggler__cart__btn  ps-0  hamburger_container_cart" href="#">
                                                         <div class="icon-box-left ">
                                                             <div class="icon-box-img">
-                                                                <img src="~/images/gif/cart.gif" />
-
+                                                           
+                                                                <img src="~/images/icon/shoppingcart3.png"width="50" height="50" />
 
                                                             </div>
                                                             <div class="icon-box-text-item ">
@@ -311,19 +303,11 @@
                                             @if (Session["customer"] == null&& Session["CustomerId"]==null)
                                             {<a class="linkGritem pt-2" href="/dang-nhap">
                                                     <div class="icon-box-left ">
-
-
-
                                                         <div class="icon-box-img">
-
-
-                                                            <img src="~/images/gif/user.gif" />
+                                                            <img src="~/images/icon/privacy.png"width="50" height="50" />
+                                                         
                                                         </div>
                                                         <div class="icon-box-text-item ">
-
-
-
-
                                                             <p class="m-0 text-uppercase">tài khoản</p>
                                                         </div>
                                                     </div>
@@ -331,7 +315,7 @@
                                             }
                                             else
                                             {
-                                                var img = Session["userImage"] ?? "/images/logo/logoweb.png";
+                                                var img = Session["userImage"] ?? "/images/icon/privacy.png";
                                                 var FullName = Session["customerName"].ToString();
                                                 var LastName = Session["lastName"];
                                                 int customerid= (int)Session["CustomerId"];
@@ -342,7 +326,7 @@
                                                     <div class="linkGritem pt-2">
                                                         <div class="icon-box-left">
                                                             <div class="icon-box-img">
-                                                                <img src="@img" style="height: 35px; width: 35px;" />
+                                                                <img src="@img" width="50" height="50"/>
                                                             </div>
                                                             <div class="icon-box-text-item acctive ml-2" style="margin-left: 15px !important;">
                                                                 <p class="m-0 text-uppercase">@LastName</p>

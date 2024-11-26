@@ -56,6 +56,23 @@
     opacity: 0.5;
     z-index: 2500;
 }
+
+.price-old {
+    text-decoration: line-through;
+    color: #6c757d; /* Màu xám cho giá cũ */
+}
+
+/* Lớp cho giá mới, áp dụng màu đỏ nếu có giảm giá */
+.price-new {
+    color: #dc3545; /* Màu đỏ cho giá giảm */
+}
+
+/* Lớp chung cho giá bán */
+.price {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
 .hide{
     display:none !important;
 }

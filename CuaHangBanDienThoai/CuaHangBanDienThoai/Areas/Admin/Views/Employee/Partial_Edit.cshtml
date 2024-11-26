@@ -128,6 +128,7 @@
             @Html.HiddenFor(model => model.CreatedBy)
             @Html.HiddenFor(model => model.CreatedDate)
             @Html.HiddenFor(model => model.Image)
+            @Html.HiddenFor(model => model.ManagerId)
             <input type="hidden"name="IsLock" id="IsLock" value="@(Model.IsLock ? "true" : "false")">
             <input type="hidden"name="ManagerId" id="ManagerId" value="@(Model.ManagerId.HasValue )">
             <div class="card p-0 m-0 w-100">

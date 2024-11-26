@@ -27,7 +27,8 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 var pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
 
                 var products = db.ProductCategory.ToList();
-
+                bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                ViewBag.IsAdmin = isAdmin;
                 ViewBag.Count = products.Count;
                 ViewBag.PageSize = pageSize;
                 ViewBag.Page = page;
@@ -181,6 +182,43 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             }
         }
 
-
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
+        public async Task<ActionResult> Detail(string alias)
+        {
+            if (alias == null)
+            {
+                return View();
+            }
+            bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+            ViewBag.IsAdmin = isAdmin;
+            var item = await db.ProductCategory.FirstOrDefaultAsync(x => x.Alias == alias.Trim());
+            if (item != null)
+            {
+                ViewBag.Name = item.Title.Trim();
+                return View(item);
+            }
+            return View();
+        }
+        public ActionResult Partail_ProDetailByCategory(int? categoryid)
+        {
+            if (categoryid != null && categoryid > 0)
+            {
+                var product = from pd in db.ProductDetail
+                              join p in db.Products on pd.ProductsId equals p.ProductsId
+                              join pcny in db.ProductCategory on p.ProductCategoryId equals pcny.ProductCategoryId
+                              where pcny.ProductCategoryId == categoryid
+                              select pd;
+                var title = db.ProductCategory.Find(categoryid);
+                if (title != null && product != null)
+                {
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.Title = title.Title.Trim();
+                    return PartialView(product);
+                }
+            }
+            return PartialView();
+        }
     }
+
 }

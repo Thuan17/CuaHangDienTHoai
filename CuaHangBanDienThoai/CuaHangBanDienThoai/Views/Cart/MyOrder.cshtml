@@ -55,24 +55,22 @@
         <li class="breadcrumb-item active">Đơn hàng</li>
 
     </ul>
-    @if (Model != null)
-    {
-
-        <div class="card" style="width:100% !important">
-            <div class="card-header">
-                <nav>
-                    <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả đơn</button>
-                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Chờ xác nhận</button>
-                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Đơn huỷ</button>
-                    </div>
-                </nav>
-            </div>
-            <div class=" p-0 m-0">
-                <div class="tab-content  " id="nav-tabContent">
-                    <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-
-                        @foreach (var item in Model)
+    <div class="card" style="width:100% !important">
+        <div class="card-header">
+            <nav>
+                <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Tất cả đơn</button>
+                    <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Chờ xác nhận</button>
+                    <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Đơn huỷ</button>
+                </div>
+            </nav>
+        </div>
+        <div class=" p-0 m-0">
+            <div class="tab-content  " id="nav-tabContent">
+                <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
                         {
                             var voucher = item.VoucherDetail?.FirstOrDefault(x => x.OrderId == item.OrderId);
                             var orderDetail = item.OrderDetail?.Where(x => x.OrderId == item.OrderId);
@@ -192,7 +190,7 @@
                                                         {
                                                             <div class="input-data">
                                                                 <b for="PhoneCustomer">
-                                                                     Áp dụng voucher :
+                                                                    Áp dụng voucher :
                                                                 </b>
                                                                 <sapn>@voucher.Code</sapn>
                                                             </div>
@@ -286,14 +284,14 @@
                                             <button class="btn btn-success mt-0 btnSuceess me-2   @(item.Success == false && item.OrderStatus == "Đã xuất kho" ? "" : "hide")   " data-id="@item.OrderId" style="width: 120px; padding: 8px;">
                                                 Đã nhận được hàng
                                             </button>
-                                            <button class="btn btn-danger mt-0    @(item.OrderStatus?.Trim() == "Đơn huỷ"||item.OrderStatus?.Trim() == "Từ chối" ? "" :  "btnCancel") 
-                                                     @(item.OrderStatus?.Trim() == "Đã xuất kho" ? "hide" : "")"
-                                                    @(item.OrderStatus?.Trim() == "Đơn huỷ"||item.OrderStatus?.Trim() == "Từ chối" ? "disabled" :  "") 
+                                            <button class="btn btn-danger mt-0    @(item.OrderStatus?.Trim() == "Đơn huỷ"||item.OrderStatus?.Trim() == "Từ chối" ? "" :  "btnCancel")
+                             @(item.OrderStatus?.Trim() == "Đã xuất kho" ? "hide" : "")"
+                                                    @(item.OrderStatus?.Trim() == "Đơn huỷ" || item.OrderStatus?.Trim() == "Từ chối" ? "disabled" : "")
                                                     data-id="@item.OrderId" style="width: 180px; padding: 8px;">
                                                 @(item.OrderStatus?.Trim() == "Đơn huỷ" ? "Bạn đã huỷ đơn hàng" :(item.OrderStatus?.Trim() == "Từ chối"? "Đơn đã bị từ chối" : "Huỷ đơn hàng"))
                                             </button>
 
-                                            
+
 
 
                                             <button class="btn btn-danger mt-0 btnReturn  @(item.Success == true && item.OrderStatus == "Đã xuất kho" ? "" : "hide")" data-id="@item.OrderId" style="width: 120px; padding: 8px;">
@@ -310,28 +308,37 @@
 
 
                         }
+                    }
+
+                    else
+                    {
+                        <div class="card m-1 mb-2  bg-white " style="width: 100% !important; border: solid 0.5px lightgray; -moz-border-radius-bottomright: 0px; -moz-border-radius-bottomleft: 0px;">
+
+                            <div class="card-body p-0 m-0">
+                                <div class="align-items-center text-center">
+
+                                    <img src="~/images/logo/CartNull.png" />
+                                </div>
+                            </div>
+                        </div>
+
+                    }
 
 
-                    </div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                       @Html.Action("Partail_MyOrderNonSuccess", "Cart",new {id = ViewBag.CustomerId})
-                    </div>
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        @Html.Action("Partail_MyOrderCancel", "Cart", new { id = ViewBag.CustomerId })
-                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    @Html.Action("Partail_MyOrderNonSuccess", "Cart", new { id = ViewBag.CustomerId })
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    @Html.Action("Partail_MyOrderCancel", "Cart", new { id = ViewBag.CustomerId })
                 </div>
             </div>
-            <div class="card-footer">
-
-            </div>
         </div>
+        <div class="card-footer">
 
-
-
-
-
-
-    }
+        </div>
+    </div>
+  
 </div>
 <script src="~/Scripts/client/MyOrder.js"></script>
 

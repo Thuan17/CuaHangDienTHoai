@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<CuaHangBanDienThoai.Models.ProductDetail>
-
+@using CuaHangBanDienThoai.Common;
 
 
 
@@ -19,7 +19,7 @@
                         <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7" style="width: 15%;">
                             Hình ảnh
                         </th>
-                        <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 35%;">
+                        <th class="text-left  text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 35%;">
                             Sản phẩm
                         </th>
                         <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 10%;">
@@ -92,6 +92,9 @@
                                         <p>Ram: <span class="text-gray-700">@item.Ram</span></p>
                                         <p>Danh mục: <span class="text-gray-700">@item.Products.ProductCategory.Title.Trim()</span></p>
                                         <p>Hãng: <span class="text-gray-700">@item.Products.ProductCompany.Title.Trim()</span></p>
+                                        <p>Giá bán : <span class=" @(item.PriceSale>0?"text-gray-700  price-old" :"price-new")">@Common.FormatNumber(item.Price)</span></p>
+                                        <p class="@(item.PriceSale>0 ?"":"hide")">Giá giảm: <span class="price-new">@Common.FormatNumber(item.PriceSale)</span></p>
+                                        <p class="@((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)?"":"hide") ">Giá nhập : <span class="text-gray-700">@Common.FormatNumber(item.OriginalPrice)</span></p>
                                     </td>
                                     <td style="width: 10%;" class="align-middle text-center">
                                         @if (item.Quantity > 0)
@@ -129,24 +132,21 @@
                                             <div class="toggle__fill"></div>
                                         </label>
                                     </td>
-                                    <td style="width: 5%;" class="align-middle p-0 m-0 d-flex justify-content-center align-items-center">
-                                        <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
-                                            <a href="/chitiet-san-pham-con/@item.Alias"
-                                               class="btn btn-primary btn-s mt-3 mb-2 text-white"
-                                               style="min-width: 60px;">
+                                    <td style="width: 5%; height: 100%;" class="align-middle p-0 m-0 d-flex justify-content-center align-items-center">
+                                        <div class="d-flex flex-column align-items-center justify-content-center text-center" style="height: 100%;">
+                                            <a href="/chitiet-san-pham-con/@item.Alias" class="btn btn-primary btn-sm mt-3 mb-2 text-white" style="min-width: 60px;">
                                                 Xem
                                             </a>
 
                                             @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
                                             {
-                                                <a href='/chinhsua-san-pham-con/@item.Alias'
-                                                   class='btn btn-warning btn-s text-white'
-                                                   style="min-width: 60px;">
+                                                <a href='/chinhsua-san-pham-con/@item.Alias' class="btn btn-warning btn-sm text-white" style="min-width: 60px;">
                                                     Sửa
                                                 </a>
                                             }
                                         </div>
                                     </td>
+
                                 </tr>
 
                                 i++;

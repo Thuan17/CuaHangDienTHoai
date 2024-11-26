@@ -1,4 +1,23 @@
-﻿.tab-pane {
+﻿.swiper-container {
+    width: 100%;
+    height: auto;
+}
+
+.swiper-wrapper {
+    display: flex;
+}
+
+.swiper-slide {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .swiper-slide img {
+        width: 100%;
+        height: auto;
+    }
+
+.tab-pane {
     min-height: 440px;
 }
 

@@ -1,0 +1,162 @@
+﻿@model CuaHangBanDienThoai.Models.ProductCategory
+@{
+    ViewBag.Title = "Danh mục " + ViewBag.Name;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="bg-sgCommet" style="display: none ">
+
+</div>
+
+
+<div id="popupCommmet" style="display: none">
+
+</div>
+<div class="container-fluid">
+    @if (Model != null)
+    {
+
+
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                    <li class="breadcrumb-item"><a href="/hang-san-pham">Danh mục sản phẩm </a></li>
+                    <li class="breadcrumb-item active">Chi tiết  @ViewBag.Name</li>
+
+                </ol>
+
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="single_product_pics">
+                            <div class="row">
+                                <div class="col-lg-12 image_col order-lg-2 order-1">
+                                    <div class="single_product_image text-center">
+
+                                        <img src="@Model.Icon" alt="@Model.Title" style="max-width:80%" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+
+
+                        <div class="product_details">
+                            <div class="product_details_title">
+
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h2>@Model.Title.Trim()</h2>
+                                    </div>
+                                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                    {
+                                        <div class="col-md-4 text-right">
+                                            <a href="/sua-danhmuc-sanpham/@Model.Alias" class="btn btn-warning text-white">
+                                                Chỉnh sửa
+                                            </a>
+
+                                        </div>
+
+                                    }
+
+                                </div>
+                                <hr class="col-12" />
+
+                            </div>
+                            <ul class="nav nav-pills mb-4">
+                                <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+
+
+                            </ul>
+                            <hr class="col-12" />
+                            <div class="tab-content">
+                                <div class="active tab-pane" id="activity">
+                                    <div class="col-12">
+                                        <h5 class="text-black">Thông tin Danh mục sản phẩm  @Model.Title.Trim()</h5>
+                                        <p class="d-flex flex-row">
+                                            Mã Danh mục :
+                                            <span class="text-gray-600"> @Model.Alias</span>
+                                        </p>
+
+                                        <p class="d-flex flex-row">Tạo ngày :      <span class="text-gray-600">  @Model.CreatedDate.ToString("dd/MM/yyyy")</span></p>
+                                        <p class="d-flex flex-row">Tạo bởi :   <span class="text-gray-600"> @Model.CreatedBy</span></p>
+                                        <p class="d-flex flex-row">
+                                            @Html.Raw((Model.ModifiedDate != null)
+                                                ? $" Chỉnh sửa ngày: <span class=\"text-gray-600\">  {Model.ModifiedDate:dd/MM/yyyy} </span>"
+                                                : "")
+                                        </p>
+
+                                        <p class="d-flex flex-row"></p>
+
+                                        @Html.Raw((Model.Modifiedby != null)
+                                                ? $"Chỉnh sửa bởi: <span class=\"text-gray-600\">  {Model.Modifiedby} </span>"
+                                                : "")
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-6">
+                <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+            </div>
+            <div class="col-6 ">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                    <li class="breadcrumb-item"><a href="/loai-san-pham">Danh mục sản phẩm </a></li>
+
+                </ol>
+
+            </div>
+        </div>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-white py-3">
+
+                <div class="col-12">
+                    <p class="text-danger text-danger">
+                        Không tồn tại bảng ghi nào !!!
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>
+
+
+<div class="container-fluid">
+    @if (Model != null)
+    {
+        <div class="card shadow mb-4">
+            @Html.Action("Partail_ProDetailByCategory", "ProductCategory", new { categoryid = Model.ProductCategoryId })
+        </div>
+    }
+</div>

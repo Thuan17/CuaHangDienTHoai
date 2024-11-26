@@ -5128,9 +5128,11 @@
     <Content Include="images\icon\loupe.png" />
     <Content Include="images\icon\mail.png" />
     <Content Include="images\icon\maps.png" />
+    <Content Include="images\icon\order.png" />
     <Content Include="images\icon\phone.png" />
     <Content Include="images\icon\phone1.png" />
     <Content Include="images\icon\phonecall.png" />
+    <Content Include="images\icon\privacy.png" />
     <Content Include="images\icon\productDONGKIEM.png" />
     <Content Include="images\icon\productQuality.png" />
     <Content Include="images\icon\resetpassword.png" />
@@ -5139,6 +5141,7 @@
     <Content Include="images\icon\shield.png" />
     <Content Include="images\icon\shoppingcart.png" />
     <Content Include="images\icon\shoppingcart2.png" />
+    <Content Include="images\icon\shoppingcart3.png" />
     <Content Include="images\icon\user.png" />
     <Content Include="images\icon\voucher2.png" />
     <Content Include="images\insta-item1.jpg" />
@@ -5740,6 +5743,9 @@
     <Content Include="Areas\Admin\Views\Seller\IndexEmployye.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\AllBill.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\Partail_BillToday.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCompany\Partail_ProDetailByCompany.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductCategory\Partail_ProDetailByCategory.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

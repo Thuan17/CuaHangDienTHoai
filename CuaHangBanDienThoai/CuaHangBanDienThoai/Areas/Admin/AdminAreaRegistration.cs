@@ -164,6 +164,12 @@ defaults: new { controller = "Employee", action = "Index", alias = UrlParameter.
 
   );
             context.MapRoute(
+     name: "Detail_ProductCategory",
+     url: "danhmuc/{alias}",
+     defaults: new { controller = "ProductCategory", action = "Detail" }
+
+ );
+            context.MapRoute(
          name: "Edit_ProductCategory",
          url: "sua-danhmuc-sanpham/{alias}",
          defaults: new { controller = "ProductCategory", action = "Edit" }

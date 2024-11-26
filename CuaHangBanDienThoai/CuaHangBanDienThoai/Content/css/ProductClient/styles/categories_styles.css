@@ -2971,7 +2971,7 @@ listproduct .price {
 .product-item:hover .btnAddtoCartItem {
 	visibility: visible;
 	opacity: 1;
-	color: white !;
+	color: white !important;
 }
 
 .product__grid {

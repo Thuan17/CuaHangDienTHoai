@@ -90,3 +90,18 @@
     margin: 0 5px;
     border-radius: 10px;
 }
+
+
+
+
+.brCount {
+    background-color: rgba(255,227,215,255);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    box-shadow: inset -5px 0px 8px -6px rgba(0, 0, 0, 0.3), /* Trái */
+    inset 0px 5px 8px -6px rgba(0, 0, 0, 0.3), /* Dưới */
+    inset 0px -5px 8px -6px rgba(0, 0, 0, 0.3); /* Trên */
+    clip-path: inset(0 0px 0 0); /* Chặn bên phải */
+}

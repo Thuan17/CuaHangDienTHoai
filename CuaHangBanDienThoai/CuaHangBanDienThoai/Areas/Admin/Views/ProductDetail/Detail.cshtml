@@ -5,27 +5,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
-<style>
-    .swiper-container {
-        width: 100%;
-        height: auto; /* Hoặc một giá trị cố định nếu cần */
-    }
 
-    .swiper-wrapper {
-        display: flex; /* Đảm bảo các slide nằm ngang */
-    }
-
-    .swiper-slide {
-        width: 100%; /* Đảm bảo mỗi slide chiếm toàn bộ chiều rộng của swiper-container */
-        box-sizing: border-box; /* Bao gồm padding và border trong kích thước */
-    }
-
-        .swiper-slide img {
-            width: 100%;
-            height: auto;
-        }
-</style>
-
+<link href="~/Content/css/admin/ProductDetailPage.css" rel="stylesheet" />
 
 <div class="container-fluid">
     @if (Model != null)
@@ -116,8 +97,7 @@
                             </div>
                             <ul class="nav nav-pills mb-4">
                                 <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
-
-
+                                <li class="nav-item"><a class="nav-link" href="#review" data-toggle="tab">Đánh giá </a></li>
                             </ul>
                             <hr class="col-12" />
                             <div class="tab-content">
@@ -134,24 +114,19 @@
                                         <p class="d-flex flex-row">Tạo ngày :      <span class="text-gray-600">  @Model.Products.Title.Trim()</span></p>
                                         <p class="d-flex flex-row">Màu :      <span class="text-gray-600">  @Model.Color</span></p>
                                         <p class="d-flex flex-row">Dung lượng:      <span class="text-gray-600">  @Model.Capacity</span></p>
-                                        <p class="d-flex flex-row">Giá bán  :      <span class="text-gray-600">   @($"{Common.FormatNumber(Model.Price)}đ")</span></p>
-                                        @if (Model.PriceSale > 0)
-                                        {
-                                            <p class="d-flex flex-row">Giá giảm :      <span class="text-gray-600">  @($"{Common.FormatNumber(Model.PriceSale)}đ")</span></p>
-                                        }
-
-
-                                        @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
-                                        {
-                                            <p class="d-flex flex-row">Giá nhập  :      <span class="text-gray-600">   @($"{Common.FormatNumber(Model.OriginalPrice)}đ")</span></p>
-                                        }
-
-
+                                        <p>Giá bán : <span class=" @(Model.PriceSale>0?"text-gray-700  price-old" :"price-new")">@Common.FormatNumber(Model.Price)</span></p>
+                                        <p class="@(Model.PriceSale>0 ?"":"hide")">Giá giảm: <span class="price-new">@Common.FormatNumber(Model.PriceSale)</span></p>
+                                        <p class="@((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)?"":"hide") ">Giá nhập : <span class="text-gray-700">@Common.FormatNumber(Model.OriginalPrice)</span></p>
 
 
                                     </div>
                                 </div>
+                                <div class="tab-pane " id="review">
+                                    <div class="be-comment-block mt-4" id="load-review">
+                                        @Html.Action("Partail_ReviewByProductId", "Review", new { productid = Model.ProductsId })
+                                    </div>
 
+                                </div>
 
                             </div>
 
