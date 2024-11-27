@@ -130,6 +130,7 @@
     <Property Name="Modifiedby" Type="nvarchar(max)" />
     <Property Name="EmployeeId" Type="int" />
     <Property Name="SupplierId" Type="int" />
+    <Property Name="Code" Type="char" MaxLength="20" Nullable="false" />
   </EntityType>
   <EntityType Name="ImportWarehouseDetail">
     <Key>

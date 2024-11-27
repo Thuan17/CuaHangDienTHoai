@@ -27,6 +27,7 @@ namespace CuaHangBanDienThoai.Models
         public string Modifiedby { get; set; }
         public Nullable<int> EmployeeId { get; set; }
         public Nullable<int> SupplierId { get; set; }
+        public string Code { get; set; }
     
         public virtual Employee Employee { get; set; }
         public virtual Supplier Supplier { get; set; }

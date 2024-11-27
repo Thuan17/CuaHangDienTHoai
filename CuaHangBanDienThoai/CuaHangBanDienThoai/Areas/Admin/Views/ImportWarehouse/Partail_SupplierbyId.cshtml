@@ -1,0 +1,19 @@
+﻿@model CuaHangBanDienThoai.Models.Supplier
+<div class="custom-fieldset">
+    <div class="custom-legend">Thông tin nhà cung cấp</div>
+    @if (Model != null)
+    {
+        <div class="col-12 customer-details p-3 rounded">
+            <p class="m-0 customer-name"><strong>Tên nhà cung cấp:</strong> @Model.Name.Trim()</p>
+            <p class="m-0 customer-phone"><strong>SĐT:</strong> @Model.Phone.Trim()</p>
+            @*<p class="m-0 customer-phone"><strong>SĐT:</strong> @Model.Phone.Trim()</p>*@
+        </div>
+        <button type="button" class="btn btn-success d-flex align-items-center justify-content-center w-100 mt-3 btnImport" data-supplierid="@Model.SupplierId" style="height: 40px;">
+            <img src="~/images/gif/Spinnerloading.gif" class="loading-image " style="width: 45px; height: 45px; display: none; " />
+
+            <span class="button-text ">Nhập kho</span>
+        </button>
+    }
+ 
+
+</div>

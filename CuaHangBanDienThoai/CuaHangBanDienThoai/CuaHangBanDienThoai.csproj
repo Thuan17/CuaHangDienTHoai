@@ -181,6 +181,7 @@
     <Compile Include="Areas\Admin\Controllers\CustomerController.cs" />
     <Compile Include="Areas\Admin\Controllers\EmployeeController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ImportWarehouseController.cs" />
     <Compile Include="Areas\Admin\Controllers\OrderController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCategoryController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductCompanyController.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="Models\Admin_EditBanner.cs" />
     <Compile Include="Models\Admin_EditBill.cs" />
     <Compile Include="Models\Admin_EditEmployee.cs" />
+    <Compile Include="Models\Admin_EditImport.cs" />
     <Compile Include="Models\Admin_EditOrder.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
     <Compile Include="Models\Admin_EditProductDetail.cs" />
@@ -266,6 +268,7 @@
     <Compile Include="Models\Employee.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ImportCart.cs" />
     <Compile Include="Models\ImportWarehouse.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -5513,6 +5516,8 @@
     <Content Include="Scripts\admin\CustomerIndex.js" />
     <Content Include="Scripts\admin\Employee_Edit.js" />
     <Content Include="Scripts\admin\Employee_Index.js" />
+    <Content Include="Scripts\admin\ImportWareHouse.js" />
+    <Content Include="Scripts\admin\Import_Index.js" />
     <Content Include="Scripts\admin\jsCount.js" />
     <Content Include="Scripts\admin\js\AddNew.js" />
     <Content Include="Scripts\admin\js\AddProductCategory.js" />
@@ -5754,6 +5759,13 @@
     </Content>
     <Content Include="Areas\Admin\Views\Supplier\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Import.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Partial_ListProductBill.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Partial_ListProductImport.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_SupplierbyId.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

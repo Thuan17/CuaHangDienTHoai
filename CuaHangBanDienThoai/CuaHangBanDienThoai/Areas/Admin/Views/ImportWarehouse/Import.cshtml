@@ -1,0 +1,161 @@
+﻿
+
+
+@{
+    ViewBag.Title = "Nhập hàng " + String.Format("{0:dd/MM/yyyy}", ViewBag.Date);
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+}
+
+<link href="~/Content/css/admin/SellerIndex.css" rel="stylesheet" />
+<div class="bg-sg" style="display: none ">
+
+</div>
+
+
+<div id="popupBill" style="display: none ">
+    @*@Html.Action("Partail_AddCustomer","Seller")*@
+
+</div>
+
+<div class="container-fluid p-0 m-0">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống phiếu nhập </h1>
+
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/hethongquanly">Trang chủ </a></li>
+
+                <li class="breadcrumb-item active">Nhập hàng @String.Format("{0:dd/MM/yyyy}", ViewBag.Date ?? "") </li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card border-top-0  mb-4 " style="height:auto;background-color:transparent">
+        <div class="card-header p-0 m-0  border-top-0 " style="height:auto;background-color:transparent">
+            <nav class="mb-0">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Phiếu nhập</button>
+                    <button class="nav-link" id="nav-bill-tab" data-bs-toggle="tab" data-bs-target="#nav-bill" type="button" role="tab" aria-controls="nav-bill" aria-selected="false">Hoá đơn</button>
+                </div>
+            </nav>
+        </div>
+
+        <div class="card-body  p-0 " id="loaddata">
+            <div class="row bg-white pb-4">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 p-0 ">
+
+                    <div class="tab-content bg-white  m-0 p-0 pr-2 pl-2 w-100" id="nav-tabContent">
+                        <div class="tab-pane m-2 mt-3 fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <div class="row p-0 m-0 w-100">
+                                <div class="col-lg-6  p-0 m-0 pr-2">
+                                    <div class="card  p-0 m-0 ">
+                                        <div class="card-header  ">
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <h6 class="m-0 font-weight-bold text-primary">
+                                                        Sản phẩm
+
+                                                    </h6>
+                                                </div>
+
+                                                <div class="col-10 d-flex justify-content-end">
+                                                    <div class="form-group app-label d-flex flex-column m-0 position-relative bg-white">
+                                                        <b class="label-title">Dòng sản phẩm</b>
+                                                        <div class="input-group align-items-center">
+                                                            @Html.DropDownList("ProductsId", (SelectList)ViewBag.Product, "Tất cả",
+                                                                new { @class = "form-select bg-white p-2 SelectList", @id = "productChose" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="d-none d-sm-inline-block form-inline ml-2 my-2 my-md-0 mw-100 navbar-search">
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control border-2 small" placeholder="Tìm sản phẩm..."
+                                                                   aria-label="Search" aria-describedby="basic-addon2" id="searchPro">
+                                                            <div class="input-group-append">
+                                                                <button class="btn btn-primary" type="button" id="searchbtn">
+                                                                    <i class="fas fa-search fa-sm"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class=" algin-item-center text-center hide loaddingProduct">
+                                            <img src="~/images/gif/loading.gif" />
+                                            <span>Tải dữ liệu </span>
+                                        </div>
+                                        <div class="card-body  p-0 m-0 body" id="loaddataProduct" style="height: 800px ">
+                                            <div class="p-0 m-0 w-100" style="max-height: 800px; overflow-y: auto">
+                                                @Html.Action("Partail_Product", "Seller")
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6   p-0 m-0 pl-2">
+                                    <div class="card  p-0 m-0 ">
+                                        <div class="p-0 m-0 w-100" id="listProductItem">
+
+                                        </div>
+                                        <div class="card-footer pr-0 pl-0 bg-white overflow-hidden" style="min-height: 100px;">
+                                            <div class="row p-0 m-0 w-100">
+                                              
+                                                <hr class="col-12" />
+
+                                                <div class="col-12 d-flex mb-2">
+                                                    <div class="form-group app-labelSupp col-12 w-100 d-flex flex-column m-0 position-relative bg-white">
+                                                        <b class="label-titleSup ">Danh sách nhà cung cấp</b>
+                                                        <div class="input-group align-items-center">
+                                                            @Html.DropDownList("SupplierId", (SelectList)ViewBag.Supplier, "Tất cả",
+                                                                new { @class = " bg-white p-2 col-12 w-100 SelectListSup", @id = "supplierChose" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 m-0 p-0 pr-2 pl-2" id="loadCustomer">
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade bg-white  m-0 p-0 pr-2 pl-2 w-100 pb-4 loadAllBill" id="nav-bill" role="tabpanel" aria-labelledby="nav-bill-tab" style="height: 800px ">
+                            @Html.Action("Partial_BillByEmployee", "Seller")
+
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
+    <script src="~/Scripts/admin/ImportWareHouse.js"></script>
+}
+
+
+

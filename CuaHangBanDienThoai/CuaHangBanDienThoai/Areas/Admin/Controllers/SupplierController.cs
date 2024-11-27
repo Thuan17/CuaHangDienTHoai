@@ -115,6 +115,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             }
             return PartialView();
         }
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
         public ActionResult Edit(int? id)
         {
             if (id != null && id > 0)

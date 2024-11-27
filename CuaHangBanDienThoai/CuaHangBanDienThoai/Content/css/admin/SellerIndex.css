@@ -169,7 +169,33 @@ input:focus {
     padding: 0 10px; /* Thêm khoảng cách bên trong */
     outline: none;
 }
+.app-labelSupp {
+    margin-top:10px;
+    height: 100%; /* Bảo đảm chiếm chiều cao tối đa của container */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
 
+.label-titleSup {
+    position: absolute;
+    top: -10px; /* Điều chỉnh vị trí để nhãn nằm gọn trên */
+    left: 30px;
+    background-color: white;
+    padding: 0 5px;
+    font-size: 16px;
+    z-index: 2; /* Đảm bảo nằm trên phần tử khác */
+}
+
+.SelectListSup {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    z-index: 1; /* Đảm bảo select không bị che */
+    height: 45px; /* Điều chỉnh chiều cao để đồng bộ */
+    padding: 0 20px; /* Thêm khoảng cách bên trong */
+    outline: none;
+}
 .navbar-search .form-control {
     height: 38px; /* Đồng bộ chiều cao với select */
     border-radius: 5px;
