@@ -1,0 +1,167 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.ProductDetail>
+@using CuaHangBanDienThoai.Common;
+<div class="card-body p-0 m-0 w-100" id="loaddata">
+    <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+            <thead>
+                <tr class="text-gray-100">
+                    <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 " style="max-width: 30px;">
+                        <input type="checkbox" class="checkAll" />
+                    </th>
+                    <th class="text-uppercase  t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
+
+                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Thông tin sản phẩm </th>
+                    <th class="text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2">Hiển thị </th>
+                    <th class="text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2"> Trang chủ </th>
+                    <th class="text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2">Giảm giá</th>
+
+                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 100px;"></th>
+
+
+                    @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
+                    <th class="text-secondary opacity-7" style="max-width:75px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int i = 1;
+                    foreach (var item in Model)
+                    {
+
+
+
+                        string displayAlias = null;
+                        string alias = null;
+                        if (item.Alias != null)
+                        {
+                            int maxLength = 7;
+                            alias = item.Alias;
+                            displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+
+                        }
+                        if (item.Alias != null)
+                        {
+                            int maxLength = 7;
+                            alias = item.Alias;
+                        }
+                        var strImg = "";
+
+
+                        var image = item.ProductDetailImage.FirstOrDefault(x => x.ProductDetailId == item.ProductDetailId && x.IsDefault == true);
+                        if (image.Image != null)
+                        {
+                            strImg = image.Image ?? "";
+                        }
+
+
+                        var Name = item.Products.ProductCategory.Title.Trim() + " " + item.Products.Title.Trim() + " " + item.Capacity.Trim();
+
+
+                        <tr>
+                            <td style="max-width:30px;">
+                                <input type="checkbox" class="cbkItem" value="@item.ProductDetailId" />@i
+                            </td>
+                            <td>
+                                <div class="d-flex px-2 py-1">
+                                    <div>
+                                        <img src="@strImg" class="avatar avatar-sm me-3 " style="max-width: 150px; max-height: 150px;" alt="@Name" />
+
+                                    </div>
+
+                                </div>
+                            </td>
+                            <td class="align-middle">
+                                <p class="w-100">@Name</p>
+                                <p class=" ">Màu sản phẩm :<span class="text-gray-700">@item.Color</span></p>
+                                <p class=" ">Ram :<span class="text-gray-700">@item.Ram</span></p>
+
+                                <p> Danh mục :<span class="text-gray-700">@item.Products.ProductCategory.Title.Trim()</span> </p>
+                                <p> Hãng :<span class="text-gray-700"> @item.Products.ProductCompany.Title.Trim()</span></p>
+                                <p> Tồn kho :<span class="text-gray-700"> @item.Quantity</span></p>
+
+                            </td>
+                            <td class="align-middle text-center  justify-content-center align-items-center" style="height: 100px;">
+                                <div class="toggle d-flex justify-content-center align-items-center" style="width:100%;height: 100%;">
+                                    <label class="toggle" for="toggleIsActive_@item.ProductDetailId" style="display: flex; align-items: center;">
+                                        <span class="text-center" style="white-space: nowrap;">
+                                            <input class="toggle__input check_IsActive" type="checkbox" id="toggleIsActive_@item.ProductDetailId" @(item.IsActive.GetValueOrDefault() ? "checked" : "")>
+                                            <div class="toggle__fill"></div>
+                                        </span>
+                                    </label>
+                                </div>
+                            </td>
+
+                            <td class="align-middle text-center">
+                                <div class="toggle" style="">
+                                    <label class="toggle" for="toggleIsHome_@item.ProductDetailId">
+                                        @*<p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>*@
+                                        <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                            <div style="display: flex; align-items: center;">
+
+                                                <input class="toggle__input check_IsHome" name="" type="checkbox" id="toggleIsHome_@item.ProductDetailId" @(item.IsHome.GetValueOrDefault() ? "checked" : "")>
+                                                <div class="toggle__fill"></div>
+                                            </div>
+                                        </span>
+                                    </label>
+                                </div>
+
+
+
+                            </td>
+                            <td class="align-middle text-center">
+                                <div class="toggle" style="">
+                                    <label class="toggle" for="toggleIsSale_@item.ProductDetailId">
+                                        @*<p style="flex: 1;">Hiển thị trang chủ sản phẩm</p>*@
+                                        <span class="text-center" style="display: inline-block; flex: 1; white-space: nowrap;">
+                                            <div style="display: flex; align-items: center;">
+
+                                                <input class="toggle__input check_IsSale" name="" type="checkbox" id="toggleIsSale_@item.ProductDetailId" @(item.IsSale.GetValueOrDefault() ? "checked" : "")>
+                                                <div class="toggle__fill"></div>
+                                            </div>
+                                        </span>
+                                    </label>
+                                </div>
+
+                            </td>
+                            <td class="align-middle p-0 m-0 d-flex justify-content-center align-items-center"
+                                style="max-width: 100px; width: 100px;">
+
+                                <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
+                                    <a href="/chitiet-san-pham-con/@item.Alias"
+                                       class="btn btn-primary btn-s mt-3 mb-2 text-white"
+                                       style="min-width: 60px;">
+                                        Xem
+                                    </a>
+
+                                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
+                                    {
+                                        <a href='/chinhsua-san-pham-con/@item.Alias'
+                                           class='btn btn-warning btn-s text-white'
+                                           style="min-width: 60px;">
+                                            Sửa
+                                        </a>
+                                    }
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+                        i++;
+                    }
+
+                }
+                else
+                {
+
+                    <tr class="text-center text-danger">
+                        <td colspan="5">
+                            <p>Không tồn tại bảng ghi nào !!!</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

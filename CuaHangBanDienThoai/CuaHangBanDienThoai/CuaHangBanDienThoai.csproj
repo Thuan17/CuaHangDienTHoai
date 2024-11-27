@@ -189,6 +189,7 @@
     <Compile Include="Areas\Admin\Controllers\ReviewController.cs" />
     <Compile Include="Areas\Admin\Controllers\SellerController.cs" />
     <Compile Include="Areas\Admin\Controllers\StatisticalController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SupplierController.cs" />
     <Compile Include="Areas\Admin\Controllers\VoucherController.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="Common\Helper.cs" />
@@ -221,6 +222,7 @@
     <Compile Include="Models\Admin_AddProduct.cs" />
     <Compile Include="Models\Admin_AddProductCompany.cs" />
     <Compile Include="Models\Admin_AddProductDetail.cs" />
+    <Compile Include="Models\Admin_AddSupplier.cs" />
     <Compile Include="Models\Admin_AddVoucher.cs" />
     <Compile Include="Models\Admin_EditBanner.cs" />
     <Compile Include="Models\Admin_EditBill.cs" />
@@ -228,6 +230,7 @@
     <Compile Include="Models\Admin_EditOrder.cs" />
     <Compile Include="Models\Admin_EditProduct.cs" />
     <Compile Include="Models\Admin_EditProductDetail.cs" />
+    <Compile Include="Models\Admin_EditSupplier.cs" />
     <Compile Include="Models\Admin_EditVoucher.cs" />
     <Compile Include="Models\Admin_MonthlyRevenue.cs" />
     <Compile Include="Models\Admin_ProductRevenue.cs" />
@@ -248,7 +251,6 @@
     <Compile Include="Models\CartItem.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Class1.cs" />
     <Compile Include="Models\CLient_AddressCustomer.cs" />
     <Compile Include="Models\Client_AddReview.cs" />
     <Compile Include="Models\Client_EditReview.cs" />
@@ -268,12 +270,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ImportWarehouseDetail.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Invoice.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\InvoiceDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ListProductId.cs" />
@@ -5533,10 +5529,12 @@
     <Content Include="Scripts\admin\New.js" />
     <Content Include="Scripts\admin\Order.js" />
     <Content Include="Scripts\admin\Product.js" />
+    <Content Include="Scripts\admin\ProductDetail.js" />
     <Content Include="Scripts\admin\ProductDetailEdit.js" />
     <Content Include="Scripts\admin\ProductDetails.js" />
     <Content Include="Scripts\admin\Product_PageDetail.js" />
     <Content Include="Scripts\admin\Seller_Index.js" />
+    <Content Include="Scripts\admin\Supplier_Index.js" />
     <Content Include="Scripts\autoNumeric-1.9.45.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -5731,13 +5729,6 @@
     <Content Include="Areas\Admin\Views\Seller\Partail_ItemEditBill.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\GetUpdatedOrderRow.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\GetUpdatedBillRow.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Review\Partail_ReviewByProductId.cshtml" />
     <Content Include="Areas\Admin\Views\Home\NoRole.cshtml" />
     <Content Include="Areas\Admin\Views\Seller\IndexEmployye.cshtml" />
@@ -5749,6 +5740,20 @@
     <Content Include="Areas\Admin\Views\Shared\_LayoutWareHouse.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_PartiaSideBarWareHouse.cshtml" />
     <Content Include="Areas\Admin\Views\Order\EmployeeIndex.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_PartiaSideBarManager.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\Partail_ProductDetailById.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductDetail\SearchProduct.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Add.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
+    <Content Include="Areas\Admin\Views\Supplier\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Edit.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

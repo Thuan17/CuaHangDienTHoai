@@ -37,8 +37,6 @@ namespace CuaHangBanDienThoai.Models
         public virtual DbSet<Employee> Employee { get; set; }
         public virtual DbSet<ImportWarehouse> ImportWarehouse { get; set; }
         public virtual DbSet<ImportWarehouseDetail> ImportWarehouseDetail { get; set; }
-        public virtual DbSet<Invoice> Invoice { get; set; }
-        public virtual DbSet<InvoiceDetail> InvoiceDetail { get; set; }
         public virtual DbSet<OrderCustomer> OrderCustomer { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
         public virtual DbSet<ProductCategory> ProductCategory { get; set; }

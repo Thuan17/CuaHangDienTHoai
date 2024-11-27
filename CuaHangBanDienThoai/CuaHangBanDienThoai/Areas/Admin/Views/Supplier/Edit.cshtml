@@ -1,0 +1,213 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_EditSupplier
+<link href="~/Content/css/admin/Bill.css" rel="stylesheet" />
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-title">
+            <h5 class="fs-6 mb-3 details__Text">Thông tin nhà cung cấp</h5>
+        </div>
+        <div class="card-tools">
+            <div class="btn btnCloseEditBill">
+                <svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16" fill="currentColor" class="bi bi-x-octagon-fill" viewBox="0 0 16 16">
+                    <path d="M11.46.146A.5.5 0 0 0 11.107 0H4.893a.5.5 0 0 0-.353.146L.146 4.54A.5.5 0 0 0 0 4.893v6.214a.5.5 0 0 0 .146.353l4.394 4.394a.5.5 0 0 0 .353.146h6.214a.5.5 0 0 0 .353-.146l4.394-4.394a.5.5 0 0 0 .146-.353V4.893a.5.5 0 0 0-.146-.353zm-6.106 4.5L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body">
+        @if (Model != null)
+        {
+            <form id="editSupplier" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.SupplierId)
+
+
+
+                <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <div class="shipping-details mb-4 mb-sm-0 clearfix">
+
+                            <div class="infor__customer">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="input-data ">
+                                            <b>Tên công ty :</b>
+                                            <input type="text" name="Name" id="Name" value="@Model.Name.Trim()" required>
+                                            <div class="underline"></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-data ">
+
+                                            <b>Địa Chỉ :</b>
+                                            <input type="text" name="Location" id="Location" value="@Model.Location.Trim()" required>
+                                            <div class="underline"></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="input-data ">
+
+                                            <b>Số điện thoại :</b>
+                                            <input type="number" name="Phone" id="Phone" value="@Model.Phone.Trim()" required>
+                                            <div class="underline"></div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class=" mt-5 col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+                        <div class="col-10 d-grid gap-2 col-10 mx-auto">
+                            <button type="button" class="btn btn-success"onclick=" $('#editSupplier').submit();">Lưu thông tin @Model.Name</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+
+        }
+    </div>
+
+</div>
+<script>
+
+    function validateForm() {
+        const Name = $('#Name').val().trim();
+        const location = $('#Location').val().trim();
+        const Phone = $('#Phone').val().trim();
+        let isValid = true;
+
+
+        const allFields = ['Name', 'Location', 'Phone'];
+        const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+        if (isAllEmpty) {
+
+            allFields.forEach(id => {
+                $(`#${id}`).addClass('error-border');
+            });
+            showError(allFields, "Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+
+      
+
+        const phoneNumberRegex = /^0\d{9}$/;
+        if (!Phone) {
+            showError('Phone', 'Số điện thoại không để trống.');
+            isValid = false;
+        } else if (Phone.length > 11) {
+            showError('Phone', 'Định dạng số điện thoại không đúng.');
+            isValid = false;
+        } else if (!phoneNumberRegex.test(Phone)) {
+            showError('Phone', 'Định dạng số điện thoại không đúng.');
+            isValid = false;
+        } else {
+            removeError('Phone');
+        }
+        if (!Name) {
+            showError('Name', 'Vui lòng điền tên.');
+            isValid = false;
+
+        } else {
+            removeError('Name');
+        }
+        if (!location) {
+            showError('Location', 'Vui lòng điền địa chỉ.');
+            isValid = false;
+
+        } else {
+            removeError('Location');
+        }
+
+        return isValid;
+    }
+    function submitForm(formData) {
+        $.ajax({
+            url: '/Admin/Supplier/Edit',
+            type: 'POST',
+            data: formData,
+            success: function (res) {
+                if (res.Success) {
+                    if (res.Code = 1) {
+                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập nhà cung cấp thành công');
+
+                        setTimeout(() => window.location.href = "/danh-sach-nhacungcap", 1500);
+                    }
+                } else {
+                    if (res.Code = -2) {
+                        createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', res.msg);
+
+                    } else if (res.Code = -99) {
+                        reateToast('warning', 'fa-solid fa-circle-exclamation', 'Lỗi', res.msg);
+
+                    }
+                }
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Hệ thống gặp lỗi thêm nhà cung cấp .",
+                });
+                console.error(xhr.responseText);
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('#editSupplier').submit(function (e) {
+            e.preventDefault();
+            let isValid = validateForm();
+            const formData = $('#editSupplier').serialize();
+            if (isValid && formData) {
+                submitForm(formData);
+            }
+        });
+    });
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+    function removeError(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.remove('error-border');
+        }
+    }
+
+    function showError(elementId, errorMessage) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.add('error-border');
+        }
+        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
+    }
+</script>

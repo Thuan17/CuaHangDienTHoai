@@ -140,33 +140,6 @@
     <Property Name="QuanTity" Type="int" />
     <Property Name="ImportWarehouseId" Type="int" />
   </EntityType>
-  <EntityType Name="Invoice">
-    <Key>
-      <PropertyRef Name="InvoiceId" />
-    </Key>
-    <Property Name="InvoiceId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Code" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="NameCustomer" Type="int" Nullable="false" />
-    <Property Name="Phone" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="TotalAmount" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="Quantity" Type="int" Nullable="false" />
-    <Property Name="CreatedBy" Type="nvarchar(max)" />
-    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-    <Property Name="ModifiedDate" Type="datetime" />
-    <Property Name="Modifiedby" Type="nvarchar(max)" />
-    <Property Name="TypePayment" Type="int" Nullable="false" />
-    <Property Name="EmployeeId" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="InvoiceDetail">
-    <Key>
-      <PropertyRef Name="InvoiceDetailId" />
-    </Key>
-    <Property Name="InvoiceDetailId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="InvoiceId" Type="int" Nullable="false" />
-    <Property Name="Price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="Quantity" Type="int" Nullable="false" />
-    <Property Name="ProductDetailId" Type="int" Nullable="false" />
-  </EntityType>
   <EntityType Name="OrderCustomer">
     <Key>
       <PropertyRef Name="OrderId" />
@@ -328,7 +301,7 @@
     </Key>
     <Property Name="SupplierId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="500" />
-    <Property Name="Phone" Type="int" />
+    <Property Name="Phone" Type="varchar" MaxLength="15" Nullable="false" />
     <Property Name="Location" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="sysdiagrams">
@@ -599,42 +572,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Invoice_Employee">
-    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="EmployeeId" />
-      </Principal>
-      <Dependent Role="Invoice">
-        <PropertyRef Name="EmployeeId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Invoice_Invoice">
-    <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
-    <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Invoice">
-        <PropertyRef Name="InvoiceId" />
-      </Principal>
-      <Dependent Role="InvoiceDetail">
-        <PropertyRef Name="InvoiceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Invoice_ProductDetail">
-    <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
-    <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ProductDetail">
-        <PropertyRef Name="ProductDetailId" />
-      </Principal>
-      <Dependent Role="InvoiceDetail">
-        <PropertyRef Name="ProductDetailId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_OrderCustomer_Customer">
     <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
     <End Role="OrderCustomer" Type="Self.OrderCustomer" Multiplicity="*" />
@@ -792,8 +729,6 @@
     <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ImportWarehouse" EntityType="Self.ImportWarehouse" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ImportWarehouseDetail" EntityType="Self.ImportWarehouseDetail" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="Invoice" EntityType="Self.Invoice" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="InvoiceDetail" EntityType="Self.InvoiceDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrderCustomer" EntityType="Self.OrderCustomer" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" Schema="dbo" store:Type="Tables" />
@@ -881,18 +816,6 @@
     <AssociationSet Name="FK_ImportWareHouseDetail_ImportWareHouse" Association="Self.FK_ImportWareHouseDetail_ImportWareHouse">
       <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
       <End Role="ImportWarehouseDetail" EntitySet="ImportWarehouseDetail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Invoice_Employee" Association="Self.FK_Invoice_Employee">
-      <End Role="Employee" EntitySet="Employee" />
-      <End Role="Invoice" EntitySet="Invoice" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Invoice_Invoice" Association="Self.FK_Invoice_Invoice">
-      <End Role="Invoice" EntitySet="Invoice" />
-      <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Invoice_ProductDetail" Association="Self.FK_Invoice_ProductDetail">
-      <End Role="ProductDetail" EntitySet="ProductDetail" />
-      <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
     </AssociationSet>
     <AssociationSet Name="FK_OrderCustomer_Customer" Association="Self.FK_OrderCustomer_Customer">
       <End Role="Customer" EntitySet="Customer" />

@@ -14,7 +14,18 @@ namespace CuaHangBanDienThoai.Areas.Admin
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
+            context.MapRoute(
+name: "Supplier_Add",
+url: "tao-moi-nhacungcap",
+defaults: new { controller = "Supplier", action = "Add", alias = UrlParameter.Optional }
 
+);
+            context.MapRoute(
+name: "Supplier_Index",
+url: "danh-sach-nhacungcap",
+defaults: new { controller = "Supplier", action = "Index", alias = UrlParameter.Optional }
+
+);
             context.MapRoute(
 name: "Seller_ALL",
 url: "tat-ca-hoa-don",

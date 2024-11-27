@@ -153,35 +153,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Invoice">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.Invoice">
-        <MappingFragment StoreEntitySet="Invoice">
-          <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="NameCustomer" ColumnName="NameCustomer" />
-          <ScalarProperty Name="Phone" ColumnName="Phone" />
-          <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-          <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
-          <ScalarProperty Name="TypePayment" ColumnName="TypePayment" />
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="InvoiceDetail">
-      <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.InvoiceDetail">
-        <MappingFragment StoreEntitySet="InvoiceDetail">
-          <ScalarProperty Name="InvoiceDetailId" ColumnName="InvoiceDetailId" />
-          <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
-          <ScalarProperty Name="Price" ColumnName="Price" />
-          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-          <ScalarProperty Name="ProductDetailId" ColumnName="ProductDetailId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="OrderCustomer">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.OrderCustomer">
         <MappingFragment StoreEntitySet="OrderCustomer">

@@ -25,6 +25,8 @@ namespace CuaHangBanDienThoai.Models
             int? staffId = (int?)httpContext.Session["EmployeeId"];
             if (staffId == null) return false;
             var role = GetTitleFunctionsByStaffId(staffId.Value);
+
+            httpContext.Session["UserRole"] = role;
             if (role != null && role.Equals("Quản trị viên"))
             {
                 httpContext.Session["AdminRole"] = role;

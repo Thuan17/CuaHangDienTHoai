@@ -6,7 +6,7 @@
 }
 <style>
     p {
-        color:black !important;
+        color: black !important;
         white-space: nowrap !important; /* Không cho chữ xuống dòng */
     }
 </style>
@@ -72,35 +72,70 @@
                 <div class="col-2">
                     <h6 class="m-0 font-weight-bold text-primary">
                         Quản lý sản phẩm con
-                        <span class="text-danger "> <label class="text-dark">Tổng số sản phẩm con:</label> @ViewBag.Count</span>
+                        <span class="text-danger "> <label class="text-dark">Tổng số sản phẩm con:</label> @(Model?.Count())</span>
                     </h6>
                 </div>
 
-                <div class="col-10 text-right">
+                <div class="col-10 w-100 d-flex justify-content-end align-items-center">
+                    <div class="p-0 m-0 w-100 d-flex justify-content-end align-items-center">
+                        <div class="form-group app-label d-flex m-0 pr-2">
 
-                    <div class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm sản phẩm..."
-                                   aria-label="Search" aria-describedby="basic-addon2" id="searchinput" action="@Url.Action("SearchProduct", "Product")" method="get">
+                            <div class="input-group me-2 align-items-center">
+                                <b class="pr-2">Danh mục sản phẩm</b>
+                                @Html.DropDownList("ProductCategoryId", (SelectList)ViewBag.ProductCategory, "Tất cả",
+                                    new { @class = "form-select bg-light border-0 p-2", @id = "productcategoryChose" })
+                                <div class="input-group-append">
+                                    <button class="btn bg-light clearInputProdetail" type="button" id="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                            <path d="M1 1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-.293.707L9 7v6a1 1 0 0 1-.553.894l-2 1a1 1 0 0 1-.894 0l-2-1A1 1 0 0 1 7 13V7L2.293 3.707A1 1 0 0 1 2 3V2a1 1 0 0 1 1-1z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group app-label d-flex m-0 pr-2  ">
+
+                            <div class="input-group me-2 align-items-center grProduct" style="display:none">
+                                <b class="pr-2">Danh sách sản phẩm</b>
+                                <select id="productChose" class="form-select bg-light border-0 p-2">
+                                </select>
+                                <div class="input-group-append">
+                                    <button class="btn bg-light clearInputProdetail" type="button" id="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
+                                            <path d="M1 1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-.293.707L9 7v6a1 1 0 0 1-.553.894l-2 1a1 1 0 0 1-.894 0l-2-1A1 1 0 0 1 7 13V7L2.293 3.707A1 1 0 0 1 2 3V2a1 1 0 0 1 1-1z" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                        <form class="d-flex align-items-center pr-2">
+                            <div class="input-group me-2 align-items-center">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm sản phẩm"
+                                       aria-label="search" aria-describedby="basic-addon2" id="searchPro" name="search">
+                                <div class="input-group-append">
+                                    <button class="btn bg-light clearInputProdetail" type="button" id="">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="button" id="searchbtn">
+                                <button class="btn btn-primary " type="button" id="searchbtn" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
-                        </div>
-                    </div>
+                        </form>
 
-                    @if (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin)
-                    {
-                        <a href="/them-san-pham-con" class="btn btn-success">
+                        <a href="/them-san-pham-con" class="btn btn-success @((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)?"":"hide")">
                             Tạo mới
                         </a>
-
-                    }
-
-
+                    </div>
 
                 </div>
+             
             </div>
 
 
@@ -113,14 +148,14 @@
                             <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 " style="max-width: 30px;">
                                 <input type="checkbox" class="checkAll" />
                             </th>
-                            <th class="text-uppercase t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
+                            <th class="text-uppercase  t text-dark text-xxs font-weight-bolder opacity-7 ">Hình ảnh</th>
 
                             <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Thông tin sản phẩm </th>
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Hiển thị </th>
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"> Trang chủ </th>
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2">Giảm giá</th>
-                          
-                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2"style="width: 100px;"></th>
+                            <th class="text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2">Hiển thị </th>
+                            <th class="text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2"> Trang chủ </th>
+                            <th class="text-uppercase text-center text-dark text-xxs font-weight-bolder opacity-7 ps-2">Giảm giá</th>
+
+                            <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 100px;"></th>
 
 
                             @*<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Employed</th>*@
@@ -130,15 +165,12 @@
                     <tbody>
                         @if (Model != null && Model.Any())
                         {
-
-
-
                             int i = 1;
                             foreach (var item in Model)
                             {
 
 
-                             
+
                                 string displayAlias = null;
                                 string alias = null;
                                 if (item.Alias != null)
@@ -186,6 +218,7 @@
 
                                         <p> Danh mục :<span class="text-gray-700">@item.Products.ProductCategory.Title.Trim()</span> </p>
                                         <p> Hãng :<span class="text-gray-700"> @item.Products.ProductCompany.Title.Trim()</span></p>
+                                        <p> Tồn kho :<span class="text-gray-700"> @item.Quantity</span></p>
 
                                     </td>
                                     <td class="align-middle text-center  justify-content-center align-items-center" style="height: 100px;">
@@ -274,16 +307,6 @@
 
                     </tbody>
                 </table>
-
-
-
-
-
-
-
-
-
-
             </div>
             @if (Model != null && Model.Any())
             {
@@ -326,22 +349,114 @@
 
             }
 
-            <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+
         </div>
     </div>
 </div>
-
-
 @section scripts{
-    <script src="~/Scripts/admin/Product.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <script>
+        $(document).ready(function () {
+            var productChose = $('.grProduct');
+
+        
+            $('#productcategoryChose').change(function () {
+                var ProductCategoryId = $(this).val(); 
+                var selectedText = $("#productcategoryChose option:selected").text(); 
+                productChose.show();
+                if (ProductCategoryId) {
+                    
+                    $.get('/Admin/ProductDetail/GetProductbyCategoryId', { categoryid: ProductCategoryId }, function (data) {
+                      
+                        var productDropdown = $('#productChose');
+                        productDropdown.empty();
+                        productDropdown.append('<option value="">Tất cả</option>');
+                      
+                        if (data && data.length > 0) {
+                            loadProductDetails(ProductCategoryId, 0)
+                            $.each(data, function (index, product) {
+                                productDropdown.append('<option value="' + product.ProductsId + '" data-productsid="' + product.ProductsId +'">' + product.Title + '</option>');
+                            });
+                        } else {
+                         
+                            productDropdown.append('<option value="">Không có sản phẩm nào</option>');
+                        }
+                    });
+                } else {
+
+                    window.location.reload();
+                }
+            });
+
+            $('#productChose').change(function () {
+                var productsid = $(this).val();
+                var selectedText = $("#productChose option:selected").text();
+             
+                if (productsid) {
+                    loadProductDetails(0, productsid)
+                } else {
+                    window.location.reload();
+                }
+            });
+            $('#searchPro').on('input',function () {
+                var key = $(this).val().trim();
+              
+                if (key.length >= 3) {
+                    console.log("searchPro", key);
+                    searchPro(key)
+                } else {
+                    window.location.reload();
+                }
+            });
+
+            $('.clearInputProdetail').on('click', function (event) {
+                event.preventDefault();
+                $("#searchEmp").val(""); // Đảm bảo đúng ID input
+                window.location.reload();
+            });
+
+
+
+        });
+        function searchPro(key) {
+            if (key && key.length >= 3) {
+                $.ajax({
+                    url: '/Admin/ProductDetail/SearchProduct',
+                    data: { key: key },
+                    type: 'GET',
+                    success: function (res) {
+                        $('#loaddata').html(res);
+                    }, error: function () {
+                        alert("Lỗi khi load dữ liệu lọc !!!!");
+                    }
+                });
+            }
+        }
+        function loadProductDetails(categoryid, productid) {
+            $.ajax({
+                url: '/Admin/ProductDetail/Partail_ProductDetailById',
+                data: {
+                    categoryid: categoryid ? categoryid : 0,
+                    productid: productid ? productid:0,
+                },
+                type: 'GET',
+                success: function (res) {
+                    $('#loaddata').html(res);
+                }, error: function () {
+                    alert("Lỗi khi load dữ liệu lọc !!!!");
+                }
+            });
+        }
+
+
         $(document).ready(function () {
             $('body').on('change', '.toggle__input', function () {
                 var checkbox = $(this);
                 var id = checkbox.attr('id').split('_')[1];
                 var isActive = checkbox.is(':checked');
-                var toggleType = checkbox.attr('class').split(' ')[1]; 
+                var toggleType = checkbox.attr('class').split(' ')[1];
 
                 console.log('Checkbox changed:', id, isActive, toggleType);
 
@@ -386,9 +501,10 @@
                 });
             });
         });
-     
+
     </script>
 }
+
 
 
 

@@ -1,0 +1,288 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_AddSupplier
+@{
+    ViewBag.Title = "Thêm mới nhà cung cấp";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<style>
+    .error-message {
+        display: none;
+        color: red;
+    }
+
+    .error-border {
+        border: 2px solid red;
+    }
+
+    .btnXoaAnh {
+        position: absolute;
+        z-index: 10;
+        top: 8%;
+        right: 40px;
+    }
+</style>
+
+
+<link href="~/Content/ckeditor5/ckeditor5.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/he-thong-quan-ly">Trang chủ </a></li>
+                <li class="breadcrumb-item"><a href="/danh-sach-nhacungcap">Danh sách  </a></li>
+                <li class="breadcrumb-item active">Thêm mới</li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Thêm nhà cung cấp
+                    </h6>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <form id="myFormAddSupplier" enctype="multipart/form-data">
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        <input type="hidden" id="ImagesJson" name="Items" />
+                        <input type="hidden" id="IsGiftCategory" name="IsGiftCategory" />
+
+
+                        <div class="card">
+                            <div class="card-header p-2">
+                                <ul class="nav nav-pills">
+                                    <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Thông tin chung</a></li>
+
+                                </ul>
+                            </div><!-- /.card-header -->
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="active tab-pane" id="activity">
+                                        <div class="row ">
+
+
+
+                                        </div>
+                                        <div class="row ">
+
+                                            <div id="Linkontainer" class="form-group col-lg-12">
+                                                <label for="exampleInputEmail1">Tên nhà cung cấp </label>
+                                                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @placeholder = "Tên nhà cung cấp", id = "Name" })
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+
+                                            <div id="Linkontainer" class="form-group col-lg-12">
+                                                <label for="exampleInputEmail1">Số điện thoại nhà cung cấp </label>
+                                                @Html.TextBoxFor(x => x.Phone, new { @class = "form-control", @placeholder = "Số điện thoại nhà cung cấp", id = "Phone" })
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+
+                                            <div id="Linkontainer" class="form-group col-lg-12">
+                                                <label for="exampleInputEmail1">Địa chỉ nhà cung cấp </label>
+                                                @Html.TextBoxFor(x => x.Location, new { @class = "form-control", @placeholder = "Địa chỉ nhà cung cấp ", id = "Location" })
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div> <!-- /.card -->
+                        <div class="col-12 text-center">
+                            <button type="button" onclick=" $('#myFormAddSupplier').submit();" class="btn btn-success col-8">Thêm mới</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+@*<script src="~/Scripts/admin/Admin_ProductAdd.js"></script>*@
+
+
+<script>
+  
+    function validateForm() {
+        const Name = $('#Name').val().trim();
+        const location = $('#Location').val().trim();
+        const Phone = $('#Phone').val().trim();
+        let isValid = true;
+
+     
+        const allFields = ['Name', 'Location', 'Phone'];
+        const isAllEmpty = allFields.every(id => $(`#${id}`).val().trim() === "");
+
+        if (isAllEmpty) {
+
+            allFields.forEach(id => {
+                $(`#${id}`).addClass('error-border');
+            });
+            showError(allFields, "Vui lòng điền đầy đủ thông tin ");
+            return false;
+        }
+
+
+
+        const phoneNumberRegex = /^0\d{9}$/;
+        if (!Phone) {
+            showError('Phone', 'Số điện thoại không để trống.');
+            isValid = false;
+        } else if (Phone.length > 11) {
+            showError('Phone', 'Định dạng số điện thoại không đúng.');
+            isValid = false;
+        } else if (!phoneNumberRegex.test(Phone)) {
+            showError('Phone', 'Định dạng số điện thoại không đúng.');
+            isValid = false;
+        } else {
+            removeError('Phone');
+        }
+        if (!Name) {
+            showError('Name', 'Vui lòng điền tên.');
+            isValid = false;
+
+        } else {
+            removeError('Name');
+        }
+        if (!location) {
+            showError('Location', 'Vui lòng điền địa chỉ.');
+            isValid = false;
+
+        } else {
+            removeError('Location');
+        }
+
+        return isValid;
+    }
+    function submitForm(formData) {
+        $.ajax({
+            url: '/Admin/Supplier/Add',
+            type: 'POST',
+            data:  formData,
+            success: function (res) {
+                if (res.Success) {
+                    if (res.Code = 1) {
+                        Swal.fire({
+                            icon: "success",
+                            title: res.msg,
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                        });
+
+                        setTimeout(() => window.location.href = "/danh-sach-nhacungcap", 1500);
+                    }
+                } else {
+                    if (res.Code = -2) {
+
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Chú ý",
+                            text: res.msg,
+                        });
+                    }  else if (res.Code = -99) {
+
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi",
+                            text: res.msg,
+                        });
+                    }
+                }
+            },
+            error: function (xhr) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Lỗi",
+                    text: "Hệ thống gặp lỗi thêm nhà cung cấp .",
+                });
+                console.error(xhr.responseText);
+            }
+        });
+    }
+    $(document).ready(function () {
+        $('#myFormAddSupplier').submit(function (e) {
+            e.preventDefault();
+            let isValid = validateForm();
+            const formData = $('#myFormAddSupplier').serialize();
+            if (isValid && formData) {
+                submitForm(formData);
+            } 
+        });
+    });
+    function createToast(type, icon, title, text) {
+
+        const notifications = document.querySelector('.notifications');
+        if (!notifications) {
+            console.warn('Không tìm thấy phần tử notifications trong DOM');
+            return;
+        }
+
+        let newToast = document.createElement('div');
+        newToast.innerHTML = `
+        <div class="toastNotifi ${type}">
+            <i class="${icon}"></i>
+            <div class="content">
+                <div class="title">${title}</div>
+                <span>${text}</span>
+            </div>
+            <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+        </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+
+    function removeError(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.remove('error-border');
+        }
+    }
+
+    function showError(elementId, errorMessage) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.classList.add('error-border');
+        }
+        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
+    }
+</script>
+
+
+
+
+

@@ -71,12 +71,77 @@
 
         <td style="min-height:130px">@($"{Common.FormatNumber(Model.TotalAmount)}đ") </td>
     </tr>
+    <tr>
+        <td>
+        </td>
+        <td>
+            <div class="d-flex align-Models-center justify-content-center IsConfirmGr_@Model.OrderId ">
+                <span>Xác nhận :   <a href='#' data-id="@Model.OrderId" class="btnIsConfirm">@Html.Raw(strCheckIsConfirm)</a></span>
+            </div>
 
-}
-else
-{
+        </td>
+        <td colspan="3">
+            <div class="d-flex flex-row align-Models-stretch row m-0 p-0 ">
+                <div class="col-lg-6">
+                    <select class="custom-select Trangthai btn col-12 w-100 mx-1" data-id="@Model.OrderId" id="typeBill_@Model.OrderId" name="Trangthai"
+                            @( ((ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) || (ViewBag.IsManage != null && (bool)ViewBag.IsManage)) ? "" : (Model.Success == true || (Model.OrderStatus?.Trim() == "Đơn trả" || Model.OrderStatus?.Trim() == "Đơn huỷ") ? "disabled" : "") )>
+                        @if (Model.Success == true && Model.OrderStatus?.Trim() == "Đã xuất kho")
+                        {
+                            <option value="Đã xuất kho" class="text-white bg-success" selected>Đã xuất kho</option>
+                        }
+                        else if (Model.Success == true && Model.OrderStatus?.Trim() == "Đơn trả")
+                        {
+                            <option value="Đơn trả" class="text-white bg-secondary" selected>Đơn trả</option>
+                        }
+                        else if (Model.Success == true && Model.OrderStatus?.Trim() == "Đơn huỷ")
+                        {
+                            <option value="Đơn huỷ" class="text-white bg-danger" selected>Đơn huỷ</option>
+                        }
 
+                        else
+                        {
+                            <option value="Chưa giao" class="text-white bg-warning" @(Model.OrderStatus?.Trim() == "Chưa giao" ? "selected" : "")>Chưa giao</option>
+                            <option value="Đã xuất kho" class="text-white bg-success" @(Model.OrderStatus?.Trim() == "Đã xuất kho" ? "selected" : "")>Đã xuất kho</option>
+                            <option value="Đơn huỷ" class="text-white bg-danger" @(Model.OrderStatus?.Trim() == "Đơn huỷ" ? "selected" : "")>Đơn huỷ</option>
+                            <option value="Đơn trả" class="text-white bg-secondary" @(Model.OrderStatus?.Trim() == "Đơn trả" ? "selected" : "")>Đơn trả</option>
+                            <option value="Từ chối" class="text-white bg-danger" @(Model.OrderStatus?.Trim() == "Từ chối" ? "selected" : "")>Từ chối</option>
+                        }
+                    </select>
+
+
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex flex-row align-Models-stretch">
+
+                        <button class="btn btn-primary mx-1 d-flex align-Models-center justify-content-center btnXemBill" data-id="@Model.OrderId">
+
+                            Xem
+                        </button>
+                        <button class="btn btn-danger mx-1 d-flex align-Models-center justify-content-center btnCapNhatBill
+                            @(
+                                      (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? ""
+                                      : (ViewBag.IsManage != null && (bool)ViewBag.IsManage)?
+                                      ((Model.Success==true || Model.OrderStatus == "Đơn huỷ" || Model.OrderStatus == "Đơn trả") ? "hide" : "")
+                                      : "hide"
+                              )"
+                                data-id="@Model.OrderId">
+                            Cập nhật
+                        </button>
+
+
+                    </div>
+                </div>
+
+            </div>
+
+        </td>
+
+
+
+
+    </tr>
 }
+<script src="~/Scripts/admin/Order.js"></script>
 
 
 

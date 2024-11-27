@@ -14,6 +14,8 @@ using System.Drawing;
 using System.Diagnostics;
 using System.Reflection;
 using System.Xml.Linq;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Web.UI.WebControls;
 
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
@@ -36,6 +38,11 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 
                 var products = db.ProductDetail.ToList();
                 bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+
+                var product = db.ProductCategory.ToList();
+                ViewBag.ProductCategory = new SelectList(product, "ProductCategoryId", "Title");
+               
+
                 ViewBag.IsAdmin = isAdmin;
               
                 ViewBag.PageSize = pageSize;
@@ -50,6 +57,99 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             }
         }
 
+
+
+
+        [HttpGet]
+        public JsonResult GetProductbyCategoryId(int? categoryid)
+        {
+            if(categoryid > 0)
+            {
+                var products = db.Products.Where(x => x.ProductCategoryId == categoryid)
+                    .Select(p => new
+                    {
+                        p.Title,
+                        p.ProductsId
+                    }).ToList() ;
+                return Json(products, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Partail_ProductDetailById(int? productid , int? categoryid)
+        {
+        
+            if(productid>0 && categoryid <=0)
+            {
+                var pro = db.Products.Find(productid);
+                var productdetail =db.ProductDetail.Where(x=>x.ProductsId==productid).OrderBy(x=>x.ProductDetailId).ToList();
+                if (productdetail != null && pro !=null)
+                {
+                    ViewBag.Title = "Sản phẩm con theo " + pro.ProductCategory.Title.Trim() + " " + pro.Title.Trim();
+                    return PartialView(productdetail);
+                }
+            }
+            else
+            {
+                var pro = db.ProductCategory.Find(categoryid);
+                var productdetail =
+                                    from pd in db.ProductDetail
+                                    join p in db.Products on pd.ProductsId equals p.ProductsId into pJoin
+                                    from p in pJoin.DefaultIfEmpty()
+                                    join pc in db.ProductCategory on p.ProductCategoryId equals pc.ProductCategoryId into pcJoin
+                                    from pc in pcJoin.DefaultIfEmpty()
+                                    where pc.ProductCategoryId == categoryid
+                                    select pd;
+
+                if (productdetail != null && pro != null)
+                {
+                    ViewBag.Title = "Sản phẩm con theo " + pro.Title.Trim();
+                    return PartialView(productdetail);
+                }
+            }
+            return PartialView();
+        }
+
+        [HttpGet]
+        public ActionResult SearchProduct(string key)
+        {
+            if (!string.IsNullOrEmpty(key))
+            {
+                string alias = CuaHangBanDienThoai.Models.Common.Filter.FilterChar(key.Trim().ToLower());
+                string keyLower = key.Trim().ToLower();
+
+                var query = from pd in db.ProductDetail
+                            join p in db.Products on pd.ProductsId equals p.ProductsId
+                            join pc in db.ProductCategory on p.ProductCategoryId equals pc.ProductCategoryId into pcJoin
+                            from pc in pcJoin.DefaultIfEmpty()
+                            join pcx in db.ProductCompany on p.ProductCompanyId equals pcx.ProductCompanyId into pcxJoin
+                            from pcx in pcxJoin.DefaultIfEmpty()
+                            where
+                                pd.IsActive == true &&
+                                (
+                                    (pc.Title.Trim().Contains(keyLower.Trim()) || pc.Alias.Trim().Contains(alias.Trim())) ||
+                                    (pcx.Title.Trim().Contains(keyLower.Trim()) || pcx.Alias.Trim().Contains(alias.Trim())) ||
+                                    p.Title.Trim().Contains(keyLower.Trim()) ||
+                                    pd.Color.Trim().Contains(keyLower.Trim()) ||
+                                    pd.Capacity.Contains(keyLower)
+                                )
+                            select pd;
+             
+
+
+                var productdetail =  query
+                    .OrderBy(pd=>pd.ProductDetailId)
+
+                    .ToList();
+
+                ViewBag.Key = key.Trim();
+                
+
+                return PartialView(productdetail);
+            }
+
+
+            return PartialView();
+        }
 
 
         [AuthorizeFunction("Quản trị viên")]

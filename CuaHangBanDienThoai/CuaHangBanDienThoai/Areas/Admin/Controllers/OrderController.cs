@@ -516,12 +516,18 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Hoá đơn không tồn tại.", code = OrderId });
             }
+            if (Session["user"] == null)
+            {
+                return Json(new { success = false, message = "Phiên đăng nhập của bạn đã hết hạn !!!", user=1 });
 
+            }
             order.OrderStatus = status;
             order.StatusDate = DateTime.Now;
-
+            AccountEmployee nvSession = (AccountEmployee)Session["user"];
+            var checkStaff = db.Employee.FirstOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
             switch (status)
             {
+               
                 case "Chưa giao":
                     order.Confirm = false;
                     order.StatusDate = null;
@@ -530,7 +536,10 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 case "Đã xuất kho":
                     order.Confirm = true;
                     break;
-
+                case "Đơn huỷ":
+                    order.Modifiedby = "Đơn huỷ bởi " + checkStaff.NameEmployee;
+                    order.Confirm = true;
+                    break;
                 default:
                    
                     break;
@@ -539,7 +548,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             try
             {
                 db.SaveChanges();
-                return Json(new { success = true, code = order.Code, Confirm = order.Confirm });
+                return Json(new { success = true, code = order.Code, isConfirm = order.Confirm });
             }
             catch (Exception ex)
             {

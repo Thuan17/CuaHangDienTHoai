@@ -244,18 +244,17 @@
 
    
 
-    $(document).on('submit','#myFormAddCustomer', function (event) {
-        event.preventDefault();
-        let isValid = validateForm();
-        //console.log("myFormAddCustomer click");
-        //alert("myFormAddCustomer");
+    $(document).on('submit', '#myFormAddCustomer', function (event) {
+        event.preventDefault(); // Ngăn form tự động submit
+        let isValid = validateForm(); // Kiểm tra form
+
         if (isValid) {
-            var $button = $(this);
+            var $button = $(this).find('button[type="submit"]');
             $button.prop('disabled', true);
             $button.find('.loading-image').show();
             $button.find('.button-text').hide();
-            var form = document.getElementById('myFormAddCustomer');
-            var formData = new FormData(form);
+
+            var formData = new FormData(this);
             $.ajax({
                 url: '/Admin/Seller/AddCustomer',
                 type: 'POST',
@@ -265,7 +264,6 @@
                 success: function (res) {
                     if (res.Success) {
                         if (res.Code == 1 && res.PhoneNumber) {
-
                             $('#searchinput').val(res.PhoneNumber.trim());
                             $.ajax({
                                 url: '/Admin/Seller/FindCustomer',
@@ -279,7 +277,6 @@
                                 }
                             });
                             document.getElementById("myFormAddCustomer").reset();
-
                             bg.hide();
                             popup.hide();
                         }
@@ -290,8 +287,9 @@
                         var type = res.Code === -99 ? 'error' : 'warning';
                         createToast(type, 'fa-solid fa-circle-exclamation', 'Chú ý', res.msg);
                     }
-                }, error: function (res) {
-                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', res.msg);
+                },
+                error: function () {
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Có lỗi xảy ra.');
                 }
             });
         }

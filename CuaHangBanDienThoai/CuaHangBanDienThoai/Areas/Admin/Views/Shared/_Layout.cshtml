@@ -1,4 +1,8 @@
 ﻿@*@using Tenostore.Common*@
+
+@{
+    var userRole = Session["UserRole"] as string;
+}
 <!DOCTYPE html>
 
 <html>
@@ -91,8 +95,24 @@
 
             <!-- Divider -->
             <hr class="sidebar-divider ">
-
-            @Html.Partial("_PartiaSideBar")
+          
+          
+            @if (userRole == "Quản trị viên")
+            {
+                @Html.Partial("_PartiaSideBar")
+            }
+            else if (userRole == "Quản lý")
+            {
+                @Html.Partial("_PartiaSideBarManager")
+            }
+            else if (userRole == "Nhân viên bán hàng")
+            {
+                @Html.Partial("_PartiaSideBarSeller")
+            }
+            else if (userRole == "Nhân viên kho")
+            {
+                @Html.Partial("_PartiaSideBarWareHouse")
+            }
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -104,10 +124,10 @@
 
             <!-- Sidebar Message -->
             @*<div class="sidebar-card d-none d-lg-flex">
-                    <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
-                    <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                    <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-                </div>*@
+            <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
+            <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
+            <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
+        </div>*@
 
         </ul>
         <!-- End of Sidebar -->
@@ -127,28 +147,28 @@
 
                     <!-- Topbar Search -->
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                       aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
                             </div>
-                        </form>
+                        </div>
+                    </form>
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                       
+
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchdropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
-                      
-                        <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                  aria-labelledby="searchdropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
                                     <div class="input-group">
@@ -164,16 +184,16 @@
                                 </form>
                             </div>
                         </li>
-                      
+
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsdropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
-                        
-                        <span class="badge badge-danger badge-counter">3+</span>
-                        </a>
-                       
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+
+                                <span class="badge badge-danger badge-counter">3+</span>
+                            </a>
+
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="alertsdropdown">
                                 <h6 class="dropdown-header">
                                     alerts center
@@ -214,16 +234,16 @@
                                 <a class="dropdown-item text-center small text-gray-500" href="#">show all alerts</a>
                             </div>
                         </li>
-                      
+
                         <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesdropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
-                         
-                        <span class="badge badge-danger badge-counter">7</span>
-                        </a>
-                       
-                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+
+                                <span class="badge badge-danger badge-counter">7</span>
+                            </a>
+
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="messagesdropdown">
                                 <h6 class="dropdown-header">
                                     message center
@@ -231,7 +251,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         @*<img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                             alt="...">*@
+                                            alt="...">*@
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -245,7 +265,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         @*<img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                             alt="...">*@
+                                            alt="...">*@
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -259,7 +279,7 @@
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         @*<img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                             alt="...">*@
+                                            alt="...">*@
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>

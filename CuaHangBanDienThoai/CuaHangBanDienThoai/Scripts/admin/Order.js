@@ -1,153 +1,35 @@
 ﻿$(document).ready(function () {
     var bg = $(".bg-sg");
     var popup = $("#popupBill");
-    var btnCapNhatBill = $('.btnCapNhatBill');
-    var btnXemBill = $('.btnXemBill');
-    bg.on('click', function () {
+
+    // Xử lý ẩn/hiện popup
+    function hidePopup() {
         bg.hide();
         popup.hide();
-    });
-
-    $('.btnCloseEditBill').on('click', function () {
-        bg.hide();
-        popup.hide();
-    });
-    btnCapNhatBill.each(function () {
-        $(this).on('click', function (e) {
-
-            e.preventDefault();
-
-            bg.show();
-            popup.show();
-
-            var id = $(this).data('id');
-
-            if (id != null) {
-                $.ajax({
-                    url: '/Admin/Order/Partial_EditOrder',
-                    type: 'GET',
-                    data: { id: id },
-                    success: function (response) {
-                        $("#loadDataBillEdit").html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    });
-    btnXemBill.each(function () {
-        $(this).on('click', function (e) {
-
-            e.preventDefault();
-
-            bg.show();
-            popup.show();
-
-            var id = $(this).data('id');
-
-            if (id != null) {
-                $.ajax({
-                    url: '/Admin/Order/Partial_DetailOrder',
-                    type: 'GET',
-                    data: { id: id },
-                    success: function (response) {
-                        $("#loadDataBillEdit").html(response);
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-        });
-    });
-
-   
-    function updateSelectColor(selectElement) {
-        var selectedOption = $(selectElement).find("option:selected");
-        var selectedClass = selectedOption.attr("class");
-        $(selectElement).removeClass("bg-warning bg-success bg-danger bg-dark")
-            .addClass(selectedClass);
     }
 
-    $("select[name='Trangthai']").change(function () {
-        var selectElement = $(this);
-        var orderid = selectElement.attr("id").split("_")[1];
-        var id = $(this).data('id');
-        var selectedStatus = selectElement.val(); 
-        var btn = $('.btnIsConfirm[data-id="' + orderid + '"]');
-        var btnCapNhatBill = $('.btnCapNhatBill[data-id="' + id + '"]');
-       
-        $.ajax({
-            url: '/Admin/Order/UpdateOrderStatus',
-            type: 'POST',
-            data: {
-                OrderId: orderid,
-                status: selectedStatus
-            },
-            success: function (response) {
-                if (response.success) {
-                    $.ajax({
-                        url: '/Admin/Order/GetUpdatedOrderRow',
-                        type: 'GET',
-                        data: { OrderId: orderid },
-                        success: function (res) {
-                            $('.tr_IndexBill_' + orderid).replaceWith(res);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error("Lỗi AJAX:", xhr.responseText);
-                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
-                            window.location.reload();
-                        }
-                    });
+    function showPopup() {
+        bg.show();
+        popup.show();
+    }
 
+    // Đóng popup
+    bg.on('click', hidePopup);
+    $('.btnCloseEditBill').on('click', hidePopup);
 
-                    if (response.Confirm) {
-                        
-
-                        //if (selectedStatus.trim() !== "Chưa giao" ) {
-                        //    btnCapNhatBill.addClass('hide');
-                        //} else if (selectedStatus.trim() === "Chưa giao") {
-                        //    btnCapNhatBill.addClass('show');
-                        //} 
-                        btn.html("<i class='fa fa-check text-success'></i>");
-                    } else {
-                        btn.html("<i class='fas fa-times text-danger'></i>");
-                    }
-                  
-                } else {
-                    Swal.fire("Oppo !" + "\n" + response.message + "\n" + response.code);
-                    console.log("Lỗi khi cập nhật trạng thái: " + response.message + "" + response.code);
-                    selectElement.val("Chưa giao");
-                    updateSelectColor(selectElement);
-                }
-            },
-            error: function () {
-                console.log("Lỗi khi cập nhật trạng thái: " + response.message);
-                selectElement.val("Chưa giao");
-                updateSelectColor(selectElement);
-            },
-            complete: function () {
-
-                updateSelectColor(selectElement);
-            }
-        });
-
-     
-        updateSelectColor(this);
-    });
-
+    // Hàm tái sử dụng để cập nhật dòng
     function updateRow(orderId) {
         $.ajax({
             url: '/Admin/Order/GetUpdatedOrderRow',
             type: 'GET',
             data: { OrderId: orderId },
             success: function (res) {
-                $('.tr_IndexBill_' + orderId).replaceWith(res);
-
-
-
+                var mainRow = $('.tr_IndexBill_' + orderId);
+                var nextRow = mainRow.next('tr'); // Xóa dòng phụ (nếu có)
+                if (nextRow.length && !nextRow.hasClass('tr_IndexBill_' + orderId)) {
+                    nextRow.remove();
+                }
+                mainRow.replaceWith(res); // Thay dòng chính
             },
             error: function (xhr, status, error) {
                 console.error("Lỗi AJAX:", xhr.responseText);
@@ -157,66 +39,110 @@
         });
     }
 
+    // Hàm xử lý trạng thái dropdown
+    function updateSelectColor(selectElement) {
+        var selectedOption = $(selectElement).find("option:selected");
+        var selectedClass = selectedOption.attr("class");
+        $(selectElement).removeClass("bg-warning bg-success bg-danger bg-dark")
+            .addClass(selectedClass);
+    }
 
-    $("select[name='Trangthai']").each(function () {
-        updateSelectColor(this);
+    // Xử lý sự kiện cập nhật trạng thái
+    $("select[name='Trangthai']").change(function () {
+        var selectElement = $(this);
+        var orderId = selectElement.attr("id").split("_")[1];
+        var selectedStatus = selectElement.val();
+        var btn = $('.btnIsConfirm[data-id="' + orderId + '"]');
+
+        $.ajax({
+            url: '/Admin/Order/UpdateOrderStatus',
+            type: 'POST',
+            data: {
+                OrderId: orderId,
+                status: selectedStatus
+            },
+            success: function (response) {
+                if (response.success) {
+                    updateRow(orderId);
+                    btn.html(response.isConfirm
+                        ? "<i class='fa fa-check text-success'></i>"
+                        : "<i class='fas fa-times text-danger'></i>");
+                } else {
+                    if (user == 1) {
+                        Swal.fire("Oppo !" + "\n" + "Phiên đăng nhập đã hết hạn" );
+                    }
+                    Swal.fire("Oppo !" + "\n" + response.message + "\n" + response.code);
+                    selectElement.val("Chưa giao");
+                }
+            },
+            error: function () {
+                console.log("Lỗi khi cập nhật trạng thái");
+                selectElement.val("Chưa giao");
+            },
+            complete: function () {
+                updateSelectColor(selectElement);
+            }
+        });
     });
 
+    // Hàm tái sử dụng để hiển thị popup và tải nội dung
+    function loadPopupContent(url, id, target) {
+        showPopup();
+        $.ajax({
+            url: url,
+            type: 'GET',
+            data: { id: id },
+            success: function (response) {
+                $(target).html(response);
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+            }
+        });
+    }
 
+    // Xử lý sự kiện nút "Cập nhật Bill"
+    $('.btnCapNhatBill').on('click', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        if (id) {
+            loadPopupContent('/Admin/Order/Partial_EditOrder', id, '#loadDataBillEdit');
+        }
+    });
+
+    // Xử lý sự kiện nút "Xem Bill"
+    $('.btnXemBill').on('click', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        if (id) {
+            loadPopupContent('/Admin/Order/Partial_DetailOrder', id, '#loadDataBillEdit');
+        }
+    });
+
+    // Xử lý nút xác nhận
     $('body').on('click', '.btnIsConfirm', function (e) {
         e.preventDefault();
         var btn = $(this);
         var id = btn.data("id");
-        var selectElement = $('#typeBill_' + id);
 
         $.ajax({
             url: '/admin/Order/IsConfirm',
             type: 'POST',
             data: { id: id },
-            success: function (rs) {
-                if (rs.success) {
-                    if (rs.isConfirm) {
-                        btn.html("<i class='fa fa-check text-success'></i>");
-                      
-                    } else {
-                        btn.html("<i class='fas fa-times text-danger'></i>");
-                    }
+            success: function (response) {
+                if (response.success) {
+                    btn.html(response.isConfirm
+                        ? "<i class='fa fa-check text-success'></i>"
+                        : "<i class='fas fa-times text-danger'></i>");
+                    updateRow(id); // Cập nhật lại dòng nếu cần
                 }
-
             }
         });
+    });
 
-        //$.ajax({
-        //    url: '/admin/Order/IsConfirm',
-        //    type: 'POST',
-        //    data: { page: 1, id: id },
-        //    success: function (rs) {
-        //        if (rs.success) {
-        //            if (rs.isConfirm) {
-        //                btn.html("<i class='fa fa-check text-success'></i>");
-
-        //            } else {
-        //                btn.html("<i class='fas fa-times text-danger'></i>");
-        //                selectElement.val("Chưa giao");
-        //                updateSelectColor(selectElement);
-        //            }
-        //        }
-        //        else {
-        //            btn.html("<i class='fas fa-times text-danger'></i>");
-        //            selectElement.val("Chưa giao");
-        //            updateSelectColor(selectElement);
-        //            Swal.fire("Oppo !" + "\n" + response.message);
-        //        }
-
-        //    },
-        //    error: function () {
-        //        console.log("Lỗi khi xác nhận đơn hàng: " + response.message);
-        //        selectElement.val("Chưa giao");
-        //        updateSelectColor(selectElement);
-        //    },
-
-
-        //});
+    // Cập nhật màu sắc của tất cả dropdown khi load trang
+    $("select[name='Trangthai']").each(function () {
+        updateSelectColor(this);
     });
 });
 
@@ -239,14 +165,14 @@ $(document).ready(function () {
         window.location.href = "/quan-ly-don-hang";
     });
     $('#DateOrder').on('change', function () {
-        var ngayxuat = $('#DateOrder').val();  // Đảm bảo lấy giá trị từ input #DateOrder
+        var ngayxuat = $('#DateOrder').val(); 
         if (ngayxuat) {
             $.ajax({
-                url: '/Admin/Order/GetOrderByDate',  // Kiểm tra đường dẫn URL của action này
+                url: '/Admin/Order/GetOrderByDate',  
                 type: 'GET',
                 data: { ngayxuat: ngayxuat },
                 beforeSend: function () {
-                    $('#loaddata').html('<div class="text-center"> <img src="/images/gif/loading.gif" /></div>');  // Đảm bảo đường dẫn ảnh là đúng
+                    $('#loaddata').html('<div class="text-center"> <img src="/images/gif/loading.gif" /></div>'); 
                 },
                 success: function (data) {
                     $('#loaddata').html(data);

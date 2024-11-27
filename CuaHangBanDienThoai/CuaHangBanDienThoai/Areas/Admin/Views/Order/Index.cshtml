@@ -144,7 +144,7 @@
 
                                 <th>Tổng tiền</th>
                                 @*<th>Xác nhận</th>
-                                    <th>Tác vụ</th>*@
+                        <th>Tác vụ</th>*@
                             </tr>
                         </thead>
                         <tfoot>
@@ -156,7 +156,7 @@
 
                                 <th>Tổng tiền</th>
                                 @*<th>Xác nhận</th>
-                                    <th>Tác vụ</th>*@
+                        <th>Tác vụ</th>*@
 
                             </tr>
                         </tfoot>
@@ -245,7 +245,7 @@
 
 
                                     </tr>
-                                    <tr >
+                                    <tr>
                                         <td>
                                         </td>
                                         <td>
@@ -258,10 +258,7 @@
                                             <div class="d-flex flex-row align-items-stretch row m-0 p-0 ">
                                                 <div class="col-lg-6">
                                                     <select class="custom-select Trangthai btn col-12 w-100 mx-1" data-id="@item.OrderId" id="typeBill_@item.OrderId" name="Trangthai"
-                                                       @( ((ViewBag.IsAdmin!=null &&(bool)ViewBag.IsAdmin)||(ViewBag.IsManage!=null &&(bool)ViewBag.IsManage))?"":
-                                                            (item.Success == true || (item.OrderStatus?.Trim() == "Đơn trả" || item.OrderStatus?.Trim() == "Đơn huỷ") ? "disabled" : "") 
-                                                        
-                                                       )>
+                                                            @( ((ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) || (ViewBag.IsManage != null && (bool)ViewBag.IsManage)) ? "" : (item.Success == true || (item.OrderStatus?.Trim() == "Đơn trả" || item.OrderStatus?.Trim() == "Đơn huỷ") ? "disabled" : "") )>
                                                         @if (item.Success == true && item.OrderStatus?.Trim() == "Đã xuất kho")
                                                         {
                                                             <option value="Đã xuất kho" class="text-white bg-success" selected>Đã xuất kho</option>
@@ -274,7 +271,7 @@
                                                         {
                                                             <option value="Đơn huỷ" class="text-white bg-danger" selected>Đơn huỷ</option>
                                                         }
-                                                      
+
                                                         else
                                                         {
                                                             <option value="Chưa giao" class="text-white bg-warning" @(item.OrderStatus?.Trim() == "Chưa giao" ? "selected" : "")>Chưa giao</option>
@@ -305,7 +302,7 @@
                                                             Cập nhật
                                                         </button>
 
-                                                       
+
                                                     </div>
                                                 </div>
 

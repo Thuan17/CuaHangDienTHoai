@@ -142,7 +142,6 @@
     <NavigationProperty Name="Employee1" Relationship="Self.FK_Employee_Manager" FromRole="Employee" ToRole="Employee1" />
     <NavigationProperty Name="Employee2" Relationship="Self.FK_Employee_Manager" FromRole="Employee1" ToRole="Employee" />
     <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="Employee" ToRole="ImportWarehouse" />
-    <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Employee" FromRole="Employee" ToRole="Invoice" />
     <NavigationProperty Name="Role" Relationship="Self.FK_Role_Employee" FromRole="Employee" ToRole="Role" />
     <NavigationProperty Name="tb_Function" Relationship="Self.FK_Staff_Employee" FromRole="Employee" ToRole="tb_Function" />
   </EntityType>
@@ -171,37 +170,6 @@
     <Property Name="ImportWarehouseId" Type="Int32" />
     <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWareHouseDetail_ImportWareHouse" FromRole="ImportWarehouseDetail" ToRole="ImportWarehouse" />
     <NavigationProperty Name="ProductDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ImportWarehouseDetail" ToRole="ProductDetail" />
-  </EntityType>
-  <EntityType Name="Invoice">
-    <Key>
-      <PropertyRef Name="InvoiceId" />
-    </Key>
-    <Property Name="InvoiceId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="NameCustomer" Type="Int32" Nullable="false" />
-    <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="TotalAmount" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="Quantity" Type="Int32" Nullable="false" />
-    <Property Name="CreatedBy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
-    <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <Property Name="TypePayment" Type="Int32" Nullable="false" />
-    <Property Name="EmployeeId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Employee" Relationship="Self.FK_Invoice_Employee" FromRole="Invoice" ToRole="Employee" />
-    <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_Invoice" FromRole="Invoice" ToRole="InvoiceDetail" />
-  </EntityType>
-  <EntityType Name="InvoiceDetail">
-    <Key>
-      <PropertyRef Name="InvoiceDetailId" />
-    </Key>
-    <Property Name="InvoiceDetailId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="InvoiceId" Type="Int32" Nullable="false" />
-    <Property Name="Price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
-    <Property Name="Quantity" Type="Int32" Nullable="false" />
-    <Property Name="ProductDetailId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="Invoice" Relationship="Self.FK_Invoice_Invoice" FromRole="InvoiceDetail" ToRole="Invoice" />
-    <NavigationProperty Name="ProductDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="InvoiceDetail" ToRole="ProductDetail" />
   </EntityType>
   <EntityType Name="OrderCustomer">
     <Key>
@@ -296,7 +264,6 @@
     <NavigationProperty Name="BillDetail" Relationship="Self.FK_BillDetail_ProductDetail" FromRole="ProductDetail" ToRole="BillDetail" />
     <NavigationProperty Name="CartItem" Relationship="Self.FK_CartItem_ProductDetail" FromRole="ProductDetail" ToRole="CartItem" />
     <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWarehouse_ProductDetail" FromRole="ProductDetail" ToRole="ImportWarehouseDetail" />
-    <NavigationProperty Name="InvoiceDetail" Relationship="Self.FK_Invoice_ProductDetail" FromRole="ProductDetail" ToRole="InvoiceDetail" />
     <NavigationProperty Name="OrderDetail" Relationship="Self.FK_OrderDetail_ProductDetail" FromRole="ProductDetail" ToRole="OrderDetail" />
     <NavigationProperty Name="Products" Relationship="Self.FK_ProductDetail_Products" FromRole="ProductDetail" ToRole="Products" />
     <NavigationProperty Name="ProductDetailImage" Relationship="Self.FK_ProductImage_ProductDetail" FromRole="ProductDetail" ToRole="ProductDetailImage" />
@@ -387,7 +354,7 @@
     </Key>
     <Property Name="SupplierId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-    <Property Name="Phone" Type="Int32" />
+    <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="Location" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ImportWarehouse" Relationship="Self.FK_ImportWarehouse_Supplier" FromRole="Supplier" ToRole="ImportWarehouse" />
   </EntityType>
@@ -641,18 +608,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Invoice_Employee">
-    <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
-    <End Role="Invoice" Type="Self.Invoice" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="EmployeeId" />
-      </Principal>
-      <Dependent Role="Invoice">
-        <PropertyRef Name="EmployeeId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Role_Employee">
     <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
     <End Role="Role" Type="Self.Role" Multiplicity="*" />
@@ -709,30 +664,6 @@
         <PropertyRef Name="ProductDetailId" />
       </Principal>
       <Dependent Role="ImportWarehouseDetail">
-        <PropertyRef Name="ProductDetailId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Invoice_Invoice">
-    <End Role="Invoice" Type="Self.Invoice" Multiplicity="1" />
-    <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Invoice">
-        <PropertyRef Name="InvoiceId" />
-      </Principal>
-      <Dependent Role="InvoiceDetail">
-        <PropertyRef Name="InvoiceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Invoice_ProductDetail">
-    <End Role="ProductDetail" Type="Self.ProductDetail" Multiplicity="1" />
-    <End Role="InvoiceDetail" Type="Self.InvoiceDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ProductDetail">
-        <PropertyRef Name="ProductDetailId" />
-      </Principal>
-      <Dependent Role="InvoiceDetail">
         <PropertyRef Name="ProductDetailId" />
       </Dependent>
     </ReferentialConstraint>
@@ -858,8 +789,6 @@
     <EntitySet Name="Employee" EntityType="Self.Employee" />
     <EntitySet Name="ImportWarehouse" EntityType="Self.ImportWarehouse" />
     <EntitySet Name="ImportWarehouseDetail" EntityType="Self.ImportWarehouseDetail" />
-    <EntitySet Name="Invoice" EntityType="Self.Invoice" />
-    <EntitySet Name="InvoiceDetail" EntityType="Self.InvoiceDetail" />
     <EntitySet Name="OrderCustomer" EntityType="Self.OrderCustomer" />
     <EntitySet Name="OrderDetail" EntityType="Self.OrderDetail" />
     <EntitySet Name="ProductCategory" EntityType="Self.ProductCategory" />
@@ -940,10 +869,6 @@
       <End Role="Employee" EntitySet="Employee" />
       <End Role="ImportWarehouse" EntitySet="ImportWarehouse" />
     </AssociationSet>
-    <AssociationSet Name="FK_Invoice_Employee" Association="Self.FK_Invoice_Employee">
-      <End Role="Employee" EntitySet="Employee" />
-      <End Role="Invoice" EntitySet="Invoice" />
-    </AssociationSet>
     <AssociationSet Name="FK_Role_Employee" Association="Self.FK_Role_Employee">
       <End Role="Employee" EntitySet="Employee" />
       <End Role="Role" EntitySet="Role" />
@@ -963,14 +888,6 @@
     <AssociationSet Name="FK_ImportWarehouse_ProductDetail" Association="Self.FK_ImportWarehouse_ProductDetail">
       <End Role="ProductDetail" EntitySet="ProductDetail" />
       <End Role="ImportWarehouseDetail" EntitySet="ImportWarehouseDetail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Invoice_Invoice" Association="Self.FK_Invoice_Invoice">
-      <End Role="Invoice" EntitySet="Invoice" />
-      <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Invoice_ProductDetail" Association="Self.FK_Invoice_ProductDetail">
-      <End Role="ProductDetail" EntitySet="ProductDetail" />
-      <End Role="InvoiceDetail" EntitySet="InvoiceDetail" />
     </AssociationSet>
     <AssociationSet Name="FK__VoucherDe__Order__7EF6D905" Association="Self.FK__VoucherDe__Order__7EF6D905">
       <End Role="OrderCustomer" EntitySet="OrderCustomer" />

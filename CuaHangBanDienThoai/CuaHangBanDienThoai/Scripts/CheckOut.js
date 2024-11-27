@@ -35,7 +35,7 @@ $(document).ready(function () {
         var selectedText = $("#ddlProvinces option:selected").text();
 
         $(".NameProvince").val(selectedText);
-        console.log("Selected Province:", selectedText);
+      
         var ddlDistricts = $("#ddlDistricts");
         var ddlWards = $("#ddlWards");
         $(".NameProvince").val(selectedText);

@@ -6,7 +6,7 @@
         <div class="card-header bg-white py-3">
             <div class="row">
                 <div class="col-4 " id="loadTitle">
-                    <h6 class="m-0 font-weight-bold text-primary "> Hoá đơn bán ngày : <span class="ml-2 text-danger" style="font-size:16px;"> @(String.Format("{0:dd/MM/yyyy}", ViewBag.Today))</span>
+                    <h6 class="m-0 font-weight-bold text-primary "> Hoá đơn bán ngày : <span class="ml-2 text-danger" style="font-size:16px;"> @(String.Format("{0:dd/MM/yyyy}", ViewBag.Today??""))</span>
                         <br />
                         <span class="text-danger "> <label class="text-dark">Tổng số hoá đơn:</label>     <span id="totalCount">@ViewBag.Count</span></span>
                     </h6>

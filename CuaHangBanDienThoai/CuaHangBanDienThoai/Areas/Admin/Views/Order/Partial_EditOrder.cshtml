@@ -382,13 +382,6 @@
                        }
                    });
                }
- @*<button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemOrder" data-orderid="@Model.orderid" data- orderdetailid="@item. orderdetailid">
-     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
-         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-         <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-     </svg>
-     Xoá
- </button>*@
 
         $(document).off('click', '.btnDeleteItemOrder').on('click', '.btnDeleteItemOrder', function () {
             var  orderdetailid = $(this).data('orderdetailid');
@@ -460,30 +453,8 @@
                     success: function (response) {
                         if (response.success) {
                             if (response.Code === 1) {
-           
-                                $.ajax({
-                                    url: '/Admin/Order/GetUpdatedOrderRow',
-                                    type: 'GET',
-                                    data: { OrderId: response.OrderId },
-                                    success: function (res) {
-                                        $('.tr_IndexBill_' + orderid).replaceWith(res);
-                                        createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập đơn thành công');
-
-                                        setTimeout(function () {
-                                            bg.hide();
-                                            popup.hide();
-
-                                        }, 1450);
-                      
-                                       
-
-                                    },
-                                    error: function (xhr, status, error) {
-                                        console.error("Lỗi AJAX:", xhr.responseText);
-                                        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
-                                        window.location.reload();
-                                    }
-                                });
+                                updateRow(orderid);
+                              
                             }
                         }
                         else {
@@ -519,7 +490,33 @@
             createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
         }
 
+        function updateRow(orderId) {
+            $.ajax({
+                url: '/Admin/Order/GetUpdatedOrderRow',
+                type: 'GET',
+                data: { OrderId: orderId },
+                success: function (res) {
+                    var mainRow = $('.tr_IndexBill_' + orderId);
+                    var nextRow = mainRow.next('tr'); // Xóa dòng phụ (nếu có)
+                    if (nextRow.length && !nextRow.hasClass('tr_IndexBill_' + orderId)) {
+                        nextRow.remove();
+                    }
+                    mainRow.replaceWith(res); 
+                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập đơn thành công');
 
+                    setTimeout(function () {
+                        bg.hide();
+                        popup.hide();
+
+                    }, 1450);
+                },
+                error: function (xhr, status, error) {
+                    console.error("Lỗi AJAX:", xhr.responseText);
+                    createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Load dữ liệu mới');
+                    window.location.reload();
+                }
+            });
+        }
 
 
 

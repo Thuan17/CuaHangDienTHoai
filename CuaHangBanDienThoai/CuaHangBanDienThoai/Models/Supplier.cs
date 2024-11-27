@@ -22,7 +22,7 @@ namespace CuaHangBanDienThoai.Models
     
         public int SupplierId { get; set; }
         public string Name { get; set; }
-        public Nullable<int> Phone { get; set; }
+        public string Phone { get; set; }
         public string Location { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

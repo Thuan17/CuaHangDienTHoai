@@ -20,7 +20,6 @@ namespace CuaHangBanDienThoai.Models
             this.Bill = new HashSet<Bill>();
             this.Employee1 = new HashSet<Employee>();
             this.ImportWarehouse = new HashSet<ImportWarehouse>();
-            this.Invoice = new HashSet<Invoice>();
             this.Role = new HashSet<Role>();
         }
     
@@ -49,8 +48,6 @@ namespace CuaHangBanDienThoai.Models
         public virtual Employee Employee2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ImportWarehouse> ImportWarehouse { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Invoice> Invoice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }
         public virtual tb_Function tb_Function { get; set; }
