@@ -104,9 +104,7 @@
                 <table class="table align-items-center mb-0">
                     <thead>
                         <tr class="text-gray-100">
-                            <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-7 " style="max-width: 30px;">
-                                <input type="checkbox" class="checkAll" />
-                            </th>
+                         
                             <th class="text-uppercase  t text-dark text-xxs font-weight-bolder opacity-7 ">Thông tin phiếu nhập</th>
 
 
@@ -123,11 +121,8 @@
                             int i = 1;
                             foreach (var item in Model)
                             {
-                                <tr>
-                                    <td style="max-width:30px;">
-                                        <input type="checkbox" class="cbkItem" value="@item.ImportWarehouseId" />@i
-                                    </td>
-
+                                <tr  class="row_content tr_IndexImport_@item.ImportWarehouseId" id="tr_IndexImport_@item.ImportWarehouseId">
+                                  
                                     <td class="align-middle">
                                         <p class="w-100">Mã phiếu : <span class="text-gray-700">@item.Code.Trim()</span></p>
                                         <p class="w-100">Nhà cung cấp : <span class="text-gray-700">@item.Supplier.Name.Trim()</span></p>

@@ -1,0 +1,43 @@
+﻿@model CuaHangBanDienThoai.Models.ImportWarehouse
+@if (Model != null)
+{
+    <tr class="row_content tr_IndexImport_@Model.ImportWarehouseId" id="tr_IndexImport_@Model.ImportWarehouseId">
+      
+
+        <td class="align-middle">
+            <p class="w-100">Mã phiếu : <span class="text-gray-700">@Model.Code.Trim()</span></p>
+            <p class="w-100">Nhà cung cấp : <span class="text-gray-700">@Model.Supplier.Name.Trim()</span></p>
+            <p class="w-100">Ngày lập phiếu : <span class="text-gray-700">@String.Format("{0:dd/MM/yyyy}", Model.CreatedDate)</span></p>
+            <p class="w-100">Người lập phiếu : <span class="text-gray-700">@Model.Employee.NameEmployee.Trim()</span></p>
+            <p class="w-100 @(Model.ModifiedDate!=null?"":"hide") ">Chỉnh sửa bởi  :<span class="text-gray-700">@(Model.ModifiedDate !=null ?String.Format("{0:dd/MM/yyyy}",Model.ModifiedDate):"")</span></p>
+            <p class=" @(Model.Modifiedby!=null?"":"hide")">Chỉnh sửa bởi  :<span class="text-gray-700">@(Model.Modifiedby ?? "")</span></p>
+
+        </td>
+
+        <td class="align-middle p-0 m-0 d-flex justify-content-center align-Models-center"
+            style="max-width: 250px; width: 250px; ">
+
+            <div class="d-flex flex-column align-Models-center justify-content-center text-center mt-5">
+                <div class="d-flex flex-row align-Models-center">
+
+                    <button class="btn btn-primary mx-1 d-flex align-Models-center justify-content-center btnDetail" data-id="@Model.ImportWarehouseId">
+                        <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                        <span class="button-text">Xem</span>
+                    </button>
+                    <button class="btn btn-warning mx-1 d-flex align-Models-center justify-content-center btnEdit
+                                    @(
+                                              (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? "" : "hide"
+                                      )"
+                            data-id="@Model.ImportWarehouseId">
+                        Cập nhật
+                    </button>
+
+                </div>
+            </div>
+
+        </td>
+
+
+    </tr>
+}
+<script src="~/Scripts/admin/Import_Index.js"></script>

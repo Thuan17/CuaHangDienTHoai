@@ -18,13 +18,14 @@
 
     <div class="card-body">
         @if (Model != null)
-        {<form id="editOrder" enctype="multipart/form-data">
+        {<form id="editImportWareHouse" enctype="multipart/form-data">
 
 
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.ImportWarehouseId)
                 @Html.HiddenFor(model => model.Code)
                 @Html.HiddenFor(model => model.CreatedDate)
+                @Html.HiddenFor(model => model.EmployeeId)
 
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -36,7 +37,7 @@
                                         <div class="input-data">
                                             <b class="">Danh sách nhà cung cấp</b>
                                             <div class="input-group align-items-center">
-                                                @Html.DropDownListFor(x => x.SupplierId, ViewBag.Supplier as SelectList, "-Chọn nhà cung cấp-", new { @class = "form-control", @placeholder = "Danh sách nhà cung cấp" })
+                                                @Html.DropDownListFor(x => x.SupplierId, ViewBag.Supplier as SelectList, "-Chọn nhà cung cấp-", new { @class = "form-control",@id= "supplierId", @placeholder = "Danh sách nhà cung cấp" })
                                                 @Html.ValidationMessageFor(x => x.SupplierId, null, new { @class = "text-danger" })
                                             </div>
                                         </div>
@@ -166,7 +167,7 @@
                                             </td>
 
                                             <td class="text-center">
-                                                <input type="number" min="1" max="150" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Order" style="border:none; border-bottom:1px solid gray"
+                                                <input type="number" min="1" max="150" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Import inputQuantity"  style="border:none; border-bottom:1px solid gray"
                                                        id="@item.ProductDetailId"
                                                        importwarehousedetailid="@item.ImportWarehouseDetailId"
                                                        importwarehouseid="@Model.ImportWarehouseId" />
@@ -187,7 +188,14 @@
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
                         <div class="col-10 d-grid gap-2 col-10 mx-auto">
-                            <button type="button" class="btn btn-success" id="saveOrder">Lưu đơn @Model.Code</button>
+                            <button type="button" class="btn btn-success d-flex align-items-center justify-content-center w-100 mt-3" data-id="@Model.ImportWarehouseId"
+                                    id="saveImportWareHouse">
+
+                                <img src="~/images/gif/Spinnerloading.gif" class="loading-image " style="width: 45px; height: 45px; display: none; " />
+
+                                <span class="button-text ">  Lưu thay đổi phiếu nhập @Model.Code</span>
+                   
+                            </button>
                         </div>
                     </div>
 
@@ -237,12 +245,12 @@
         @*var orderid = @Model.Id;*@
         var bg = $(".bg-sg");
         var popup = $("#popupBill");
-        function loadListItem(orderid) {
-            if (orderid != null) {
+        function loadListItem(importwarehouseid) {
+            if (importwarehouseid) {
               $.ajax({
-                  url: '/Admin/Order/Partail_ItemEditorder',
+                  url: '/Admin/ImportWareHouse/Partail_ItemEditImport',
                   type: 'GET',
-                  data: { orderid: orderid },
+                  data: { importwarehouseid: importwarehouseid },
                   success: function (response) {
                       $("#loadListItem").html(response);
 
@@ -254,31 +262,15 @@
               });
           }
         }
-
-        function updateTotalPrice(orderid) {
-            console.log('updateTotalPrice', orderid);
-            $.ajax({
-                url: '/admin/Order/GetTotalPrice',
-                type: 'GET',
-                data: { orderid: orderid },
-                success: function (response) {
-                    $('#loadPrice').html('   <b>Tổng tiền</b><span class="text-danger">' + response + '</span>');
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-
-                    createToast('error', 'fa-solid fa-circle-exclamation', 'Đã xảy ra lỗi khi cập nhật tổng tiền.');
-                }
-            });
-        }
+     
 
 
 
-        $(document).on('input', '.Update_Quantity_For_Edit_Order', function () {
+        $(document).on('input', '.Update_Quantity_For_Edit_Import', function () {
             var input = $(this);
             var productdetailId = input.attr('id');
-            var  orderdetailid = input.attr('orderdetailid');
-            var orderid = input.attr('orderid');
+            var importwarehousedetailid = input.attr('importwarehousedetailid');
+            var importwarehouseid = input.attr('importwarehouseid');
             var newQuantity = input.val().trim();
 
 
@@ -296,18 +288,18 @@
                 }
             } else {
                 $.ajax({
-                    url: '/Admin/Order/UpdateQuantityForEditNew',
+                    url: '/Admin/ImportWareHouse/UpdateQuantityForEditNew',
                     type: 'POST',
                     data: {
                         productdetailId: productdetailId,
-                        orderid: orderid,
-                         orderdetailid: orderdetailid,
+                        importwarehouseid: importwarehouseid,
+                        importwarehousedetailid: importwarehousedetailid,
                         newQuantity: newQuantity
                     },
                     success: function (response) {
                             if (response.success) {
 
-                                updateTotalPrice(orderid);
+                             
                             } else {
 
                                 input.val(input.data('original-quantity'));
@@ -326,17 +318,17 @@
 
 
 
-        function deleteItem(orderid,  orderdetailid) {
+        function deleteItem(importwarehouseid, importwarehousedetailid) {
 
                    $.ajax({
-                       url: '/Admin/Order/DeleteItem',
+                       url: '/Admin/ImportWareHouse/DeleteItem',
                        type: 'POST',
-                       data: { orderid: orderid,  orderdetailid:  orderdetailid },
+                       data: { importwarehouseid: importwarehouseid, importwarehousedetailid: importwarehousedetailid },
                        success: function (response) {
                            if (response.success) {
 
-                               loadListItem(orderid);
-                               updateTotalPrice(orderid);
+                               loadListItem(importwarehouseid);
+            
                                createToast('success', 'fa-solid fa-circle-check', 'Thành công', response.message)
                            } else {
 
@@ -352,95 +344,88 @@
         $(document).off('click', '.btnDeleteItemImport').on('click', '.btnDeleteItemImport', function () {
             var importwarehouseid = $(this).data('importwarehouseid');
             var importwarehousedetailid = $(this).data('importwarehousedetailid');
-            alert("btnDeleteItemImport");
-            console.log(' btnDeleteItemImport  importwarehouseid:', importwarehouseid);
-            console.log('importwarehousedetailid:', importwarehousedetailid);
-            //if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
-            //    deleteItem(orderid, orderdetailid)
-            //}
+            if (importwarehouseid, importwarehousedetailid) {
+                if (confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) {
+                    deleteItem(importwarehouseid, importwarehousedetailid)
+                }
+            }
+            
         });
        
 
-     function submitForm() {
+        function submitForm(id) {
             var isValid = true;
+            
+            var supplierId = $('#supplierId').val().trim();
 
-         var customerName = $('#CustomerName').val().trim();
-            var phone = $('#Phone').val().trim();
-         var location = $('#Location').val().trim();
-            var Email = $('#Email').val().trim();
-
-         if (!customerName) {
-             showError('CustomerName', 'Vui lòng điền tên.');
+            if (!supplierId || supplierId === "-Chọn nhà cung cấp-") {
+                showError('supplierId', "Vui lòng chọn nhà cung cấp.");
                 isValid = false;
             } else {
-             removeError('CustomerName');
+                removeError('supplierId');
             }
+            if (id) {
+                if (isValid) {
+                    var form = $('#editImportWareHouse')[0];
+                    var formData = new FormData(form);
 
-         const phoneNumberRegex = /^0\d{9}$/;
+                    $.ajax({
+                        url: '/Admin/ImportWareHouse/Edit',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response.success) {
+                                if (response.code === 1) {
+                                    updateRow(id);
+                                    popup.hide();
+                                    bg.hide();
 
-         if (!phone) {
-             showError('Phone', 'Số điện thoại không để trống.');
-                isValid = false;
-         } else if (phone.length >11) {
-             showError('Phone', 'Định dạng số điện thoại không đúng.');
-                isValid = false;
-         } else if (!phoneNumberRegex.test(phone)) {
-             showError('Phone', 'Định dạng số điện thoại không đúng.');
-                isValid = false;
-            } else {
-             removeError('Phone');
-            }
+                                    window.location.href = '/Admin/ImportWarehouse/DownloadInvoice?filePath=' + encodeURIComponent(response.filePath);
 
-            if (!Email) {
-                showError('Email', "Vui lòng điền Email.");
-                isValid = false;
-            } else if (Email.length > 300) {
-                showError('Email', "Email quá dài.");
-                isValid = false;
-            } else {
-                removeError('Email');
-            }
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Cập nhập phiếu nhập thành công',
+                                        text: 'Phiếu nhập đã có trên hệ thống'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            Partial_Product();
 
-         if (!location) {
-             showError('Location', 'Vui lòng điền địa chỉ.');
-                isValid = false;
-            } else {
-             removeError('Location');
-            }
+                                            $('#listProductItem').html('');
+                                            $('#loadCustomer').html('');
+                                            $button.prop('disabled', false);
+                                            $button.find('.loading-image').hide();
+                                            $button.find('.button-text').show();
 
-            if (isValid) {
-                var form = $('#editOrder')[0];
-                var formData = new FormData(form);
-
-                $.ajax({
-                    url: '/Admin/Order/Edit',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        if (response.success) {
-                            if (response.Code === 1) {
-                                updateRow(orderid);
+                                        }
+                                    });
+                                }
+                            }
+                            else {
+                                if (response.code == -2) {
+                                    createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
+                                } else if (response.code == -7) {
+                                    createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
+                                    createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', 'Đang chuyển trang ... ');
+                                    setTimeout(() => window.location.href = "/hethongnhanvien", 2500);
+                                }
+                                else {
+                                    createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
+                                }
 
                             }
-                        }
-                        else {
-                            if (response == -2) {
-                                createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
-                            } else {
-                                createToast('warning', 'fa-solid fa-circle-exclamation', 'Chú ý', response.message);
-                            }
 
+                        },
+                        error: function (xhr, status, error) {
+                            console.error("Lỗi AJAX:", xhr.responseText); createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
+                            createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
                         }
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Lỗi AJAX:", xhr.responseText); createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
-                        createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', response.message);
-                    }
-                });
+                    });
+                }
             }
+         
+
         }
 
         function removeError(elementId) {
@@ -458,19 +443,19 @@
             createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', errorMessage);
         }
 
-        function updateRow(orderId) {
+        function updateRow(importid) {
             $.ajax({
-                url: '/Admin/Order/GetUpdatedOrderRow',
+                url: '/Admin/ImportWareHouse/GetUpdatedOrderRow',
                 type: 'GET',
-                data: { OrderId: orderId },
+                data: { importid: importid },
                 success: function (res) {
-                    var mainRow = $('.tr_IndexBill_' + orderId);
+                    var mainRow = $('.tr_IndexImport_' + importid);
                     var nextRow = mainRow.next('tr'); // Xóa dòng phụ (nếu có)
-                    if (nextRow.length && !nextRow.hasClass('tr_IndexBill_' + orderId)) {
+                    if (nextRow.length && !nextRow.hasClass('tr_IndexImport_' + importid)) {
                         nextRow.remove();
                     }
                     mainRow.replaceWith(res);
-                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập đơn thành công');
+                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Cập nhập phiếu nhập thành công thành công');
 
                     setTimeout(function () {
                         bg.hide();
@@ -488,8 +473,31 @@
 
 
 
-        $('#saveOrder').click(function () {
-            submitForm();
+        $('#saveImportWareHouse').click(function () {
+            var id = $(this).data('id');
+          
+            if (id) {
+                var $button = $(this);
+                $button.prop('disabled', true);
+                $button.find('.loading-image').show();
+                $button.find('.button-text').hide();
+                if (confirm = "Bạn muốn lưu thay đổi trên ?") {
+                    submitForm(id);
+                } else {
+                    var $button = $(this);
+                    $button.prop('disabled', false);
+                    $button.find('.loading-image').hide();
+                    $button.find('.button-text').show();
+                    createToast('success', 'fa-solid fa-circle-check', 'Thành công', 'Hủy thay đổi');
+
+                }
+            } else {
+                var $button = $(this);
+                $button.prop('disabled', false);
+                $button.find('.loading-image').hide();
+                $button.find('.button-text').show();
+                createToast('error', 'fa-solid fa-circle-exclamation', 'Thất bại', 'Lỗi lấy mã phiếu');
+            }
         });
     });
 </script>

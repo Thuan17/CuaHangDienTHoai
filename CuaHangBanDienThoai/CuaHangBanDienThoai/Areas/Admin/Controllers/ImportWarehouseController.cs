@@ -242,52 +242,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         }
 
 
-        [AuthorizeFunction( "Quản lý", "Quản trị viên")]
-        public ActionResult Partail_Edit(int? id)
-        {
-            if (id != null && id > 0)
-            {
-                var import = db.ImportWarehouse.Find(id);
-                if (import != null)
-                {
-                    Admin_EditImport viewModel = new Admin_EditImport
-                    {
-                        ImportWarehouseId = import.ImportWarehouseId,
-                        CreatedBy = import.CreatedBy,
-                        CreatedDate = (DateTime)import.CreatedDate,
-                        ModifiedDate = import.ModifiedDate ?? DateTime.MinValue,
-                        Modifiedby = import.Modifiedby ?? "",
-                        EmployeeId = (int)import.EmployeeId,
-                        SupplierId = (int)import.SupplierId,
-                        Code = import.Code,
-                        supplier = db.Supplier.FirstOrDefault(x => x.SupplierId == import.SupplierId),
-                        employee = db.Employee.FirstOrDefault(x => x.EmployeeId == import.EmployeeId),
-                    };
-                    var ImportDetail = db.ImportWarehouseDetail
-                                 .Where(x => x.ImportWarehouseId == id)
-                                 .Select(detail => new Admin_EditImportItem
-                                 {
-                                     ImportWarehouseDetailId = detail.ImportWarehouseDetailId,
-                                     Quantity = (int)detail.QuanTity,
-                                     ImportWarehouseId = (int)detail.ImportWarehouseId,
-                                     ProductDetailId = (int)detail.ProductDetailId,
-                                     productDetail = db.ProductDetail.FirstOrDefault(x => x.ProductDetailId == detail.ProductDetailId),
-
-
-                                 }).ToList();
-                    viewModel.Items = ImportDetail;
-                    var supplier = db.Supplier.ToList();
-                    ViewBag.Supplier = new SelectList(supplier, "SupplierId", "Name", import.SupplierId);
-                    Session["Admin_DetailOrder_" + id] = viewModel;
-
-
-                    ViewBag.Count = viewModel.Items.Count;
-                    return PartialView(viewModel);
-                }
-            }
-
-            return PartialView();
-        }
+ 
 
 
         public ActionResult DownloadInvoice(string filePath)
@@ -602,6 +557,314 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng" });
             }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //start sua phieu nhap done
+        [AuthorizeFunction("Quản lý", "Quản trị viên")]
+        public ActionResult Partail_Edit(int? id)
+        {
+            if (id != null && id > 0)
+            {
+                var import = db.ImportWarehouse.Find(id);
+                if (import != null)
+                {
+                    Admin_EditImport viewModel = new Admin_EditImport
+                    {
+                        ImportWarehouseId = import.ImportWarehouseId,
+                        CreatedBy = import.CreatedBy,
+                        CreatedDate = (DateTime)import.CreatedDate,
+                        ModifiedDate = import.ModifiedDate ?? DateTime.MinValue,
+                        Modifiedby = import.Modifiedby ?? "",
+                        EmployeeId = (int)import.EmployeeId,
+                        SupplierId = (int)import.SupplierId,
+                        Code = import.Code,
+                        supplier = db.Supplier.FirstOrDefault(x => x.SupplierId == import.SupplierId),
+                        employee = db.Employee.FirstOrDefault(x => x.EmployeeId == import.EmployeeId),
+                    };
+                    var ImportDetail = db.ImportWarehouseDetail
+                                 .Where(x => x.ImportWarehouseId == id)
+                                 .Select(detail => new Admin_EditImportItem
+                                 {
+                                     ImportWarehouseDetailId = detail.ImportWarehouseDetailId,
+                                     Quantity = (int)detail.QuanTity,
+                                     ImportWarehouseId = (int)detail.ImportWarehouseId,
+                                     ProductDetailId = (int)detail.ProductDetailId,
+                                     productDetail = db.ProductDetail.FirstOrDefault(x => x.ProductDetailId == detail.ProductDetailId),
+
+
+                                 }).ToList();
+                    viewModel.Items = ImportDetail;
+                    var supplier = db.Supplier.ToList();
+                    ViewBag.Supplier = new SelectList(supplier, "SupplierId", "Name", import.SupplierId);
+                    Session["Admin_ImportWareHouse_" + id] = viewModel;
+
+
+                    ViewBag.Count = viewModel.Items.Count;
+                    return PartialView(viewModel);
+                }
+            }
+
+            return PartialView();
+        }
+        [HttpPost]
+        public ActionResult DeleteItem(int importwarehousedetailid, int importwarehouseid)
+        {
+            try
+            {
+           
+                if (Session["Admin_ImportWareHouse_" + importwarehouseid] == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy hóa đơn trong session" });
+                }
+                    Admin_EditImport viewModel = (Admin_EditImport)Session["Admin_ImportWareHouse_" + importwarehouseid];
+                    if (viewModel == null)
+                    {
+                        return Json(new { success = false, message = "Không tìm thấy hóa đơn trong session" });
+                    }
+                    if (viewModel.Items.Count > 1)
+                    {
+                        viewModel.Items.RemoveAll(x => x.ImportWarehouseDetailId == importwarehousedetailid);
+
+                        Session["Admin_ImportWareHouse_" + importwarehouseid] = viewModel;
+
+                        return Json(new { success = true, code = 1, message = "Xóa thành công" });
+                    }
+                    else { return Json(new { success = false, message = "Bắt buộc 1 sản phẩm" }); }
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, message = "Đã xảy ra lỗi khi xóa sản phẩm: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateQuantityForEditNew(int productdetailId, int importwarehouseid, int importwarehousedetailid, int newQuantity)
+        {
+            try
+            {
+
+                if (Session["user"] == null)
+                {
+                    return RedirectToAction("DangNhap", "Account");
+                }
+                if (Session["Admin_ImportWareHouse_" + importwarehouseid] == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy sản phẩm để cập nhật số lượng." });
+
+                }
+               Admin_EditImport viewModel = (Admin_EditImport)Session["Admin_ImportWareHouse_" + importwarehouseid];
+
+                if (viewModel == null)
+                {
+                    return Json(new { success = false, message = "Không tìm thấy sản phẩm để cập nhật số lượng." });
+                }
+                if (newQuantity < 5 || newQuantity > 150 )
+                {
+                    return Json(new { success = false, message = "Số lượng không hợp lý." });
+                }
+                var itemToUpdate = viewModel.Items.FirstOrDefault(item =>
+                    item.ProductDetailId == productdetailId &&
+                    item.ImportWarehouseId == importwarehouseid && item.ImportWarehouseDetailId == importwarehousedetailid);
+
+                if (itemToUpdate != null)
+                {
+                    int oldQuantity = itemToUpdate.Quantity;
+                    itemToUpdate.Quantity = newQuantity;
+                    Session["Admin_ImportWareHouse_" + importwarehouseid] = viewModel;
+                    return Json(new { success = true });
+
+                }
+                return Json(new { success = false, message = "Không tìm thấy sản phẩm để cập nhật số lượng." });
+            }
+            catch (Exception ex)
+            {
+
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(Admin_EditImport model)
+        {
+          
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, code = -1, message = "Dữ liệu không hợp lệ." });
+            }
+
+            using (var dbContextTransaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                 
+                    if (Session["user"] == null)
+                    {
+                        return RedirectToAction("DangNhap", "Account");
+                    }
+
+                    AccountEmployee nvSession = (AccountEmployee)Session["user"];
+                    var checkStaff = db.Employee.SingleOrDefault(row => row.EmployeeId == nvSession.EmployeeId);
+                    if (checkStaff == null)
+                    {
+                        return Json(new { Success = false, Code = -7, msg = "Phiên đăng nhập hết hạn" });
+                    }
+
+
+                  
+                    var importWarehouse =await db.ImportWarehouse.FindAsync(model.ImportWarehouseId);
+                    if (importWarehouse == null)
+                    {
+                        return Json(new { success = false, code = -2, message = "Không tìm thấy hóa đơn nhập kho." });
+                    }
+
+                    // Cập nhật thông tin hóa đơn nhập kho
+                    importWarehouse.ImportWarehouseId = model.ImportWarehouseId;
+                    importWarehouse.SupplierId = model.SupplierId;
+                    importWarehouse.CreatedBy = model.CreatedBy;
+                    importWarehouse.CreatedDate = model.CreatedDate;
+                    importWarehouse.EmployeeId = model.EmployeeId;
+                    importWarehouse.ModifiedDate = DateTime.Now;
+                    importWarehouse.Modifiedby = checkStaff.NameEmployee?.Trim();
+                    importWarehouse.Code = model.Code.Trim();
+
+                    db.Entry(importWarehouse).State = EntityState.Modified;
+
+                    // Lưu thông tin hóa đơn nhập kho vào database
+                  await  db.SaveChangesAsync();
+
+                    // Xử lý chi tiết nhập kho
+                    var sessionKey = "Admin_ImportWareHouse_" + model.ImportWarehouseId;
+                    var viewModel = Session[sessionKey] as Admin_EditImport;
+                    if (viewModel == null || viewModel.Items.Count < 1)
+                    {
+                        return Json(new { success = false, code = -2, message = "Hóa đơn phải có ít nhất 1 sản phẩm." });
+                    }
+
+                    
+                    var existingDetails =await db.ImportWarehouseDetail.Where(d => d.ImportWarehouseId == importWarehouse.ImportWarehouseId).ToListAsync();
+
+      
+                    foreach (var detail in existingDetails.ToList())
+                    {
+                       
+                        var viewModelDetail = viewModel.Items.FirstOrDefault(item => item.ImportWarehouseDetailId == detail.ImportWarehouseDetailId);
+                        if (viewModelDetail != null)
+                        {
+                          
+                            if (detail.QuanTity != viewModelDetail.Quantity)
+                            {
+                         
+                                int oldQuantity = (int)detail.QuanTity; 
+                                int newQuantity = viewModelDetail.Quantity;
+                                int quantityChange = newQuantity - oldQuantity; 
+
+                              
+                                detail.QuanTity = newQuantity;
+                                db.Entry(detail).State = EntityState.Modified;
+
+                               
+                                if (detail.ProductDetailId == null)
+                                {
+                                    return Json(new { success = false, code = -2, message = "Chi tiết nhập kho không có ProductDetailId." });
+                                }
+                                var warehouseDetail = await db.ProductDetail.FirstOrDefaultAsync(w => w.ProductDetailId == detail.ProductDetailId);
+                                if (warehouseDetail == null)
+                                {
+                                 return Json(new { success = false, code = -2, message = $"Không tìm thấy sản phẩm  = {detail.ProductDetailId} trong kho." });
+                                }
+                                warehouseDetail.Quantity += quantityChange; // Cập nhật số lượng tồn kho
+                                db.Entry(warehouseDetail).State = EntityState.Modified;
+                              
+                            }
+                        }
+                        else
+                        {
+                           
+                            if (detail.ProductDetailId == null)
+                            {
+                                return Json(new { success = false, code = -2, message = "Chi tiết nhập kho không có ProductDetailId." });
+                            }
+                            var warehouseDetail = await db.ProductDetail.FirstOrDefaultAsync(w => w.ProductDetailId == detail.ProductDetailId);
+                            if (warehouseDetail == null)
+                            {
+                                return Json(new { success = false, code = -2, message = $"Không tìm thấy sản phẩm với ProductDetailId = {detail.ProductDetailId} trong kho." });
+                            }
+                                 warehouseDetail.Quantity -= detail.QuanTity; // Giảm số lượng tồn kho
+                                db.Entry(warehouseDetail).State = EntityState.Modified;
+                                db.ImportWarehouseDetail.Remove(detail);
+                            
+                             
+                        }
+                    }
+
+               
+                   await db.SaveChangesAsync();
+                    dbContextTransaction.Commit();
+
+
+                    string invoicePath = ExportInvoice(model.ImportWarehouseId);
+                    if (!string.IsNullOrEmpty(invoicePath))
+                    {
+                        return Json(new { success = true, code = 1, filePath = invoicePath });
+                    }
+                    else
+                    {
+                        return Json(new { success = false, code = -2, message = "Không thể xuất hóa đơn." });
+                    }
+                }
+                catch (Exception ex)
+                {
+          
+                    dbContextTransaction.Rollback();
+                    return Json(new { success = false, code = -99, message = $"Lỗi ngoại lệ: {ex.Message}" });
+                }
+            }
+        }
+        public ActionResult GetUpdatedOrderRow(int importid)
+        {
+            bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+            bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+            ViewBag.IsAdmin = isAdmin;
+            ViewBag.IsManage = isManage;
+            var import = db.ImportWarehouse.FirstOrDefault(b => b.ImportWarehouseId == importid);
+            if (import != null)
+            {
+                return PartialView(import);
+            }
+            return HttpNotFound();
+        }
+        public ActionResult Partail_ItemEditImport(int importwarehouseid)
+        {
+            Admin_EditImport viewModel = (Admin_EditImport)Session["Admin_ImportWareHouse_" + importwarehouseid];
+
+            if (viewModel != null && viewModel.Items.Any())
+            {
+                int count = viewModel.Items.Count;
+                ViewBag.Count = count;
+                return PartialView(viewModel);
+            }
+            return PartialView();
+        }
+
+        //End sua phieu nhap
+
+
+
+
 
 
         [HttpPost]

@@ -220,7 +220,7 @@
         event.preventDefault();
         var supplierid = $(this).data('supplierid');
         if (supplierid) {
-            var $button = $(this); // Gán nút vào biến để dùng trong các callback
+            var $button = $(this); 
             $button.prop('disabled', true);
             $button.find('.loading-image').show();
             $button.find('.button-text').hide();

@@ -1,88 +1,91 @@
 ﻿@model CuaHangBanDienThoai.Models.Admin_EditOrder
 @using CuaHangBanDienThoai.Common
-<b class="fs-6 mb-3 text-left">Danh sách sản phẩm <span class="text-danger">@Model.Items.Count()</span> </b>
-<div class="table-content table-responsive order-table ">
-    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
-        <thead>
-            <tr class="">
-                <th class="td__img ">
-                    Hình
-                </th>
-                <th class="td__product">
-                    Sản phẩm
-                </th>
-
-                <th class="td__quantity-price">
-                    Giá/Số lượng
-                </th>
-
-            </tr>
-        </thead>
-    </table>
-</div>
-<div style="max-height: 320px; overflow-y: auto;">
-    <table class="table table-hover" style="table-layout: fixed; width: 100%;">
-        <tbody>
-            @foreach (var item in Model.Items)
-            {
-                string strImg = "";
-                var image = item.productDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault);
-                if (image != null)
-                {
-                    strImg = image.Image;
-                }
-                else
-                {
-
-                    strImg = "~/Content/css/admin/login/images/logoWeb.png";
-                }
-                var Name = item.productDetail.Products.Title.Trim() + " " + item.productDetail.Ram.Trim() + "/" + item.productDetail.Capacity.Trim();
+@if (Model != null)
+{
+    <b class="fs-6 mb-3 text-left">Danh sách sản phẩm <span class="text-danger">@Model.Items.Count()</span> </b>
+    <div class="table-content table-responsive order-table ">
+        <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+            <thead>
                 <tr class="">
-                    <td class="td__imgItem p-0">
-                        <a href="/san-pham/@item.productDetail.Alias" target="_blank">
+                    <th class="td__img ">
+                        Hình
+                    </th>
+                    <th class="td__product">
+                        Sản phẩm
+                    </th>
 
-
-                            <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
-                        </a>
-                        <button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemOrder" data-orderId="@Model.OrderId" data-orderdetailId="@item.OrderDetailId">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
-                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                            </svg>
-                            Xoá
-                        </button>
-                    </td>
-                    <td calss="td__productItem text-left">
-                        <a href="/san-pham/@item.productDetail.Alias" target="_blank" class="pro-name">
-
-                            @Name
-                            <div class="cart__meta-text">
-                                <div class="Describe pt-0">
-                                    <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
-                                    <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
-                                    <p class="text-dark mb-0"><label>Hãng</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
-
-                                </div>
-                            </div>
-                        </a>
-                    </td>
-
-                    <td class="td__quantity-price__item">
-                        @Common.FormatNumber(item.Price) x<input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Order"
-                                                                 id="@item.ProductDetailId"
-                                                                 OrderDetailId="@item.OrderDetailId"
-                                                                 OrderId="@Model.OrderId" />
-
-
-                        <br />
-
-                    </td>
+                    <th class="td__quantity-price">
+                        Giá/Số lượng
+                    </th>
 
                 </tr>
+            </thead>
+        </table>
+    </div>
+    <div style="max-height: 320px; overflow-y: auto;">
+        <table class="table table-hover" style="table-layout: fixed; width: 100%;">
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    string strImg = "";
+                    var image = item.productDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault);
+                    if (image != null)
+                    {
+                        strImg = image.Image;
+                    }
+                    else
+                    {
+
+                        strImg = "~/Content/css/admin/login/images/logoWeb.png";
+                    }
+                    var Name = item.productDetail.Products.Title.Trim() + " " + item.productDetail.Ram.Trim() + "/" + item.productDetail.Capacity.Trim();
+                    <tr class="">
+                        <td class="td__imgItem p-0">
+                            <a href="/san-pham/@item.productDetail.Alias" target="_blank">
 
 
-            }
-        </tbody>
+                                <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
+                            </a>
+                            <button type="button" class="d-flex flex-row text-danger btn border-0 align-items-center btnDeleteItemOrder" data-orderId="@Model.OrderId" data-orderdetailId="@item.OrderDetailId">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                                Xoá
+                            </button>
+                        </td>
+                        <td calss="td__productItem text-left">
+                            <a href="/san-pham/@item.productDetail.Alias" target="_blank" class="pro-name">
 
-    </table>
-</div>
+                                @Name
+                                <div class="cart__meta-text">
+                                    <div class="Describe pt-0">
+                                        <p class="text-dark mb-0"><label>Màu sắc:</label> @item.productDetail.Color.Trim()</p>
+                                        <p class="text-dark mb-0"><label>Danh mục:</label> @item.productDetail.Products.ProductCategory.Title.Trim()</p>
+                                        <p class="text-dark mb-0"><label>Hãng</label>  @item.productDetail.Products.ProductCompany.Title.Trim()</p>
+
+                                    </div>
+                                </div>
+                            </a>
+                        </td>
+
+                        <td class="td__quantity-price__item">
+                            @Common.FormatNumber(item.Price) x<input type="number" min="1" max="10" step="1" value="@item.Quantity" class="Update_Quantity_For_Edit_Order"
+                                                                     id="@item.ProductDetailId"
+                                                                     OrderDetailId="@item.OrderDetailId"
+                                                                     OrderId="@Model.OrderId" />
+
+
+                            <br />
+
+                        </td>
+
+                    </tr>
+
+
+                }
+            </tbody>
+
+        </table>
+    </div>
+}

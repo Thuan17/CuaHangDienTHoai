@@ -5766,6 +5766,8 @@
     <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_SupplierbyId.cshtml" />
     <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_Detail.cshtml" />
     <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_ItemEditImport.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\GetUpdatedOrderRow.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -5945,8 +5947,8 @@
     <Content Include="Views\Review\Partail_ReviewByProductId.cshtml" />
     <Content Include="Views\Review\_ReviewByProductId.cshtml" />
     <Content Include="Views\Review\Partial_EditReview.cshtml" />
-    <Content Include="Views\Voucher\Index.cshtml" />
-    <Content Include="Views\Voucher\Partial_VoucherDetail.cshtml" />
+    <Content Include="Voucher\Index.cshtml" />
+    <Content Include="Voucher\Partial_VoucherDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
