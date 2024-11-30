@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Services.Description;
 using CuaHangBanDienThoai.Models;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -115,6 +116,40 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             }
             return PartialView();
         }
+        public ActionResult Partail_ImportDetai(int? id)
+        {
+            if(id!=null&& id > 0)
+            {
+                var querry = from imdetail in db.ImportWarehouseDetail
+                             join im in db.ImportWarehouse on imdetail.ImportWarehouseId equals im.ImportWarehouseId into imJson
+                             from im in imJson.DefaultIfEmpty()
+                             join sup in db.Supplier on im.SupplierId equals sup.SupplierId into supJson
+                             from sup in supJson.DefaultIfEmpty()
+                             select imdetail;
+                if(querry != null && querry.Any())
+                {
+                    var imoprtDetail=querry.ToList();
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                    int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.IsMange = isManage;
+                    var count = imoprtDetail.Count();
+                    ViewBag.Count = count;
+
+                    return PartialView(imoprtDetail);
+                }
+            }
+            return PartialView();
+        }
+
+
+
+
+
+
+
+
         [AuthorizeFunction("Quản lý", "Quản trị viên")]
         public ActionResult Edit(int? id)
         {

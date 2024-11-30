@@ -1,0 +1,80 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.ImportWarehouse>
+<div class="card-body p-0 m-0 w-100" id="loaddata">
+    <div class="table-responsive">
+        <table class="table align-items-center mb-0">
+            <thead>
+                <tr class="text-gray-100">
+
+                    <th class="text-uppercase  t text-dark text-xxs font-weight-bolder opacity-7 ">Thông tin phiếu nhập</th>
+
+
+                    <th class="text-uppercase text-dark text-xxs font-weight-bolder opacity-7 ps-2" style="width: 100px;"></th>
+
+
+
+                    <th class="text-secondary opacity-7" style="max-width:150px;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int i = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr class="row_content tr_IndexImport_@item.ImportWarehouseId" id="tr_IndexImport_@item.ImportWarehouseId">
+
+                            <td class="align-middle">
+                                <p class="w-100">Mã phiếu : <span class="text-gray-700">@item.Code.Trim()</span></p>
+                                <p class="w-100">Nhà cung cấp : <span class="text-gray-700">@item.Supplier.Name.Trim()</span></p>
+                                <p class="w-100">Ngày lập phiếu : <span class="text-gray-700">@String.Format("{0:dd/MM/yyyy}", item.CreatedDate)</span></p>
+                                <p class="w-100">Người lập phiếu : <span class="text-gray-700">@item.Employee.NameEmployee.Trim()</span></p>
+                                <p class="w-100 @(item.ModifiedDate!=null?"":"hide") ">Chỉnh sửa bởi  :<span class="text-gray-700">@(item.ModifiedDate !=null ?String.Format("{0:dd/MM/yyyy}",item.ModifiedDate):"")</span></p>
+                                <p class=" @(item.Modifiedby!=null?"":"hide")">Chỉnh sửa bởi  :<span class="text-gray-700">@(item.Modifiedby ?? "")</span></p>
+
+                            </td>
+
+                            <td class="align-middle p-0 m-0 d-flex justify-content-center align-items-center"
+                                style="max-width: 250px; width: 250px; ">
+
+                                <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
+                                    <div class="d-flex flex-row align-items-center">
+
+                                        <button class="btn btn-primary mx-1 d-flex align-items-center justify-content-center btnDetail" data-id="@item.ImportWarehouseId">
+                                            <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                                            <span class="button-text">Xem</span>
+                                        </button>
+                                        <button class="btn btn-warning mx-1 d-flex align-items-center justify-content-center btnEdit
+                                              @(((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)||(ViewBag.IsMange!=null&&(bool)ViewBag.IsMange))?"":"hide")"
+                                                data-id="@item.ImportWarehouseId">
+                                            Cập nhật
+                                        </button>
+                                        <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnDelete" data-id="@item.ImportWarehouseId">
+                                            <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                                            <span class="button-text">Xoá</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </td>
+
+
+                        </tr>
+                        i++;
+                    }
+
+                }
+                else
+                {
+
+                    <tr>
+                        <td colspan="5" class="text-center text-danger">
+                            Không có dữ liệu về <span>@(ViewBag.Content??"")</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/Scripts/admin/Import_Index.js"></script>

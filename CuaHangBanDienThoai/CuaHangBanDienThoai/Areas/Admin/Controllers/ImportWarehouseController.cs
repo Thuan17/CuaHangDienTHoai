@@ -28,6 +28,8 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2016.Drawing.Command;
+using System.Web.Services.Description;
 namespace CuaHangBanDienThoai.Areas.Admin.Controllers
 {
     public class ImportWarehouseController : Controller
@@ -241,8 +243,53 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             return PartialView();
         }
 
+        public ActionResult Detail(string code)
+        {
+            if (code != null )
+            {
+                var import = db.ImportWarehouse.FirstOrDefault(x=>x.Code==code.Trim());
+                if (import != null)
+                {
 
- 
+                    ViewBag.NameSupplier=import.Supplier.Name.Trim();   
+                    ViewBag.Code=import.Code;   
+                    Admin_EditImport viewModel = new Admin_EditImport
+                    {
+                        ImportWarehouseId = import.ImportWarehouseId,
+                        CreatedBy = import.CreatedBy,
+                        CreatedDate = (DateTime)import.CreatedDate,
+                        ModifiedDate = import.ModifiedDate ?? DateTime.MinValue,
+                        Modifiedby = import.Modifiedby ?? "",
+                        EmployeeId = (int)import.EmployeeId,
+                        SupplierId = (int)import.SupplierId,
+                        Code = import.Code,
+                        supplier = db.Supplier.FirstOrDefault(x => x.SupplierId == import.SupplierId),
+                        employee = db.Employee.FirstOrDefault(x => x.EmployeeId == import.EmployeeId),
+                    };
+                    var ImportDetail = db.ImportWarehouseDetail
+                                 .Where(x => x.ImportWarehouseId == import.ImportWarehouseId)
+                                 .Select(detail => new Admin_EditImportItem
+                                 {
+                                     ImportWarehouseDetailId = detail.ImportWarehouseDetailId,
+                                     Quantity = (int)detail.QuanTity,
+                                     ImportWarehouseId = (int)detail.ImportWarehouseId,
+                                     ProductDetailId = (int)detail.ProductDetailId,
+                                     productDetail = db.ProductDetail.FirstOrDefault(x => x.ProductDetailId == detail.ProductDetailId),
+
+
+                                 }).ToList();
+                    viewModel.Items = ImportDetail;
+                    Session["Admin_DetailOrder_" + import.ImportWarehouseId] = viewModel;
+
+
+                    ViewBag.Count = viewModel.Items.Count;
+                    return View(viewModel);
+                }
+            }
+
+            return View();
+        }
+
 
 
         public ActionResult DownloadInvoice(string filePath)
@@ -861,9 +908,80 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
         }
 
         //End sua phieu nhap
+        public ActionResult SuggestImport(string search)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
 
+                ViewBag.Content = search;
+                var query = from im in db.ImportWarehouse
+                            join sup in db.Supplier on im.SupplierId equals sup.SupplierId into pcJoin
+                            from sup in pcJoin.DefaultIfEmpty()
+                            join emp in db.Employee on im.EmployeeId equals emp.EmployeeId into empJoin
+                            from emp in empJoin.DefaultIfEmpty()
+                            where im.Code.ToLower().Trim().Contains(search.Trim().ToLower()) || emp.NameEmployee.ToLower().Trim().Contains(search.Trim()) ||
+                                sup.Name.ToLower().Trim().Contains(search.Trim())
+                      select im;
+                var import = query.OrderByDescending(x => x.ImportWarehouseId).ToList();
+                if (import!=null&&import.Any())
+                {
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                    int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.IsMange = isManage;
+                    var count = import.Count();
+                    ViewBag.Count = count;
+                   
+                    return PartialView(import);
+                }
+                else
+                {
+                    return PartialView();
+                }
+            }
+            else
+            {
+                return PartialView();
+            }
+        }
 
+        public ActionResult GetImportByDate(DateTime ngaynhap)
+        {
+            try
+            {
+                DateTime selectedDate = ngaynhap;
 
+                DateTime startDate = selectedDate.Date;
+                DateTime endDate = startDate.AddDays(1);
+
+                var orders = db.ImportWarehouse
+                    .Where(o => o.CreatedDate >= startDate && o.CreatedDate < endDate)
+                    .ToList();
+
+                if (orders != null && orders.Count > 0)
+                {
+                    bool isAdmin = Session["AdminRole"] != null && Session["AdminRole"].ToString().Equals("Quản trị viên");
+                    bool isManage = Session["ManageRole"] != null && Session["ManageRole"].ToString().Equals("Quản lý");
+                    int? employeeId = ((AccountEmployee)Session["user"])?.EmployeeId;
+                    ViewBag.IsAdmin = isAdmin;
+                    ViewBag.IsMange = isManage;
+                    ViewBag.Count = orders.Count;
+                    ViewBag.Date = ngaynhap;
+                    ViewBag.Content = ngaynhap.ToString("dd/MM/yyyy");
+                    return PartialView(orders); 
+                }
+                else
+                {
+                    return PartialView();  // Nếu không có đơn hàng nào
+                }
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu có
+                return Json(new { Success = false, Code = -99, msg = "Có lỗi xảy ra!" });
+            }
+        }
 
 
 

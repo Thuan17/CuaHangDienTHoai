@@ -5768,6 +5768,10 @@
     <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ImportWarehouse\Partail_ItemEditImport.cshtml" />
     <Content Include="Areas\Admin\Views\ImportWarehouse\GetUpdatedOrderRow.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\GetImportByDate.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\SuggestImport.cshtml" />
+    <Content Include="Areas\Admin\Views\Supplier\Partail_ImportDetai.cshtml" />
+    <Content Include="Areas\Admin\Views\ImportWarehouse\Detail.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

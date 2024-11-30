@@ -48,7 +48,9 @@
     .btnquantity:hover {
         background-color: #ebebeb; /* Hiệu ứng hover */
     }
-
+    .hide{
+        display :none;
+    }
 .inputQuantity {
     width: 50px; /* Cân đối với container */
     height: 100%;

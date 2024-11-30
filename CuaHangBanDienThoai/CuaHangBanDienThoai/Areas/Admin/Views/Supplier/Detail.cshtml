@@ -16,7 +16,8 @@
    
     <div class="card-body">
         @if (Model != null)
-        {<div class="row">
+        {
+            <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 col-lg-12 ">
                     <div class="shipping-details mb-4 mb-sm-0 clearfix">
                     
@@ -51,6 +52,19 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-2  p-0 ">
+                <div class="col-12 p-0 card">
+                    <div class="card-header">
+                        <h4 class="text-center">Danh sách phiếu nhập</h4>
+                    </div>
+                    <div class="card-body p-0 m-0 w-100" style="table-layout: fixed; width: 100%; max-height:250px; overflow-y:auto">
+                        @Html.Action("Partail_ImportDetai", "Supplier", new { id = Model.SupplierId })
+                    </div>
+                  
+                </div>
+            </div>
+
+
 
         }
     </div>

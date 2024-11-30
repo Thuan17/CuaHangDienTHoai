@@ -7,6 +7,11 @@
 }
 
 <link href="~/Content/css/admin/SellerIndex.css" rel="stylesheet" />
+<style>
+    .hide {
+        display: none !important;
+    }
+</style>
 <div class="bg-sg" style="display: none ">
 
 </div>
@@ -50,50 +55,46 @@
                     </h6>
                 </div>
 
-                <div class="col-10 w-100 d-flex justify-content-end align-items-center">
-                    <div class="p-0 m-0 w-100 d-flex justify-content-end align-items-center">
-
-                        <div class="form-group app-label d-flex m-0 pr-2  ">
-
-                            <div class="input-group me-2 align-items-center grProduct" style="display:none">
-                                <b class="pr-2">Danh sách phiếu nhập</b>
-                                <select id="productChose" class="form-select bg-light border-0 p-2">
-                                </select>
-                                <div class="input-group-append">
-                                    <button class="btn bg-light clearInputProdetail" type="button" id="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-                                            <path d="M1 1h14a1 1 0 0 1 1 1v1a1 1 0 0 1-.293.707L9 7v6a1 1 0 0 1-.553.894l-2 1a1 1 0 0 1-.894 0l-2-1A1 1 0 0 1 7 13V7L2.293 3.707A1 1 0 0 1 2 3V2a1 1 0 0 1 1-1z" />
-                                        </svg>
-                                    </button>
-                                </div>
+                <div class="col-10 d-flex justify-content-end align-items-center  ">
+                    <form class="form-inline me-2 pr-1 pl-1">
+                        <div class="input-group">
+                            <input type="datetime-local" class="form-control bg-light border-0 small" placeholder="Tìm phiếu nhâp..."
+                                   aria-label="Search" aria-describedby="basic-addon2" id="DateImport">
+                            <div class="input-group-append">
+                                <button class="btn bg-light" type="button" id="clearInputBill">
+                                    <svg xmlns="http://www.w3.org/2000/svg" color="red" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </button>
                             </div>
-
                         </div>
-                        <form class="d-flex align-items-center pr-2">
-                            <div class="input-group me-2 align-items-center">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm phiếu nhập"
-                                       aria-label="search" aria-describedby="basic-addon2" id="searchPro" name="search">
-                                <div class="input-group-append">
-                                    <button class="btn bg-light clearInputProdetail" type="button" id="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
-                                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                                        </svg>
-                                    </button>
-                                </div>
+                    </form>
+
+                    <form class="form-inline me-2 pr-1 pl-1">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" id="searchImport" placeholder="Tìm phiếu nhập..."
+                                   aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn bg-light" type="button" id="clearInputBill">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" color="red" height="20" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                                        <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                                    </svg>
+                                </button>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-primary " type="button" id="searchbtn" style="border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important">
+                                <button class="btn btn-primary" type="button">
                                     <i class="fas fa-search fa-sm"></i>
                                 </button>
                             </div>
-                        </form>
+                        </div>
+                    </form>
 
-                        <a href="/lap-phieunhap" class="btn btn-success">
-                            Lập phiếu
-                        </a>
-                    </div>
-
+                    <a href="/lap-phieunhap" class="btn btn-success ms-2">
+                        Lập phiếu
+                    </a>
                 </div>
+
+
 
             </div>
 
@@ -104,7 +105,7 @@
                 <table class="table align-items-center mb-0">
                     <thead>
                         <tr class="text-gray-100">
-                         
+
                             <th class="text-uppercase  t text-dark text-xxs font-weight-bolder opacity-7 ">Thông tin phiếu nhập</th>
 
 
@@ -121,8 +122,8 @@
                             int i = 1;
                             foreach (var item in Model)
                             {
-                                <tr  class="row_content tr_IndexImport_@item.ImportWarehouseId" id="tr_IndexImport_@item.ImportWarehouseId">
-                                  
+                                <tr class="row_content tr_IndexImport_@item.ImportWarehouseId" id="tr_IndexImport_@item.ImportWarehouseId">
+
                                     <td class="align-middle">
                                         <p class="w-100">Mã phiếu : <span class="text-gray-700">@item.Code.Trim()</span></p>
                                         <p class="w-100">Nhà cung cấp : <span class="text-gray-700">@item.Supplier.Name.Trim()</span></p>
@@ -139,18 +140,19 @@
                                         <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
                                             <div class="d-flex flex-row align-items-center">
 
-                                                <button class="btn btn-primary mx-1 d-flex align-items-center justify-content-center btnDetail" data-id="@item.ImportWarehouseId">
+                                                <a href="/chi-tiet-phieunhap/@item.Code.Trim()" class="btn btn-primary mx-1 d-flex align-items-center justify-content-center @*btnDetail*@" data-id="@item.ImportWarehouseId">
                                                     <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
                                                     <span class="button-text">Xem</span>
-                                                </button>
+                                                </a>
                                                 <button class="btn btn-warning mx-1 d-flex align-items-center justify-content-center btnEdit
-                                                           @(
-                                                                     (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? "" : "hide"
-                                                             )"
+                                                        @(((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)||(ViewBag.IsMange!=null&&(bool)ViewBag.IsMange))?"":"hide")"
                                                         data-id="@item.ImportWarehouseId">
                                                     Cập nhật
                                                 </button>
-
+                                                <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnDelete" data-id="@item.ImportWarehouseId">
+                                                    <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
+                                                    <span class="button-text">Xoá</span>
+                                                </button>
                                             </div>
                                         </div>
 
@@ -224,6 +226,7 @@
     </div>
 </div>
 @section scripts{
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="~/Scripts/admin/Import_Index.js"></script>
 
 }

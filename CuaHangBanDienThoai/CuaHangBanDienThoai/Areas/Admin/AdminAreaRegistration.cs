@@ -15,6 +15,12 @@ namespace CuaHangBanDienThoai.Areas.Admin
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
+name: "ImportWareHouse_Detail",
+url: "chi-tiet-phieunhap/{code}",
+defaults: new { controller = "ImportWarehouse", action = "Detail", alias = UrlParameter.Optional }
+
+);
+            context.MapRoute(
 name: "ImportWareHouse_Import",
 url: "lap-phieunhap",
 defaults: new { controller = "ImportWarehouse", action = "Import", alias = UrlParameter.Optional }

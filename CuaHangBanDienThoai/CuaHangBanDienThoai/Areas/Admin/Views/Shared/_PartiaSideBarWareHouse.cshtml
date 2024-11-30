@@ -1,8 +1,23 @@
 ﻿<!-- Sản phẩm -->
 <div class="sidebar-heading">
-    Quán lý
+Trang quản lý kho
 </div>
 
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseImportWareHouse"
+       aria-expanded="true" aria-controls="collapseImportWareHouse">
+        <i class="bi bi-calendar3-week-fill"></i>
+        <span>Nhập kho</span>
+    </a>
+    <div id="collapseImportWareHouse" class="collapse" aria-labelledby="headingImportWareHouse"
+         data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header"> Quản lý phiếu nhập</h6>
+            <a class="collapse-item" href="/danh-sach-phieunhap">Danh sách phiếu nhập</a>
+            <a class="collapse-item" href="/lap-phieunhap">Lập phiếu nhập</a>
+        </div>
+    </div>
+</li>
 <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
        aria-expanded="true" aria-controls="collapseTwo">
@@ -15,13 +30,15 @@
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Quản lý đơn hàng:</h6>
-            <a class="collapse-item" href="/quan-ly-don-hang">Tất cả đơn</a>
+
             <a class="collapse-item" href="/don-chua-xu-ly">Chưa xử lý <span class="text-danger CountBillNew"></span></a>
 
             @*<a class="collapse-item"  href="/len-don">Lên đơn</a>*@
         </div>
     </div>
 </li>
+
+
 <!-- Nav Item - Charts -->
 
 <hr class="sidebar-divider">
