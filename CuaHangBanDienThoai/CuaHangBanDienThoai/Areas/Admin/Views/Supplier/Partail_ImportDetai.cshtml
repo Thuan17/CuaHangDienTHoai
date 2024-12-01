@@ -39,11 +39,11 @@
                             <div class="d-flex flex-column align-items-center justify-content-center text-center mt-5">
                                 <div class="d-flex flex-row align-items-center">
 
-                                    <button class="btn btn-primary mx-1 d-flex align-items-center justify-content-center btnDetail" data-id="@item.ImportWarehouseId">
+                                    <a href="/chi-tiet-phieunhap/@item.ImportWarehouse.Code.Trim()" class="btn btn-primary mx-1 d-flex align-items-center justify-content-center btnDetail" data-id="@item.ImportWarehouseId">
                                         <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
                                         <span class="button-text">Xem</span>
-                                    </button>
-                                    <button class="btn btn-warning mx-1 d-flex align-items-center justify-content-center btnEdit
+                                    </a>
+                                    <button class="btn btn-warning mx-1 d-flex align-items-center justify-content-center btnEdit 
                                             @(((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)||(ViewBag.IsMange!=null&&(bool)ViewBag.IsMange))?"":"hide")"
                                             data-id="@item.ImportWarehouseId">
                                         Cập nhật

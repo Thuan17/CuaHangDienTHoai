@@ -1,0 +1,285 @@
+﻿@model CuaHangBanDienThoai.Models.Employee
+@using CuaHangBanDienThoai.Common
+@{
+    ViewBag.Title = (ViewBag.Name ?? "");
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    #footer {
+        margin: 0 !important;
+    }
+</style>
+
+<div class="bg-sg2" style="display: none ">
+
+</div>
+
+<div id="popupBill2" style="display: none">
+    <div class="text-center">
+        <img src="~/images/gif/loading.gif" />
+
+    </div>
+  
+</div>
+
+<div class="pt-0  p-5  p-0 ">
+    <div class="row  mb-4">
+        <div class="col mb-0 pb-0">
+            <nav aria-label="breadcrumb" class="bg-body-tertiary rounded-3 p-3 mb-2">
+                <ol class="breadcrumb mb-0">
+                    
+
+                    <li class="breadcrumb-item active" aria-current="page">Hồ sơ của tôi</li>
+                </ol>
+            </nav>
+        </div>
+        <hr class="col-12 p-0 m-0" />
+    </div>
+    @if (Model != null)
+    {
+        int customerid = (int)Session["EmployeeId"];
+        string encodedCustomerId = Helper.EncodeCustomerId(customerid);
+        var FullName = Session["customerName"].ToString();
+        var LastName = Session["lastName"];
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        @*<img src="~/images/logo/logoweb.png" />*@
+                        <img src="@(Model.Image != null ? Url.Content("~/UploadsEmp/Image/" + Model.Image) : Url.Content("/images/logo/logo2.png"))" alt="PadaMinStore"
+                             class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">@Model.NameEmployee.Trim()</h5>
+                        <p class="text-muted mb-4">@Model.tb_Function.TitLe.Trim()</p>
+                        <p class="text-muted mb-4">@Model.AccountEmployee.Code.Trim()</p>
+
+                        <div class="d-flex justify-content-center mb-2">
+                            <a href="/cap-nhap-mat-khau/@(encodedCustomerId)-name@(CuaHangBanDienThoai.Models.Common.Filter.FilterChar(FullName))"
+                               type="button" class="btn btn-warning btnChangePass">Cập nhập mật khẩu</a>
+                  
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4 mb-lg-0">
+                  
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card m-0 w-100  mb-4" style="">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <h5 class="mt-1">
+                                Thông tin chung
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Tên tài khoản :</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.NameEmployee.Trim()</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email :</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.Email.Trim()</p>
+                                <input class="hide" value="@Model.Email.Trim()" id="userInputField" />
+                                <input name="__RequestVerificationToken" type="hidden" class="hide" value="@Model.Email.Trim()">
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Số điện thoại :</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">@Model.PhoneNumber.Trim()</p>
+                            </div>
+                        </div>                            <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Ngày vào làm </p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0"> @Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Ngày sinh </p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0"> @Model.Birthday.ToString("dd/MM/yyyy")</p>
+
+                            </div>
+                        </div>
+                        <hr>
+                       
+                    </div>
+
+
+                </div>
+               
+            </div>
+
+        </div>
+
+    }
+
+    </div>
+
+
+
+
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script>
+
+    function createToast(type, icon, title, text) {
+
+                        const notifications = document.querySelector('.notifications');
+                        if (!notifications) {
+                            console.warn('Không tìm thấy phần tử notifications trong DOM');
+                            return;
+                        }
+
+                        let newToast = document.createElement('div');
+                        newToast.innerHTML = `
+            <div class="toastNotifi ${type}">
+                <i class="${icon}"></i>
+                <div class="content">
+                    <div class="title">${title}</div>
+                    <span>${text}</span>
+                </div>
+                <i class="close fa-solid fa-xmark" onclick="this.parentElement.remove()"></i>
+            </div>`;
+        notifications.appendChild(newToast);
+
+
+        newToast.timeOut = setTimeout(() => newToast.remove(), 5000);
+    }
+  $(document).ready(function () {
+    @*var customerId = @Model.Em;*@
+      const maskedEmail = "@ViewBag.MaskedEmail";
+      var email = "@ViewBag.Email";
+      var userInput = $('#userInputField').val();
+      console.log("maskedEmail", maskedEmail);
+      console.log("email", email);
+      console.log("customerId", customerId);
+
+      var bg2 = $(".bg-sg2");
+      var popup2 = $("#popupBill2");
+      var btnAddAddress = $('.btnAddAddress');
+      var btnEditProFile = $('.btnEditProFile');
+
+
+
+
+
+      $('.btnEditProFile').on('click', function (e) {
+
+
+
+          e.preventDefault();
+          bg2.show();
+          popup2.show();
+          $.ajax({
+              url: '/Account/UpdateProFile',
+              type: 'GET',
+              data: { customerid: customerId },
+              success: function (res) {
+
+                  $('#loadDataBillEdit').html(res);
+              },
+              error: function (xhr, status, error) {
+                  console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+              }
+          });
+
+      });
+
+
+      $('.btnAddAddress').on('click', function (e) {
+
+          console.log("customerId", customerId);
+
+          e.preventDefault();
+          bg2.show();
+          popup2.show();
+          $.ajax({
+              url: '/ShoppingCart/Partail_ChangeAddress',
+              type: 'GET',
+              success: function (data) {
+
+                  $('#loadDataBillEdit').html(data);
+              },
+              error: function (xhr, status, error) {
+                  console.error('Có lỗi xảy ra khi lấy dữ liệu giá:', error);
+              }
+          });
+
+      });
+
+
+      bg2.on('click', function () {
+          bg2.hide();
+          popup2.hide();
+      });
+
+      $('.btnCloseEditBill').on('click', function () {
+          bg2.hide();
+          popup2.hide();
+      });
+
+      $.getJSON('/Account/GetOrderStatistics', { customerId: customerId }, function (data) {
+          if (data.error) {
+              console.error("Lỗi từ server: ", data.error);
+              alert("Có lỗi xảy ra khi lấy dữ liệu: " + data.error);
+          } else {
+              if (!isNaN(data.SuccessRate) && !isNaN(data.CancelRate) && !isNaN(data.ConFirmRate)) {
+
+                  var nonConfirmProgressHtml = `
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Đơn chờ xác nhận: ${data.ConFirmCount}</p>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: ${data.ConFirmRate}%" aria-valuenow="${data.ConFirmRate}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+                  var successProgressHtml = `
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Đơn hàng thành công: ${data.SuccessCount}/${data.TotalOrder}</p>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: ${data.SuccessRate}%" aria-valuenow="${data.SuccessRate}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+                  var cancelProgressHtml = `
+                <p class="mt-4 mb-1" style="font-size: .77rem;">Đơn hàng hủy: ${data.CancelCount}/${data.TotalOrder}</p>
+                <div class="progress" style="height: 5px;">
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: ${data.CancelRate}%" aria-valuenow="${data.CancelRate}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            `;
+                  $(".tableOrder").append(nonConfirmProgressHtml);
+                  $(".tableOrder").append(successProgressHtml);
+                  $(".tableOrder").append(cancelProgressHtml);
+              } else {
+                  console.error("Dữ liệu tỷ lệ không hợp lệ!");
+              }
+          }
+      }).fail(function (jqXHR, textStatus, errorThrown) {
+          console.error("Lỗi khi gọi API: ", textStatus, errorThrown);
+          alert("Có lỗi xảy ra khi kết nối với server. Vui lòng thử lại sau!");
+      });
+
+});
+
+
+    </script>
+
+

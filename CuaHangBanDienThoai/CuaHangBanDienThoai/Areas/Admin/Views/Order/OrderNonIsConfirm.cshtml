@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "Quản lý đơn hàng";
     var layout = (ViewBag.IsAdmin != null && (bool)ViewBag.IsAdmin) ? "~/Areas/Admin/Views/Shared/_Layout.cshtml" : "~/Areas/Admin/Views/Shared/_LayoutWareHouse.cshtml";
-    Layout = layout;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <link href="~/Content/css/admin/Bill.css" rel="stylesheet" />

@@ -149,7 +149,10 @@
                                                         data-id="@item.ImportWarehouseId">
                                                     Cập nhật
                                                 </button>
-                                                <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnDelete" data-id="@item.ImportWarehouseId">
+                                                <button class="btn btn-danger mx-1 d-flex align-items-center justify-content-center btnDelete
+                                                           @((ViewBag.IsAdmin!=null&&(bool)ViewBag.IsAdmin)?"":"hide")
+                                                        
+                                                        " data-id="@item.ImportWarehouseId">
                                                     <img src="~/images/gif/Spinnerloading.gif" class="loading-image" style="width: 45px; height: 45px; display: none;" />
                                                     <span class="button-text">Xoá</span>
                                                 </button>

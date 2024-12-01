@@ -236,6 +236,7 @@
     <Compile Include="Models\Admin_EditVoucher.cs" />
     <Compile Include="Models\Admin_MonthlyRevenue.cs" />
     <Compile Include="Models\Admin_ProductRevenue.cs" />
+    <Compile Include="Models\Admin_UpdatePassEmployee.cs" />
     <Compile Include="Models\AuthorizeCustomer.cs" />
     <Compile Include="Models\AuthorizeFunction.cs" />
     <Compile Include="Models\Banner.cs">
@@ -5510,6 +5511,7 @@
     </Content>
     <Content Include="Scripts\admin\addEmp.js" />
     <Content Include="Scripts\admin\admin-notifications.js" />
+    <Content Include="Scripts\admin\Admin_UpdatePass.js" />
     <Content Include="Scripts\admin\Banner.js" />
     <Content Include="Scripts\admin\BannerEdit.js" />
     <Content Include="Scripts\admin\Bill.js" />
@@ -5772,6 +5774,9 @@
     <Content Include="Areas\Admin\Views\ImportWarehouse\SuggestImport.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Partail_ImportDetai.cshtml" />
     <Content Include="Areas\Admin\Views\ImportWarehouse\Detail.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\Profile.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\UpdatatePass.cshtml" />
+    <Content Include="Areas\Admin\Views\Account\UpdatePass.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

@@ -1,0 +1,173 @@
+﻿@model CuaHangBanDienThoai.Models.Admin_UpdatePassEmployee
+@using CuaHangBanDienThoai.Common
+@{
+    ViewBag.Title = "Cập nhập mật khẩu";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .passGr {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid black;
+        position: relative;
+    }
+
+    .pass {
+        flex: 1; /* Input chiếm tối đa không gian còn lại */
+        border: none !important;
+        outline: none;
+        padding: 5px 10px; /* Khoảng cách giữa chữ và khung input */
+    }
+
+    .field-icon {
+        flex-shrink: 0; /* Đảm bảo icon không bị co lại */
+        width: auto; /* Tự điều chỉnh theo kích thước nội dung */
+        text-align: center;
+        cursor: pointer;
+        color: #888;
+        position: absolute; /* Định vị biểu tượng bên phải */
+        right: 0; /* Canh sát cạnh phải */
+        padding: 5px; /* Thêm khoảng cách để icon không bị chồng lên border */
+    }
+
+        .field-icon:hover {
+            color: #333;
+        }
+
+
+</style>
+
+
+
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+
+    <div class="row">
+        <div class="col-6">
+            <h1 class="h3 mb-2 text-gray-800">Hệ thống quản lý </h1>
+
+        </div>
+        <div class="col-6 ">
+            <ol class="breadcrumb float-sm-right">
+                @{ 
+                    int customerid = Model.EmployeeId;
+                    string encodedCustomerId = Helper.EncodeCustomerId(customerid);
+                    var FullName =Model.employee.NameEmployee.Trim();
+               
+                    var lastName = FullName.Split(' ').Last();
+
+            }
+                
+               
+
+                <li class="breadcrumb-item">                
+                
+                
+                <a class="dropdown-item" href="/thong-tin-ca-nhan/@(encodedCustomerId)-name@(CuaHangBanDienThoai.Models.Common.Filter.FilterChar(FullName))">Thông tin  @(FullName??"")</a></li>
+              
+                <li class="breadcrumb-item active"><a href="#">Cập nhập mật khẩu</a></li>
+
+            </ol>
+
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-white py-3">
+            <div class="row">
+                <div class="col-2">
+                    <h6 class="m-0 font-weight-bold text-primary">
+            Cập nhập mật khẩu
+                    </h6>
+                    <hr />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    @if (Model != null)
+                    {
+                        <form id="myFormUpEmp" method="post" enctype="multipart/form-data">
+
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(x=>x.EmployeeId)
+                            <div class=" row p-0 m-0 w-100">
+                                <div class="col-12">
+                                    <div class="form-group text-center newImage">
+
+                                        <div class="text-center d-flex" style="text-align: center;">
+                                            <img id="defaultImage" name="Image" src="@(Model.employee.Image != null ? Url.Content("~/UploadsEmp/Image/" + Model.employee.Image ) : Url.Content("/images/logo/logo2.png"))" alt="New Image Preview"
+                                                 style="width: 150px; height: 150px; margin: auto; display: block; border-radius: 50%; object-fit: cover;" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="row">
+                                        <div class="row m-0 p-0 w-100">
+                                            <div class="col-12 align-items-center text-left">
+                                                <p class="text-black"><label>Xin chào </label> @Model.employee.NameEmployee.Trim() ,</p>
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <label for="current-password" class="form-control-placeholder">Mật khẩu cũ</label>
+                                                <div class="passGr">
+                                                    <input id="current-password" type="password" name="Password" class="pass input-field" required>
+                                                    <span class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="#current-password"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <label for="new-password" class="form-control-placeholder">Mật khẩu mới</label>
+                                                <div class="passGr">
+                                                    <input id="new-password" type="password" name="PasswordNew" class="pass input-field" required>
+                                                    <span class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="#new-password"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 mt-2">
+                                                <label for="confirm-password" class="form-control-placeholder">Xác nhận mật khẩu mới</label>
+                                                <div class="passGr">
+                                                    <input id="confirm-password" type="password" name="PasswordNew" class="pass input-field" required>
+                                                    <span class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="#confirm-password"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="row  mt-4">
+                                <div class="col-12 text-center">
+                                  
+                                    <button type="button" class="btn btn-success d-flex align-items-center justify-content-center col-8 mt-3 myFormUpEmp"
+                                            data-employeeid="@Model.EmployeeId" data-id="@Model.employee.EmployeeId" style="height: 40px;">
+                                        <img src="~/images/gif/Spinnerloading.gif" class="loading-image " style="width: 45px; height: 45px; display: none; " />
+
+                                        <span class="button-text ">Cập nhập mật khẩu</span>
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </form>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script src="~/Scripts/admin/Admin_UpdatePass.js"></script>
+    }
+
+
+

@@ -447,8 +447,7 @@ namespace CuaHangBanDienThoai.Controllers
                 return View();
             }
         }
-
-
+ 
 
         public ActionResult UpdateProFile(int customerid)
         {
@@ -476,7 +475,8 @@ namespace CuaHangBanDienThoai.Controllers
             return PartialView();
         }
 
-     
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task <ActionResult> UpdateProFile(Client_UpdateProFile req)

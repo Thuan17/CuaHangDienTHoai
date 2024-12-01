@@ -1,7 +1,10 @@
-﻿using CuaHangBanDienThoai.Models;
+﻿using CuaHangBanDienThoai.Common;
+using CuaHangBanDienThoai.Models;
+using DocumentFormat.OpenXml.Wordprocessing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -69,11 +72,15 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                         }
 
                         var Funtion = db.Employee.FirstOrDefault(s => s.EmployeeId == account.EmployeeId);
+                      
 
+                        var fullName = employee.NameEmployee.Trim();
+                        var lastName = fullName.Split(' ').Last();
                         Session["EmployeeId"] = employee.EmployeeId;
                         Session["AdminRole"] = employee.EmployeeId;
-
-
+                      
+                        Session["lastName"] = lastName.Trim();
+                        Session["customerName"] = employee.NameEmployee.Trim();
                         Session["user"] = account;
                         Session["nameuser"] = employee.NameEmployee;
                         Session["userName"] = employee;
@@ -115,6 +122,122 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 return Json(new { success = false, code = -100, message = "Lỗi hệ thống: " + ex.Message });
             }
         }
+        public async Task<ActionResult> Profile(string encodedId, string name)
+        {
+            if (string.IsNullOrEmpty(encodedId) && string.IsNullOrEmpty(name))
+            {
+                return View();
+            }
+
+            try
+            {
+
+                int customerId = DecodeCustomerId(encodedId);
+
+
+                var customer = await db.Employee.FirstOrDefaultAsync(c => c.EmployeeId == customerId);
+                if (customer == null)
+                {
+                    return View();
+                }
+                ViewBag.Email = customer.Email.Trim();
+                ViewBag.Name=customer.NameEmployee.Trim();
+                ViewBag.MaskedEmail = Helper.MaskEmail(customer.Email.Trim());
+                return View(customer);
+            }
+            catch
+            {
+
+                return View();
+            }
+        }
+        public async Task<ActionResult> UpdatePass(string encodedId, string name)
+        {
+            if (string.IsNullOrEmpty(encodedId) && string.IsNullOrEmpty(name))
+            {
+                return View();
+            }
+
+            try
+            {
+
+                int customerId = DecodeCustomerId(encodedId);
+
+
+                var customer = await db.Employee.FirstOrDefaultAsync(c => c.EmployeeId == customerId);
+                if (customer == null)
+                {
+                    return View();
+                }
+                Admin_UpdatePassEmployee viewModel = new Admin_UpdatePassEmployee {
+                    EmployeeId= customer.EmployeeId,
+                    Code=customer.AccountEmployee.Code,
+                    IsLock=(bool)customer.AccountEmployee.IsLock,
+                    Password = customer.AccountEmployee.Password,
+                    employee=customer,  
+
+                };
+                ViewBag.Email = customer.Email.Trim();
+                ViewBag.Name = customer.NameEmployee.Trim();
+                ViewBag.MaskedEmail = Helper.MaskEmail(customer.Email.Trim());
+
+
+              
+                return PartialView(viewModel);
+            }
+            catch
+            {
+
+                return PartialView();
+            }
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> UpdatePass(Admin_UpdatePassEmployee req)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { Success = false, Code = -2, msg = "Vui lòng điền đầy đủ thông tin !!!" });
+
+            }
+            using (var dbContext = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var f_passold = MaHoaPass(req.Password);
+                    var checkLock = await db.AccountEmployee.FirstOrDefaultAsync(x => x.EmployeeId == req.EmployeeId && x.Password== f_passold.Trim());
+                    if (checkLock == null)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Tài khoản không tồn tại !!!" });
+                    }
+                    if (checkLock.IsLock == true)
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Tài khoản đã bị khoá !!!" });
+                    }
+                    var f_pass = MaHoaPass(req.PasswordNew);
+                    if(checkLock.Password.Trim() == f_pass.Trim())
+                    {
+                        return Json(new { Success = false, Code = -2, msg = "Mật khẩu trùng với trước !!!" });
+                    }
+                    checkLock.Password = f_pass.Trim(); 
+                    db.Entry(checkLock).State = EntityState.Modified; 
+                    await db.SaveChangesAsync();    
+                    dbContext.Commit();
+                    return Json(new { Success = true, Code =1 , msg = "Mật khẩu thay đổi thành công !!!" });
+
+                }
+                catch (Exception ex)
+                {
+                    dbContext.Rollback();
+                    return Json(new { Success = false, Code = -99, msg = "Hệ thống tạm ngưng !!!" });
+                }
+            }
+        }
+        public int DecodeCustomerId(string encodedId)
+        {
+            var base64EncodedBytes = System.Convert.FromBase64String(encodedId);
+            return int.Parse(System.Text.Encoding.UTF8.GetString(base64EncodedBytes));
+        }
 
         public ActionResult Logout()
         {
@@ -127,6 +250,9 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                 Session["EmployeeId"] = null;
                 Session["AdminRole"] = null;
                 Session["ManageRole"] = null;
+                Session["lastName"] = null;
+                Session["customerName"] = null;
+               
                
             }
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
@@ -140,13 +266,13 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
             if (roleEmployeeId == 3)
             {
               
-                //return Url.Action("Index", "Seller");
+              
                 return "/ban-hang";
             }
             else if (roleEmployeeId == 4)
             {
-                //return Url.Action("Index", "Order");
-                return "/quan-ly-don-hang";
+              
+                return "/danh-sach-phieunhap";
             }
             else if (roleEmployeeId == 1 || roleEmployeeId == 2 || functionTitle.Contains("Quản trị viên") || functionTitle.Contains("Quản Lý"))
             {
