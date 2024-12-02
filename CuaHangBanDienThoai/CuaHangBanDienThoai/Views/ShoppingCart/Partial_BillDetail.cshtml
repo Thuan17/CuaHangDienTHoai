@@ -40,7 +40,7 @@
                 <td class="td__imgItem p-0">
                     <a href="/san-pham/@item.ProductDetail.Alias" >
                         @*<img src="~/images/logo/logoWeb.png" class="primary blur-up lazyloaded" />*@
-                        <img class="primary blur-up lazyloaded" src="@strImg" alt="@Name">
+                        <img class="primary blur-up lazyloaded" src="@(item.ProductDetail.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")"" alt="@Name">
                     </a>
 
                 </td>

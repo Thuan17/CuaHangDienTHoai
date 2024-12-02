@@ -133,7 +133,6 @@
     <EntitySetMapping Name="ImportWarehouse">
       <EntityTypeMapping TypeName="CUAHANGDIENTHOAIModel.ImportWarehouse">
         <MappingFragment StoreEntitySet="ImportWarehouse">
-          <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="ImportWarehouseId" ColumnName="ImportWarehouseId" />
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
@@ -141,6 +140,7 @@
           <ScalarProperty Name="Modifiedby" ColumnName="Modifiedby" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="SupplierId" ColumnName="SupplierId" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

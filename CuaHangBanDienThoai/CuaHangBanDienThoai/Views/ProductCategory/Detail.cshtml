@@ -67,25 +67,18 @@
                                                 return (int)(discount * 100);
                                             }
                                         }
-                                        var strImg = "";
-                                        var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+                              
+                                      
 
                                         var Name = item.Products.ProductCategory.Title.Trim() + "   " + item.Products.Title.Trim();
                                         var detail = item.Ram.Trim() + "-" + item.Capacity.Trim();
-                                        if (CheckImage != null)
-                                        {
-                                            strImg = CheckImage.Image;
-                                        }
-                                        else
-                                        {
-                                            strImg = "~/Content/css/admin/login/images/logoWeb.png";
-                                        }
+                                       
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-6 mt-2 mb-2  listproduct product__grid__item" id="product-container-@item.ProductsId">
                                             <div class="  product__item" @*style="border: 1px solid #eaecf0 !important; border-radius: 8px !important;"*@>
 
 
                                                 <a href="/san-pham/@item.Alias" class="product_image__item">
-                                                    <img src="@strImg" alt="@Name ">
+                                                    <img src="@(item.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")"  alt="@Name ">
                                                 </a>
 
                                                 @if (item.PriceSale > 0)

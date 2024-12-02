@@ -1,0 +1,54 @@
+﻿@model IEnumerable<CuaHangBanDienThoai.Models.VoucherDetail>
+@if (Model != null && ViewBag.error == null)
+{
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                string displayAlias = null;
+                string alias = null;
+                if (item.Code != null)
+                {
+                    int maxLength = 7;
+                    alias = item.Code;
+                    displayAlias = alias.Length > maxLength ? alias.Substring(0, maxLength) + "..." : alias;
+                }
+                <div class="col-md-6 mb-1">
+                    <div class="freeship-banner m-1">
+                        <div class="row">
+                            <!-- Phần FREE SHIP -->
+                            <div class="col-md-4 d-flex align-items-center" style="background-color: rgba(38,170,153,255)">
+                                <div class="text-white text-free-ship">
+                                    <span>FREE</span>
+                                    <span>SHIP</span>
+                                    <b style="font-size: 18px;">Tất cả hình thức thanh toán</b>
+                                </div>
+                            </div>
+                            <!-- Phần thông tin giảm giá và nút Lưu -->
+                            <div class="col-md-8 bg-white">
+                                <div class="row justify-content-end align-items-center">
+                                    <div class="col-lg-8" style="margin-top: 30px;">
+                                        <h3 class="discount-text">@item.Voucher.Title</h3>
+                                        <p class="min-order-text">Đơn Tối Thiểu ₫0</p>
+                                    
+                                    </div>
+                                    <div class="col-md-4" style="margin-top: 12px;">
+                                        <button class="save-button btngetcode bg-white" onclick="copyToClipboard('@alias.Trim()')">Lấy mã</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-3">
+            <p class="text-danger">@ViewBag.error</p>
+        </div>
+    </div>
+}

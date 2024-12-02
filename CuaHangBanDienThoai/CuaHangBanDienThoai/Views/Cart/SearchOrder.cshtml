@@ -1,0 +1,158 @@
+﻿@model  CuaHangBanDienThoai.Models.OrderCustomer
+@using CuaHangBanDienThoai.Common
+@{
+    ViewBag.Title = "SearchOrder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/css/client/CheckoutSuccess.css" rel="stylesheet" />
+<link href="~/Content/css/client/CheckOut.css" rel="stylesheet" />
+<br />
+<div class="card checkout__success__container border-0 " style="min-height:475px">
+    <div class="checkout-success-content py-2">
+
+        @if (ViewBag.Code != null)
+        {
+
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 pb-3">
+                    <div class="checkout-scard  border-0 rounded">
+                        <div class="scardbody text-center">
+                            <p class="card-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                </svg>
+
+                            </p>
+                            <h4 class="card-title">  Cảm ơn bạn đã đặt hàng của bạn!    </h4>
+                            <p class="card-text mb-1">
+                                Bạn sẽ nhận được email xác nhận đơn hàng với các chi tiết về đơn đặt hàng của bạn và một liên kết để theo dõi tiến trình của nó.
+                            </p>
+                            <p class="card-text mb-1">
+
+                                Tất cả thông tin cần thiết về việc giao hàng, chúng tôi đã gửi đến email của bạn .
+                            </p>
+                            <p class="card-text text-order badge bg-success my-3 text-white">Đơn hàng của bạn # là :<b>@Model.Code</b> </p>
+                            <p class="card-text mb-0">
+                                @Model.CreatedDate.ToString("dd/MM/yyyy")
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 pb-3">
+                    <div class="shipping-details mb-4 mb-sm-0 clearfix">
+                        <h3 class="fs-6 mb-3 details__Text">Thông tin nhận hàng</h3>
+                        <div class="infor__customer">
+                            <div class=" input-data">
+                                <b for="">Người nhận :</b>
+                                <span class="d-inline-block text-start ms-1">@Model.CustomerName.Trim()</span>
+                            </div>
+                            <div class="input-data">
+                                <b for="PhoneCustomer">
+                                    Số Điện Thoại :
+                                </b>
+                                <span class="d-inline-block text-start ms-1">@Helper.MaskPhone(Model.CustomerName)</span>
+                            </div>
+                            <div class="input-data">
+                                <b for="">Email :</b>
+                                <span class="d-inline-block text-start ms-1">@Helper.MaskEmail(Model.Email)</span>
+                            </div>
+                            <div class="input-data  ">
+
+                                <b>Địa Chỉ :</b>
+                                <span class="d-inline-block text-start ms-1">@Helper.MaskAddress(Model.Location.Trim())</span>
+                            </div>
+                            <div class="input-data ">
+                                @if (Model.Note != null)
+                                {<b for="">Ghi chú :</b>
+                                    <sapn>@Model.Note.Trim()</sapn>
+                                }
+                                else
+                                { <b for="">Ghi chú :</b>
+                                    <sapn></sapn>
+                                }
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="checkout-item-ordered">
+                        <h2 class="fs-6 mb-3 text-left">Thứ tự sản phẩm</h2>
+                        <div class="table-content table-responsive order-table mb-4">
+                            <table class="table table-bordered align-middle table-hover text-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="td__img fw-">
+                                            Hình
+                                        </th>
+                                        <th class="td__product">
+                                            Sản phẩm
+                                        </th>
+
+                                        <th class="td__quantity-price">
+                                            Số lượng/ Giá
+                                        </th>
+                                    </tr>
+
+                                </thead>
+                                @Html.Action("Partial_BillDetail", "ShoppingCart", new { id = Model.OrderId })
+                                <tfoot>
+
+                                    <tr>
+                                        <td colspan="2" class="item subtotal text-end fw-bolder">
+                                            Tổng tiền:
+                                        </td>
+                                        <td class="fw-500 last">
+                                            <b class="text-right"><span class="text-danger">@Common.FormatNumber(Model.TotalAmount) đ</span></b>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row ">
+                <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 pb-3">
+                    <div class="checkout-scard  border-0 rounded">
+                        <div class="scardbody text-center">
+                            <p class="card-iconerror">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                                </svg>
+
+                            </p>
+                            <h4 class="card-title"> Không tồn tại về trạng thái đơn hàng    </h4>
+
+                            <p class="card-text text-order badge bg-danger my-3 text-white">Đơn hàng của bạn # là :<b>@ViewBag.Code</b> </p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+
+
+
+    </div>
+</div>
+
+
+
+

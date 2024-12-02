@@ -30,7 +30,7 @@
             <li>
                 <div class="product_itemcart">
                     <div class="product_imagecart">
-                        <img src="@strImg" alt="@Name" />
+                        <img src="@(item.ProductDetail.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")" alt="@Name" />
                     </div>
                     <div class="product_namecart">
                         <p>@Name.Trim()</p>

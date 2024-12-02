@@ -453,6 +453,38 @@ namespace CuaHangBanDienThoai.Controllers
 
 
 
+
+        public ActionResult Search()
+        {
+            return View();
+        }
+
+
+
+
+
+        public async Task<ActionResult> SearchOrder(string code)
+        { 
+            if (!string.IsNullOrEmpty(code))
+            {
+
+                var bill = await db.OrderCustomer
+                                   .Where(x => (x.Code.Contains(code.Trim())) ||( x.Phone == (code.Trim())))
+                                   .OrderByDescending(x => x.OrderId)
+                                   .FirstOrDefaultAsync();
+                if (bill != null)
+                {
+                    ViewBag.Code = bill.Code;
+                    return View(bill);
+                } 
+            }
+            return View();
+        }
+
+       
+     
+
+
         public ActionResult Partial_OrderDetail(int id)
         {
             if(id> 0)

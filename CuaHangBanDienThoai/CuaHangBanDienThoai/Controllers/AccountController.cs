@@ -62,7 +62,7 @@ namespace CuaHangBanDienThoai.Controllers
 
                         if (account.IsLock == true)
                         {
-                            return Json(new { success = false, code = -2, msg = "Tài khoản đã bị khóa, vui lòng liên hệ quản trị viên!" });
+                            return Json(new { success = false, code = -2, msg = "Tài khoản đã bị khóa, vui lòng liên hệ cửa hàng!" });
                         }
 
 

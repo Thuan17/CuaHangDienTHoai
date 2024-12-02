@@ -83,7 +83,7 @@ namespace CuaHangBanDienThoai.Areas.Admin.Controllers
                     {
                         ViewBag.ProductCategory = new SelectList(db.ProductCategory.ToList(), "ProductCategoryId", "Title");
                         ViewBag.ProductCompany = new SelectList(db.ProductCompany.ToList(), "ProductCompanyId", "Title");
-                        return Json(new { Success = false, Code = -2, msg = "Vui lòng chọn logo hãng" });
+                        return Json(new { Success = false, Code = -2, msg = "Vui lòng chọn hình sản phẩm" });
                     }
                   
                     var productCompany = await db.ProductCompany.FindAsync(req.ProductCompanyId);

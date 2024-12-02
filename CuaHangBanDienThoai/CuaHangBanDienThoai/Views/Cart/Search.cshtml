@@ -1,0 +1,35 @@
+﻿
+
+@{
+    ViewBag.Title = "Tra cứu đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+
+<link href="~/Content/css/client/Bill.css" rel="stylesheet" />
+<div class="container container_Index  border rounded shadow-sm   pt-3 " style="min-height: 475px">
+    <div class=" row m-0 p-0 align-items-center">
+        <div class="col-md-12 pt-3 d-flex align-items-center">
+            <h5 class="m-0">Tra cứu  đơn hàng :</h5>
+            <div class="SearchBillGr ml-2 flex-grow-2">
+                <form role="search" action="@Url.Action("SearchOrder", "Cart")" method="get" class="col-lg-12 p-0 searchbill">
+                    <input type="search" id="search_bill"
+                           class="search_bill p-0 mb-0"
+                           placeholder="Nhập số điện thoại của bạn..."
+                           value="" name="code" autocomplete="off">
+
+                    <button type="submit"
+                            class="bill_submit submit-button secondary button icon mb-0"
+                            aria-label="Submit">
+                        <img src="~/images/icon/search2.png" class="searchimg" />
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+

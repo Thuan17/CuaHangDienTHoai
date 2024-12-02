@@ -44,7 +44,7 @@
 
                 <div class="product_image__item ">
                     <a href="/san-pham/@item.Alias" class="p-0 align-items-center text-center" >
-                        <img src="@strImg" alt="@Name-TenoStore "style=" width:80%!important;" >
+                        <img src="@(item.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")" alt="@Name-TenoStore "style=" width:80%!important;" >
                     </a>
                 </div>
                 @*<div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center"><span>new</span></div>*@

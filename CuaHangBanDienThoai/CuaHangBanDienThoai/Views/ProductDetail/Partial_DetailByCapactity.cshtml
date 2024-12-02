@@ -25,12 +25,12 @@
 
 
 
-    @*<div class=" listproduct product__grid__item pb-0 listproduct   mt-2  " id="product-container-@Model.ProductDetailId">*@
+  
         <div class="  product__item listproduct" style="border: 1px solid #eaecf0 !important; border-radius: 8px !important;">
 
 
             <a href="/san-pham/@Model.Alias" class="product_image__item">
-                <img src="@strImgCapcity" alt="@Name ">
+                <img src="@(Model.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")"  alt="@Name ">
             </a>
 
             @if (Model.PriceSale > 0)
@@ -68,12 +68,7 @@
                     <strong class="price">@($"{Common.FormatNumber(Model.PriceSale)}đ")</strong>
                     <div class="box-p">
                         <p class="price-old black">@($"{Common.FormatNumber(Model.Price)}đ")</p>
-                        @*<span class="percent">
-                            @{
-                                decimal discountPercentage = CalculateDiscountPercentage((decimal)Model.Price, (decimal)Model.PriceSale);
-                                <span class="w-100 p-0 m-0">@($" {discountPercentage}%")</span>
-                            }
-                        </span>*@
+                      
                     </div>
                 </div>
 

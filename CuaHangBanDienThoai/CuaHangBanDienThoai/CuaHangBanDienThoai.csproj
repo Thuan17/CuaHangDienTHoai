@@ -5539,6 +5539,7 @@
     <Content Include="Scripts\admin\ProductDetail.js" />
     <Content Include="Scripts\admin\ProductDetailEdit.js" />
     <Content Include="Scripts\admin\ProductDetails.js" />
+    <Content Include="Scripts\admin\Product_add.js" />
     <Content Include="Scripts\admin\Product_PageDetail.js" />
     <Content Include="Scripts\admin\Seller_Index.js" />
     <Content Include="Scripts\admin\Supplier_Index.js" />
@@ -5752,13 +5753,6 @@
     <Content Include="Areas\Admin\Views\ProductDetail\SearchProduct.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Add.cshtml" />
-    <EntityDeploy Include="Models\Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Admin\Views\Supplier\Detail.cshtml" />
     <Content Include="Areas\Admin\Views\Supplier\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\ImportWarehouse\Index.cshtml" />
@@ -5777,6 +5771,13 @@
     <Content Include="Areas\Admin\Views\Account\Profile.cshtml" />
     <Content Include="Areas\Admin\Views\Account\UpdatatePass.cshtml" />
     <Content Include="Areas\Admin\Views\Account\UpdatePass.cshtml" />
+    <EntityDeploy Include="Models\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -5958,6 +5959,10 @@
     <Content Include="Views\Review\Partial_EditReview.cshtml" />
     <Content Include="Voucher\Index.cshtml" />
     <Content Include="Voucher\Partial_VoucherDetail.cshtml" />
+    <Content Include="Views\Cart\SearchOrder.cshtml" />
+    <Content Include="Views\Cart\Search.cshtml" />
+    <Content Include="Views\Voucher\Index.cshtml" />
+    <Content Include="Views\Voucher\Partial_VoucherDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

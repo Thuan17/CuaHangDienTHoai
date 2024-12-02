@@ -4,35 +4,35 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="0d292139034d4cf2a1259fba4259fb51" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AccountEmployee" Width="1.5" PointX="5.25" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AddressCustomer" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Banner" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Bill" Width="1.5" PointX="5.25" PointY="10.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.BillDetail" Width="1.5" PointX="7.5" PointY="12.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Cart" Width="1.5" PointX="5.25" PointY="29.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.CartItem" Width="1.5" PointX="10.5" PointY="25.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Customer" Width="1.5" PointX="3" PointY="13.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Districts" Width="1.5" PointX="13" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Employee" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ImportWarehouse" Width="1.5" PointX="8.25" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ImportWarehouseDetail" Width="1.5" PointX="10.5" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.OrderCustomer" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.OrderDetail" Width="1.5" PointX="13.5" PointY="12.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductCategory" Width="1.5" PointX="3.75" PointY="21.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductCompany" Width="1.5" PointX="3.75" PointY="25.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductDetail" Width="1.5" PointX="8.25" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductDetailImage" Width="1.5" PointX="10.5" PointY="28.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Products" Width="1.5" PointX="6" PointY="21" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Provinces" Width="1.5" PointX="10.75" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Review" Width="1.5" PointX="11.25" PointY="19.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Role" Width="1.5" PointX="5.25" PointY="18.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Supplier" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.sysdiagrams" Width="1.5" PointX="10.75" PointY="4.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Function" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Voucher" Width="1.5" PointX="8.25" PointY="16.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.VoucherDetail" Width="1.5" PointX="10.5" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Wards" Width="1.5" PointX="15.25" PointY="1.5" IsExpanded="true" />
+      <Diagram DiagramId="5d6b677329e5419b84d3ca37a1f1a468" Name="Diagram1">
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AccountEmployee" Width="1.5" PointX="5.25" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.AddressCustomer" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Banner" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Bill" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.BillDetail" Width="1.5" PointX="7.5" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Cart" Width="1.5" PointX="5.25" PointY="29.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.CartItem" Width="1.5" PointX="10.5" PointY="26.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Customer" Width="1.5" PointX="3" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Districts" Width="1.5" PointX="13" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Employee" Width="1.5" PointX="3" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ImportWarehouse" Width="1.5" PointX="8.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ImportWarehouseDetail" Width="1.5" PointX="10.5" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.OrderCustomer" Width="1.5" PointX="8.25" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.OrderDetail" Width="1.5" PointX="10.5" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductCategory" Width="1.5" PointX="3.75" PointY="21.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductCompany" Width="1.5" PointX="3.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductDetail" Width="1.5" PointX="8.25" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.ProductDetailImage" Width="1.5" PointX="10.5" PointY="29.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Products" Width="1.5" PointX="6" PointY="21.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Provinces" Width="1.5" PointX="10.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Review" Width="1.5" PointX="11.25" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Role" Width="1.5" PointX="5.25" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Supplier" Width="1.5" PointX="6" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.sysdiagrams" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.tb_Function" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Voucher" Width="1.5" PointX="8.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.VoucherDetail" Width="1.5" PointX="10.5" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CUAHANGDIENTHOAIModel.Wards" Width="1.5" PointX="15.25" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_AccountEmployee_Employee" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK_AddressCusomer_Customer" ManuallyRouted="false" />
         <AssociationConnector Association="CUAHANGDIENTHOAIModel.FK__VoucherDe__BillI__7E02B4CC" ManuallyRouted="false" />

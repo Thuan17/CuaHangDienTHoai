@@ -40,19 +40,16 @@
                             return (int)(discount * 100);
                         }
                     }
-                    var strImg = "";
-                    var CheckImage = item.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true);
+               
+              
                     var Name = item.Products.Title.Trim() + " " + item.Ram.Trim() + "/" + item.Capacity.Trim();
                     var Detail = item.Ram.Trim() + "   " + item.Capacity.Trim();
-                    if (CheckImage != null)
-                    {
-                        strImg = CheckImage.Image;
-                    }
+                  
                     <div class="swiper-slide  listproduct" style="border: none !important; box-shadow: none !important;">
                         <a href="/san-pham/@item.Alias" class="p-0">
                             <div class="product-card position-relative" style="border:none !important;box-shadow:none!important;">
                                 <div class="product_image__item">
-                                    <img src="@strImg" width="20" height="20" alt="@Name ">
+                                    <img src="@(item.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")" width="20" height="20" alt="@Name ">
                                 </div>
                                 @*<div class="product_bubble product_bubble_left product_bubble_green d-flex flex-column align-items-center "><span>new</span></div>*@
 

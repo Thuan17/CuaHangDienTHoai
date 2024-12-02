@@ -62,7 +62,7 @@
                         <div class="swiper-container swiper-container-item" style="overflow: hidden;padding:10px;">
                             <div class="swiper-wrapper wrapper-item ">
                                 @{
-                                    var images = Model.ProductDetailImage.Where(x => x.ProductDetailId == Model.ProductDetailId && x.IsDefault == false).ToList();
+                                    var images = Model.ProductDetailImage.Where(x => x.ProductDetailId == Model.ProductDetailId ).ToList();
                                     if (images.Any())
                                     {
                                         foreach (var image in images)

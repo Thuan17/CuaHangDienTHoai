@@ -105,3 +105,24 @@
     inset 0px -5px 8px -6px rgba(0, 0, 0, 0.3); /* Trên */
     clip-path: inset(0 0px 0 0); /* Chặn bên phải */
 }
+.VoucherGr {
+    background-color: rgba(255,227,215,255);
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.countdownitem {
+    border-radius: 14px !important;
+    min-width: 60px;
+}
+    .countdownitem small {
+        font-size: 14px;
+        margin-top: 5px;
+    }
+.dot {
+    font-size: 14px;
+}
+
+.list-unstyled {
+}

@@ -156,10 +156,10 @@
     <Property Name="Modifiedby" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="EmployeeId" Type="Int32" />
     <Property Name="SupplierId" Type="Int32" />
+    <Property Name="Code" Type="String" MaxLength="20" FixedLength="true" Unicode="false" Nullable="false" />
     <NavigationProperty Name="Employee" Relationship="Self.FK_ImportWarehouse_Employee" FromRole="ImportWarehouse" ToRole="Employee" />
     <NavigationProperty Name="Supplier" Relationship="Self.FK_ImportWarehouse_Supplier" FromRole="ImportWarehouse" ToRole="Supplier" />
     <NavigationProperty Name="ImportWarehouseDetail" Relationship="Self.FK_ImportWareHouseDetail_ImportWareHouse" FromRole="ImportWarehouse" ToRole="ImportWarehouseDetail" />
-    <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
   </EntityType>
   <EntityType Name="ImportWarehouseDetail">
     <Key>

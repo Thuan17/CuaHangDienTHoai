@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="loaddata m-0 p-0 w-100">
-            @if (Model != null)
+            @if (Model != null && Model.Any())
             {
 
                 var i = 0;
@@ -33,7 +33,7 @@
                 <div class="   pl-0 pr-0" style="padding-left:0px !important">
                     <div class="main align-items-center p-0 CheckOutGr">
                         <div class="text-center align-items-center" style="border:none!important">
-                            <input type="checkbox"id="SelectAll" class=" mb-0" />
+                            <input type="checkbox" id="SelectAll" class=" mb-0" />
                         </div>
                         <div class="CheckOutImg" style="border:none!important">
                             <b class="text-black ml-3">Hình </b>
@@ -69,7 +69,7 @@
                             }
 
 
-                            var strImg = item.ProductDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true).Image?? "/images/logo/logoweb.png";
+                            var strImg = item.ProductDetail.ProductDetailImage.FirstOrDefault(x => x.IsDefault == true).Image ?? "/images/logo/logoweb.png";
                             var Name = item.ProductDetail.Products.Title.Trim() + " " + item.ProductDetail.Ram.Trim() + "/" + item.ProductDetail.Capacity.Trim();
 
 
@@ -79,13 +79,13 @@
 
                             <div class=" main mt-2 align-items-center p-0 CheckOutGr border-bottom-0" style="border-bottom:1px solid black !important">
                                 <div class="text-center" style="border: none; padding: 0; margin: 0;">
-                                    <input type="checkbox"data-prodetailid="@item.ProductDetailId" class="cbkItem mb-0" style="margin-top: 0; top:0%;" />
+                                    <input type="checkbox" data-prodetailid="@item.ProductDetailId" class="cbkItem mb-0" style="margin-top: 0; top:0%;" />
                                 </div>
                                 <div class="CheckOutImg" style="border:none!important">
                                     <div class=" text-center GrImg">
-                                        <img class="ContentImg" src="@strImg" alt="@Name">
+                                        <img class="ContentImg" src="@(item.ProductDetail.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")" alt="@Name">
                                         <div class="d-flex justify-content-center align-items-center">
-                                            <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteItemCart" data-cartitemid="@item.CartItemId" data-productdetailid="@item.ProductDetailId" >
+                                            <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteItemCart" data-cartitemid="@item.CartItemId" data-productdetailid="@item.ProductDetailId">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">
                                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />
                                                     <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
@@ -166,14 +166,15 @@
             }
             else
             {
-                <div class="col-12 ">
-                    <div class="cart_null">
-
-                        <img src="~/images/logo/CartNull.png" class="text-center align-items-center d-flex" width="150" height="350" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
-                    </div>
-                    <div class="back-to-shop"><a href="/trang-chu">&leftarrow;<span class="text-muted">Về cửa hàng</span></a></div>
-                </div>
-            }
+        <div class="col-12">
+            <div class="cart_null text-center d-flex justify-content-center " style="">
+                <img src="~/images/logo/CartNull.png" width="350" height="350" alt="Không có sản phẩm nào trong giỏ hàng của bạn">
+            </div>
+            <div class="back-to-shop text-center">
+                <a href="/trang-chu">&leftarrow; <span class="text-muted">Về cửa hàng</span></a>
+            </div>
+        </div>
+                    }
         </div>
       
     </div>

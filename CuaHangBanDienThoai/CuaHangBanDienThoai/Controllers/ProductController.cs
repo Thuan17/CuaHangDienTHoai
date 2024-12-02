@@ -34,7 +34,7 @@ namespace CuaHangBanDienThoai.Controllers
          .ToList();
             if (items != null)
             {
-                var pageSize = 16;
+                var pageSize = 12;
                 var pageIndex = page ?? 1;
                 var pagedList = items.ToPagedList(pageIndex, pageSize);
 

@@ -35,7 +35,7 @@
             <div class=" main mt-2 align-items-center p-0 CheckOutGr">
                 <div class="CheckOutImg" style="border:none!important">
                     <div class=" text-center GrImg">
-                        <img class="ContentImg" src="@strImg" alt="@Name">
+                        <img class="ContentImg" src="@(item.ProductDetail.Products?.Image ?.Trim()?? "/images/logo/logoWeb.png")"alt="@Name">
                         <div class="d-flex justify-content-center align-items-center">
                             <button class="d-flex flex-row text-danger border-0 align-items-center  btnDeleteItemCheckOut"data-productdetailid="@item.ProductDetailId" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-x-circle m-1" viewBox="0 0 16 16">

@@ -15,9 +15,19 @@ namespace CuaHangBanDienThoai
             routes.MapRoute(
      name: "BillIndex",
      url: "tracuudonhang",
-     defaults: new { controller = "Bill", action = "Index", id = UrlParameter.Optional },
+     defaults: new { controller = "Cart", action = "Search", id = UrlParameter.Optional },
      namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
  );
+
+
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            routes.MapRoute(
+          name: "Voucher",
+          url: "voucher",
+          defaults: new { controller = "Voucher", action = "Index", id = UrlParameter.Optional },
+          namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
+      );
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
           name: "Detail",
