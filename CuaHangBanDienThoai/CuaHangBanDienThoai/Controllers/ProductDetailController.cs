@@ -126,7 +126,7 @@ namespace CuaHangBanDienThoai.Controllers
                     if (product != null)
                     {
                         var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
-                    .Where(p => p.ProductsId == productid)
+                    .Where(p => p.ProductsId == productid&&p.IsActive==true && p.IsHome==true)
                     .GroupBy(p => p.Capacity.Trim())
                     .Select(g => new
                     {
@@ -173,7 +173,7 @@ namespace CuaHangBanDienThoai.Controllers
                     if (product != null)
                     {
                         var uniqueCapacitiesWithIdsAndImages = dbContext.ProductDetail
-                          .Where(p => p.ProductsId == productid && p.Capacity == capacity)
+                          .Where(p => p.ProductsId == productid && p.Capacity == capacity&& p.IsActive == true && p.IsHome == true)
                           .GroupBy(p => p.Color.Trim())
                           .Select(g => new
                           {
