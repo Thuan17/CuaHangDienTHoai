@@ -77,7 +77,7 @@ namespace CuaHangBanDienThoai
 
             routes.MapRoute(
                name: "ThongTinCaNhan",
-              url: "thong-tin-ca-nhan/{encodedId}-name{name}",
+              url: "tai-khoan/{encodedId}-name{name}",
                defaults: new { controller = "Account", action = "Profile", id = UrlParameter.Optional },
                 namespaces: new[] { "CuaHangBanDienThoai.Controllers" }
            );

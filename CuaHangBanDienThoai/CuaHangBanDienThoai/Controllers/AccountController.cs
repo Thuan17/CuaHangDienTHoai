@@ -27,7 +27,7 @@ namespace CuaHangBanDienThoai.Controllers
         {
             return View();
         }
-
+        //Đăng nhập tài khoản
         public ActionResult Login()
         {
             return View();      
@@ -59,12 +59,12 @@ namespace CuaHangBanDienThoai.Controllers
 
                     if (account != null)
                     {
-
+                        //kiểm tra trạng thái của tài khoản có bị khóa bởi quản lý không
                         if (account.IsLock == true)
                         {
                             return Json(new { success = false, code = -2, msg = "Tài khoản đã bị khóa, vui lòng liên hệ cửa hàng!" });
                         }
-
+                        //đăng nhập sai 5 lần sẽ bị khóa tài khoản
 
                         if (failedAttempts >= 5)
                         {
@@ -76,6 +76,9 @@ namespace CuaHangBanDienThoai.Controllers
                         }
                         var fullName = account.CustomerName.Trim();
                         var lastName = fullName.Split(' ').Last();
+
+
+                        //Thông tin được lưu qua session bao gờm hình ảnh , id , tên được cắt dưới dạng chỉ lấy bỏ họ và tên lót 
                         Session["customer"] = account;
                         Session["userImage"] = account.Image ?? "/images/icon/privacy.png";
                         Session["lastName"] = lastName.Trim();
@@ -117,7 +120,7 @@ namespace CuaHangBanDienThoai.Controllers
                 return Json(new { success = false, code = -100, message = "Lỗi hệ thống: " + ex.Message });
             }
         }
-
+        //Dang ký tài khoản 
         public ActionResult Register()
         {
             return View();
@@ -145,6 +148,7 @@ namespace CuaHangBanDienThoai.Controllers
                         {
                             return Json(new { success = false, code = -2, msg = "Email đã có trên hệ thống !!!" });
                         }
+                        //Kiểm tra tồn của email nếu có thì báo trùng không thể dùng email đó 
                         var checkPhone = await db.Customer.FirstOrDefaultAsync(x => x.PhoneNumber == req.phone.Trim() && x.Email == null);
                         if (checkPhone != null)
                         {
@@ -192,6 +196,10 @@ namespace CuaHangBanDienThoai.Controllers
 
                
         }
+
+
+
+        //Đăng xuất tài khoản cho khách hàng
         public ActionResult Logout()
         {
             if (Session["customer"] != null)
@@ -301,12 +309,12 @@ namespace CuaHangBanDienThoai.Controllers
         public ActionResult ChangePass(int customerid)
         {
 
-            customerid = 3;
+          
             if (customerid > 0)
             {
 
 
-                var customer = db.Customer.FirstOrDefault(s => s.CustomerId == customerid);
+                var customer = db.Customer.Find(customerid);
                 if (customer != null)
                 {
 
